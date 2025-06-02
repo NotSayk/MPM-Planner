@@ -28,17 +28,17 @@ public class TacheMPM
         this.suivants = suivants     ;
     }
 
-    public String         getNom       () { return nom;        }
-    public int            getDuree     () { return duree;      }
-    public int            getDateTot   () { return dateTot;    }
-    public int            getDateTard  () { return dateTard;   }
-    public int            getMarge     () { return marge;      }
-    public List<TacheMPM> getPrecedents() { return precedents; }
-    public List<TacheMPM> getSuivants  () { return suivants;   }
+    public String         getNom       ()     { return nom;        }
+    public int            getDuree     ()     { return duree;      }
+    public int            getDateTot   ()     { return dateTot;    }
+    public int            getDateTard  ()     { return dateTard;   }
+    public int            getMarge     ()     { return marge;      }
+    public List<TacheMPM> getPrecedents()     { return precedents; }
+    public List<TacheMPM> getSuivants  ()     { return suivants;   }
 
-    public void setDateTot (int dateTot)   { this.dateTot  = dateTot;  }
-    public void setDateTard(int dateTard)  { this.dateTard = dateTard; }
-    public void setMarge   (int marge)     { this.marge    = marge;    }
+    public void setDateTot  ( int dateTot  )  { this.dateTot  = dateTot;  }
+    public void setDateTard ( int dateTard )  { this.dateTard = dateTard; }
+    public void setMarge    ( int marge    )  { this.marge    = marge;    }
 
     public String toString() 
     {

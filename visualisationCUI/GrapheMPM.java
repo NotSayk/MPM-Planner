@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
 import java.util.Scanner;
+import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 public class GrapheMPM
 {
@@ -10,7 +12,7 @@ public class GrapheMPM
     public static void main(String[] args) 
     {
         System.out.println("Bienvenue dans l'application de gestion de projet MPM");
-        new GrapheMPM();
+        new GrapheMPM()                                                            ;
     }
 
     public GrapheMPM()
@@ -23,31 +25,31 @@ public class GrapheMPM
         System.out.println(this.toString());
     }
 
-    public static String getDateDuJour() {
-        java.util.GregorianCalendar calendar = new java.util.GregorianCalendar();
-        int jour = calendar.get(java.util.Calendar.DAY_OF_MONTH);
-        int mois = calendar.get(java.util.Calendar.MONTH) + 1;
-        int annee = calendar.get(java.util.Calendar.YEAR);
-        
-        return String.format("%02d/%02d/%04d", jour, mois, annee);
-    }
-
-    public static String ajouterJourDate (int jours) 
+    public static String getDateDuJour() 
     {
-        String date = getDateDuJour();
-        String[] parties = date.split("/");
-        int jour = Integer.parseInt(parties[0]);
-        int mois = Integer.parseInt(parties[1]);
-        int annee = Integer.parseInt(parties[2]);
-
-        java.util.GregorianCalendar calendar = new java.util.GregorianCalendar(annee, mois - 1, jour);
-        calendar.add(java.util.Calendar.DAY_OF_MONTH, jours);
-
-        return String.format("%02d/%02d/%04d", calendar.get(java.util.Calendar.DAY_OF_MONTH), 
-                             calendar.get(java.util.Calendar.MONTH) + 1, 
-                             calendar.get(java.util.Calendar.YEAR));
+        GregorianCalendar calendar = new GregorianCalendar()   ;
+        int jour  = calendar.get( Calendar.DAY_OF_MONTH )      ;
+        int mois  = calendar.get( Calendar.MONTH        ) + 1  ;
+        int annee = calendar.get( Calendar.YEAR         )      ;
+        
+        return String.format( "%02d/%02d/%04d", jour, mois, annee );
     }
 
+    public static String ajouterJourDate ( int jours ) 
+    {
+        String   date    = getDateDuJour()              ;
+        String[] parties = date.split("/")              ;
+        int      jour    = Integer.parseInt(parties[0]) ;
+        int      mois    = Integer.parseInt(parties[1]) ;
+        int      annee   = Integer.parseInt(parties[2]) ;
+
+        GregorianCalendar calendar = new GregorianCalendar(annee, mois - 1, jour);
+        calendar.add(Calendar.DAY_OF_MONTH, jours);
+
+        return String.format("%02d/%02d/%04d", calendar.get(Calendar.DAY_OF_MONTH), 
+                                               calendar.get(Calendar.MONTH) + 1, 
+                                               calendar.get(Calendar.YEAR));
+    }
 
     private void setDateTot() 
     {
