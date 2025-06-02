@@ -213,8 +213,6 @@ public class GrapheMPM
     public String getDateProjet(char typeDemande) 
     {
         int dureeProjet = getDureeProjet();
-
-        System.out.println("Type de date demandée : " + typeDemande);
         if (typeDemande == 'F') return "Date de fin du projet : " + ajouterJourDate(this.dateRef, dureeProjet);
         else                    return "Date de début du projet : " + ajouterJourDate(this.dateRef, -dureeProjet);
     }
