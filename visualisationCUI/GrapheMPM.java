@@ -3,21 +3,21 @@ import java.util.List;
 
 public class GrapheMPM
 {
-    private ArrayList <TacheMPM> taches;
-    Controleur controleur;
+    private ArrayList <TacheMPM> taches     ;
+    Controleur                   controleur ;
 
     public GrapheMPM(Controleur controleur)
     {
-        this.controleur = controleur;
-        this.taches = new ArrayList<TacheMPM>();
+        this.controleur = controleur                ;
+        this.taches     = new ArrayList<TacheMPM>() ;
     }
 
     public void ajouterTache(TacheMPM tache)
     {
         if (tache != null) 
         {
-            this.taches.add(tache);
-            return;
+            this.taches.add(tache) ;
+            return                 ;
         }
 
         System.out.println("Erreur : la tâche à ajouter est nulle.");
@@ -36,8 +36,8 @@ public class GrapheMPM
                     {
                         if (precedent.getNom().equals(tache.getNom())) 
                         {
-                            suivants.add(autreTache);
-                            break;
+                            suivants.add(autreTache) ;
+                            break                    ;
                         }
                     }
                 }
@@ -49,9 +49,9 @@ public class GrapheMPM
 
     public String toString()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Graphe MPM:\n");
-        for (TacheMPM tache : taches)
+        StringBuilder sb = new StringBuilder() ;
+        sb.append("Graphe MPM:\n")             ;
+        for (TacheMPM tache : taches) 
             sb.append(tache.toString()).append("\n");
         
         return sb.toString();

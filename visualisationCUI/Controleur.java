@@ -1,7 +1,7 @@
-import java.io.File;
-import java.util.Scanner;
-import java.util.List;
-import java.util.ArrayList;
+import java.io.File        ;
+import java.util.Scanner   ;
+import java.util.List      ;
+import java.util.ArrayList ;
 
 public class Controleur 
 {
@@ -9,20 +9,20 @@ public class Controleur
     public static void main(String[] args) 
     {
         System.out.println("Bienvenue dans l'application de gestion de projet MPM");
-        new Controleur();
+        new Controleur()                                                           ;
     }
 
 
     public Controleur() 
     {
-        this.grapheMPM = new GrapheMPM(this);
-        lireFichier();
+        this.grapheMPM = new GrapheMPM(this)          ;
+        this.lireFichier()                                 ;
 
-        System.out.println();
-        System.out.println(this.grapheMPM.toString());
+        System.out.println()                          ;
+        System.out.println(this.grapheMPM.toString()) ;
     }
 
-    public void lireFichier()
+    private void lireFichier()
     {
         Scanner  scMPM      ;
         String   ligne      ;
@@ -38,14 +38,14 @@ public class Controleur
             {
                 ligne = scMPM.nextLine().trim();
                 if (ligne.isEmpty()) continue;
+
                 String[] parties = ligne.split("\\|", -1); // Utiliser -1 pour conserver les champs vides
 
-                nom = parties[0];
+                nom   = parties[0]                  ;
                 duree = Integer.parseInt(parties[1]);
 
-                if (parties.length > 2 && !parties[2].isEmpty()) precedents = parties[2].split(","); 
-                else                                             precedents = new String[0];
-
+                if (parties.length > 2 && !parties[2].isEmpty()) precedents = parties[2].split(",") ; 
+                else                                             precedents = new String[0]         ;
 
                 // Création et ajout des tâches
                 List<TacheMPM> tachesPrecedentes = new ArrayList<TacheMPM>();
@@ -54,7 +54,7 @@ public class Controleur
                     tachesPrecedentes.add(new TacheMPM(precedents[i].trim(), 0, new ArrayList<TacheMPM>()));
                 
                 TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
-                this.grapheMPM.ajouterTache(tache);
+                this.grapheMPM.ajouterTache(tache)                          ;
                 }
         }
         catch ( Exception e ) { e.printStackTrace(); }

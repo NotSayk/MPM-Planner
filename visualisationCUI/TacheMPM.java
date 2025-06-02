@@ -13,21 +13,19 @@ public class TacheMPM
 
     public TacheMPM(String nom, int duree, List<TacheMPM> precedents) 
     {
-        this.nom        = nom             ;
-        this.duree      = duree           ;
-        this.precedents = precedents      ;
-        this.suivants   = new ArrayList<TacheMPM>();
-        this.dateTot    = ""              ;
-        this.dateTard   = ""              ;
-        this.marge      = ""              ;
+        this.nom        = nom                       ;
+        this.duree      = duree                     ;
+        this.precedents = precedents                ;
+        this.suivants   = new ArrayList<TacheMPM>() ;
+        this.dateTot    = ""                        ;
+        this.dateTard   = ""                        ; 
+        this.marge      = ""                        ;
     }
 
     public void setSuivants(List<TacheMPM> suivants) 
     {
-        if (suivants == null) {
-            return;
-        }
-        this.suivants = suivants;
+        if (suivants == null) return ;
+        this.suivants = suivants     ;
     }
 
     public String         getNom       () { return nom;        }
