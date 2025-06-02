@@ -1,16 +1,16 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File        ;
-import java.util.Scanner   ;
+import java.io.File;
+import java.util.Scanner;
 
 public class GrapheMPM
 {
-    private ArrayList <TacheMPM> taches     ;
+    private ArrayList <TacheMPM> taches;
 
     public static void main(String[] args) 
     {
         System.out.println("Bienvenue dans l'application de gestion de projet MPM");
-        new GrapheMPM();                                                        ;
+        new GrapheMPM();
     }
 
     public GrapheMPM()
