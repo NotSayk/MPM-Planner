@@ -74,8 +74,8 @@ public class GrapheMPM
     public static String getDateDuJour() 
     {
         GregorianCalendar calendar = new GregorianCalendar()                   ;
-        int                   jour = calendar.get( Calendar.DAY_OF_MONTH )     ;
-        int                   mois = calendar.get( Calendar.MONTH        ) + 1 ;
+        int                  jour  = calendar.get( Calendar.DAY_OF_MONTH )     ;
+        int                  mois  = calendar.get( Calendar.MONTH        ) + 1 ;
         int                  annee = calendar.get( Calendar.YEAR         )     ;
         
         return String.format( "%02d/%02d/%04d", jour, mois, annee );
@@ -84,9 +84,9 @@ public class GrapheMPM
     public static String ajouterJourDate( String date, int jours ) 
     {
         String[] parties = date.split( "/" )           ;
-        int         jour = Integer.parseInt(parties[0]);
-        int         mois = Integer.parseInt(parties[1]);
-        int        annee = Integer.parseInt(parties[2]);
+        int      jour    = Integer.parseInt(parties[0]);
+        int      mois    = Integer.parseInt(parties[1]);
+        int      annee   = Integer.parseInt(parties[2]);
 
         GregorianCalendar calendar = new GregorianCalendar( annee, mois - 1, jour );
         calendar.add( Calendar.DAY_OF_MONTH, jours );
@@ -125,7 +125,7 @@ public class GrapheMPM
                 int minDateTard = Integer.MAX_VALUE;
                 for( TacheMPM tacheSuivantes : tache.getSuivants() )
                 {
-                    if( tacheSuivantes.getDateTard() < minDateTard ) minDateTard = tacheSuivantes.getDateTard();
+                    if ( tacheSuivantes.getDateTard() < minDateTard ) minDateTard = tacheSuivantes.getDateTard();
                 }
                 tache.setDateTard(minDateTard - tache.getDuree());
                 continue;
@@ -246,7 +246,7 @@ public class GrapheMPM
     public String getDateProjet(char typeDemande) 
     {
         int dureeProjet = getDureeProjet();
-        if (typeDemande == 'F') return "Date de fin du projet : " + ajouterJourDate(this.dateRef, dureeProjet);
+        if (typeDemande == 'F') return "Date de fin du projet : "   + ajouterJourDate(this.dateRef, dureeProjet) ;
         else                    return "Date de début du projet : " + ajouterJourDate(this.dateRef, -dureeProjet);
     }
 
