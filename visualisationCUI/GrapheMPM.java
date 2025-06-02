@@ -41,24 +41,45 @@ public class GrapheMPM
         }
     }
 
-    private void setDateTard() 
-    {
-        for (TacheMPM tache : this.taches) 
-        {
-            if (tache.getSuivants().isEmpty()) tache.setDateTard(tache.getDateTot());
-            else 
-            {
-                int minDebutSuivant = Integer.MAX_VALUE;
-                for (TacheMPM suivant : tache.getSuivants()) 
-                {
-                    int debutSuivant = Integer.parseInt(suivant.getDateTot());
-                    if (debutSuivant < minDebutSuivant)
-                        minDebutSuivant = debutSuivant;
-                }
-                tache.setDateTard(String.valueOf(minDebutSuivant - tache.getDuree()));
-            }
+
+    private int calculerDateFinProjet() {
+        int dateFinProjet = 0;
+        for (TacheMPM tache : taches) {
+            int finTache = Integer.parseInt(tache.getDateTot()) + tache.getDuree();
+            dateFinProjet = Math.max(dateFinProjet, finTache);
         }
+        return dateFinProjet;
     }
+
+
+    public void setDateTard() {
+        int dateFinProjet = calculerDateFinProjet();
+        
+        for (TacheMPM tache : taches) 
+        {
+            tache.setDateTard(String.valueOf(dateFinProjet - tache.getDuree()));
+        }
+        
+        boolean modificationEffectuee;
+        do {
+            modificationEffectuee = false;
+            
+            for (TacheMPM tache : taches) {
+                int dateTardActuelle = Integer.parseInt(tache.getDateTard());
+                
+                for (TacheMPM successeur : tache.getSuivants()) {
+                    int dateTardCalculee = Integer.parseInt(successeur.getDateTard()) - tache.getDuree();
+                    
+                    if (dateTardCalculee < dateTardActuelle) {
+                        tache.setDateTard(String.valueOf(dateTardCalculee));
+                        dateTardActuelle = dateTardCalculee;
+                        modificationEffectuee = true;
+                    }
+                }
+            }
+        } while (modificationEffectuee); // Continuer jusqu'à ce qu'aucune modification ne soit faite
+    }
+
 
     public void setMarge()
     {
