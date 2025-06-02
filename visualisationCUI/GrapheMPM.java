@@ -143,7 +143,7 @@ public class GrapheMPM
                 ligne = scMPM.nextLine().trim();
                 if (ligne.isEmpty()) continue;
 
-                String[] parties = ligne.split("\\|", -1); // Utiliser -1 pour conserver les champs vides
+                String[] parties = ligne.split("\\|", -1);
 
                 nom   = parties[0]                  ;
                 duree = Integer.parseInt(parties[1]);
