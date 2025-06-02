@@ -145,12 +145,11 @@ public class GrapheMPM
         this.initSuivants();
     }
 
-    private TacheMPM trouverTache(String nom) {
-        for (TacheMPM tache : this.taches) {
-            if (tache.getNom().equals(nom)) {
+    private TacheMPM trouverTache(String nom) 
+    {
+        for (TacheMPM tache : this.taches) 
+            if (tache.getNom().equals(nom)) 
                 return tache;
-            }
-        }
         return null;
     }
 
