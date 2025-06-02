@@ -19,6 +19,7 @@ public class GrapheMPM
         this.lireFichier();
         this.setDateTot ();
         this.setDateTard();
+        this.setMarge   ();
         System.out.println(this.toString());
     }
 
@@ -50,7 +51,7 @@ public class GrapheMPM
             } 
             else 
             {
-                int minDebutSuivant = 0;
+                int minDebutSuivant = Integer.MAX_VALUE;
                 for (TacheMPM suivant : tache.getSuivants()) 
                 {
                     int debutSuivant = Integer.parseInt(suivant.getDateTot());
@@ -59,6 +60,17 @@ public class GrapheMPM
                 }
                 tache.setDateTard(String.valueOf(minDebutSuivant - tache.getDuree()));
             }
+        }
+    }
+
+    public void setMarge()
+    {
+        for (TacheMPM tache : this.taches) 
+        {
+            int dateTot  = Integer.parseInt(tache.getDateTot());
+            int dateTard = Integer.parseInt(tache.getDateTard());
+            int marge = dateTard - dateTot;
+            tache.setMarge(String.valueOf(marge));
         }
     }
 

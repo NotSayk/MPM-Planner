@@ -19,7 +19,7 @@ public class TacheMPM
         this.suivants   = new ArrayList<TacheMPM>() ;
         this.dateTot    = "0"                       ;
         this.dateTard   = "0"                       ; 
-        this.marge      = ""                        ;
+        this.marge      = "0"                       ;
     }
 
     public void setSuivants(List<TacheMPM> suivants) 
@@ -46,6 +46,12 @@ public class TacheMPM
     {
         if (dateTard == null || dateTard.isEmpty()) return ;
         this.dateTard = dateTard;
+    }
+
+    public void setMarge(String marge) 
+    {
+        if (marge == null || marge.isEmpty()) return ;
+        this.marge = marge;
     }
 
     public String toString() 
