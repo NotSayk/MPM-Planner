@@ -14,21 +14,28 @@ public class GrapheMPM
 
     public void ajouterTache(TacheMPM tache)
     {
-        if (tache == null) {
-            System.out.println("Erreur : Tâche à ajouter est nulle.");
+        if (tache != null) 
+        {
+            this.taches.add(tache);
             return;
         }
-        this.taches.add(tache);
+
+        System.out.println("Erreur : la tâche à ajouter est nulle.");
     }
 
-    public void defSuivants()
+    public void initSuivants()
     {
-        for (TacheMPM tache : taches) {
+        for (TacheMPM tache : taches) 
+        {
             List<TacheMPM> suivants = new ArrayList<>();
-            for (TacheMPM autreTache : taches) {
-                if (autreTache != tache) {
-                    for (TacheMPM precedent : autreTache.getPrecedents()) {
-                        if (precedent.getNom().equals(tache.getNom())) {
+            for (TacheMPM autreTache : taches) 
+            {
+                if (autreTache != tache) 
+                {
+                    for (TacheMPM precedent : autreTache.getPrecedents()) 
+                    {
+                        if (precedent.getNom().equals(tache.getNom())) 
+                        {
                             suivants.add(autreTache);
                             break;
                         }
@@ -44,9 +51,9 @@ public class GrapheMPM
     {
         StringBuilder sb = new StringBuilder();
         sb.append("Graphe MPM:\n");
-        for (TacheMPM tache : taches) {
+        for (TacheMPM tache : taches)
             sb.append(tache.toString()).append("\n");
-        }
+        
         return sb.toString();
     }
 

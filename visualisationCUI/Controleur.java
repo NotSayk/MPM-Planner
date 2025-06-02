@@ -18,12 +18,8 @@ public class Controleur
         this.grapheMPM = new GrapheMPM(this);
         lireFichier();
 
-
-        this.grapheMPM.defSuivants();
-
-        System.out.println("\n"+this.grapheMPM.toString());
-
-
+        System.out.println();
+        System.out.println(this.grapheMPM.toString());
     }
 
     public void lireFichier()
@@ -47,23 +43,23 @@ public class Controleur
                 nom = parties[0];
                 duree = Integer.parseInt(parties[1]);
 
-                if (parties.length > 2 && !parties[2].isEmpty()) 
-                    precedents = parties[2].split(","); 
-                else 
-                    precedents = new String[0];
+                if (parties.length > 2 && !parties[2].isEmpty()) precedents = parties[2].split(","); 
+                else                                             precedents = new String[0];
 
 
-                // Traiter les données lues
+                // Création et ajout des tâches
                 List<TacheMPM> tachesPrecedentes = new ArrayList<TacheMPM>();
+
                 for (int i = 0; i < precedents.length; i++) 
-                {
                     tachesPrecedentes.add(new TacheMPM(precedents[i].trim(), 0, new ArrayList<TacheMPM>()));
-                }
+                
                 TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
                 this.grapheMPM.ajouterTache(tache);
                 }
         }
         catch ( Exception e ) { e.printStackTrace(); }
+
+        this.grapheMPM.initSuivants();
     }
     
 }

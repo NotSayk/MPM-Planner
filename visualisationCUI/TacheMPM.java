@@ -38,7 +38,8 @@ public class TacheMPM
     public List<TacheMPM> getPrecedents() { return precedents; }
     public List<TacheMPM> getSuivants  () { return suivants;   }
 
-    public String toString() {
+    public String toString() 
+    {
         StringBuilder sb = new StringBuilder();
         sb.append(nom).append(" : ").append(duree).append(" jour").append(duree > 1 ? "s" : "").append("\n")
         .append("    date au plus tôt  : ").append(dateTot).append("\n")
