@@ -14,38 +14,74 @@ public class GrapheMPM
 
     public static void main(String[] args) 
     {
-        System.out.println("Bienvenue dans l'application de gestion de projet MPM");
-        new GrapheMPM()                                                            ;
+        System.out.println( "Bienvenue dans l'application de gestion de projet MPM" );
+        new GrapheMPM();
     }
 
     public GrapheMPM()
     {
         this.taches     = new ArrayList<TacheMPM>() ;
-        this.dateRef    = getDateDuJour()           ;
-        this.typeDate   = 'D'                       ;
 
-        this.lireFichier ();
-        this.initDateTot ();
-        this.initDateTard();
-        this.initMarge   ();
+        this.initDateRef    () ;
+        this.choisirTypeDate() ;
+        this.lireFichier    () ;
+        this.initDateTot    () ;
+        this.initDateTard   () ;
+        this.initMarge      () ;
 
-        System.out.println(this.toString());
-        System.out.println("Date de référence : " + this.dateRef);
-        System.out.println("Duree du projet : " + this.getDureeProjet() + " jours");
-        System.out.println(this.getDateProjet(this.typeDate));
+        System.out.println( this.toString() )                                         ;
+        System.out.println( "Date de référence : " + this.dateRef )                   ;
+        System.out.println( "Duree du projet : " + this.getDureeProjet() + " jours" ) ;
+        System.out.println( this.getDateProjet(this.typeDate) )                       ;
+    }
+
+    private void initDateRef() 
+    {
+        Scanner scanner = new Scanner( System.in );
+        System.out.println( "Voulez vous utiliser la date du jour ? (O/N)" );
+        String reponse = scanner.nextLine().trim().toUpperCase();
+        if ( reponse.equals( "O" ) )  
+        {
+            this.dateRef = getDateDuJour();
+            return;
+        }
+        
+        System.out.print("Entrez la date de référence (jj/mm/aaaa) : ");
+        this.dateRef = scanner.nextLine().trim();
+
+        while (!this.dateRef.matches("\\d{2}/\\d{2}/\\d{4}")) 
+        {
+            System.out.print( "Format invalide. Veuillez entrer la date au format jj/mm/aaaa : " );
+            this.dateRef = scanner.nextLine().trim();
+        }
+    }
+
+    private void choisirTypeDate() 
+    {
+        Scanner scanner = new Scanner( System.in );
+        System.out.print( "Choisissez le type de date (D pour début, F pour fin) : " );
+        String choix = scanner.nextLine().trim().toUpperCase();
+
+        while ( !choix.equals( "D" ) && !choix.equals( "F" ) ) 
+        {
+            System.out.print( "Choix invalide. Veuillez entrer 'D' pour début ou 'F' pour fin : " );
+            choix = scanner.nextLine().trim().toUpperCase();
+        }
+
+        this.typeDate = choix.charAt( 0 );
     }
 
     public static String getDateDuJour() 
     {
-        GregorianCalendar calendar = new GregorianCalendar()   ;
-        int jour  = calendar.get( Calendar.DAY_OF_MONTH )      ;
-        int mois  = calendar.get( Calendar.MONTH        ) + 1  ;
-        int annee = calendar.get( Calendar.YEAR         )      ;
+        GregorianCalendar calendar = new GregorianCalendar()                   ;
+        int                   jour = calendar.get( Calendar.DAY_OF_MONTH )     ;
+        int                   mois = calendar.get( Calendar.MONTH        ) + 1 ;
+        int                  annee = calendar.get( Calendar.YEAR         )     ;
         
         return String.format( "%02d/%02d/%04d", jour, mois, annee );
     }
 
-    public static String ajouterJourDate(String date, int jours) 
+    public static String ajouterJourDate( String date, int jours ) 
     {
         String[] parties = date.split("/");
         int jour  = Integer.parseInt(parties[0]);
