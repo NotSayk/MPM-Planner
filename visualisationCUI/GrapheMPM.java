@@ -21,18 +21,18 @@ public class GrapheMPM
         System.out.println(this.toString());
     }
 
-    private void setDateTot() {
-        for (TacheMPM tache : this.taches) {
-            if (tache.getPrecedents().isEmpty()) {
-                tache.setDateTot("0");
-            } else {
+    private void setDateTot() 
+    {
+        for (TacheMPM tache : this.taches) 
+        {
+            if (!tache.getPrecedents().isEmpty()) 
+            {
                 int maxFinPrecedent = 0;
-                for (TacheMPM precedent : tache.getPrecedents()) {
-                    // Date de fin du précédent = date au plus tôt + durée
+                for (TacheMPM precedent : tache.getPrecedents()) 
+                {
                     int finPrecedent = Integer.parseInt(precedent.getDateTot()) + precedent.getDuree();
-                    if (finPrecedent > maxFinPrecedent) {
+                    if (finPrecedent > maxFinPrecedent)
                         maxFinPrecedent = finPrecedent;
-                    }
                 }
                 tache.setDateTot(String.valueOf(maxFinPrecedent));
             }
