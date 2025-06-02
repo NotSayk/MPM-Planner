@@ -42,42 +42,27 @@ public class GrapheMPM
     }
 
 
-    private int calculerDateFinProjet() {
-        int dateFinProjet = 0;
-        for (TacheMPM tache : taches) {
-            int finTache = Integer.parseInt(tache.getDateTot()) + tache.getDuree();
-            dateFinProjet = Math.max(dateFinProjet, finTache);
-        }
-        return dateFinProjet;
-    }
-
-
-    public void setDateTard() {
-        int dateFinProjet = calculerDateFinProjet();
-        
-        for (TacheMPM tache : taches) 
+    private void setDateTard() 
+    {
+        for (int i = this.taches.size() - 1; i >= 0; i--)
         {
-            tache.setDateTard(String.valueOf(dateFinProjet - tache.getDuree()));
-        }
-        
-        boolean modificationEffectuee;
-        do {
-            modificationEffectuee = false;
-            
-            for (TacheMPM tache : taches) {
-                int dateTardActuelle = Integer.parseInt(tache.getDateTard());
-                
-                for (TacheMPM successeur : tache.getSuivants()) {
-                    int dateTardCalculee = Integer.parseInt(successeur.getDateTard()) - tache.getDuree();
-                    
-                    if (dateTardCalculee < dateTardActuelle) {
-                        tache.setDateTard(String.valueOf(dateTardCalculee));
-                        dateTardActuelle = dateTardCalculee;
-                        modificationEffectuee = true;
+            TacheMPM tache = this.taches.get(i);
+
+            if (!tache.getSuivants().isEmpty()) 
+            {
+                int minDateTard = Integer.MAX_VALUE;
+                for(TacheMPM tacheSuivantes : tache.getSuivants())
+                {
+                    if(Integer.parseInt(tacheSuivantes.getDateTard()) < minDateTard)
+                    {
+                        minDateTard = Integer.parseInt(tacheSuivantes.getDateTard());
                     }
                 }
+                tache.setDateTard("" + (minDateTard - tache.getDuree()));
+                continue;
             }
-        } while (modificationEffectuee); // Continuer jusqu'à ce qu'aucune modification ne soit faite
+            tache.setDateTard(tache.getDateTot());
+        }
     }
 
 
@@ -87,7 +72,7 @@ public class GrapheMPM
         {
             int dateTot  = Integer.parseInt(tache.getDateTot());
             int dateTard = Integer.parseInt(tache.getDateTard());
-            int marge = dateTard - dateTot;
+            int marge    = dateTard - dateTot;
             tache.setMarge(String.valueOf(marge));
         }
     }
@@ -96,8 +81,8 @@ public class GrapheMPM
     {
         if (tache != null) 
         {
-            this.taches.add(tache) ;
-            return                 ;
+            this.taches.add(tache);
+            return;
         }
 
         System.out.println("Erreur : la tâche à ajouter est nulle.");
