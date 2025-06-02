@@ -17,7 +17,8 @@ public class GrapheMPM
     {
         this.taches     = new ArrayList<TacheMPM>() ;
         this.lireFichier();
-        this.setDateTot()                        ;
+        this.setDateTot ();
+        this.setDateTard();
         System.out.println(this.toString());
     }
 
@@ -35,6 +36,28 @@ public class GrapheMPM
                         maxFinPrecedent = finPrecedent;
                 }
                 tache.setDateTot(String.valueOf(maxFinPrecedent));
+            }
+        }
+    }
+
+    private void setDateTard() 
+    {
+        for (TacheMPM tache : this.taches) 
+        {
+            if (tache.getSuivants().isEmpty()) 
+            {
+                tache.setDateTard(tache.getDateTot());
+            } 
+            else 
+            {
+                int minDebutSuivant = Integer.MAX_VALUE;
+                for (TacheMPM suivant : tache.getSuivants()) 
+                {
+                    int debutSuivant = Integer.parseInt(suivant.getDateTot());
+                    if (debutSuivant < minDebutSuivant)
+                        minDebutSuivant = debutSuivant;
+                }
+                tache.setDateTard(String.valueOf(minDebutSuivant - tache.getDuree()));
             }
         }
     }
