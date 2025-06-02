@@ -1,21 +1,22 @@
 import java.util.List;
 import java.util.ArrayList;
+
 public class TacheMPM 
 {
-    private String     nom        ;
-    private String     duree      ;
-    private String     dateTot    ;
-    private String     dateTard   ;
-    private String     marge      ;
-    private TacheMPM[] precedents ;
-    private TacheMPM[] suivants   ;
+    private String         nom        ;
+    private String         duree      ;
+    private String         dateTot    ;
+    private String         dateTard   ;
+    private String         marge      ;
+    private List<TacheMPM> precedents ;
+    private List<TacheMPM> suivants   ;
 
-    public TacheMPM(String nom, String duree, TacheMPM[] precedents) 
+    public TacheMPM(String nom, String duree, List<TacheMPM> precedents) 
     {
         this.nom        = nom             ;
         this.duree      = duree           ;
         this.precedents = precedents      ;
-        this.suivants   = new TacheMPM[0] ;
+        this.suivants   = new ArrayList<TacheMPM>();
         this.dateTot    = ""              ;
         this.dateTard   = ""              ;
         this.marge      = ""              ;
@@ -29,13 +30,13 @@ public class TacheMPM
         this.suivants = suivants;
     }
 
-    public String     getNom       () { return nom;        }
-    public String     getDuree     () { return duree;      }
-    public String     getDateTot   () { return dateTot;    }
-    public String     getDateTard  () { return dateTard;   }
-    public String     getMarge     () { return marge;      }
-    public TacheMPM[] getPrecedents() { return precedents; }
-    public TacheMPM[] getSuivants  () { return suivants;   }
+    public String         getNom       () { return nom;        }
+    public String         getDuree     () { return duree;      }
+    public String         getDateTot   () { return dateTot;    }
+    public String         getDateTard  () { return dateTard;   }
+    public String         getMarge     () { return marge;      }
+    public List<TacheMPM> getPrecedents() { return precedents; }
+    public List<TacheMPM> getSuivants  () { return suivants;   }
 
 
     public String toString() 
@@ -48,7 +49,7 @@ public class TacheMPM
           .append(", Marge: ").append(marge)
           .append(", Précédents: ");
         
-          if (precedents.length == 0) {
+          if (precedents.size() == 0) {
             sb.append("Aucun ");
           }
           else {for (TacheMPM tache : precedents) {
@@ -57,7 +58,7 @@ public class TacheMPM
         
         
         sb.append(", Suivants: ");
-        if (suivants.length == 0) {
+        if (suivants.size() == 0) {
             sb.append("Aucun ");
           }
           else {for (TacheMPM tache : suivants) {

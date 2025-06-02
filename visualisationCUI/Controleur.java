@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.Scanner;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Controleur 
 {
@@ -53,10 +54,10 @@ public class Controleur
 
 
                 // Traiter les données lues
-                TacheMPM[] tachesPrecedentes = new TacheMPM[precedents.length];
+                List<TacheMPM> tachesPrecedentes = new ArrayList<TacheMPM>();
                 for (int i = 0; i < precedents.length; i++) 
                 {
-                    tachesPrecedentes[i] = new TacheMPM(precedents[i].trim(), "0", new TacheMPM[0]);
+                    tachesPrecedentes.add(new TacheMPM(precedents[i].trim(), "0", new ArrayList<TacheMPM>()));
                 }
                 TacheMPM tache = new TacheMPM(nom, String.valueOf(duree), tachesPrecedentes);
                 this.grapheMPM.ajouterTache(tache);
