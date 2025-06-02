@@ -44,8 +44,8 @@ public class TacheMPM
     {
         StringBuilder sb = new StringBuilder();
         sb.append(nom).append(" : ").append(duree).append(" jour").append(duree > 1 ? "s" : "").append("\n")
-        .append("    date au plus tôt  : ").append(dateTot).append("\n")
-        .append("    date au plus tard : ").append(dateTard).append("\n")
+        .append("    date au plus tôt  : ").append(GrapheMPM.ajouterJourDate(dateTot)).append("\n")
+        .append("    date au plus tard : ").append(GrapheMPM.ajouterJourDate(dateTard)).append("\n")
         .append("    marge             : ").append(marge).append(marge == 0 || marge == 1 ? " jour" : " jours").append("\n")
         .append("    ").append(precedents.isEmpty() ? "pas de tâche précédente" : "tâches précédentes :").append("\n");
         
