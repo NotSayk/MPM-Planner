@@ -18,10 +18,10 @@ public class GrapheMPM
     public GrapheMPM()
     {
         this.taches     = new ArrayList<TacheMPM>() ;
-        this.lireFichier();
-        this.setDateTot ();
-        this.setDateTard();
-        this.setMarge   ();
+        this.lireFichier ();
+        this.initDateTot ();
+        this.initDateTard();
+        this.initMarge   ();
         System.out.println(this.toString());
     }
 
@@ -51,7 +51,7 @@ public class GrapheMPM
                                                calendar.get(Calendar.YEAR));
     }
 
-    private void setDateTot() 
+    private void initDateTot() 
     {
         for (TacheMPM tache : this.taches) 
         {
@@ -70,7 +70,7 @@ public class GrapheMPM
     }
 
 
-    private void setDateTard() 
+    private void initDateTard() 
     {
         for (int i = this.taches.size() - 1; i >= 0; i--)
         {
@@ -94,7 +94,7 @@ public class GrapheMPM
     }
 
 
-    public void setMarge()
+    public void initMarge()
     {
         for (TacheMPM tache : this.taches) 
         {
@@ -138,7 +138,7 @@ public class GrapheMPM
             tache.setSuivants(suivants);
         }
     }
-
+    
     private void lireFichier()
     {
         Scanner  scMPM      ;

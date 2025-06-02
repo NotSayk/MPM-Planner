@@ -28,6 +28,12 @@ public class TacheMPM
         this.suivants = suivants     ;
     }
 
+    public void setPrecedents(List<TacheMPM> precedents) 
+    {
+        if (precedents == null) return ;
+        this.precedents = precedents    ;
+    }
+
     public String         getNom       ()     { return nom;        }
     public int            getDuree     ()     { return duree;      }
     public int            getDateTot   ()     { return dateTot;    }
@@ -40,22 +46,40 @@ public class TacheMPM
     public void setDateTard ( int dateTard )  { this.dateTard = dateTard; }
     public void setMarge    ( int marge    )  { this.marge    = marge;    }
 
-    public String toString() 
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append(nom).append(" : ").append(duree).append(" jour").append(duree > 1 ? "s" : "").append("\n")
-        .append("    date au plus tôt  : ").append(GrapheMPM.ajouterJourDate(dateTot)).append("\n")
-        .append("    date au plus tard : ").append(GrapheMPM.ajouterJourDate(dateTard)).append("\n")
-        .append("    marge             : ").append(marge).append(marge == 0 || marge == 1 ? " jour" : " jours").append("\n")
-        .append("    ").append(precedents.isEmpty() ? "pas de tâche précédente" : "tâches précédentes :").append("\n");
-        
-        for (TacheMPM t : precedents) sb.append("        ").append(t.getNom()).append("\n");
-        
-        sb.append("    liste des tâches suivantes :\n");
-        if (suivants.isEmpty()) sb.append("        Aucune\n");
-        else for (TacheMPM t : suivants) sb.append("        ").append(t.getNom()).append("\n");
-        
-        return sb.toString();
+
+public String toString()
+{
+    StringBuilder sb = new StringBuilder();
+    sb.append(nom).append(" : ").append(duree).append(" jour").append(duree > 1 ? "s" : "").append("\n")
+      .append("    date au plus tôt  : ").append(GrapheMPM.ajouterJourDate(dateTot)).append("\n")
+      .append("    date au plus tard : ").append(GrapheMPM.ajouterJourDate(dateTard)).append("\n")
+      .append("    marge             : ").append(marge).append(marge == 0 || marge == 1 ? " jour" : " jours").append("\n")
+      .append("    liste des tâches précédentes :\n")
+      .append("    ").append(precedents.isEmpty() ? "pas de tâche précédente\n" : "        ");
+    
+    if (!precedents.isEmpty()) {
+        sb.append("        ");
+        for (int i = 0; i < precedents.size(); i++) {
+            sb.append(precedents.get(i).getNom());
+            if (i < precedents.size() - 1) sb.append(", ");
+        }
+        sb.append("\n");
     }
+    
+    sb.append("    liste des tâches suivantes :\n");
+    
+    if (suivants.isEmpty()) {
+        sb.append("        pas de tâche suivante\n");
+    } else {
+        sb.append("        ");
+        for (int i = 0; i < suivants.size(); i++) {
+            sb.append(suivants.get(i).getNom());
+            if (i < suivants.size() - 1) sb.append(", ");
+        }
+        sb.append("\n");
+    }
+    
+    return sb.toString();
+}
     
 }
