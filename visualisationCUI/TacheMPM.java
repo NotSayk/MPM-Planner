@@ -5,9 +5,9 @@ public class TacheMPM
 {
     private String         nom        ;
     private int            duree      ;
-    private String         dateTot    ;
-    private String         dateTard   ;
-    private String         marge      ;
+    private int            dateTot    ;
+    private int            dateTard   ;
+    private int            marge      ;
     private List<TacheMPM> precedents ;
     private List<TacheMPM> suivants   ;
 
@@ -17,9 +17,9 @@ public class TacheMPM
         this.duree      = duree                     ;
         this.precedents = precedents                ;
         this.suivants   = new ArrayList<TacheMPM>() ;
-        this.dateTot    = "0"                       ;
-        this.dateTard   = "0"                       ; 
-        this.marge      = "0"                       ;
+        this.dateTot    = 0                         ;
+        this.dateTard   = 0                         ; 
+        this.marge      = 0                         ;
     }
 
     public void setSuivants(List<TacheMPM> suivants) 
@@ -30,29 +30,15 @@ public class TacheMPM
 
     public String         getNom       () { return nom;        }
     public int            getDuree     () { return duree;      }
-    public String         getDateTot   () { return dateTot;    }
-    public String         getDateTard  () { return dateTard;   }
-    public String         getMarge     () { return marge;      }
+    public int            getDateTot   () { return dateTot;    }
+    public int            getDateTard  () { return dateTard;   }
+    public int            getMarge     () { return marge;      }
     public List<TacheMPM> getPrecedents() { return precedents; }
     public List<TacheMPM> getSuivants  () { return suivants;   }
 
-    public void setDateTot(String dateTot) 
-    {
-        if (dateTot == null || dateTot.isEmpty()) return ;
-        this.dateTot = dateTot;
-    }
-
-    public void setDateTard(String dateTard) 
-    {
-        if (dateTard == null || dateTard.isEmpty()) return ;
-        this.dateTard = dateTard;
-    }
-
-    public void setMarge(String marge) 
-    {
-        if (marge == null || marge.isEmpty()) return ;
-        this.marge = marge;
-    }
+    public void setDateTot (int dateTot)   { this.dateTot  = dateTot;  }
+    public void setDateTard(int dateTard)  { this.dateTard = dateTard; }
+    public void setMarge   (int marge)     { this.marge    = marge;    }
 
     public String toString() 
     {
@@ -60,7 +46,7 @@ public class TacheMPM
         sb.append(nom).append(" : ").append(duree).append(" jour").append(duree > 1 ? "s" : "").append("\n")
         .append("    date au plus tôt  : ").append(dateTot).append("\n")
         .append("    date au plus tard : ").append(dateTard).append("\n")
-        .append("    marge             : ").append(marge).append(marge.equals("0") || marge.equals("1") ? " jour" : " jours").append("\n")
+        .append("    marge             : ").append(marge).append(marge == 0 || marge == 1 ? " jour" : " jours").append("\n")
         .append("    ").append(precedents.isEmpty() ? "pas de tâche précédente" : "tâches précédentes :").append("\n");
         
         for (TacheMPM t : precedents) sb.append("        ").append(t.getNom()).append("\n");

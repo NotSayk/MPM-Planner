@@ -32,11 +32,11 @@ public class GrapheMPM
                 int maxFinPrecedent = 0;
                 for (TacheMPM precedent : tache.getPrecedents()) 
                 {
-                    int finPrecedent = Integer.parseInt(precedent.getDateTot()) + precedent.getDuree();
+                    int finPrecedent = precedent.getDateTot() + precedent.getDuree();
                     if (finPrecedent > maxFinPrecedent)
                         maxFinPrecedent = finPrecedent;
                 }
-                tache.setDateTot(String.valueOf(maxFinPrecedent));
+                tache.setDateTot(maxFinPrecedent);
             }
         }
     }
@@ -53,12 +53,12 @@ public class GrapheMPM
                 int minDateTard = Integer.MAX_VALUE;
                 for(TacheMPM tacheSuivantes : tache.getSuivants())
                 {
-                    if(Integer.parseInt(tacheSuivantes.getDateTard()) < minDateTard)
+                    if(tacheSuivantes.getDateTard() < minDateTard)
                     {
-                        minDateTard = Integer.parseInt(tacheSuivantes.getDateTard());
+                        minDateTard = tacheSuivantes.getDateTard();
                     }
                 }
-                tache.setDateTard("" + (minDateTard - tache.getDuree()));
+                tache.setDateTard(minDateTard - tache.getDuree());
                 continue;
             }
             tache.setDateTard(tache.getDateTot());
@@ -70,10 +70,10 @@ public class GrapheMPM
     {
         for (TacheMPM tache : this.taches) 
         {
-            int dateTot  = Integer.parseInt(tache.getDateTot());
-            int dateTard = Integer.parseInt(tache.getDateTard());
+            int dateTot  = tache.getDateTot ();
+            int dateTard = tache.getDateTard();
             int marge    = dateTard - dateTot;
-            tache.setMarge(String.valueOf(marge));
+            tache.setMarge(marge);
         }
     }
 
