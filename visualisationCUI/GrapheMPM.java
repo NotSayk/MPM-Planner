@@ -50,7 +50,7 @@ public class GrapheMPM
             } 
             else 
             {
-                int minDebutSuivant = Integer.MAX_VALUE;
+                int minDebutSuivant = 0;
                 for (TacheMPM suivant : tache.getSuivants()) 
                 {
                     int debutSuivant = Integer.parseInt(suivant.getDateTot());
