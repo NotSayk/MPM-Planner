@@ -47,6 +47,25 @@ public class GrapheMPM
     }
 
 
+    public void setDateTot()
+    {
+        for(TacheMPM t : taches)
+        {
+            for(TacheMPM tPrecedent : t.getPrecedents)
+            {
+                if(tPrecedent != null)
+                {
+                    t.setDateTot(tPrecedent.getDateTot + tPrecedent.getDuree);
+                }
+                else
+                {
+                    t.setDateTot(0);
+                }
+            }
+        }
+    }
+
+
     public String toString()
     {
         StringBuilder sb = new StringBuilder() ;
