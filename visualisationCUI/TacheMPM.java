@@ -4,14 +4,14 @@ import java.util.ArrayList;
 public class TacheMPM 
 {
     private String         nom        ;
-    private String         duree      ;
+    private int            duree      ;
     private String         dateTot    ;
     private String         dateTard   ;
     private String         marge      ;
     private List<TacheMPM> precedents ;
     private List<TacheMPM> suivants   ;
 
-    public TacheMPM(String nom, String duree, List<TacheMPM> precedents) 
+    public TacheMPM(String nom, int duree, List<TacheMPM> precedents) 
     {
         this.nom        = nom             ;
         this.duree      = duree           ;
@@ -31,41 +31,28 @@ public class TacheMPM
     }
 
     public String         getNom       () { return nom;        }
-    public String         getDuree     () { return duree;      }
+    public int            getDuree     () { return duree;      }
     public String         getDateTot   () { return dateTot;    }
     public String         getDateTard  () { return dateTard;   }
     public String         getMarge     () { return marge;      }
     public List<TacheMPM> getPrecedents() { return precedents; }
     public List<TacheMPM> getSuivants  () { return suivants;   }
 
-
-    public String toString() 
-    {
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Tâche: ").append(nom)
-          .append(", Durée: ").append(duree)
-          .append(", Date Tot: ").append(dateTot)
-          .append(", Date Tard: ").append(dateTard)
-          .append(", Marge: ").append(marge)
-          .append(", Précédents: ");
+        sb.append(nom).append(" : ").append(duree).append(" jour").append(duree > 1 ? "s" : "").append("\n")
+        .append("    date au plus tôt  : ").append(dateTot).append("\n")
+        .append("    date au plus tard : ").append(dateTard).append("\n")
+        .append("    marge             : ").append(marge).append(marge.equals("0") || marge.equals("1") ? " jour" : " jours").append("\n")
+        .append("    ").append(precedents.isEmpty() ? "pas de tâche précédente" : "tâches précédentes :").append("\n");
         
-          if (precedents.size() == 0) {
-            sb.append("Aucun ");
-          }
-          else {for (TacheMPM tache : precedents) {
-            sb.append(tache.getNom()).append(" ");
-        }}
+        for (TacheMPM t : precedents) sb.append("        ").append(t.getNom()).append("\n");
         
+        sb.append("    liste des tâches suivantes :\n");
+        if (suivants.isEmpty()) sb.append("        Aucune\n");
+        else for (TacheMPM t : suivants) sb.append("        ").append(t.getNom()).append("\n");
         
-        sb.append(", Suivants: ");
-        if (suivants.size() == 0) {
-            sb.append("Aucun ");
-          }
-          else {for (TacheMPM tache : suivants) {
-            sb.append(tache.getNom()).append(" ");
-        }}
-        
-        return sb.toString().trim();
+        return sb.toString();
     }
     
 }

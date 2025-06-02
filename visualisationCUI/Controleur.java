@@ -57,9 +57,9 @@ public class Controleur
                 List<TacheMPM> tachesPrecedentes = new ArrayList<TacheMPM>();
                 for (int i = 0; i < precedents.length; i++) 
                 {
-                    tachesPrecedentes.add(new TacheMPM(precedents[i].trim(), "0", new ArrayList<TacheMPM>()));
+                    tachesPrecedentes.add(new TacheMPM(precedents[i].trim(), 0, new ArrayList<TacheMPM>()));
                 }
-                TacheMPM tache = new TacheMPM(nom, String.valueOf(duree), tachesPrecedentes);
+                TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
                 this.grapheMPM.ajouterTache(tache);
                 }
         }
