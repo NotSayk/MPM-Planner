@@ -38,7 +38,7 @@ public class GrapheMPM
     private void initDateRef() 
     {
         Scanner scanner = new Scanner( System.in );
-        System.out.print( "Voulez vous utiliser la date du jour ? (O/N) : " );
+        System.out.println( "Voulez vous utiliser la date du jour ? (O/N)" );
         String reponse = scanner.nextLine().trim().toUpperCase();
         if ( reponse.equals( "O" ) )  
         {
