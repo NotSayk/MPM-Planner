@@ -12,6 +12,8 @@ public class GrapheMPM
     private String dateRef; 
     private char   typeDate; 
 
+    private Scanner scanner;
+
     public static void main(String[] args) 
     {
         System.out.println( "Bienvenue dans l'application de gestion de projet MPM" );
@@ -21,6 +23,8 @@ public class GrapheMPM
     public GrapheMPM()
     {
         this.taches     = new ArrayList<TacheMPM>() ;
+
+        this.scanner    = new Scanner(System.in)   ;
 
         this.initDateRef    () ;
         this.choisirTypeDate() ;
@@ -37,9 +41,8 @@ public class GrapheMPM
 
     private void initDateRef() 
     {
-        Scanner scanner = new Scanner( System.in );
         System.out.print( "Voulez vous utiliser la date du jour ? (O/N) : " );
-        String reponse = scanner.nextLine().trim().toUpperCase();
+        String reponse = this.scanner.nextLine().trim().toUpperCase();
         if ( reponse.equals( "O" ) )
         {
             this.dateRef = getDateDuJour();
@@ -47,30 +50,27 @@ public class GrapheMPM
         }
         
         System.out.print("Entrez la date de référence (jj/mm/aaaa) : ");
-        this.dateRef = scanner.nextLine().trim();
+        this.dateRef = this.scanner.nextLine().trim();
         
         while (!this.dateRef.matches("\\d{2}/\\d{2}/\\d{4}"))
         {
             System.out.print( "Format invalide. Veuillez entrer la date au format jj/mm/aaaa : " );
-            this.dateRef = scanner.nextLine().trim();
+            this.dateRef = this.scanner.nextLine().trim();
         }
-        scanner.close();
     }
 
     private void choisirTypeDate() 
     {
-        Scanner scanner = new Scanner( System.in );
         System.out.print( "Choisissez le type de date (D pour début, F pour fin) : " );
-        String choix = scanner.nextLine().trim().toUpperCase();
-        
-        while ( !choix.equals( "D" ) && !choix.equals( "F" ) )
+        String choix = this.scanner.nextLine().trim().toUpperCase();
+
+        while ( !choix.equals( "D" ) && !choix.equals( "F" ) ) 
         {
             System.out.print( "Choix invalide. Veuillez entrer 'D' pour début ou 'F' pour fin : " );
-            choix = scanner.nextLine().trim().toUpperCase();
+            choix = this.scanner.nextLine().trim().toUpperCase();
         }
-        
+
         this.typeDate = choix.charAt( 0 );
-        scanner.close();
     }
 
     public static String getDateDuJour() 
