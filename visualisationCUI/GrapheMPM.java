@@ -23,7 +23,7 @@ public class GrapheMPM
         this.taches     = new ArrayList<TacheMPM>() ;
         this.dateRef    = getDateDuJour()           ;
         this.typeDate   = 'D'                       ;
-        
+
         this.lireFichier ();
         this.initDateTot ();
         this.initDateTard();
@@ -215,12 +215,8 @@ public class GrapheMPM
         int dureeProjet = getDureeProjet();
 
         System.out.println("Type de date demandée : " + typeDemande);
-        if (typeDemande == 'F') 
-        {
-            return "Date de fin du projet : " + ajouterJourDate(this.dateRef, dureeProjet);
-        } else {
-            return "Date de début du projet : " + ajouterJourDate(this.dateRef, -dureeProjet);
-        }
+        if (typeDemande == 'F') return "Date de fin du projet : " + ajouterJourDate(this.dateRef, dureeProjet);
+        else                    return "Date de début du projet : " + ajouterJourDate(this.dateRef, -dureeProjet);
     }
 
     public String toString()
