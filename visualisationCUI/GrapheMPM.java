@@ -83,52 +83,49 @@ public class GrapheMPM
 
     public static String ajouterJourDate( String date, int jours ) 
     {
-        String[] parties = date.split("/");
-        int jour  = Integer.parseInt(parties[0]);
-        int mois  = Integer.parseInt(parties[1]);
-        int annee = Integer.parseInt(parties[2]);
+        String[] parties = date.split( "/" )           ;
+        int         jour = Integer.parseInt(parties[0]);
+        int         mois = Integer.parseInt(parties[1]);
+        int        annee = Integer.parseInt(parties[2]);
 
-        GregorianCalendar calendar = new GregorianCalendar(annee, mois - 1, jour);
-        calendar.add(Calendar.DAY_OF_MONTH, jours);
+        GregorianCalendar calendar = new GregorianCalendar( annee, mois - 1, jour );
+        calendar.add( Calendar.DAY_OF_MONTH, jours );
 
-        return String.format("%02d/%02d/%04d", calendar.get(Calendar.DAY_OF_MONTH), 
-                                               calendar.get(Calendar.MONTH) + 1, 
-                                               calendar.get(Calendar.YEAR));
+        return String.format( "%02d/%02d/%04d", calendar.get(Calendar.DAY_OF_MONTH), 
+                                                calendar.get(Calendar.MONTH) + 1   , 
+                                                calendar.get(Calendar.YEAR)       );
     }
 
     private void initDateTot() 
     {
-        for (TacheMPM tache : this.taches) 
+        for ( TacheMPM tache : this.taches ) 
         {
-            if (!tache.getPrecedents().isEmpty()) 
+            if ( !tache.getPrecedents().isEmpty() ) 
             {
                 int maxFinPrecedent = 0;
-                for (TacheMPM precedent : tache.getPrecedents()) 
+                for ( TacheMPM precedent : tache.getPrecedents() )  
                 {
                     int finPrecedent = precedent.getDateTot() + precedent.getDuree();
-                    if (finPrecedent > maxFinPrecedent)
+                    if ( finPrecedent > maxFinPrecedent )
                         maxFinPrecedent = finPrecedent;
                 }
-                tache.setDateTot(maxFinPrecedent);
+                tache.setDateTot( maxFinPrecedent );
             }
         }
     }
 
     private void initDateTard() 
     {
-        for (int i = this.taches.size() - 1; i >= 0; i--)
+        for ( int i = this.taches.size() - 1; i >= 0; i-- ) 
         {
-            TacheMPM tache = this.taches.get(i);
+            TacheMPM tache = this.taches.get( i );
 
-            if (!tache.getSuivants().isEmpty()) 
+            if ( !tache.getSuivants().isEmpty() ) 
             {
                 int minDateTard = Integer.MAX_VALUE;
-                for(TacheMPM tacheSuivantes : tache.getSuivants())
+                for( TacheMPM tacheSuivantes : tache.getSuivants() )
                 {
-                    if(tacheSuivantes.getDateTard() < minDateTard)
-                    {
-                        minDateTard = tacheSuivantes.getDateTard();
-                    }
+                    if( tacheSuivantes.getDateTard() < minDateTard ) minDateTard = tacheSuivantes.getDateTard();
                 }
                 tache.setDateTard(minDateTard - tache.getDuree());
                 continue;
