@@ -45,10 +45,7 @@ public class GrapheMPM
     {
         for (TacheMPM tache : this.taches) 
         {
-            if (tache.getSuivants().isEmpty()) 
-            {
-                tache.setDateTard(tache.getDateTot());
-            } 
+            if (tache.getSuivants().isEmpty()) tache.setDateTard(tache.getDateTot());
             else 
             {
                 int minDebutSuivant = Integer.MAX_VALUE;
