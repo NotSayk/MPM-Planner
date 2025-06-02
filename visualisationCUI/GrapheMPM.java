@@ -40,7 +40,7 @@ public class GrapheMPM
         Scanner scanner = new Scanner( System.in );
         System.out.print( "Voulez vous utiliser la date du jour ? (O/N) : " );
         String reponse = scanner.nextLine().trim().toUpperCase();
-        if ( reponse.equals( "O" ) )  
+        if ( reponse.equals( "O" ) )
         {
             this.dateRef = getDateDuJour();
             return;
@@ -48,12 +48,13 @@ public class GrapheMPM
         
         System.out.print("Entrez la date de référence (jj/mm/aaaa) : ");
         this.dateRef = scanner.nextLine().trim();
-
-        while (!this.dateRef.matches("\\d{2}/\\d{2}/\\d{4}")) 
+        
+        while (!this.dateRef.matches("\\d{2}/\\d{2}/\\d{4}"))
         {
             System.out.print( "Format invalide. Veuillez entrer la date au format jj/mm/aaaa : " );
             this.dateRef = scanner.nextLine().trim();
         }
+        scanner.close();
     }
 
     private void choisirTypeDate() 
@@ -61,14 +62,15 @@ public class GrapheMPM
         Scanner scanner = new Scanner( System.in );
         System.out.print( "Choisissez le type de date (D pour début, F pour fin) : " );
         String choix = scanner.nextLine().trim().toUpperCase();
-
-        while ( !choix.equals( "D" ) && !choix.equals( "F" ) ) 
+        
+        while ( !choix.equals( "D" ) && !choix.equals( "F" ) )
         {
             System.out.print( "Choix invalide. Veuillez entrer 'D' pour début ou 'F' pour fin : " );
             choix = scanner.nextLine().trim().toUpperCase();
         }
-
+        
         this.typeDate = choix.charAt( 0 );
+        scanner.close();
     }
 
     public static String getDateDuJour() 
@@ -207,8 +209,9 @@ public class GrapheMPM
                 // Création et ajout des tâches
                 List<TacheMPM> tachesPrecedentes = new ArrayList<TacheMPM>();
 
-                for (int i = 0; i < precedents.length; i++) 
-                    tachesPrecedentes.add(this.trouverTache(precedents[i].trim()));
+                for (String precedent : precedents) {
+                    tachesPrecedentes.add(this.trouverTache(precedent.trim()));
+                }
                 
                 TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
                 this.ajouterTache(tache)                          ;
