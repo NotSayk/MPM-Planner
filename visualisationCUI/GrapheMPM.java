@@ -23,10 +23,12 @@ public class GrapheMPM
         this.taches     = new ArrayList<TacheMPM>() ;
         this.dateRef    = getDateDuJour()           ;
         this.typeDate   = 'D'                       ;
+        
         this.lireFichier ();
         this.initDateTot ();
         this.initDateTard();
         this.initMarge   ();
+
         System.out.println(this.toString());
         System.out.println("Date de référence : " + this.dateRef);
         System.out.println("Duree du projet : " + this.getDureeProjet() + " jours");
