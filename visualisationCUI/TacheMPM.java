@@ -17,7 +17,7 @@ public class TacheMPM
         this.duree      = duree                     ;
         this.precedents = precedents                ;
         this.suivants   = new ArrayList<TacheMPM>() ;
-        this.dateTot    = ""                        ;
+        this.dateTot    = "0"                       ;
         this.dateTard   = ""                        ; 
         this.marge      = ""                        ;
     }
@@ -35,6 +35,12 @@ public class TacheMPM
     public String         getMarge     () { return marge;      }
     public List<TacheMPM> getPrecedents() { return precedents; }
     public List<TacheMPM> getSuivants  () { return suivants;   }
+
+    public void setDateTot(String dateTot) 
+    {
+        if (dateTot == null || dateTot.isEmpty()) return ;
+        this.dateTot = dateTot;
+    }
 
     public String toString() 
     {

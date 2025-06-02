@@ -1,15 +1,23 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File        ;
+import java.util.Scanner   ;
 
 public class GrapheMPM
 {
     private ArrayList <TacheMPM> taches     ;
-    Controleur                   controleur ;
 
-    public GrapheMPM(Controleur controleur)
+    public static void main(String[] args) 
     {
-        this.controleur = controleur                ;
+        System.out.println("Bienvenue dans l'application de gestion de projet MPM");
+        new GrapheMPM();                                                        ;
+    }
+
+    public GrapheMPM()
+    {
         this.taches     = new ArrayList<TacheMPM>() ;
+        this.lireFichier();
+        System.out.println(this.toString());
     }
 
     public void ajouterTache(TacheMPM tache)
@@ -25,10 +33,10 @@ public class GrapheMPM
 
     public void initSuivants()
     {
-        for (TacheMPM tache : taches) 
+        for (TacheMPM tache : this.taches) 
         {
             List<TacheMPM> suivants = new ArrayList<>();
-            for (TacheMPM autreTache : taches) 
+            for (TacheMPM autreTache : this.taches) 
             {
                 if (autreTache != tache) 
                 {
@@ -46,6 +54,56 @@ public class GrapheMPM
         }
     }
 
+    private void lireFichier()
+    {
+        Scanner  scMPM      ;
+        String   ligne      ;
+        String   nom        ;
+        int      duree      ;
+        String[] precedents ;
+
+        try
+        {
+            scMPM = new Scanner(new File("listeTache.txt"), "UTF-8");
+
+            while (scMPM.hasNextLine())
+            {
+                ligne = scMPM.nextLine().trim();
+                if (ligne.isEmpty()) continue;
+
+                String[] parties = ligne.split("\\|", -1); // Utiliser -1 pour conserver les champs vides
+
+                nom   = parties[0]                  ;
+                duree = Integer.parseInt(parties[1]);
+
+                if (parties.length > 2 && !parties[2].isEmpty()) precedents = parties[2].split(",") ; 
+                else                                             precedents = new String[0]         ;
+
+                // Création et ajout des tâches
+                List<TacheMPM> tachesPrecedentes = new ArrayList<TacheMPM>();
+
+                for (int i = 0; i < precedents.length; i++) 
+                    tachesPrecedentes.add(this.trouverTache(precedents[i].trim()));
+                
+                TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
+                this.ajouterTache(tache)                          ;
+            }
+        }
+        catch ( Exception e ) { e.printStackTrace(); }
+
+        this.initSuivants();
+    }
+
+    private TacheMPM trouverTache(String nom) {
+        for (TacheMPM tache : this.taches) {
+            if (tache.getNom().equals(nom)) {
+                return tache;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<TacheMPM> getTaches() { return taches; }
 
     public String toString()
     {
@@ -57,6 +115,5 @@ public class GrapheMPM
         return sb.toString();
     }
 
-    public ArrayList<TacheMPM> getTaches() { return taches; }
 
 }
