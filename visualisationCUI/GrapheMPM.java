@@ -9,6 +9,9 @@ public class GrapheMPM
 {
     private ArrayList <TacheMPM> taches;
 
+    private String dateRef; 
+    private char   typeDate; 
+
     public static void main(String[] args) 
     {
         System.out.println("Bienvenue dans l'application de gestion de projet MPM");
@@ -18,11 +21,16 @@ public class GrapheMPM
     public GrapheMPM()
     {
         this.taches     = new ArrayList<TacheMPM>() ;
+        this.dateRef    = getDateDuJour()           ;
+        this.typeDate   = 'D'                       ;
         this.lireFichier ();
         this.initDateTot ();
         this.initDateTard();
         this.initMarge   ();
         System.out.println(this.toString());
+        System.out.println("Date de référence : " + this.dateRef);
+        System.out.println("Duree du projet : " + this.getDureeProjet() + " jours");
+        System.out.println(this.getDateProjet(this.typeDate));
     }
 
     public static String getDateDuJour() 
@@ -35,13 +43,12 @@ public class GrapheMPM
         return String.format( "%02d/%02d/%04d", jour, mois, annee );
     }
 
-    public static String ajouterJourDate ( int jours ) 
+    public static String ajouterJourDate(String date, int jours) 
     {
-        String   date    = getDateDuJour()              ;
-        String[] parties = date.split("/")              ;
-        int      jour    = Integer.parseInt(parties[0]) ;
-        int      mois    = Integer.parseInt(parties[1]) ;
-        int      annee   = Integer.parseInt(parties[2]) ;
+        String[] parties = date.split("/");
+        int jour  = Integer.parseInt(parties[0]);
+        int mois  = Integer.parseInt(parties[1]);
+        int annee = Integer.parseInt(parties[2]);
 
         GregorianCalendar calendar = new GregorianCalendar(annee, mois - 1, jour);
         calendar.add(Calendar.DAY_OF_MONTH, jours);
@@ -69,7 +76,6 @@ public class GrapheMPM
         }
     }
 
-
     private void initDateTard() 
     {
         for (int i = this.taches.size() - 1; i >= 0; i--)
@@ -92,7 +98,6 @@ public class GrapheMPM
             tache.setDateTard(tache.getDateTot());
         }
     }
-
 
     public void initMarge()
     {
@@ -138,7 +143,7 @@ public class GrapheMPM
             tache.setSuivants(suivants);
         }
     }
-    
+
     private void lireFichier()
     {
         Scanner  scMPM      ;
@@ -189,6 +194,33 @@ public class GrapheMPM
 
     public ArrayList<TacheMPM> getTaches() { return taches; }
 
+    public int getDureeProjet() 
+    {
+        int dureeMax = 0;
+        for (TacheMPM tache : this.taches) 
+        {
+            if (tache.getSuivants().isEmpty()) 
+            {
+                int finTache = tache.getDateTot() + tache.getDuree();
+                if (finTache > dureeMax) dureeMax = finTache;
+            }
+        }
+        return dureeMax;
+    }
+
+    public String getDateProjet(char typeDemande) 
+    {
+        int dureeProjet = getDureeProjet();
+
+        System.out.println("Type de date demandée : " + typeDemande);
+        if (typeDemande == 'F') 
+        {
+            return "Date de fin du projet : " + ajouterJourDate(this.dateRef, dureeProjet);
+        } else {
+            return "Date de début du projet : " + ajouterJourDate(this.dateRef, -dureeProjet);
+        }
+    }
+
     public String toString()
     {
         StringBuilder sb = new StringBuilder() ;
@@ -198,6 +230,5 @@ public class GrapheMPM
         
         return sb.toString();
     }
-
 
 }
