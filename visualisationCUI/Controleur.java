@@ -17,7 +17,11 @@ public class Controleur
         this.grapheMPM = new GrapheMPM(this);
         lireFichier();
 
+
+        this.grapheMPM.defSuivants();
+
         System.out.println("\n"+this.grapheMPM.toString());
+
 
     }
 

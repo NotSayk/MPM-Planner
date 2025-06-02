@@ -21,6 +21,25 @@ public class GrapheMPM
         this.taches.add(tache);
     }
 
+    public void defSuivants()
+    {
+        for (TacheMPM tache : taches) {
+            List<TacheMPM> suivants = new ArrayList<>();
+            for (TacheMPM autreTache : taches) {
+                if (autreTache != tache) {
+                    for (TacheMPM precedent : autreTache.getPrecedents()) {
+                        if (precedent.getNom().equals(tache.getNom())) {
+                            suivants.add(autreTache);
+                            break;
+                        }
+                    }
+                }
+            }
+            tache.setSuivants(suivants);
+        }
+    }
+
+
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

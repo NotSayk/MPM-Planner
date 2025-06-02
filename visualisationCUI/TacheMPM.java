@@ -1,3 +1,5 @@
+import java.util.List;
+import java.util.ArrayList;
 public class TacheMPM 
 {
     private String     nom        ;
@@ -19,6 +21,13 @@ public class TacheMPM
         this.marge      = ""              ;
     }
 
+    public void setSuivants(List<TacheMPM> suivants) 
+    {
+        if (suivants == null) {
+            return;
+        }
+        this.suivants = suivants;
+    }
 
     public String     getNom       () { return nom;        }
     public String     getDuree     () { return duree;      }
