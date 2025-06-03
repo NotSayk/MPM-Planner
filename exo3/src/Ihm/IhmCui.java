@@ -1,6 +1,5 @@
 package src.Ihm;
 import java.util.Scanner;
-
 import src.Controleur;
 
 
@@ -8,7 +7,6 @@ public class IhmCui
 {
     private Controleur controleur;
     private Scanner    scanner   ;
-
   
 
     public IhmCui(Controleur ctrl) 

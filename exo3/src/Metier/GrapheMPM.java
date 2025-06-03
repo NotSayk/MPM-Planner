@@ -210,18 +210,52 @@ public class GrapheMPM
             return "Date de début du projet : " + ajouterJourDate(this.dateRef, -dureeProjet);
     }
 
-    public String getCheminCritique()
-    {
-        String cheminCritique = "Chemin critique : ";
-        for (int i = this.taches.size() - 1; i >= 0; i--) 
-        {
-            TacheMPM tache = this.taches.get(i);
-            if (tache.getMarge() == 0) 
-            {
-                cheminCritique = tache.getNom() + " -> " + cheminCritique;
+    public void initCheminCritique() {
+        TacheMPM fin = this.taches.getLast();
+        List<TacheMPM> precedentsCritiques = new ArrayList<>();
+        
+        // Trouver tous les prédécesseurs critiques de la tâche finale
+        for (TacheMPM precedent : fin.getPrecedents()) {
+            if (precedent.getMarge() == 0 && 
+                precedent.getDateTot() + precedent.getDuree() == fin.getDateTot()) {
+                precedentsCritiques.add(precedent);
             }
         }
+        
+        // Afficher un chemin pour chaque prédécesseur critique
+        for (int i = 0; i < precedentsCritiques.size(); i++) {
+            System.out.println("=== Chemin critique " + (i + 1) + " ===");
+            afficherCheminDepuis(precedentsCritiques.get(i), fin);
+            System.out.println();
+        }
+    }
 
+    private TacheMPM trouverPrecedentCritique(TacheMPM tache) {
+        for (TacheMPM precedent : tache.getPrecedents()) 
+        {
+            if (precedent.getMarge() == 0 && 
+                precedent.getDateTot() + precedent.getDuree() == tache.getDateTot()) 
+                {
+                return precedent;
+            }
+        }
+        return null;
+    }
+
+    private void afficherCheminDepuis(TacheMPM debut, TacheMPM fin) {
+        List<TacheMPM> chemin = new ArrayList<>();
+        TacheMPM actuelle = debut;
+        
+        while (actuelle != null) {
+            chemin.add(actuelle);
+            actuelle = trouverPrecedentCritique(actuelle);
+        }
+        
+        // Afficher en ordre inverse + ajouter la tâche finale
+        for (int i = chemin.size() - 1; i >= 0; i--) {
+            System.out.println(chemin.get(i).getNom() + " (Critique)");
+        }
+        System.out.println(fin.getNom() + " (Critique)");
     }
 
     public ArrayList<TacheMPM> getTaches  () { return taches  ; }

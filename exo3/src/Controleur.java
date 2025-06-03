@@ -1,7 +1,7 @@
 package src;
 import src.Ihm.FrameMPM;
-import src.Metier.GrapheMPM;
 import src.Ihm.IhmCui;
+import src.Metier.GrapheMPM;
 
 
 public class Controleur 
@@ -30,6 +30,8 @@ public class Controleur
         this.graphe.setTypeDate  (typeDate);
         this.graphe.lireFichier  ()        ;
         this.graphe.calculerDates()        ;
+
+        this.graphe.initCheminCritique();
 
         this.frame.changerPanel();
         IhmCui ihm     = new IhmCui   (this);
