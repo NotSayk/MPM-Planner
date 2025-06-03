@@ -5,8 +5,6 @@ import java.util.List;
 import java.io.File;
 import java.util.Scanner;
 
-import src.Metier.TacheMPM;
-
 import java.util.GregorianCalendar;
 import java.util.Calendar;
 
@@ -210,6 +208,20 @@ public class GrapheMPM
             return "Date de fin du projet : "   + ajouterJourDate(this.dateRef, dureeProjet) ;
         else                    
             return "Date de début du projet : " + ajouterJourDate(this.dateRef, -dureeProjet);
+    }
+
+    public String getCheminCritique()
+    {
+        String cheminCritique = "Chemin critique : ";
+        for (int i = this.taches.size() - 1; i >= 0; i--) 
+        {
+            TacheMPM tache = this.taches.get(i);
+            if (tache.getMarge() == 0) 
+            {
+                cheminCritique = tache.getNom() + " -> " + cheminCritique;
+            }
+        }
+
     }
 
     public ArrayList<TacheMPM> getTaches  () { return taches  ; }
