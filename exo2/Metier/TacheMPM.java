@@ -3,6 +3,7 @@ package Metier;
 import java.util.List;
 
 import src.Metier.GrapheMPM;
+import src.Metier.TacheMPM;
 
 import java.util.ArrayList;
 
