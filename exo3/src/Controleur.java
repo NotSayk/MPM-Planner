@@ -41,4 +41,6 @@ public class Controleur
     public String getDateReference() { return this.dateRef                ;              }
     public int    getDureeProjet  () { return this.graphe.getDureeProjet();              }
     public String getDateProjet   () { return this.graphe.getDateProjet (this.typeDate); }
+
+    public void getCheminCritique() { this.graphe.initCheminCritique();}
 }

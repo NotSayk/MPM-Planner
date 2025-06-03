@@ -210,18 +210,25 @@ public class GrapheMPM
             return "Date de début du projet : " + ajouterJourDate(this.dateRef, -dureeProjet);
     }
 
-    public String getCheminCritique()
+
+    public void initCheminCritique()
     {
-        String cheminCritique = "Chemin critique : ";
-        for (int i = this.taches.size() - 1; i >= 0; i--) 
+        CheminCritique cheminCritique = new CheminCritique();
+
+        cheminCritique.ajouterTache(this.taches.get(this.taches.size()-1));
+
+        for(int i = this.taches.size() - 1; i > 0; i--)
         {
-            TacheMPM tache = this.taches.get(i);
-            if (tache.getMarge() == 0) 
+            for(TacheMPM t : this.taches.get(i).getPrecedents())
             {
-                cheminCritique = tache.getNom() + " -> " + cheminCritique;
+                if(t != null && t.getDateTot() == (this.taches.get(i).getDateTot() - t.getDuree()) && t.getMarge() == 0)
+                    cheminCritique.ajouterTache(t);
             }
         }
 
+        System.out.println("affichage du chemin critique");
+        for(int i = 0; i < cheminCritique.getListTache().size(); i++)
+            System.out.println(cheminCritique.getListTache().get(i).getNom());
     }
 
     public ArrayList<TacheMPM> getTaches  () { return taches  ; }
