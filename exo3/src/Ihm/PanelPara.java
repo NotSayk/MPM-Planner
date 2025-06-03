@@ -8,21 +8,27 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import src.Controleur;
+
 public class PanelPara extends JPanel 
 {
+
+    Controleur ctrl;
 
     JTextField   txtDateRef;
     JRadioButton rbDateDebut;
     JRadioButton rbDateFin;
     JButton      btnValider;
 
-    public PanelPara() 
+    public PanelPara(Controleur ctrl) 
     {
+        this.ctrl = ctrl;
+
         this.setLayout(new BorderLayout());
         // Panel référence
         JPanel panelRef = new JPanel();
         JLabel labelRef = new JLabel("Date de référence :");
-        this.txtDateRef = new JTextField(10);
+        this.txtDateRef = new JTextField(this.ctrl.getDateDuJour(), 10);
 
         // Panel type de date
         JPanel panelType = new JPanel();

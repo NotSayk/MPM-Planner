@@ -1,6 +1,5 @@
 package src;
 import src.Ihm.FrameMPM;
-import src.Ihm.IhmCui;
 import src.Metier.GrapheMPM;
 
 
@@ -17,9 +16,9 @@ public class Controleur
     public Controleur() 
     {
         this.graphe    = new GrapheMPM()    ;
-        IhmCui ihm     = new IhmCui   (this);
-        
-        this.frame = new FrameMPM();
+        //IhmCui ihm     = new IhmCui   (this);
+
+        this.frame = new FrameMPM(this);
     }
 
     public void initialiserProjet(String dateRef, char typeDate) 
