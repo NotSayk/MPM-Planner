@@ -28,3 +28,5 @@ visualisationGUI/src/.idea/misc.xml
 /visualisationGUI/src/.idea
 /visualisationGUI/src/out/production/visualisationGUI/src/.idea
 *.iml
+.DS_Store
+.DS_Store
