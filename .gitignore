@@ -22,3 +22,9 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+visualisationGUI/.idea/misc.xml
+visualisationGUI/.idea/workspace.xml
+visualisationGUI/src/.idea/misc.xml
+/visualisationGUI/src/.idea
+/visualisationGUI/src/out/production/visualisationGUI/src/.idea
+*.iml
