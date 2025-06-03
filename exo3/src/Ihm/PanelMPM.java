@@ -1,6 +1,5 @@
 package src.Ihm;
 
-public class PanelMPM 
-{
+public class PanelMPM {
     
 }
