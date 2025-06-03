@@ -149,7 +149,7 @@ public class PanelMPM extends JPanel
             for (TacheMPM tacheSuivante : tache.getSuivants())
             {
                 Entite entiteSuivante = this.getEntiteParTache(tacheSuivante);
-                if (entiteSuivante == null) continue;;
+                if (entiteSuivante == null) continue;
 
                 // Calculer les points de connexion
                 int x1 = entite.getX() + entite.getLargeur();
