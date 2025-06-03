@@ -1,5 +1,6 @@
-A|2|
-B|3|
+DEBUT|0|
+A|2|DEBUT
+B|3|DEBUT
 C|4|A
 D|5|A,B
 E|2|B
@@ -9,3 +10,4 @@ H|1|D,E
 I|2|F,G
 J|1|H
 K|3|I,J
+FIN|0|K
