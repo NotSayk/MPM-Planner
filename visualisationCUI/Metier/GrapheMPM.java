@@ -219,7 +219,7 @@ public class GrapheMPM
         StringBuilder sb = new StringBuilder();
         sb.append("Graphe MPM:\n");
         for (TacheMPM tache : taches) 
-            sb.append(tache.toString()).append("\n");
+            sb.append(tache.toString(this.dateRef)).append("\n");
         
         return sb.toString();
     }

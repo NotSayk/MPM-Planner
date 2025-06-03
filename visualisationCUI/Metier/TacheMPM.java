@@ -27,7 +27,7 @@ public class TacheMPM
     public void setSuivants(List<TacheMPM> suivants) 
     {
         if (suivants == null) return;
-        this.suivants = suivants;
+        this.suivants = suivants    ;
     }
 
     public void setPrecedents(List<TacheMPM> precedents) 
@@ -37,25 +37,25 @@ public class TacheMPM
     }
 
     // Getters
-    public String         getNom()        { return nom;        }
-    public int            getDuree()      { return duree;      }
-    public int            getDateTot()    { return dateTot;    }
-    public int            getDateTard()   { return dateTard;   }
-    public int            getMarge()      { return marge;      }
+    public String         getNom       () { return nom       ; }
+    public int            getDuree     () { return duree     ; }
+    public int            getDateTot   () { return dateTot   ; }
+    public int            getDateTard  () { return dateTard  ; }
+    public int            getMarge     () { return marge     ; }
     public List<TacheMPM> getPrecedents() { return precedents; }
-    public List<TacheMPM> getSuivants()   { return suivants;   }
+    public List<TacheMPM> getSuivants  () { return suivants  ; }
 
     // Setters
-    public void setDateTot(int dateTot)   { this.dateTot = dateTot; }
+    public void setDateTot (int dateTot)  { this.dateTot  = dateTot ; }
     public void setDateTard(int dateTard) { this.dateTard = dateTard; }
-    public void setMarge(int marge)       { this.marge = marge; }
+    public void setMarge   (int marge)    { this.marge    = marge   ; }
 
-    public String toString()
+    public String toString(String dateRef)
     {
         StringBuilder sb = new StringBuilder();
         sb.append(nom).append(" : ").append(duree).append(" jour").append(duree > 1 ? "s" : "").append("\n")
-        .append("    date au plus tôt  : ").append(GrapheMPM.ajouterJourDate(GrapheMPM.getDateDuJour(), dateTot)).append("\n")
-        .append("    date au plus tard : ").append(GrapheMPM.ajouterJourDate(GrapheMPM.getDateDuJour(), dateTard)).append("\n")
+        .append("    date au plus tôt  : ").append(GrapheMPM.ajouterJourDate(dateRef, dateTot)).append("\n")
+        .append("    date au plus tard : ").append(GrapheMPM.ajouterJourDate(dateRef, dateTard)).append("\n")
         .append("    marge             : ").append(marge).append(marge == 0 || marge == 1 ? " jour" : " jours").append("\n")
         .append("    liste des tâches précédentes :\n")
         .append("    ").append(precedents.isEmpty() ? "pas de tâche précédente\n" : "        ");
