@@ -1,51 +1,54 @@
+package Metier;
+
 import java.util.List;
 import java.util.ArrayList;
 
 public class TacheMPM 
 {
-    private String         nom        ;
-    private int            duree      ;
-    private int            dateTot    ;
-    private int            dateTard   ;
-    private int            marge      ;
-    private List<TacheMPM> precedents ;
-    private List<TacheMPM> suivants   ;
+    private String         nom;
+    private int            duree;
+    private int            dateTot;
+    private int            dateTard;
+    private int            marge;
+    private List<TacheMPM> precedents;
+    private List<TacheMPM> suivants;
 
     public TacheMPM(String nom, int duree, List<TacheMPM> precedents) 
     {
-        this.nom        = nom                       ;
-        this.duree      = duree                     ;
-        this.precedents = precedents                ;
-        this.suivants   = new ArrayList<TacheMPM>() ;
-        this.dateTot    = 0                         ;
-        this.dateTard   = 0                         ; 
-        this.marge      = 0                         ;
+        this.nom    = nom;
+        this.duree   = duree;
+        this.precedents = precedents;
+        this.suivants = new ArrayList<TacheMPM>();
+        this.dateTot = 0;
+        this.dateTard = 0; 
+        this.marge = 0;
     }
 
     public void setSuivants(List<TacheMPM> suivants) 
     {
-        if (suivants == null) return ;
-        this.suivants = suivants     ;
+        if (suivants == null) return;
+        this.suivants = suivants;
     }
 
     public void setPrecedents(List<TacheMPM> precedents) 
     {
-        if (precedents == null) return ;
-        this.precedents = precedents    ;
+        if (precedents == null) return;
+        this.precedents = precedents;
     }
 
-    public String         getNom       ()     { return nom;        }
-    public int            getDuree     ()     { return duree;      }
-    public int            getDateTot   ()     { return dateTot;    }
-    public int            getDateTard  ()     { return dateTard;   }
-    public int            getMarge     ()     { return marge;      }
-    public List<TacheMPM> getPrecedents()     { return precedents; }
-    public List<TacheMPM> getSuivants  ()     { return suivants;   }
+    // Getters
+    public String         getNom()        { return nom;        }
+    public int            getDuree()      { return duree;      }
+    public int            getDateTot()    { return dateTot;    }
+    public int            getDateTard()   { return dateTard;   }
+    public int            getMarge()      { return marge;      }
+    public List<TacheMPM> getPrecedents() { return precedents; }
+    public List<TacheMPM> getSuivants()   { return suivants;   }
 
-    public void setDateTot  ( int dateTot  )  { this.dateTot  = dateTot;  }
-    public void setDateTard ( int dateTard )  { this.dateTard = dateTard; }
-    public void setMarge    ( int marge    )  { this.marge    = marge;    }
-
+    // Setters
+    public void setDateTot(int dateTot)   { this.dateTot = dateTot; }
+    public void setDateTard(int dateTard) { this.dateTard = dateTard; }
+    public void setMarge(int marge)       { this.marge = marge; }
 
     public String toString()
     {
@@ -81,5 +84,4 @@ public class TacheMPM
         
         return sb.toString();
     }
-    
 }
