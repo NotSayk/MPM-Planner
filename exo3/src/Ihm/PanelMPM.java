@@ -1,21 +1,20 @@
 package src.Ihm;
 
-import src.Metier.GrapheMPM;
-import src.Metier.TacheMPM;
-import src.Ihm.composants.Entite;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import src.Controleur;
-
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;	
-import java.awt.event.MouseMotionAdapter;
+import src.Ihm.composants.Entite;
+import src.Metier.GrapheMPM;
+import src.Metier.TacheMPM;
 
 public class PanelMPM extends JPanel 
 {
@@ -137,29 +136,50 @@ public class PanelMPM extends JPanel
         dessinerConnexions(g);
     }
     
-    private void dessinerConnexions(Graphics g) 
+    private void dessinerConnexions(Graphics g)
     {
         g.setColor(Color.BLACK);
-        
-        for (Entite entite : entites) 
+        for (Entite entite : entites)
         {
             TacheMPM tache = entite.getTache();
-            
             // Dessiner les connexions vers les tâches suivantes
-            for (TacheMPM tacheSuivante : tache.getSuivants()) 
+            for (TacheMPM tacheSuivante : tache.getSuivants())
             {
                 Entite entiteSuivante = trouverEntiteParTache(tacheSuivante);
-                if (entiteSuivante != null) 
+                if (entiteSuivante != null)
                 {
                     // Calculer les points de connexion
                     int x1 = entite.getX() + entite.getLargeur();
                     int y1 = entite.getY() + entite.getHauteur() / 2;
-                    
                     int x2 = entiteSuivante.getX();
                     int y2 = entiteSuivante.getY() + entiteSuivante.getHauteur() / 2;
                     
                     // Dessiner la ligne
                     g.drawLine(x1, y1, x2, y2);
+                    
+                    // Calculer le point central de la ligne
+                    int xCentre = (x1 + x2) / 2;
+                    int yCentre = (y1 + y2) / 2;
+                    
+                    FontMetrics fm = g.getFontMetrics();
+                    String texte = String.valueOf(entite.getTache().getDuree());
+                    int largeurTexte = fm.stringWidth(texte);
+                    int hauteurTexte = fm.getHeight();
+                    
+                    // Calculer les coordonnées du rectangle
+                    int xRect = xCentre - largeurTexte / 2 - 2;
+                    int yRect = yCentre - hauteurTexte / 2 - 2;
+                    int largeurRect = largeurTexte + 2 * 2;
+                    int hauteurRect = hauteurTexte + 2 * 2;
+                    
+                    // Dessiner le rectangle blanc avec bordure
+                    g.setColor(Color.WHITE);
+                    g.fillRect(xRect, yRect, largeurRect, hauteurRect);
+                    g.setColor(Color.BLACK);
+                    g.drawRect(xRect, yRect, largeurRect, hauteurRect);
+
+                    // Centrer le texte par rapport au point central
+                    g.drawString(texte, xCentre - largeurTexte / 2, yCentre + hauteurTexte / 4);
                     
                     // Dessiner la pointe de la flèche
                     dessinerFleche(g, x1, y1, x2, y2);

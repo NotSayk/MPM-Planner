@@ -3,17 +3,14 @@ package src.Ihm;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import java.awt.event.ActionEvent;
-
-
 import src.Controleur;
 
 public class PanelPara extends JPanel implements ActionListener
@@ -99,7 +96,7 @@ public class PanelPara extends JPanel implements ActionListener
             // Appel du contrôleur pour initialiser le projet
             this.ctrl.initialiserProjet(dateRef, typeDate);
 
-            this.ctrl.getCheminCritique();
+            //this.ctrl.getCheminCritique();
         }
     }
 
