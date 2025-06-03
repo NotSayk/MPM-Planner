@@ -1,4 +1,6 @@
-import Metier.GrapheMPM;
+package src;
+import src.Ihm.IhmCui;
+import src.Metier.GrapheMPM;
 
 
 public class Controleur 

@@ -1,4 +1,8 @@
+package src.Ihm;
 import java.util.Scanner;
+
+import src.Controleur;
+
 
 public class IhmCui 
 {

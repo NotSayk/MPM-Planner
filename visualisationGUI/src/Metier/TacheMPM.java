@@ -1,6 +1,10 @@
-package Metier;
+package src.Metier;
 
 import java.util.List;
+
+import src.Metier.GrapheMPM;
+import src.Metier.TacheMPM;
+
 import java.util.ArrayList;
 
 public class TacheMPM 

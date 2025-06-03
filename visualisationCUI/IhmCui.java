@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import src.Controleur;
+
 public class IhmCui 
 {
     private Controleur controleur;
