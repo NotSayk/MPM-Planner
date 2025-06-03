@@ -1,7 +1,7 @@
 package src.Ihm.composants;
 
-import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Graphics;
 import src.Metier.TacheMPM;
 
 public class Entite 
@@ -31,23 +31,27 @@ public class Entite
     
     public void paint(Graphics g) {
         // Dessin du rectangle principal
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, largeur, hauteur);
+        g.setColor(Color.BLACK);
+        g.drawRect(x, y, largeur, hauteur);
+        //g.fillRect(x, y, largeur, hauteur);
         
         // Dessin des lignes de séparation
-        g.setColor(Color.WHITE);
-        g.drawLine(x + DEMI_CASE, y + DEMI_CASE - 5, x + DEMI_CASE, y + 80);
+        g.setColor(Color.BLACK);
+        g.drawLine(x + DEMI_CASE, y + DEMI_CASE - 5, x + DEMI_CASE, y + 70);
         g.drawLine(x, y + 30, x + 70, y + 30);
         
         // Affichage du nom de la tâche
         String nomTache = tache.getNom();
-        g.drawString(nomTache, x + DEMI_CASE - 5, y + DEMI_CASE - 20);
+        g.drawString(nomTache, x + DEMI_CASE - 4 * nomTache.length(), y + DEMI_CASE - 20);
         
         // Affichage des dates
+    
         String dateTot  = String.valueOf(tache.getDateTot()) ;
         String dateTard = String.valueOf(tache.getDateTard());
         
+        g.setColor(Color.GREEN);
         g.drawString(dateTot, x + 15, y + 55);
+        g.setColor(Color.RED);
         g.drawString(dateTard, x + 50, y + 55);
     }
     

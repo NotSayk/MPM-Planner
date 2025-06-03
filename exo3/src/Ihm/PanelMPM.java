@@ -1,5 +1,6 @@
 package src.Ihm;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -33,9 +34,10 @@ public class PanelMPM extends JPanel
 
     public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
     {
+        this.setLayout(new BorderLayout());
         this.graphe = graphe;
         this.label = new JLabel("Graphe MPM");
-        this.add(label);
+        this.add(label, BorderLayout.NORTH);
         this.setBackground(Color.WHITE);
         this.ctrl = ctrl;
         this.entites = new ArrayList<>();
@@ -43,6 +45,8 @@ public class PanelMPM extends JPanel
         this.setPreferredSize(new Dimension(800, 800));
         creerEntites();
         ajouterEcouteursSouris();
+
+        this.add(new panelButton(), BorderLayout.SOUTH);
     }
     
     private void ajouterEcouteursSouris() 
@@ -176,7 +180,6 @@ public class PanelMPM extends JPanel
                     g.setColor(Color.WHITE);
                     g.fillRect(xRect, yRect, largeurRect, hauteurRect);
                     g.setColor(Color.BLACK);
-                    g.drawRect(xRect, yRect, largeurRect, hauteurRect);
 
                     // Centrer le texte par rapport au point central
                     g.drawString(texte, xCentre - largeurTexte / 2, yCentre + hauteurTexte / 4);
