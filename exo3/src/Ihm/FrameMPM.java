@@ -15,10 +15,9 @@ public class FrameMPM extends JFrame
         this.ctrl = ctrl;
         this.graphe = graphe;
 
-        setTitle("MPM - Choix des paramètres");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        this.setTitle("MPM - Choix des paramètres");
+        this.setSize(800, 600);
+        this.setLocationRelativeTo(null);
 
         this.add(new PanelPara(ctrl));
 

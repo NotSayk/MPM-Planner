@@ -25,9 +25,10 @@ public class PanelPara extends JPanel implements ActionListener
 
     public PanelPara(Controleur ctrl) 
     {
+        this.setLayout(new BorderLayout());
         this.ctrl = ctrl;
 
-        this.setLayout(new BorderLayout());
+
         JPanel panel = new JPanel( new GridLayout(3,1));
         // Panel référence
         JPanel panelRef = new JPanel();
@@ -42,25 +43,24 @@ public class PanelPara extends JPanel implements ActionListener
         this.rbDateFin   = new JRadioButton("Date de fin");
         this.rbDateDebut.setSelected(true); // Par défaut, on choisit la date de début
 
-        ButtonGroup group = new ButtonGroup();
-        group.add(this.rbDateDebut);
-        group.add(this.rbDateFin);
+        ButtonGroup btnGroup = new ButtonGroup();
+        btnGroup.add(this.rbDateDebut);
+        btnGroup.add(this.rbDateFin);
 
         // Bouton Valider
         JPanel panelButton = new JPanel();
-        this.btnValider = new JButton("Valider");
+        this.btnValider    = new JButton("Valider");
 
         // Ajout des composants au panel
 
-        panelRef.add(labelRef);
-        panelRef.add(this.txtDateRef);
+        panelRef .add(labelRef);
+        panelRef .add(this.txtDateRef);
         
         panelType.add(labelType);
         panelType.add(this.rbDateDebut);
         panelType.add(this.rbDateFin);
 
         panelButton.add(this.btnValider, new FlowLayout(FlowLayout.CENTER));
-
 
         panel.add(panelRef);
         panel.add(panelType);
@@ -71,26 +71,24 @@ public class PanelPara extends JPanel implements ActionListener
         this.setVisible(true);
 
         // Ajout des écouteurs d'événements
-        this.btnValider.addActionListener(this);
+        this.btnValider .addActionListener(this);
         this.rbDateDebut.addActionListener(this);
-        this.rbDateFin.addActionListener(this);
-        this.txtDateRef.addActionListener(this);
-        this.txtDateRef.setToolTipText("Entrez la date de référence au format jj/mm/aaaa");
+        this.rbDateFin  .addActionListener(this);
+        this.txtDateRef .addActionListener(this);
+        this.txtDateRef .setToolTipText("Entrez la date de référence au format jj/mm/aaaa");
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) 
     {
         if (e.getSource() == this.btnValider) 
         {
-            String dateRef = this.txtDateRef.getText().trim();
-            char typeDate = this.rbDateDebut.isSelected() ? 'D' : 'F';
+            String dateRef  = this.txtDateRef.getText().trim();
+            char   typeDate = this.rbDateDebut.isSelected() ? 'D' : 'F';
 
-            // Validation de la date
             if (!dateRef.matches("\\d{2}/\\d{2}/\\d{4}")) 
             {
-                System.out.println("Format de date invalide. Veuillez entrer au format jj/mm/aaaa.");
-                return;
+                dateRef = this.ctrl.getDateDuJour(); 
+                System.out.println("Date invalide, réinitialisation à la date du jour : " + dateRef);
             }
 
             // Appel du contrôleur pour initialiser le projet

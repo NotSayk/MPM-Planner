@@ -34,15 +34,15 @@ public class PanelMPM extends JPanel
 
     public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
     {
+        this.graphe  = graphe;
+        this.ctrl    = ctrl;
+        this.entites = new ArrayList<>();
+
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(800, 800));
 
         this.add(new JLabel("Graphe MPM"), BorderLayout.NORTH);
-
-        this.graphe = graphe;
-        this.ctrl = ctrl;
-        this.entites = new ArrayList<>();
 
         this.initEntites();
         this.ajouterEcouteursSouris();
@@ -114,12 +114,8 @@ public class PanelMPM extends JPanel
             
             int positionNiveau = 0;
             for (TacheMPM t : taches)
-            {
                 if (ctrl.getNiveauTaches(t) == niveau && taches.indexOf(t) < taches.indexOf(tache)) 
-                {
                     positionNiveau++;
-                }
-            }
             
             int y = MARGE + positionNiveau * ESPACEMENT;
             

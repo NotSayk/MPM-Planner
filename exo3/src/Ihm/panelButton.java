@@ -1,17 +1,18 @@
 package src.Ihm;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class panelButton extends JPanel
+public class panelButton extends JPanel implements ActionListener
 {
 
     private JButton btnPlusTot;
     private JButton btnPlusTard;
-    private JButton reset;
+    private JButton btnReset;
     private JButton btnTheme;
 
     public panelButton()
@@ -19,22 +20,40 @@ public class panelButton extends JPanel
         this.setBackground(new Color(ABORT, 51, 51, 51));
         this.setLayout(new FlowLayout());
 
-        this.btnPlusTot = new JButton("+ tôt");
-
+        this.btnPlusTot  = new JButton("+ tôt");
         this.btnPlusTard = new JButton("+ tard");
-
-        this.reset = new JButton("Réinitialiser");
-        this.btnTheme = new JButton("Changer le thème");
-
+        this.btnReset    = new JButton("Réinitialiser");
+        this.btnTheme    = new JButton("Changer le thème");
 
         this.add(this.btnPlusTot);
         this.add(this.btnPlusTard);
-        this.add(this.reset, BorderLayout.EAST);
-        this.add(this.btnTheme, BorderLayout.SOUTH);
+        this.add(this.btnReset);
+        this.add(this.btnTheme);
+
+        this.btnPlusTot .addActionListener(this);
+        this.btnPlusTard.addActionListener(this);
+        this.btnReset   .addActionListener(this);
+        this.btnTheme   .addActionListener(this);
     }
 
-    public void setOpaque(boolean b)
+    public void actionPerformed(ActionEvent e) 
     {
-        super.setOpaque(b);
+        if (e.getSource() == this.btnPlusTot) 
+        {
+            // Logique pour le bouton "+ tôt"
+        } 
+        else if (e.getSource() == this.btnPlusTard) 
+        {
+            // Logique pour le bouton "+ tard"
+        } 
+        else if (e.getSource() == this.btnReset) 
+        {
+            // Logique pour le bouton "Réinitialiser"
+        } 
+        else if (e.getSource() == this.btnTheme) 
+        {
+            // Logique pour le bouton "Changer le thème"
+        }
     }
+
 }
