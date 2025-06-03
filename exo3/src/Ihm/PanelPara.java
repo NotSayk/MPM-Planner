@@ -1,6 +1,8 @@
 package src.Ihm;
 
+import java.awt.BorderLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -12,9 +14,11 @@ public class PanelPara extends JPanel
     JTextField   txtDateRef;
     JRadioButton rbDateDebut;
     JRadioButton rbDateFin;
+    JButton      btnValider;
 
     public PanelPara() 
     {
+        this.setLayout(new BorderLayout());
         // Panel référence
         JPanel panelRef = new JPanel();
         JLabel labelRef = new JLabel("Date de référence :");
@@ -32,14 +36,23 @@ public class PanelPara extends JPanel
         group.add(this.rbDateDebut);
         group.add(this.rbDateFin);
 
+        // Bouton Valider
+        this.btnValider = new JButton("Valider");
+
         // Ajout des composants au panel
 
         panelRef.add(labelRef);
         panelRef.add(this.txtDateRef);
         
+        panelType.add(labelType);
+        panelType.add(this.rbDateDebut);
+        panelType.add(this.rbDateFin);
 
 
-        this.add(panelRef);
+        this.add(panelRef, BorderLayout.NORTH);
+        this.add(panelType, BorderLayout.CENTER);
+        this.add(this.btnValider, BorderLayout.SOUTH);
+
         this.setVisible(true);
     }
     
