@@ -13,13 +13,21 @@ public class Entite
     private static final int TAILLE_CASE = 70;
     private static final int DEMI_CASE = TAILLE_CASE / 2;
     
-    public Entite(TacheMPM tache, int x, int y) {
+    public Entite(TacheMPM tache, int x, int y) 
+    {
         this.tache = tache;
         this.x = x;
         this.y = y;
         this.largeur = TAILLE_CASE;
         this.hauteur = TAILLE_CASE;
     }
+
+    public void setPosition(int x, int y) 
+    {
+        this.x = x;
+        this.y = y;
+    }
+    
     
     public void paint(Graphics g) {
         // Dessin du rectangle principal

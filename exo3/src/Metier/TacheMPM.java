@@ -2,7 +2,6 @@ package src.Metier;
 
 import java.util.List;
 
-import src.Metier.GrapheMPM;
 import src.Metier.TacheMPM;
 
 import java.util.ArrayList;
@@ -16,6 +15,8 @@ public class TacheMPM
     private int            marge;
     private List<TacheMPM> precedents;
     private List<TacheMPM> suivants;
+    private int            niveau;
+    private boolean        estCritique;
 
     public TacheMPM(String nom, int duree, List<TacheMPM> precedents) 
     {
@@ -26,6 +27,7 @@ public class TacheMPM
         this.dateTot = 0;
         this.dateTard = 0; 
         this.marge = 0;
+        this.niveau = 0;
     }
 
     public void setSuivants(List<TacheMPM> suivants) 
@@ -38,6 +40,16 @@ public class TacheMPM
     {
         if (precedents == null) return;
         this.precedents = precedents;
+    }
+
+    public int getNiveau() 
+    {
+        return this.niveau;
+    }
+
+    public void setNiveau(int niveau) 
+    {
+        this.niveau = niveau;
     }
 
     // Getters

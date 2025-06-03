@@ -1,7 +1,8 @@
 package src;
 import src.Ihm.FrameMPM;
-import src.Ihm.IhmCui;
 import src.Metier.GrapheMPM;
+import src.Ihm.IhmCui;
+import src.Metier.TacheMPM;
 
 
 public class Controleur 
@@ -30,9 +31,8 @@ public class Controleur
         this.graphe.setTypeDate  (typeDate);
         this.graphe.lireFichier  ()        ;
         this.graphe.calculerDates()        ;
-
         this.graphe.initCheminCritique();
-
+        this.graphe.calculNiveauTaches();
         this.frame.changerPanel();
         IhmCui ihm     = new IhmCui   (this);
 
@@ -42,7 +42,7 @@ public class Controleur
     public String getGrapheString () { return this.graphe.toString      ();              }
     public String getDateReference() { return this.dateRef                ;              }
     public int    getDureeProjet  () { return this.graphe.getDureeProjet();              }
-    public String getDateProjet   () { return this.graphe.getDateProjet (this.typeDate); }
-
-    public void getCheminCritique() { this.graphe.initCheminCritique();}
+    public String getDateProjet   () { return this.graphe.getDateProjet (this.typeDate);     }
+    public int    getNiveauTaches(TacheMPM tache)  { return this.graphe.getNiveauTache(tache);}
+    public int[]  getNiveauxTaches()               { return this.graphe.getNiveaux(); }
 }

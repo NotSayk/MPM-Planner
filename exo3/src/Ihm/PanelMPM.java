@@ -12,17 +12,28 @@ import java.util.ArrayList;
 import java.util.List;
 import src.Controleur;
 
-public class PanelMPM extends JPanel {
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;	
+import java.awt.event.MouseMotionAdapter;
+
+public class PanelMPM extends JPanel 
+{
     private GrapheMPM graphe;
     private JLabel label;
     private Controleur ctrl;
     private List<Entite> entites;
     
+    // Variables pour le déplacement
+    private Entite entiteSelectionnee;
+    private int offsetX, offsetY;
+    
     // Constantes pour la disposition
     private static final int MARGE = 50;
     private static final int ESPACEMENT = 120;
 
-    public PanelMPM(GrapheMPM graphe, Controleur ctrl) {
+    public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
+    {
         this.graphe = graphe;
         this.label = new JLabel("Graphe MPM");
         this.add(label);
@@ -32,6 +43,57 @@ public class PanelMPM extends JPanel {
 
         this.setPreferredSize(new Dimension(800, 800));
         creerEntites();
+        ajouterEcouteursSouris();
+    }
+    
+    private void ajouterEcouteursSouris() 
+    {
+        // Écouteur pour les clics de souris
+        this.addMouseListener(new MouseAdapter() 
+        {
+            public void mousePressed(MouseEvent e) 
+            {
+                entiteSelectionnee = trouverEntiteAuPoint(e.getX(), e.getY());
+                if (entiteSelectionnee != null) 
+                {
+                    offsetX = e.getX() - entiteSelectionnee.getX();
+                    offsetY = e.getY() - entiteSelectionnee.getY();
+                }
+            }
+            
+            public void mouseReleased(MouseEvent e) 
+            {
+                entiteSelectionnee = null;
+            }
+        });
+        
+        // Écouteur pour les mouvements de souris
+        this.addMouseMotionListener(new MouseMotionAdapter() 
+        {
+            public void mouseDragged(MouseEvent e) 
+            {
+                if (entiteSelectionnee != null) 
+                {
+                    int newX = e.getX() - offsetX;
+                    int newY = e.getY() - offsetY;
+                    entiteSelectionnee.setPosition(newX, newY);
+                    repaint();
+                }
+            }
+        });
+    }
+    
+    private Entite trouverEntiteAuPoint(int x, int y) 
+    {
+        for (Entite entite : entites) 
+        {
+            if (x >= entite.getX() && x <= entite.getX() + entite.getLargeur() &&
+                y >= entite.getY() && y <= entite.getY() + entite.getHauteur()) 
+            {
+                return entite;
+            }
+        }
+        return null;
     }
     
     private void creerEntites() 
@@ -39,16 +101,24 @@ public class PanelMPM extends JPanel {
         entites.clear();
         List<TacheMPM> taches = graphe.getTaches();
         
-        for (int i = 0; i < taches.size(); i++) 
+        for (TacheMPM tache : taches) 
         {
-            int lig = i / 10;
-            int col = i % 10;
+            int niveau = ctrl.getNiveauTaches(tache);
             
-            int x = MARGE + col * ESPACEMENT;
-            int y = MARGE + lig * ESPACEMENT;
+            int x = MARGE + niveau * ESPACEMENT;
             
-            // Créer l'entité
-            Entite entite = new Entite(taches.get(i), x, y);
+            int positionNiveau = 0;
+            for (TacheMPM t : taches)
+            {
+                if (ctrl.getNiveauTaches(t) == niveau && taches.indexOf(t) < taches.indexOf(tache)) 
+                {
+                    positionNiveau++;
+                }
+            }
+            
+            int y = MARGE + positionNiveau * ESPACEMENT;
+            
+            Entite entite = new Entite(tache, x, y);
             entites.add(entite);
         }
     }
@@ -71,13 +141,16 @@ public class PanelMPM extends JPanel {
     {
         g.setColor(Color.BLACK);
         
-        for (Entite entite : entites) {
+        for (Entite entite : entites) 
+        {
             TacheMPM tache = entite.getTache();
             
             // Dessiner les connexions vers les tâches suivantes
-            for (TacheMPM tacheSuivante : tache.getSuivants()) {
+            for (TacheMPM tacheSuivante : tache.getSuivants()) 
+            {
                 Entite entiteSuivante = trouverEntiteParTache(tacheSuivante);
-                if (entiteSuivante != null) {
+                if (entiteSuivante != null) 
+                {
                     // Calculer les points de connexion
                     int x1 = entite.getX() + entite.getLargeur();
                     int y1 = entite.getY() + entite.getHauteur() / 2;
@@ -95,7 +168,8 @@ public class PanelMPM extends JPanel {
         }
     }
     
-    private void dessinerFleche(Graphics g, int x1, int y1, int x2, int y2) {
+    private void dessinerFleche(Graphics g, int x1, int y1, int x2, int y2) 
+    {
         // Calculer l'angle de la ligne
         double angle = Math.atan2(y2 - y1, x2 - x1);
         
@@ -126,7 +200,10 @@ public class PanelMPM extends JPanel {
         return null;
     }
     
-    public List<Entite> getEntites() {return new ArrayList<>(entites);}
+    public List<Entite> getEntites() 
+    {
+        return new ArrayList<>(entites);
+    }
     
     public Entite getEntiteParNom(String nomTache) 
     {
