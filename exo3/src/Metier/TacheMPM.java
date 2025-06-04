@@ -1,11 +1,8 @@
 package src.Metier;
 
-import java.util.List;
-
-import src.Metier.TacheMPM;
-import src.utils.DateUtils;
-
 import java.util.ArrayList;
+import java.util.List;
+import src.utils.DateUtils;
 
 public class TacheMPM 
 {
@@ -21,14 +18,14 @@ public class TacheMPM
 
     public TacheMPM(String nom, int duree, List<TacheMPM> precedents) 
     {
-        this.nom    = nom;
-        this.duree   = duree;
+        this.nom        = nom;
+        this.duree      = duree;
         this.precedents = precedents;
-        this.suivants = new ArrayList<TacheMPM>();
-        this.dateTot = 0;
-        this.dateTard = 0; 
-        this.marge = 0;
-        this.niveau = 0;
+        this.suivants   = new ArrayList<TacheMPM>();
+        this.dateTot    = 0;
+        this.dateTard   = 0; 
+        this.marge      = 0;
+        this.niveau     = 0;
     }
 
     public void setSuivants(List<TacheMPM> suivants) 
