@@ -1,7 +1,8 @@
 package src;
 import src.Ihm.FrameMPM;
-import src.Metier.GrapheMPM;
 import src.Ihm.IhmCui;
+import src.Metier.Fichier;
+import src.Metier.GrapheMPM;
 import src.Metier.TacheMPM;
 
 
@@ -12,13 +13,14 @@ public class Controleur
     private char      typeDate;
 
     private FrameMPM frame;
+    private Fichier fichier;
 
     public static void main(String[] args) { new Controleur(); }
 
     public Controleur() 
     {
-        this.graphe    = new GrapheMPM()    ;
-        this.frame = new FrameMPM(this, this.graphe);
+        this.graphe = new GrapheMPM()    ;
+        this.frame  = new FrameMPM(this, this.graphe);
     }
 
     public void initialiserProjet(String dateRef, char typeDate) 
@@ -26,16 +28,17 @@ public class Controleur
         System.out.println("Initialisation du projet avec la date de référence : " + dateRef + " et le type de date : " + typeDate);
         this.dateRef  = dateRef ;
         this.typeDate = typeDate;
+        this.fichier  = new Fichier(this.graphe); 
 
         this.graphe.setDateRef   (dateRef) ;
         this.graphe.setTypeDate  (typeDate);
-        this.graphe.lireFichier  ()        ;
+
+        this.graphe.initSuivants ()        ;
         this.graphe.calculerDates()        ;
         this.graphe.initCheminCritique();
         this.graphe.calculNiveauTaches();
         this.frame.changerPanel();
         IhmCui ihm     = new IhmCui   (this);
-
     }
 
     public String getDateDuJour   () { return GrapheMPM.getDateDuJour   ();              }
