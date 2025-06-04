@@ -31,8 +31,22 @@ public class GrilleDonneesModel extends AbstractTableModel
 			tabDonnees[lig][1] = tache.getDateTot   ();
 			tabDonnees[lig][2] = tache.getMarge     ();
 			tabDonnees[lig][3] = tache.getDateTard  ();
-			tabDonnees[lig][5] = tache.getPrecedents();
-			tabDonnees[lig][4] = tache.getSuivants  ();
+			tabDonnees[lig][4] = ""; // Précédents
+			tabDonnees[lig][5] = ""; // Suivants
+
+			if (!tache.getPrecedents().isEmpty()) {
+				for (int i = 0; i < tache.getPrecedents().size(); i++) {
+					tabDonnees[lig][4] += tache.getPrecedents().get(i).getNom();
+					if (i < tache.getPrecedents().size() - 1) tabDonnees[lig][4] += ", ";
+				}
+			}
+			if (!tache.getSuivants().isEmpty()) {
+				for (int i = 0; i < tache.getSuivants().size(); i++) {
+					tabDonnees[lig][5] += tache.getSuivants().get(i).getNom();
+					if (i < tache.getSuivants().size() - 1) tabDonnees[lig][5] += ", ";
+				}
+			}
+			
 		}
 
 		this.tabEntetes = new String[]   {  "Nom",
