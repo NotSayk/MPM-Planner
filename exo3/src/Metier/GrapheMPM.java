@@ -7,19 +7,21 @@ import java.util.Scanner;
 
 import java.util.GregorianCalendar;
 import java.util.Calendar;
+import src.Controleur;
 
 public class GrapheMPM
 {
-    private ArrayList<TacheMPM> taches  ;
-    private String              dateRef ; 
-    private char                typeDate;
-    private int[]               niveaux ;
+    private Controleur           ctrl;
+
+    private String               dateRef ; 
+    private char                 typeDate;
+    private int[]                niveaux ;
     private List<CheminCritique> lstChemins;
 
-    public GrapheMPM()
+    public GrapheMPM(Controleur ctrl)
     {
-        this.taches = new ArrayList<TacheMPM>();
-        this.niveaux = new int[100];
+        this.ctrl       = ctrl;
+        this.niveaux    = new int[100];
         this.lstChemins = new ArrayList<CheminCritique>();
     }
 
@@ -57,7 +59,7 @@ public class GrapheMPM
 
     private void initDateTot() 
     {
-        for (TacheMPM tache : this.taches) 
+        for (TacheMPM tache : this.ctrl.getTaches()) 
         {
             if (!tache.getPrecedents().isEmpty()) 
             {
@@ -77,9 +79,9 @@ public class GrapheMPM
     {
 
 
-        for (int i = this.taches.size() - 1; i >= 0; i--) 
+        for (int i = this.ctrl.getTaches().size() - 1; i >= 0; i--) 
         {
-            TacheMPM tache = this.taches.get(i);
+            TacheMPM tache = this.ctrl.getTaches().get(i);
 
             if (!tache.getSuivants().isEmpty()) 
             {
@@ -98,7 +100,7 @@ public class GrapheMPM
 
     private void initMarge()
     {
-        for (TacheMPM tache : this.taches) 
+        for (TacheMPM tache : this.ctrl.getTaches()) 
         {
             int dateTot  = tache.getDateTot ();
             int dateTard = tache.getDateTard();
@@ -111,7 +113,7 @@ public class GrapheMPM
     {
         if (tache != null) 
         {
-            this.taches.add(tache);
+            this.ctrl.getTaches().add(tache);
             return;
         }
 
@@ -120,10 +122,10 @@ public class GrapheMPM
 
     public void initSuivants()
     {
-        for (TacheMPM tache : this.taches) 
+        for (TacheMPM tache : this.ctrl.getTaches()) 
         {
             List<TacheMPM> suivants = new ArrayList<>();
-            for (TacheMPM autreTache : this.taches) 
+            for (TacheMPM autreTache : this.ctrl.getTaches()) 
             {
                 if (autreTache != tache) 
                 {
@@ -143,7 +145,7 @@ public class GrapheMPM
 
     public TacheMPM trouverTache(String nom) 
     {
-        for (TacheMPM tache : this.taches) 
+        for (TacheMPM tache : this.ctrl.getTaches()) 
             if (tache.getNom().equals(nom)) 
                 return tache;
         return null;
@@ -154,7 +156,7 @@ public class GrapheMPM
     public int getDureeProjet() 
     {
         int dureeMax = 0;
-        for (TacheMPM tache : this.taches) 
+        for (TacheMPM tache : this.ctrl.getTaches()) 
         {
             if (tache.getSuivants().isEmpty()) 
             {
@@ -177,10 +179,10 @@ public class GrapheMPM
     
     public void calculNiveauTaches() 
     {
-        for (TacheMPM tache : taches) 
+        for (TacheMPM tache : ctrl.getTaches()) 
             tache.setNiveau(0);
         
-        for (TacheMPM tache : taches) 
+        for (TacheMPM tache : ctrl.getTaches()) 
         {
             for (TacheMPM predecesseur : tache.getPrecedents()) 
             {
@@ -197,8 +199,8 @@ public class GrapheMPM
 
     public void initCheminCritique() 
     {
-        TacheMPM fin   = this.taches.get(this.taches.size() - 1);
-        TacheMPM debut = this.taches.get(0);
+        TacheMPM fin   = this.ctrl.getTaches().get(this.ctrl.getTaches().size() - 1);
+        TacheMPM debut = this.ctrl.getTaches().get(0);
 
         List<List<TacheMPM>> tousChemin   = new ArrayList<>();
         List<TacheMPM>       cheminActuel = new ArrayList<>();
@@ -272,13 +274,12 @@ public class GrapheMPM
     {
         List<TacheMPM> successeurs = new ArrayList<>();
         
-        for (TacheMPM autreTache : this.taches)
+        for (TacheMPM autreTache : this.ctrl.getTaches())
             if (autreTache.getPrecedents().contains(tache)) successeurs.add(autreTache);
         
         return successeurs;
     }
 
-    public ArrayList<TacheMPM> getTaches  () { return taches  ; }
     public String              getDateRef () { return dateRef ; }
     public char                getTypeDate() { return typeDate; }
     
@@ -289,7 +290,7 @@ public class GrapheMPM
     {
         StringBuilder sb = new StringBuilder();
         sb.append("Graphe MPM:\n");
-        for (TacheMPM tache : taches) 
+        for (TacheMPM tache : this.ctrl.getTaches()) 
             sb.append(tache.toString(this.dateRef)).append("\n");
         
         return sb.toString();

@@ -1,4 +1,5 @@
 package src;
+import java.util.List;
 import src.Ihm.FrameMPM;
 import src.Ihm.IhmCui;
 import src.Metier.Fichier;
@@ -19,7 +20,7 @@ public class Controleur
 
     public Controleur() 
     {
-        this.graphe = new GrapheMPM()    ;
+        this.graphe = new GrapheMPM(this);
         this.frame  = new FrameMPM(this, this.graphe);
     }
 
@@ -40,12 +41,13 @@ public class Controleur
         this.frame.changerPanel();
         IhmCui ihm     = new IhmCui   (this);
     }
-
-    public String getDateDuJour   () { return GrapheMPM.getDateDuJour   ();              }
-    public String getGrapheString () { return this.graphe.toString      ();              }
-    public String getDateReference() { return this.dateRef                ;              }
-    public int    getDureeProjet  () { return this.graphe.getDureeProjet();              }
-    public String getDateProjet   () { return this.graphe.getDateProjet (this.typeDate);     }
-    public int    getNiveauTaches(TacheMPM tache)  { return this.graphe.getNiveauTache(tache);}
-    public int[]  getNiveauxTaches()               { return this.graphe.getNiveaux(); }
+    
+    public List<TacheMPM> getTaches() { return this.fichier.getLstTacheMPMs();            }
+    public String getDateDuJour    () { return GrapheMPM.getDateDuJour   ();              }
+    public String getGrapheString  () { return this.graphe.toString      ();              }
+    public String getDateReference () { return this.dateRef                ;              }
+    public int    getDureeProjet   () { return this.graphe.getDureeProjet();              }
+    public String getDateProjet    () { return this.graphe.getDateProjet (this.typeDate);     }
+    public int    getNiveauTaches (TacheMPM tache)  { return this.graphe.getNiveauTache(tache);}
+    public int[]  getNiveauxTaches ()               { return this.graphe.getNiveaux(); }
 }
