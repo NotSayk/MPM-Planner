@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import src.Controleur;
 import src.Ihm.composants.Entite;
 import src.Metier.GrapheMPM;
@@ -37,11 +40,14 @@ public class PanelMPM extends JPanel
     private static final int MARGE = 50;
     private static final int ESPACEMENT = 120;
 
+    JPopupMenu popup;
+
     public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
     {
         this.graphe  = graphe;
         this.ctrl    = ctrl;
         this.entites = new ArrayList<>();
+        this.popup   = new JPopupMenu();
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
@@ -62,6 +68,7 @@ public class PanelMPM extends JPanel
         this.add(new panelButton(this.ctrl, this), BorderLayout.SOUTH);
 
         this.add(new BarreMenu(ctrl), BorderLayout.NORTH);
+
     }
     
     private void ajouterEcouteursSouris() 
@@ -76,6 +83,9 @@ public class PanelMPM extends JPanel
                 {
                     offsetX = e.getX() - entiteSelectionnee.getX();
                     offsetY = e.getY() - entiteSelectionnee.getY();
+                    // ne pas afficher le popup si on clique sur une entité
+                    popup.setVisible(false);
+                    this.dernierEntite = null;
                 }
             }
             
@@ -99,6 +109,48 @@ public class PanelMPM extends JPanel
                 }
             }
         });
+
+        // ecouteur dès que la souris est déplacée
+        
+        
+        this.addMouseMotionListener(new MouseMotionAdapter() {
+            Entite dernierEntite = null;
+        
+            public void mouseMoved(MouseEvent e) {
+                Entite entite = trouverEntiteAuPoint(e.getX(), e.getY());
+        
+                if (entite != null) {
+                    if (entite != this.dernierEntite) {
+                        PanelMPM.this.popup.setVisible(false);
+                        PanelMPM.this.popup.removeAll();
+                        PanelMPM.this.popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
+                        PanelMPM.this.popup.add(new JSeparator());
+                        PanelMPM.this.popup.add(new JLabel("• Statut: Actif"));
+                        PanelMPM.this.popup.add(new JLabel("• Date: " + java.time.LocalDate.now()));
+                        PanelMPM.this.popup.revalidate(); 
+                        PanelMPM.this.popup.pack();
+        
+                        this.dernierEntite = entite;
+        
+                        // 💡 Position de l'entité sur le panel
+                        Point entitePos = new Point(entite.getX(), entite.getY());
+                        Point screenPoint = PanelMPM.this.getLocationOnScreen();
+        
+                        int newX = screenPoint.x + entitePos.x + entite.getLargeur() + 10;
+                        int newY = screenPoint.y + entitePos.y;                        
+        
+                        PanelMPM.this.popup.setLocation(newX, newY);
+                        PanelMPM.this.popup.setVisible(true);
+                    }
+                } else {
+                    if (PanelMPM.this.popup.isVisible()) {
+                        PanelMPM.this.popup.setVisible(false);
+                    }
+                    this.dernierEntite = null;
+                }
+            }
+        });
+        
     }
     
     private Entite trouverEntiteAuPoint(int x, int y) 
@@ -164,6 +216,8 @@ public class PanelMPM extends JPanel
                     g.setColor(Color.RED.darker());
                     g.drawString("" + entite.getTache().getDateTard(), entite.getX() + 50, entite.getY() + 55);
                 }
+
+                
             }
         }
         
