@@ -16,6 +16,7 @@ public class panelButton extends JPanel implements ActionListener
     private JButton btnReset;
     private JButton btnTheme;
     private Controleur ctrl;
+    private JButton btnCritique;
 
     private PanelMPM panelMPM;
     
@@ -32,10 +33,12 @@ public class panelButton extends JPanel implements ActionListener
         this.btnPlusTard = new JButton("+ tard");
         this.btnReset    = new JButton("Réinitialiser");
         this.btnTheme    = new JButton("Changer le thème");
+        this.btnCritique = new JButton("Chemin critique");
 
         this.add(this.btnPlusTot);
         this.add(this.btnPlusTard);
         this.add(this.btnReset);
+        this.add(this.btnCritique);
         this.add(this.btnTheme);
 
         this.btnPlusTard.setEnabled(false); 
@@ -44,6 +47,7 @@ public class panelButton extends JPanel implements ActionListener
         this.btnPlusTard.addActionListener(this);
         this.btnReset   .addActionListener(this);
         this.btnTheme   .addActionListener(this);
+        this.btnCritique.addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e) 
@@ -75,6 +79,10 @@ public class panelButton extends JPanel implements ActionListener
             this.btnPlusTot.setEnabled (true);
             panelMPM.cacherDates();
         } 
+        else if (e.getSource() == this.btnCritique) 
+        {
+            this.panelMPM.afficherCheminCritique();
+        }
         else if (e.getSource() == this.btnTheme) 
         {
             // Logique pour le bouton "Changer le thème"

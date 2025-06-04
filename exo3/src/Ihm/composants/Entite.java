@@ -51,7 +51,6 @@ public class Entite
         // Dessin du rectangle principal
         g.setColor(this.couleurContour);
         g.drawRect(x, y, largeur, hauteur);
-        //g.fillRect(x, y, largeur, hauteur);
         
         // Dessin des lignes de séparation
         g.setColor(this.couleurContour);
@@ -62,10 +61,6 @@ public class Entite
         String nomTache = tache.getNom();
         g.drawString(nomTache, x + DEMI_CASE - 4 * nomTache.length(), y + DEMI_CASE - 20);
         
-        // Affichage des dates
-    
-        String dateTot  = String.valueOf(tache.getDateTot()) ;
-        String dateTard = String.valueOf(tache.getDateTard());
     }
     
     // Getters

@@ -99,7 +99,6 @@ public class Controleur
         this.frameMPM.changerTheme();
     }
 
-
     public void   resetPositions   () { this.frameMPM.resetPositions(); this.frameMPM.repaint(); }
     
     public void   sauvegarder      () { this.fichier.sauvegarder();                            }

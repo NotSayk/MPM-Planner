@@ -183,14 +183,35 @@ public class PanelMPM extends JPanel
             
             int positionNiveau = 0;
             for (TacheMPM t : taches)
-                if (ctrl.getNiveauTaches(t) == niveau && taches.indexOf(t) < taches.indexOf(tache)) 
-                    positionNiveau++;
+            if (ctrl.getNiveauTaches(t) == niveau && taches.indexOf(t) < taches.indexOf(tache)) 
+                positionNiveau++;
             
-            int y = MARGE + positionNiveau * ESPACEMENT;
+            int y;
+            if (niveau == 0) {
+            y = 230;
+            } else {
+            y = MARGE + positionNiveau * ESPACEMENT;
+            }
             
             Entite entite = new Entite(tache, x, y);
             entites.add(entite);
         }
+    }
+
+    public void afficherCheminCritique() 
+    {
+        for (Entite entite : entites) 
+        {
+            if (entite.getTache().estCritique()) 
+            {
+                entite.setCouleurContour(Color.RED);
+            } 
+            else 
+            {
+                entite.setCouleurContour(Color.BLACK);
+            }
+        }
+        repaint();
     }
 
     protected void paintComponent(Graphics g)

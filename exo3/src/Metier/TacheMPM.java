@@ -59,6 +59,8 @@ public class TacheMPM
     public void setDuree   (int duree)    { this.duree    = duree   ; }
     public void setNiveau  (int niveau)   { this.niveau   = niveau  ; }
 
+    public void setCritique(boolean estCritique) { this.estCritique = estCritique; }
+
     public String toString(String dateRef)
     {
         StringBuilder sb = new StringBuilder();

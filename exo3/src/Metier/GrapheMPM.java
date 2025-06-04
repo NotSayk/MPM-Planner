@@ -171,7 +171,7 @@ public class GrapheMPM
         for (int i = 0; i < tousChemin.size(); i++) 
         {
             System.out.println("=== Chemin critique " + (i + 1) + " ===");
-            afficherChemin(tousChemin.get(i));
+            definirCritique(tousChemin.get(i));
             System.out.println();
         }
     }
@@ -216,13 +216,14 @@ public class GrapheMPM
         return true;
     }
 
-    private void afficherChemin(List<TacheMPM> chemin) 
+    private void definirCritique(List<TacheMPM> chemin) 
     {
         CheminCritique cheminCritique = new CheminCritique();
         
         for (TacheMPM tache : chemin) 
         {
             cheminCritique.ajouterTache(tache);
+            tache.setCritique(true);
             System.out.print(tache.getNom() + " -> ");
         }
         
