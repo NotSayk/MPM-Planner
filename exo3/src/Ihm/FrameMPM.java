@@ -9,6 +9,7 @@ public class FrameMPM extends JFrame
     
     private Controleur ctrl;
     private GrapheMPM graphe;
+    private PanelMPM panelMPM;
 
     public FrameMPM(Controleur ctrl, GrapheMPM graphe) 
     {
@@ -29,9 +30,15 @@ public class FrameMPM extends JFrame
     public void changerPanel() 
     {
         this.getContentPane().removeAll();
-        this.add(new PanelMPM(this.graphe, this.ctrl));
+        this.panelMPM = new PanelMPM(this.graphe, this.ctrl);
+        this.add(this.panelMPM);
         this.revalidate();
         this.repaint();
+    }
+
+    public void resetPositions() 
+    {
+        this.panelMPM.resetPositions();
     }
 
 }

@@ -5,3 +5,4 @@ src/Metier/GrapheMPM.java
 src/Ihm/FrameMPM.java
 src/Ihm/PanelPara.java
 src/Ihm/PanelMPM.java
+src/Ihm/BarreMenu.java

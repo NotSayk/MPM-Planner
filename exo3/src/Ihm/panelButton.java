@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import src.Controleur;
 
 public class panelButton extends JPanel implements ActionListener
 {
@@ -14,9 +15,12 @@ public class panelButton extends JPanel implements ActionListener
     private JButton btnPlusTard;
     private JButton btnReset;
     private JButton btnTheme;
+    private Controleur ctrl;
+    
 
-    public panelButton()
+    public panelButton(Controleur ctrl)
     {
+        this.ctrl = ctrl;
         this.setBackground(new Color(ABORT, 51, 51, 51));
         this.setLayout(new FlowLayout());
 
@@ -48,7 +52,7 @@ public class panelButton extends JPanel implements ActionListener
         } 
         else if (e.getSource() == this.btnReset) 
         {
-            // Logique pour le bouton "Réinitialiser"
+            this.ctrl.resetPositions(); 
         } 
         else if (e.getSource() == this.btnTheme) 
         {

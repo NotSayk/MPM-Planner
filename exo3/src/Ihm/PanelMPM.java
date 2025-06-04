@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import src.Controleur;
 import src.Ihm.composants.Entite;
 import src.Metier.GrapheMPM;
@@ -47,7 +48,9 @@ public class PanelMPM extends JPanel
         this.initEntites();
         this.ajouterEcouteursSouris();
 
-        this.add(new panelButton(), BorderLayout.SOUTH);
+        this.add(new panelButton(this.ctrl), BorderLayout.SOUTH);
+
+        this.add(new BarreMenu(), BorderLayout.NORTH);
     }
     
     private void ajouterEcouteursSouris() 
@@ -217,6 +220,15 @@ public class PanelMPM extends JPanel
         for (Entite entite : entites) 
             if (entite.getTache().getNom().equals(nomTache)) return entite;
         return null;
+    }
+
+    public void resetPositions() 
+    {
+        for (Entite entite : entites) 
+        {
+            entite.resetPosition();
+        }
+        repaint();
     }
 
     public List<Entite> getEntites() { return new ArrayList<>(entites); }
