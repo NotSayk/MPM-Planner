@@ -34,7 +34,7 @@ public class PanelMPM extends JPanel
 
     public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
     {
-        this.graphe  = graphe;
+        this.graphe = graphe;
         this.ctrl    = ctrl;
         this.entites = new ArrayList<>();
 

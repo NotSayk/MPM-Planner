@@ -28,6 +28,10 @@ public class Entite
         this.y = y;
     }
     
+    public void setDimensions(int largeur, int hauteur) {
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+    }
     
     public void paint(Graphics g) {
         // Dessin du rectangle principal
