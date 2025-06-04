@@ -1,22 +1,14 @@
-@echo off
-setlocal
-
-REM Check for Mac OS (Unix-like)
-if "%OS%"=="Windows_NT" (
-    REM Windows commands
-    javac @compile.list -d bin >nul 2>&1
-    copy listeTache.txt bin/listeTache.txt >nul 2>&1
-    cd bin >nul 2>&1
-    java src.Controleur
-    cd .. >nul 2>&1
-) else (
-    REM Mac/Unix commands
-    javac @compile.list -d bin >/dev/null 2>&1
-    cp listeTache.txt bin/listeTache.txt >/dev/null 2>&1
-    cd bin >/dev/null 2>&1
-    java src.Controleur
-    cd .. >/dev/null 2>&1
-)
-
-pause
-endlocal
+#!/bin/bash
+echo "Compilation et execution pour Mac..."
+javac @compile.list -d bin >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "Erreur de compilation!"
+    read -p "Appuyez sur Entrée pour continuer..."
+    exit 1
+fi
+cp listeTache.txt bin/listeTache.txt >/dev/null 2>&1
+cd bin
+java src.Controleur
+cd ..
+echo "Appuyez sur Entrée pour continuer..."
+read

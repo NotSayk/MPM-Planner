@@ -24,8 +24,8 @@ public class Controleur
 
     public Controleur() 
     {
-        this.graphe            = new GrapheMPM(this);
-        this.frameMPM          = new FrameMPM(this, this.graphe);
+        this.graphe    = new GrapheMPM(this);
+        this.frameMPM = new FrameMPM(this, this.graphe);
     }
 
     public void initialiserProjet(String dateRef, char typeDate, String nomFichier) 

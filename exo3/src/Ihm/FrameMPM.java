@@ -17,7 +17,6 @@ public class FrameMPM extends JFrame
     {
         this.ctrl   = ctrl;
         this.graphe = graphe;
-        this.panelMPM = new PanelMPM(this.graphe, this.ctrl);
         this.panelPara = new PanelPara(this.ctrl);
 
         this.setTitle("MPM - Choix des paramètres");
@@ -34,6 +33,7 @@ public class FrameMPM extends JFrame
     public void changerPanel() 
     {
         this.getContentPane().removeAll();
+        this.panelMPM  = new PanelMPM(this.graphe, this.ctrl);
         this.add(this.panelMPM);
         this.revalidate();
         this.repaint();
