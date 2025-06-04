@@ -2,11 +2,7 @@ package src.Metier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
-import java.util.Scanner;
 
-import java.util.GregorianCalendar;
-import java.util.Calendar;
 import src.Controleur;
 import src.utils.DateUtils;
 
@@ -107,6 +103,23 @@ public class GrapheMPM
         }
     }
 
+    public void initNiveauTaches() 
+    {
+        for (TacheMPM tache : ctrl.getTaches()) 
+            tache.setNiveau(0);
+        
+        for (TacheMPM tache : ctrl.getTaches()) 
+        {
+            for (TacheMPM predecesseur : tache.getPrecedents()) 
+            {
+                if (predecesseur.getNiveau() + 1 > tache.getNiveau()) 
+                    tache.setNiveau(predecesseur.getNiveau() + 1);
+            }
+            this.niveaux[tache.getNiveau()] += 1;
+        }
+
+    }
+
     public TacheMPM trouverTache(String nom) 
     {
         for (TacheMPM tache : this.ctrl.getTaches()) 
@@ -138,24 +151,6 @@ public class GrapheMPM
             return "Date de fin du projet : "   + DateUtils.ajouterJourDate(this.dateRef, dureeProjet) ;
         else                    
             return "Date de début du projet : " + DateUtils.ajouterJourDate(this.dateRef, -dureeProjet);
-    }
-
-    
-    public void calculNiveauTaches() 
-    {
-        for (TacheMPM tache : ctrl.getTaches()) 
-            tache.setNiveau(0);
-        
-        for (TacheMPM tache : ctrl.getTaches()) 
-        {
-            for (TacheMPM predecesseur : tache.getPrecedents()) 
-            {
-                if (predecesseur.getNiveau() + 1 > tache.getNiveau()) 
-                    tache.setNiveau(predecesseur.getNiveau() + 1);
-            }
-            this.niveaux[tache.getNiveau()] += 1;
-        }
-
     }
 
     public int   getNiveauTache (TacheMPM tache) { return tache.getNiveau(); }

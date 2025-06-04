@@ -39,7 +39,7 @@ public class Controleur
         this.graphe.initSuivants ()        ;
         this.graphe.calculerDates()        ;
         this.graphe.initCheminCritique();
-        this.graphe.calculNiveauTaches();
+        this.graphe.initNiveauTaches();
         this.frame.changerPanel();
         IhmCui ihm     = new IhmCui   (this);
     }
