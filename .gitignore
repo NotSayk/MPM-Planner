@@ -30,3 +30,6 @@ visualisationGUI/src/.idea/misc.xml
 *.iml
 .DS_Store
 .DS_Store
+
+# Ignore exo3/bin directory
+exo3/bin/
