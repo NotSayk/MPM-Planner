@@ -52,7 +52,7 @@ public class panelButton extends JPanel implements ActionListener
         {
             // Logique pour le bouton "+ tôt"
             panelMPM.afficherDateTot();
-            if ( this.panelMPM.estGrise() )
+            if ( this.panelMPM.estGriseTot() )
             {
                 this.btnPlusTard.setEnabled(true); 
                 this.btnPlusTot.setEnabled (false);
@@ -63,7 +63,11 @@ public class panelButton extends JPanel implements ActionListener
         {
             // Logique pour le bouton "+ tard"
             panelMPM.afficherDateTard();
-        } 
+            if(this.panelMPM.estGriseTard())
+            {
+                this.btnPlusTard.setEnabled(false); 
+            }
+        }
         else if (e.getSource() == this.btnReset) 
         {
             this.ctrl.resetPositions(); 

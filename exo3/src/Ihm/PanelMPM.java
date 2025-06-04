@@ -305,8 +305,13 @@ public class PanelMPM extends JPanel
         repaint();
     }
 
-    public boolean estGrise()
+    public boolean estGriseTot()
     {
         return this.numNiveauxTot == numNiveauxTard-1;
+    }
+
+    public boolean estGriseTard()
+    {
+        return this.numNiveauxTard == 0;
     }
 }
