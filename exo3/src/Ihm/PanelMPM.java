@@ -289,7 +289,8 @@ public class PanelMPM extends JPanel
     {
         this.afficherDateTot  = false;
         this.afficherDateTard = false;
-        this.numNiveauxTot = -1;
+        this.numNiveauxTot    = -1;
+        this.numNiveauxTard   = 0;
         for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
         {
             if (this.ctrl.getNiveauxTaches()[i] !=  0) 
@@ -306,6 +307,6 @@ public class PanelMPM extends JPanel
 
     public boolean estGrise()
     {
-        return this.numNiveauxTot == numNiveauxTard;
+        return this.numNiveauxTot == numNiveauxTard-1;
     }
 }

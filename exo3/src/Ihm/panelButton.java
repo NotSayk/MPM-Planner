@@ -55,7 +55,7 @@ public class panelButton extends JPanel implements ActionListener
             if ( this.panelMPM.estGrise() )
             {
                 this.btnPlusTard.setEnabled(true); 
-                this.btnPlusTot.setEnabled(false);
+                this.btnPlusTot.setEnabled (false);
             }
 
         } 
@@ -68,7 +68,7 @@ public class panelButton extends JPanel implements ActionListener
         {
             this.ctrl.resetPositions(); 
             this.btnPlusTard.setEnabled(false);
-            this.btnPlusTot.setEnabled(true);
+            this.btnPlusTot.setEnabled (true);
             panelMPM.cacherDates();
         } 
         else if (e.getSource() == this.btnTheme) 
