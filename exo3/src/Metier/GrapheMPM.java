@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.GregorianCalendar;
 import java.util.Calendar;
 import src.Controleur;
+import src.utils.DateUtils;
 
 public class GrapheMPM
 {
@@ -134,9 +135,9 @@ public class GrapheMPM
     {
         int dureeProjet = getDureeProjet();
         if (typeDemande == 'F') 
-            return "Date de fin du projet : "   + ajouterJourDate(this.dateRef, dureeProjet) ;
+            return "Date de fin du projet : "   + DateUtils.ajouterJourDate(this.dateRef, dureeProjet) ;
         else                    
-            return "Date de début du projet : " + ajouterJourDate(this.dateRef, -dureeProjet);
+            return "Date de début du projet : " + DateUtils.ajouterJourDate(this.dateRef, -dureeProjet);
     }
 
     

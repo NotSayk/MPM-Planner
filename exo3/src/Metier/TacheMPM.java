@@ -3,6 +3,7 @@ package src.Metier;
 import java.util.List;
 
 import src.Metier.TacheMPM;
+import src.utils.DateUtils;
 
 import java.util.ArrayList;
 
@@ -71,8 +72,8 @@ public class TacheMPM
     {
         StringBuilder sb = new StringBuilder();
         sb.append(nom).append(" : ").append(duree).append(" jour").append(duree > 1 ? "s" : "").append("\n")
-        .append("    date au plus tôt  : ").append(GrapheMPM.ajouterJourDate(dateRef, dateTot)).append("\n")
-        .append("    date au plus tard : ").append(GrapheMPM.ajouterJourDate(dateRef, dateTard)).append("\n")
+        .append("    date au plus tôt  : ").append(DateUtils.ajouterJourDate(dateRef, dateTot)).append("\n")
+        .append("    date au plus tard : ").append(DateUtils.ajouterJourDate(dateRef, dateTard)).append("\n")
         .append("    marge             : ").append(marge).append(marge == 0 || marge == 1 ? " jour" : " jours").append("\n")
         .append("    liste des tâches précédentes :\n")
         .append("    ").append(precedents.isEmpty() ? "pas de tâche précédente\n" : "        ");

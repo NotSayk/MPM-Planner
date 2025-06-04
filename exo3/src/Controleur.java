@@ -5,6 +5,7 @@ import src.Ihm.IhmCui;
 import src.Metier.Fichier;
 import src.Metier.GrapheMPM;
 import src.Metier.TacheMPM;
+import src.utils.DateUtils;
 
 
 public class Controleur 
@@ -28,7 +29,7 @@ public class Controleur
     {
         System.out.println("Initialisation du projet avec la date de référence : " + dateRef + " et le type de date : " + typeDate);
         this.fichier  = new Fichier(this.graphe); 
-        
+
         this.dateRef  = dateRef ;
         this.typeDate = typeDate;
 
@@ -44,7 +45,7 @@ public class Controleur
     }
     
     public List<TacheMPM> getTaches() { return this.fichier.getLstTacheMPMs();                 }
-    public String getDateDuJour    () { return GrapheMPM.getDateDuJour   ();                   }
+    public String getDateDuJour    () { return DateUtils.getDateDuJour   ();                   }
     public String getGrapheString  () { return this.graphe.toString      ();                   }
     public String getDateReference () { return this.dateRef                ;                   }
     public int    getDureeProjet   () { return this.graphe.getDureeProjet();                   }
