@@ -112,6 +112,45 @@ public class Fichier
         return null;
     }
 
+    public boolean isCritique()
+    {
+        return getLigne("critique").equals("true");
+    }
+
+    public String getTheme() 
+    {
+        return getLigne("theme");
+    }
+
+    public String getLigne(String nom) 
+    {
+        try {
+            Scanner sc = new Scanner(new File(this.nomFichier), "UTF-8");
+            String ligneActuelle = "";
+            String ligneAvant = "";
+            
+            while (sc.hasNextLine()) {
+                ligneAvant = ligneActuelle;
+                ligneActuelle = sc.nextLine();
+            }
+            
+            sc.close();
+            
+            if (nom.equals("theme")) {
+                return ligneAvant;  
+            }
+            else if (nom.equals("critique")) {
+                return ligneActuelle; 
+            } else {
+                return "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+
+    }
+
     public String getNomFichier() { return this.nomFichier;  }
 
 

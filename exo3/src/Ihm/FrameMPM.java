@@ -3,6 +3,7 @@ package src.Ihm;
 import java.util.List;
 
 import javax.swing.JFrame;
+
 import src.Controleur;
 import src.Ihm.composants.Entite;
 import src.Metier.GrapheMPM;
@@ -21,6 +22,7 @@ public class FrameMPM extends JFrame
         this.ctrl   = ctrl;
         this.graphe = graphe;
         this.panelPara = new PanelPara(this.ctrl);
+
 
         this.setTitle("MPM - Choix des paramètres");
         this.setSize(800, 600);
@@ -42,6 +44,17 @@ public class FrameMPM extends JFrame
         this.repaint();
     }
 
+    public void setTheme(String theme) 
+    {
+        this.panelMPM.setTheme(theme);
+    }
+
+    public void setCritique(boolean critique) 
+    {
+        this.panelMPM.setCritique(critique);
+    }
+
+
     public void resetPositions() 
     {
         this.panelMPM.resetPositions();
@@ -61,4 +74,12 @@ public class FrameMPM extends JFrame
     }
 
     public List<Entite> getEntites() { return panelMPM.getEntites(); }
+    public String getTheme() 
+    {
+        return this.panelMPM.getTheme();
+    }
+    public boolean isCritique()
+    {
+        return this.panelMPM.isCritique();
+    }
 }

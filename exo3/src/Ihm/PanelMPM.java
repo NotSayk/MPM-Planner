@@ -32,6 +32,8 @@ public class PanelMPM extends JPanel
     private boolean afficherDateTard = false;
     private int     numNiveauxTot    = -1;
     private int     numNiveauxTard;
+    private boolean afficher;
+    private panelButton panelButton;
 
     private JPopupMenu popup;
     
@@ -45,10 +47,12 @@ public class PanelMPM extends JPanel
 
     public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
     {
+        this.afficher = false;
         this.graphe  = graphe;
         this.ctrl    = ctrl;
         this.entites = new ArrayList<>();
         this.popup   = new JPopupMenu();
+        this.panelButton = new panelButton(this.ctrl, this);
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
@@ -67,11 +71,11 @@ public class PanelMPM extends JPanel
         }
         
 
-        this.add(new panelButton(this.ctrl, this), BorderLayout.SOUTH);
+        this.add(this.panelButton, BorderLayout.SOUTH);
 
         this.add(new BarreMenu(ctrl, this), BorderLayout.NORTH);
     }
-    
+
     private void ajouterEcouteursSouris() 
     {
         // Écouteur pour les clics de souris
@@ -198,20 +202,34 @@ public class PanelMPM extends JPanel
         }
     }
 
-    public void afficherCheminCritique() 
+    public void afficherCheminCritique(boolean afficher) 
     {
-        for (Entite entite : entites) 
+        this.afficher = afficher;
+        this.afficherCheminCritique();
+    }
+
+    public void afficherCheminCritique()
+    {
+        if (!afficher) 
         {
-            if (entite.getTache().estCritique()) 
+            for (Entite entite : entites) 
             {
-                entite.setCouleurContour(Color.RED);
-            } 
-            else 
-            {
-                entite.setCouleurContour(Color.BLACK);
+                entite.setCouleurContour(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
             }
+            repaint();
+            return;
         }
-        repaint();
+        else
+        {
+            for (Entite entite : entites) 
+            {
+                if (entite.getTache().estCritique()) 
+                {
+                    entite.setCouleurContour(Color.RED);
+                } 
+            }
+            repaint();
+        }
     }
 
     protected void paintComponent(Graphics g)
@@ -369,30 +387,53 @@ public class PanelMPM extends JPanel
         repaint();
     }
 
-    public String getTheme() 
-    {
-        return this.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK";
-    }
+
 
     public void setTheme(String theme) 
     {
+        System.out.println("Changement de thème : " + theme);
         if (theme.equals("LIGHT")) 
         {
             this.setBackground(Color.WHITE);
-            for (Entite entite : entites) {
+            for (Entite entite : entites) 
+            {
                 entite.setCouleurContour(Color.BLACK);
             }
+            this.afficherCheminCritique();
         } 
         else if (theme.equals("DARK")) 
         {
             this.setBackground(Color.DARK_GRAY);
-            for (Entite entite : entites) {
+            for (Entite entite : entites) 
+            {
                 entite.setCouleurContour(Color.WHITE);
             }
+            this.afficherCheminCritique();
         }
         repaint();
     }
 
     public boolean estGriseTot () { return this.numNiveauxTot == numNiveauxTard-1; }
     public boolean estGriseTard() { return this.numNiveauxTard == 0;               }
+    public String getTheme() 
+    {
+        return this.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK";
+    }
+    public boolean isCritique() 
+    {
+        return this.afficher;
+    }
+
+    public void setCritique(boolean critique) 
+    {
+        this.afficher = critique;
+        this.afficherCheminCritique();
+            this.panelButton.setCritiqueButton(!critique);
+
+    }
+
+
+
+
+
 }

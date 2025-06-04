@@ -126,6 +126,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
                             (tache.getDateTard() + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
                              ctrl.getDateReference().substring(2));
             }
+            pw.println(this.ctrl.getTheme());
+            pw.println(this.ctrl.isCritique()+"");
             pw.close();
          }
          catch (Exception exc){ exc.printStackTrace(); }

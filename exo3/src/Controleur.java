@@ -64,6 +64,8 @@ public class Controleur
         this.graphe.initNiveauTaches  ();
 
         this.afficherGraphe();
+        this.frameMPM.setTheme(this.fichier.getTheme());
+        this.frameMPM.setCritique(this.fichier.isCritique());
 
 
         for(Entite e : getEntites())
@@ -129,4 +131,12 @@ public class Controleur
     public int    getNiveauTaches (TacheMPM tache)  { return this.graphe.getNiveauTache(tache);}
     public int[]  getNiveauxTaches ()               { return this.graphe.getNiveaux();         }
     public List<Entite> getEntites () { return this.frameMPM.getEntites(); }
+    public String getTheme() 
+    {
+        return this.frameMPM.getTheme();
+    }
+    public boolean isCritique() 
+    {
+        return this.frameMPM.isCritique();
+    }
 }

@@ -17,6 +17,7 @@ public class panelButton extends JPanel implements ActionListener
     private JButton btnTheme;
     private Controleur ctrl;
     private JButton btnCritique;
+    private boolean cheminCritique;
 
     private PanelMPM panelMPM;
     
@@ -25,6 +26,7 @@ public class panelButton extends JPanel implements ActionListener
     {
         this.ctrl = ctrl;
         this.panelMPM = panelMPM;
+        this.cheminCritique =true;
 
         this.setBackground(new Color(ABORT, 51, 51, 51));
         this.setLayout(new FlowLayout());
@@ -81,14 +83,20 @@ public class panelButton extends JPanel implements ActionListener
         } 
         else if (e.getSource() == this.btnCritique) 
         {
-            this.panelMPM.afficherCheminCritique();
+            this.panelMPM.afficherCheminCritique(this.cheminCritique);
+            this.cheminCritique = !this.cheminCritique;
         }
         else if (e.getSource() == this.btnTheme) 
         {
-            // Logique pour le bouton "Changer le thème"
             this.ctrl.changerTheme();
-            this.panelMPM.repaint(); // Repaint pour appliquer le nouveau thème
+            this.panelMPM.repaint();
         }
+    }
+
+    public void setCritiqueButton(boolean critique) 
+    {
+        System.out.println("setCritiqueButton: " + critique);
+        this.cheminCritique = critique;
     }
 
 }

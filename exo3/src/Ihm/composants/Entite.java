@@ -43,7 +43,8 @@ public class Entite
         this.y = initialY;
     }
 
-    public void setCouleurContour (Color couleur) {
+    public void setCouleurContour (Color couleur) 
+    {
         this.couleurContour = couleur;
     }
     
