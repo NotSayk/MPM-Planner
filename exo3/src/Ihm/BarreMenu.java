@@ -1,10 +1,8 @@
 package src.Ihm;
 
-import src.Controleur;
-import java.awt.*;
-import javax.swing.*;
 import java.awt.event.*;
-import java.io.File;
+import javax.swing.*;
+import src.Controleur;
 
 public class BarreMenu extends JMenuBar implements ActionListener
 {
@@ -101,17 +99,17 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
       if(e.getSource() == this.menuiRajouterTache)
       {
-
+         this.ctrl.afficherModification();
       }
 
       if(e.getSource() == this.menuiSupprimerTache)
       {
-
+         this.ctrl.afficherModification();
       }
 
       if(e.getSource() == this.menuiChangerDureeTache)
       {
-
+         this.ctrl.afficherModification();
       }
    }
 

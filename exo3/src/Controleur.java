@@ -51,9 +51,21 @@ public class Controleur
     public void afficherGraphe() 
     {
         this.frameMPM.changerPanel();
-        this.frameModification = new FrameModification(this, this.graphe);
-        this.frameModification.setVisible(true);
     }
+
+    public void afficherModification()
+    {
+        if(this.frameModification == null) 
+            this.frameModification = new FrameModification(this, this.graphe);
+        this.frameModification.setVisible(true);
+    }   
+
+    public void cacherModification() 
+    {
+        if(this.frameModification != null) 
+            this.frameModification.setVisible(false);
+    }
+
 
     public void   resetPositions   () { this.frameMPM.resetPositions(); this.frameMPM.repaint(); }
     

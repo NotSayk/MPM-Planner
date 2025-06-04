@@ -22,9 +22,9 @@ public class FrameModification extends JFrame
 
         this.add(new PanelModification(ctrl));
 
-        this.setVisible(true);
+        this.setVisible(false);
         
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
 }
