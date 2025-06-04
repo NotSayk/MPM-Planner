@@ -16,17 +16,9 @@ public class Fichier
     
     public Fichier(GrapheMPM graphe)
     {
-        this.graphe = graphe;
+        this.graphe       = graphe;
         this.lstTacheMPMs = new ArrayList<TacheMPM>();
-
         this.initTache();
-        System.out.println(this.toString());
-        this.sauvegarder();
-
-        this.lstTacheMPMs.get(3).setDuree(1000);
-        this.modifierTacheFichier(this.lstTacheMPMs.get(3));
-        this.sauvegarder();
-        System.out.println(this.lstTacheMPMs.get(3).getMarge());
     }
 
 
@@ -94,10 +86,10 @@ public class Fichier
 
 			for (TacheMPM tache:this.lstTacheMPMs )
 			{
-				pw.println ( tache.getNom() + "|" + 
-                            tache.getDuree() + "|" + 
-                            (tache.getPrecedents().isEmpty() ? "" : String.join(",",
-                            tache.getPrecedents().stream().map(TacheMPM::getNom).toArray(String[]::new))) );
+				pw.println ( tache.getNom()   + "|" + 
+                             tache.getDuree() + "|" + 
+                             (tache.getPrecedents().isEmpty() ? "" : String.join(",",
+                             tache.getPrecedents().stream().map(TacheMPM::getNom).toArray(String[]::new))) );
 
 			}
 			pw.close();
@@ -106,16 +98,6 @@ public class Fichier
 	}
 
     public List<TacheMPM> getLstTacheMPMs() { return this.lstTacheMPMs; }
-
-    public String toString() 
-    {
-        StringBuilder sb = new StringBuilder();
-        for (TacheMPM tache : this.lstTacheMPMs) 
-        {
-            sb.append(tache.toString()).append("\n");
-        }
-        return sb.toString();
-    }
 
     private TacheMPM trouverTache(String nom) 
     {
