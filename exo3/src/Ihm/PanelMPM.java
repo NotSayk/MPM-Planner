@@ -227,7 +227,7 @@ public class PanelMPM extends JPanel
     
     private void dessinerConnexions(Graphics g)
     {
-        g.setColor(Color.BLACK);
+        g.setColor(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
         for (Entite entite : this.getEntites())
         {
             TacheMPM tache = entite.getTache();
