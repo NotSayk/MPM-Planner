@@ -315,7 +315,7 @@ public class PanelMPM extends JPanel
         repaint();
     }
 
-    public List<Entite> getEntites() { return new ArrayList<>(entites); }
+    public List<Entite> getEntites() { return this.entites; }
 
     public void afficherDateTot()
     {

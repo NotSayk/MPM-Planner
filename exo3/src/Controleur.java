@@ -1,8 +1,10 @@
 package src;
+import java.util.ArrayList;
 import java.util.List;
 import src.Ihm.FrameMPM;
 import src.Ihm.FrameModification;
 import src.Ihm.IhmCui;
+import src.Ihm.composants.Entite;
 import src.Metier.Fichier;
 import src.Metier.GrapheMPM;
 import src.Metier.TacheMPM;
@@ -46,7 +48,33 @@ public class Controleur
         this.afficherGraphe();
         IhmCui ihm     = new IhmCui   (this);
     }
-    
+
+    public void initComplet(char typeDate, String nomFichier) 
+    {
+        this.fichier  = new Fichier(this.graphe, nomFichier); 
+
+        this.typeDate = typeDate;
+
+        this.graphe.setDateRef   (dateRef) ;
+        this.graphe.setTypeDate  (typeDate);
+
+        this.graphe.initSuivants      ();
+        this.graphe.calculerDates     ();
+        this.graphe.initCheminCritique();
+        this.graphe.initNiveauTaches  ();
+
+        this.afficherGraphe();
+
+
+        for(Entite e : getEntites())
+        {
+            int[] pos = fichier.getLocation(e.getTache(), nomFichier);
+            System.out.println("x : " + pos[0] + " ; y : " + pos[1]);
+            e.setPosition(pos[0], pos[1]);
+        }
+
+        IhmCui ihm     = new IhmCui   (this);
+    }
 
     public void afficherGraphe() 
     {
@@ -101,4 +129,5 @@ public class Controleur
     public String getDateProjet    () { return this.graphe.getDateProjet (this.typeDate);      }
     public int    getNiveauTaches (TacheMPM tache)  { return this.graphe.getNiveauTache(tache);}
     public int[]  getNiveauxTaches ()               { return this.graphe.getNiveaux();         }
+    public List<Entite> getEntites () { return this.frameMPM.getEntites(); }
 }

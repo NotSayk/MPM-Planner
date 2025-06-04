@@ -4,7 +4,7 @@ import java.awt.event.*;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-
+import java.io.File;
 import javax.swing.*;
 import src.Controleur;
 
@@ -87,11 +87,25 @@ public class BarreMenu extends JMenuBar implements ActionListener
    {
       if(e.getSource() == this.menuiCharger)
       {
-         JFileChooser selectionFichier = new JFileChooser();
+         File         fichierSelectionner = null;
+         JFileChooser selectionFichier    = new JFileChooser();
 
          if (selectionFichier.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-            this.ctrl.initialiserProjet(this.ctrl.getDateReference(),this.ctrl.getTypeDate() , "" + selectionFichier.getSelectedFile());
+            fichierSelectionner = selectionFichier.getSelectedFile();
+
+         if(fichierSelectionner.getName().substring(fichierSelectionner.getName().lastIndexOf('.') + 1).equals("MC"))
+         {
+            this.ctrl.initComplet(this.ctrl.getTypeDate(), "" + fichierSelectionner);
+            System.out.println("chargement d'un fichier complet");
+         }
+         else
+         {
+            this.ctrl.initialiserProjet(this.ctrl.getDateReference(),this.ctrl.getTypeDate() , "" + fichierSelectionner);
+            System.out.println("chargement d'un fichier simple");
+         }
       }
+
+
 
       if(e.getSource() == this.menuiSauvegarder)
       {
@@ -111,27 +125,34 @@ public class BarreMenu extends JMenuBar implements ActionListener
                              ctrl.getDateReference().substring(2)                                                      +"|" +
                             (tache.getDateTard() + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
                              ctrl.getDateReference().substring(2));
-
             }
             pw.close();
          }
          catch (Exception exc){ exc.printStackTrace(); }
       }
 
+
+
       if(e.getSource() == this.menuiQuitter)
       {
          System.exit(0);
       }
+
+
 
       if(e.getSource() == this.menuiRajouterTache)
       {
          this.ctrl.afficherModification();
       }
 
+
+
       if(e.getSource() == this.menuiSupprimerTache)
       {
          this.ctrl.afficherModification();
       }
+
+
 
       if(e.getSource() == this.menuiChangerDureeTache)
       {

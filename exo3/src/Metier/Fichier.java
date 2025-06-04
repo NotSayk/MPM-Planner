@@ -114,4 +114,36 @@ public class Fichier
 
     public String getNomFichier() { return this.nomFichier;  }
 
+
+    public int[] getLocation(TacheMPM tache, String fichier)
+    {
+        Scanner  scMPM     ;
+        String   ligne;
+        int[] pos = new int[2];
+
+        try
+        {
+            scMPM = new Scanner(new File(fichier), "UTF-8");
+
+            while (scMPM.hasNextLine())
+            {
+                ligne = scMPM.nextLine().trim();
+                if (ligne.isEmpty()) continue;
+
+                String[] parties = ligne.split("\\|", -1);
+
+                if(tache.getNom().equals(parties[0]))
+                {
+                    pos[0] = Integer.parseInt(parties[3]);
+                    pos[1] = Integer.parseInt(parties[4]);
+
+                    return pos;
+                }
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return null;
+    }
+
 }

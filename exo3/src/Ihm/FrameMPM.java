@@ -1,7 +1,10 @@
 package src.Ihm;
 
+import java.util.List;
+
 import javax.swing.JFrame;
 import src.Controleur;
+import src.Ihm.composants.Entite;
 import src.Metier.GrapheMPM;
 
 public class FrameMPM extends JFrame
@@ -56,4 +59,6 @@ public class FrameMPM extends JFrame
         
         this.repaint();
     }
+
+    public List<Entite> getEntites() { return panelMPM.getEntites(); }
 }
