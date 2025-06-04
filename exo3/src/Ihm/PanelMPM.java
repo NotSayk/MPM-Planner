@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import src.Controleur;
 import src.Ihm.composants.Entite;
 import src.Metier.GrapheMPM;
@@ -28,6 +31,8 @@ public class PanelMPM extends JPanel
     private boolean afficherDateTard = false;
     private int     numNiveauxTot    = -1;
     private int     numNiveauxTard;
+
+    private JPopupMenu popup;
     
     // Variables pour le déplacement
     private Entite entiteSelectionnee;
@@ -42,6 +47,7 @@ public class PanelMPM extends JPanel
         this.graphe  = graphe;
         this.ctrl    = ctrl;
         this.entites = new ArrayList<>();
+        this.popup   = new JPopupMenu();
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
@@ -96,6 +102,44 @@ public class PanelMPM extends JPanel
                     int newY = e.getY() - offsetY;
                     entiteSelectionnee.setPosition(newX, newY);
                     repaint();
+                }
+            }
+        });
+
+         this.addMouseMotionListener(new MouseMotionAdapter() {
+            Entite dernierEntite = null;
+        
+            public void mouseMoved(MouseEvent e) {
+                Entite entite = trouverEntiteAuPoint(e.getX(), e.getY());
+        
+                if (entite != null) {
+                    if (entite != this.dernierEntite) {
+                        PanelMPM.this.popup.setVisible(false);
+                        PanelMPM.this.popup.removeAll();
+                        PanelMPM.this.popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
+                        PanelMPM.this.popup.add(new JSeparator());
+                        PanelMPM.this.popup.add(new JLabel("• Statut: Actif"));
+                        PanelMPM.this.popup.add(new JLabel("• Date: " + java.time.LocalDate.now()));
+                        PanelMPM.this.popup.revalidate(); 
+                        PanelMPM.this.popup.pack();
+        
+                        this.dernierEntite = entite;
+        
+                        // 💡 Position de l'entité sur le panel
+                        Point entitePos = new Point(entite.getX(), entite.getY());
+                        Point screenPoint = PanelMPM.this.getLocationOnScreen();
+        
+                        int newX = screenPoint.x + entitePos.x + entite.getLargeur() + 10;
+                        int newY = screenPoint.y + entitePos.y;                        
+        
+                        PanelMPM.this.popup.setLocation(newX, newY);
+                        PanelMPM.this.popup.setVisible(true);
+                    }
+                } else {
+                    if (PanelMPM.this.popup.isVisible()) {
+                        PanelMPM.this.popup.setVisible(false);
+                    }
+                    this.dernierEntite = null;
                 }
             }
         });
