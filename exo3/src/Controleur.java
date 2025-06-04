@@ -66,6 +66,11 @@ public class Controleur
             this.frameModification.setVisible(false);
     }
 
+    public void changerTheme()
+    {
+        this.frameMPM.changerTheme();
+    }
+
 
     public void   resetPositions   () { this.frameMPM.resetPositions(); this.frameMPM.repaint(); }
     

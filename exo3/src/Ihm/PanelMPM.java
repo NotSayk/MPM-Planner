@@ -152,7 +152,7 @@ public class PanelMPM extends JPanel
             {
                 if (entite.getNiveauTache() <= numNiveauxTot) 
                 {
-                    g.setColor(Color.GREEN.darker());
+                    g.setColor(Color.GREEN);
                     g.drawString("" + entite.getTache().getDateTot(), entite.getX() + 15, entite.getY() + 55);
                 }
             } 
@@ -161,7 +161,7 @@ public class PanelMPM extends JPanel
             {
                 if(entite.getNiveauTache() >= numNiveauxTard  ) 
                 {
-                    g.setColor(Color.RED.darker());
+                    g.setColor(Color.RED);
                     g.drawString("" + entite.getTache().getDateTard(), entite.getX() + 50, entite.getY() + 55);
                 }
             }
@@ -208,9 +208,9 @@ public class PanelMPM extends JPanel
                 int hauteurRect = hauteurTexte + 2 * 2;
                 
                 // Dessiner le rectangle blanc avec bordure
-                g.setColor(Color.WHITE);
+                g.setColor(this.getBackground());
                 g.fillRect(xRect, yRect, largeurRect, hauteurRect);
-                g.setColor(Color.BLACK);
+                g.setColor(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
 
                 // Centrer le texte par rapport au point central
                 g.drawString(texte, xCentre - largeurTexte / 2, yCentre + hauteurTexte / 4);
@@ -288,6 +288,30 @@ public class PanelMPM extends JPanel
         {
             if (this.ctrl.getNiveauxTaches()[i] !=  0) this.numNiveauxTard ++;
             else                                       break;
+        }
+        repaint();
+    }
+
+    public String getTheme() 
+    {
+        return this.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK";
+    }
+
+    public void setTheme(String theme) 
+    {
+        if (theme.equals("LIGHT")) 
+        {
+            this.setBackground(Color.WHITE);
+            for (Entite entite : entites) {
+                entite.setCouleurContour(Color.BLACK);
+            }
+        } 
+        else if (theme.equals("DARK")) 
+        {
+            this.setBackground(Color.DARK_GRAY);
+            for (Entite entite : entites) {
+                entite.setCouleurContour(Color.WHITE);
+            }
         }
         repaint();
     }

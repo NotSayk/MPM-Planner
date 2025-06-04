@@ -44,4 +44,16 @@ public class FrameMPM extends JFrame
         this.panelMPM.resetPositions();
     }
 
+    public void changerTheme() 
+    {
+        String currentTheme = this.panelMPM.getTheme();
+        
+        if (currentTheme.equals("LIGHT")) {
+            this.panelMPM.setTheme("DARK");
+        } else {
+            this.panelMPM.setTheme("LIGHT");
+        }
+        
+        this.repaint();
+    }
 }

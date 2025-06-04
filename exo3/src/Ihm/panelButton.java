@@ -78,6 +78,8 @@ public class panelButton extends JPanel implements ActionListener
         else if (e.getSource() == this.btnTheme) 
         {
             // Logique pour le bouton "Changer le thème"
+            this.ctrl.changerTheme();
+            this.panelMPM.repaint(); // Repaint pour appliquer le nouveau thème
         }
     }
 
