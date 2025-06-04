@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+
 import src.Controleur;
 import src.Ihm.composants.Entite;
 import src.Metier.GrapheMPM;
@@ -48,6 +50,8 @@ public class PanelMPM extends JPanel
         this.ajouterEcouteursSouris();
 
         this.add(new panelButton(), BorderLayout.SOUTH);
+
+        this.add(new BarreMenu(), BorderLayout.NORTH);
     }
     
     private void ajouterEcouteursSouris() 
