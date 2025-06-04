@@ -7,5 +7,5 @@ E|4|B,D
 L|3|C
 G|3|C
 F|4|L
-K|4|E
+K|15|E
 FIN|0|G,F,K

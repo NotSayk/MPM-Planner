@@ -86,7 +86,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
          JFileChooser selectionFichier = new JFileChooser();
 
          if (selectionFichier.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-            this.ctrl.initialiserProjet(this.ctrl.getDateDuJour(),'D' , "" + selectionFichier.getSelectedFile());
+            this.ctrl.initialiserProjet(this.ctrl.getDateReference(),this.ctrl.getTypeDate() , "" + selectionFichier.getSelectedFile());
       }
 
       if(e.getSource() == this.menuiSauvegarder)

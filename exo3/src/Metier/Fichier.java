@@ -13,12 +13,14 @@ public class Fichier
 
     private GrapheMPM      graphe;
     private List<TacheMPM> lstTacheMPMs;
+    String             nomFichier;
     
     public Fichier(GrapheMPM graphe, String nomFichier)
     {
         this.graphe       = graphe;
         this.lstTacheMPMs = new ArrayList<TacheMPM>();
         this.initTache(nomFichier);
+        this.nomFichier   = nomFichier;
     }
 
 
@@ -78,6 +80,7 @@ public class Fichier
         }
         this.sauvegarder();
     }
+    
 
     public void sauvegarder()
 	{
@@ -108,5 +111,7 @@ public class Fichier
                 return tache;
         return null;
     }
+
+    public String getNomFichier() { return this.nomFichier;  }
 
 }

@@ -19,13 +19,13 @@ public class GrilleDonneesModel extends AbstractTableModel
 		this.ctrl = ctrl;
 
 		TacheMPM tache;
-		List<TacheMPM> lstClients = ctrl.getTaches();
+		List<TacheMPM> lstTaches = ctrl.getTaches();
 
-		tabDonnees = new Object[lstClients.size()][7];
+		tabDonnees = new Object[lstTaches.size()][7];
 
-		for ( int lig=0; lig<lstClients.size(); lig++)
+		for ( int lig=0; lig<lstTaches.size(); lig++)
 		{
-			tache = lstClients.get(lig);
+			tache = lstTaches.get(lig);
 
 			tabDonnees[lig][0] = tache.getNom       ();
 			tabDonnees[lig][1] = tache.getDateTot   ();
@@ -53,7 +53,7 @@ public class GrilleDonneesModel extends AbstractTableModel
 		                                    "Date Totale",
 		                                    "Marge",
 		                                    "Date Tardive",
-		                                    "PrÃ©cÃ©dents",
+		                                    "Précédents",
 		                                    "Suivants" };
 
 	}
@@ -63,22 +63,6 @@ public class GrilleDonneesModel extends AbstractTableModel
 	public String getColumnName (int col)          { return this.tabEntetes[col];        }
 	public Object getValueAt    (int row, int col) { return this.tabDonnees[row][col];   }
 	public Class  getColumnClass(int c)            { return getValueAt(0, c).getClass(); }
-
-	/*public void setValueAt(Object value, int row, int col)
-	{
-		boolean bRet;
-
-		if ( col == 2 )
-		{
-			bRet = this.ctrl.majPremiumClient ( row, (Boolean) value );
-			if ( bRet )
-			{
-				this.tabDonnees[row][col] = value;
-				this.fireTableCellUpdated(row, col);
-			}
-		}
-	}
-	*/
 
 
 }

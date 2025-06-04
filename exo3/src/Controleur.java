@@ -30,7 +30,6 @@ public class Controleur
 
     public void initialiserProjet(String dateRef, char typeDate, String nomFichier) 
     {
-        System.out.println("Initialisation du projet avec la date de référence : " + dateRef + " et le type de date : " + typeDate);
         this.fichier  = new Fichier(this.graphe, nomFichier); 
 
         this.dateRef  = dateRef ;
@@ -60,10 +59,27 @@ public class Controleur
     
     public void   sauvegarder      () { this.fichier.sauvegarder();                            }
 
+    public void   mettreAJourDureeTache (int index, int duree) 
+    {
+        List<TacheMPM> taches = this.fichier.getLstTacheMPMs();
+        if (index >= 0 && index < taches.size()) 
+        {
+            TacheMPM tache = taches.get(index);
+            tache.setDuree(duree);
+            this.fichier.modifierTacheFichier(tache);
+            initialiserProjet(dateRef, typeDate, fichier.getNomFichier());
+        } 
+        else 
+        {
+            System.err.println("Index de tâche invalide : " + index);
+        }
+    }
+
     public List<TacheMPM> getTaches() { return this.fichier.getLstTacheMPMs();                 }
     public String getDateDuJour    () { return DateUtils.getDateDuJour   ();                   }
     public String getGrapheString  () { return this.graphe.toString      ();                   }
     public String getDateReference () { return this.dateRef                ;                   }
+    public char   getTypeDate      () { return this.typeDate              ;                   }
     public int    getDureeProjet   () { return this.graphe.getDureeProjet();                   }
     public String getDateProjet    () { return this.graphe.getDateProjet (this.typeDate);      }
     public int    getNiveauTaches (TacheMPM tache)  { return this.graphe.getNiveauTache(tache);}

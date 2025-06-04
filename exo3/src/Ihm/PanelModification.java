@@ -3,7 +3,6 @@ package src.Ihm;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,13 +44,33 @@ public class PanelModification extends JPanel implements ActionListener
 		// positionnement des composants
 		this.add ( spGrilleDonnees, BorderLayout.NORTH );
 		this.add ( panelInfo, BorderLayout.SOUTH );
+
+		this.btnMaj.addActionListener(this);
+
 	}
 
 	public void actionPerformed(ActionEvent e) 
     {
         if (e.getSource() == this.btnMaj) 
         {
-			// Logique pour le bouton "+ tôt"
+			int tacheSelectionnee = this.tblGrilleDonnees.getSelectedRow();
+			if (tacheSelectionnee >= 0) 
+			{
+				String dureeStr = this.txtTacheDuree.getText();
+				try 
+				{
+					int duree = Integer.parseInt(dureeStr);
+					ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
+				} 
+				catch (NumberFormatException ex) 
+				{
+					System.err.println("Erreur : Durée invalide.");
+				}
+			} 
+			else 
+			{
+				System.err.println("Erreur : Aucune tâche sélectionnée.");
+			}
 		}
 	}
 
