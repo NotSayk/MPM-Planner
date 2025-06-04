@@ -92,7 +92,7 @@ public class PanelPara extends JPanel implements ActionListener
             }
 
             // Appel du contrôleur pour initialiser le projet
-            this.ctrl.initialiserProjet(dateRef, typeDate);
+            this.ctrl.initialiserProjet(dateRef, typeDate, "listeTache.txt");
 
             //this.ctrl.getCheminCritique();
         }
