@@ -48,4 +48,5 @@ public class Controleur
     public String getDateProjet   () { return this.graphe.getDateProjet (this.typeDate);     }
     public int    getNiveauTaches(TacheMPM tache)  { return this.graphe.getNiveauTache(tache);}
     public int[]  getNiveauxTaches()               { return this.graphe.getNiveaux(); }
+    public void   resetPositions() { this.frame.resetPositions(); this.frame.repaint(); }
 }

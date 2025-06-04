@@ -8,6 +8,7 @@ public class Entite
 {
     private TacheMPM tache;
     private int x, y;
+    private int intialX, initialY;
     private int largeur, hauteur;
     
     private static final int TAILLE_CASE = 70;
@@ -18,6 +19,8 @@ public class Entite
         this.tache = tache;
         this.x = x;
         this.y = y;
+        this.intialX = x;
+        this.initialY = y;
         this.largeur = TAILLE_CASE;
         this.hauteur = TAILLE_CASE;
     }
@@ -31,6 +34,11 @@ public class Entite
     public void setDimensions(int largeur, int hauteur) {
         this.largeur = largeur;
         this.hauteur = hauteur;
+    }
+
+    public void resetPosition() {
+        this.x = intialX;
+        this.y = initialY;
     }
     
     public void paint(Graphics g) {
