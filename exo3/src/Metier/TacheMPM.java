@@ -50,7 +50,7 @@ public class TacheMPM
     public int            getNiveau    () { return this.niveau    ; }
     public List<TacheMPM> getPrecedents() { return this.precedents; }
     public List<TacheMPM> getSuivants  () { return this.suivants  ; }
-    public boolean        EstCritique  () { return this.estCritique; }
+    public boolean        estCritique  () { return this.estCritique; }
 
     // Setters
     public void setDateTot (int dateTot)  { this.dateTot  = dateTot ; }
