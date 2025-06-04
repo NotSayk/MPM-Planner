@@ -1,11 +1,11 @@
 DEBUT|0|
 A|2|DEBUT
 B|2|DEBUT
-C|10|A
+C|44|A
 D|4|A,B
 E|4|B,D
 L|3|C
 G|3|C
 F|4|L
-K|15|E
+K|88|E
 FIN|0|G,F,K
