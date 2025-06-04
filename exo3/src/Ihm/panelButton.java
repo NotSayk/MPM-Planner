@@ -16,11 +16,15 @@ public class panelButton extends JPanel implements ActionListener
     private JButton btnReset;
     private JButton btnTheme;
     private Controleur ctrl;
+
+    private PanelMPM panelMPM;
     
 
-    public panelButton(Controleur ctrl)
+    public panelButton(Controleur ctrl, PanelMPM panelMPM)
     {
         this.ctrl = ctrl;
+        this.panelMPM = panelMPM;
+
         this.setBackground(new Color(ABORT, 51, 51, 51));
         this.setLayout(new FlowLayout());
 
@@ -34,6 +38,8 @@ public class panelButton extends JPanel implements ActionListener
         this.add(this.btnReset);
         this.add(this.btnTheme);
 
+        this.btnPlusTard.setEnabled(false); 
+
         this.btnPlusTot .addActionListener(this);
         this.btnPlusTard.addActionListener(this);
         this.btnReset   .addActionListener(this);
@@ -45,14 +51,25 @@ public class panelButton extends JPanel implements ActionListener
         if (e.getSource() == this.btnPlusTot) 
         {
             // Logique pour le bouton "+ tôt"
+            panelMPM.afficherDateTot();
+            if ( this.panelMPM.estGrise() )
+            {
+                this.btnPlusTard.setEnabled(true); 
+                this.btnPlusTot.setEnabled(false);
+            }
+
         } 
         else if (e.getSource() == this.btnPlusTard) 
         {
             // Logique pour le bouton "+ tard"
+            panelMPM.afficherDateTard();
         } 
         else if (e.getSource() == this.btnReset) 
         {
             this.ctrl.resetPositions(); 
+            this.btnPlusTard.setEnabled(false);
+            this.btnPlusTot.setEnabled(true);
+            panelMPM.cacherDates();
         } 
         else if (e.getSource() == this.btnTheme) 
         {

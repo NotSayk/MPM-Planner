@@ -23,6 +23,11 @@ public class PanelMPM extends JPanel
 
     private GrapheMPM    graphe;
     private List<Entite> entites;
+
+    private boolean afficherDateTot  = false;
+    private boolean afficherDateTard = false;
+    private int     numNiveauxTot       = -1;
+    private int     numNiveauxTard      ;
     
     // Variables pour le déplacement
     private Entite entiteSelectionnee;
@@ -46,8 +51,20 @@ public class PanelMPM extends JPanel
 
         this.initEntites();
         this.ajouterEcouteursSouris();
+        for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
+        {
+            if (this.ctrl.getNiveauxTaches()[i] !=  0) 
+            {
+                this.numNiveauxTard ++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        
 
-        this.add(new panelButton(this.ctrl), BorderLayout.SOUTH);
+        this.add(new panelButton(this.ctrl, this), BorderLayout.SOUTH);
 
         this.add(new BarreMenu(ctrl), BorderLayout.NORTH);
     }
@@ -131,7 +148,29 @@ public class PanelMPM extends JPanel
         super.paintComponent(g);
         
         // Peindre toutes les entités
-        for (Entite entite : entites) entite.paint(g);
+        for (Entite entite : entites)
+        {
+            entite.paint(g);
+
+            // Affichage des dates selon le flag
+            if (afficherDateTot) 
+            {
+                if (entite.getNiveauTache() <= numNiveauxTot) 
+                {
+                    g.setColor(Color.GREEN.darker());
+                    g.drawString("" + entite.getTache().getDateTot(), entite.getX() + 15, entite.getY() + 55);
+                }
+            } 
+            
+            if (afficherDateTard) 
+            {
+                if(entite.getNiveauTache() >= numNiveauxTard  ) 
+                {
+                    g.setColor(Color.RED.darker());
+                    g.drawString("" + entite.getTache().getDateTard(), entite.getX() + 50, entite.getY() + 55);
+                }
+            }
+        }
         
         // Dessiner les connexions entre les tâches
         this.dessinerConnexions(g);
@@ -232,4 +271,41 @@ public class PanelMPM extends JPanel
 
     public List<Entite> getEntites() { return new ArrayList<>(entites); }
 
+    public void afficherDateTot()
+    {
+        this.afficherDateTot = true;
+        this.numNiveauxTot++;
+        repaint();
+    }
+
+    public void afficherDateTard()
+    {
+        this.afficherDateTard = true;
+        this.numNiveauxTard--;
+        repaint();
+    }
+
+    public void cacherDates()
+    {
+        this.afficherDateTot  = false;
+        this.afficherDateTard = false;
+        this.numNiveauxTot = -1;
+        for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
+        {
+            if (this.ctrl.getNiveauxTaches()[i] !=  0) 
+            {
+                this.numNiveauxTard ++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        repaint();
+    }
+
+    public boolean estGrise()
+    {
+        return this.numNiveauxTot == numNiveauxTard;
+    }
 }

@@ -61,10 +61,12 @@ public class Entite
         String dateTot  = String.valueOf(tache.getDateTot()) ;
         String dateTard = String.valueOf(tache.getDateTard());
         
+        /*
         g.setColor(Color.GREEN);
         g.drawString(dateTot, x + 15, y + 55);
         g.setColor(Color.RED);
         g.drawString(dateTard, x + 50, y + 55);
+        */
     }
     
     // Getters
@@ -73,4 +75,5 @@ public class Entite
     public int getY         () { return y;       }
     public int getLargeur   () { return largeur; }
     public int getHauteur   () { return hauteur; }
+    public int getNiveauTache() { return tache.getNiveau(); }
 }
