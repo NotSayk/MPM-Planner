@@ -26,8 +26,8 @@ public class PanelMPM extends JPanel
 
     private boolean afficherDateTot  = false;
     private boolean afficherDateTard = false;
-    private int     numNiveauxTot       = -1;
-    private int     numNiveauxTard      ;
+    private int     numNiveauxTot    = -1;
+    private int     numNiveauxTard;
     
     // Variables pour le déplacement
     private Entite entiteSelectionnee;
@@ -39,7 +39,7 @@ public class PanelMPM extends JPanel
 
     public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
     {
-        this.graphe = graphe;
+        this.graphe  = graphe;
         this.ctrl    = ctrl;
         this.entites = new ArrayList<>();
 
@@ -51,16 +51,11 @@ public class PanelMPM extends JPanel
 
         this.initEntites();
         this.ajouterEcouteursSouris();
+
         for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
         {
-            if (this.ctrl.getNiveauxTaches()[i] !=  0) 
-            {
-                this.numNiveauxTard ++;
-            }
-            else
-            {
-                break;
-            }
+            if (this.ctrl.getNiveauxTaches()[i] !=  0) this.numNiveauxTard ++;
+            else                                       break;
         }
         
 
@@ -263,9 +258,7 @@ public class PanelMPM extends JPanel
     public void resetPositions() 
     {
         for (Entite entite : entites) 
-        {
             entite.resetPosition();
-        }
         repaint();
     }
 
@@ -293,25 +286,12 @@ public class PanelMPM extends JPanel
         this.numNiveauxTard   = 0;
         for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
         {
-            if (this.ctrl.getNiveauxTaches()[i] !=  0) 
-            {
-                this.numNiveauxTard ++;
-            }
-            else
-            {
-                break;
-            }
+            if (this.ctrl.getNiveauxTaches()[i] !=  0) this.numNiveauxTard ++;
+            else                                       break;
         }
         repaint();
     }
 
-    public boolean estGriseTot()
-    {
-        return this.numNiveauxTot == numNiveauxTard-1;
-    }
-
-    public boolean estGriseTard()
-    {
-        return this.numNiveauxTard == 0;
-    }
+    public boolean estGriseTot () { return this.numNiveauxTot == numNiveauxTard-1; }
+    public boolean estGriseTard() { return this.numNiveauxTard == 0;               }
 }
