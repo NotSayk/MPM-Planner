@@ -65,6 +65,7 @@ public class TacheMPM
     public void setDateTot (int dateTot)  { this.dateTot  = dateTot ; }
     public void setDateTard(int dateTard) { this.dateTard = dateTard; }
     public void setMarge   (int marge)    { this.marge    = marge   ; }
+    public void setDuree   (int duree)    { this.duree    = duree   ; }
 
     public String toString(String dateRef)
     {

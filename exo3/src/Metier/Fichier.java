@@ -21,13 +21,12 @@ public class Fichier
 
         this.initTache();
         System.out.println(this.toString());
-        /*this.sauvegarder();
+        this.sauvegarder();
 
-        System.out.println("Fichier initialisé avec " + this.lstTacheMPMs.size() + " tâches.");
-        this.lstTacheMPMs.get(3).setMarge(1000);
+        this.lstTacheMPMs.get(3).setDuree(1000);
         this.modifierTacheFichier(this.lstTacheMPMs.get(3));
         this.sauvegarder();
-        */
+        System.out.println(this.lstTacheMPMs.get(3).getMarge());
     }
 
 
