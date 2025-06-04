@@ -1,6 +1,7 @@
 package src;
 import java.util.List;
 import src.Ihm.FrameMPM;
+import src.Ihm.FrameModification;
 import src.Ihm.IhmCui;
 import src.Metier.Fichier;
 import src.Metier.GrapheMPM;
@@ -10,19 +11,21 @@ import src.utils.DateUtils;
 
 public class Controleur 
 {
-    private GrapheMPM graphe;
-    private String    dateRef;
-    private char      typeDate;
+    private GrapheMPM          graphe;
+    private String             dateRef;
+    private char               typeDate;
 
-    private FrameMPM  frame;
-    private Fichier   fichier;
+    private FrameMPM           frameMPM;
+    private FrameModification  frameModification;
+
+    private Fichier            fichier;
 
     public static void main(String[] args) { new Controleur(); }
 
     public Controleur() 
     {
-        this.graphe = new GrapheMPM(this);
-        this.frame  = new FrameMPM(this, this.graphe);
+        this.graphe            = new GrapheMPM(this);
+        this.frameMPM          = new FrameMPM(this, this.graphe);
     }
 
     public void initialiserProjet(String dateRef, char typeDate) 
@@ -36,14 +39,26 @@ public class Controleur
         this.graphe.setDateRef   (dateRef) ;
         this.graphe.setTypeDate  (typeDate);
 
-        this.graphe.initSuivants ()        ;
-        this.graphe.calculerDates()        ;
+        this.graphe.initSuivants      ();
+        this.graphe.calculerDates     ();
         this.graphe.initCheminCritique();
-        this.graphe.initNiveauTaches();
-        this.frame.changerPanel();
+        this.graphe.initNiveauTaches  ();
+
+        this.afficherGraphe();
         IhmCui ihm     = new IhmCui   (this);
     }
     
+
+    public void afficherGraphe() 
+    {
+        this.frameMPM.changerPanel();
+        this.frameModification = new FrameModification(this, this.graphe);
+        this.frameModification.setVisible(true);
+    }
+
+    public void   resetPositions() { this.frameMPM.resetPositions(); this.frameMPM.repaint(); }
+
+
     public List<TacheMPM> getTaches() { return this.fichier.getLstTacheMPMs();                 }
     public String getDateDuJour    () { return DateUtils.getDateDuJour   ();                   }
     public String getGrapheString  () { return this.graphe.toString      ();                   }
@@ -52,5 +67,4 @@ public class Controleur
     public String getDateProjet    () { return this.graphe.getDateProjet (this.typeDate);      }
     public int    getNiveauTaches (TacheMPM tache)  { return this.graphe.getNiveauTache(tache);}
     public int[]  getNiveauxTaches ()               { return this.graphe.getNiveaux();         }
-    public void   resetPositions() { this.frame.resetPositions(); this.frame.repaint(); }
 }
