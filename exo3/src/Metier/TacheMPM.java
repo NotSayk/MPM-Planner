@@ -41,14 +41,14 @@ public class TacheMPM
     }
 
     // Getters
-    public String         getNom       () { return nom        ; }
-    public int            getDuree     () { return duree      ; }
-    public int            getDateTot   () { return dateTot    ; }
-    public int            getDateTard  () { return dateTard   ; }
-    public int            getMarge     () { return marge      ; }
-    public int            getNiveau    () { return this.niveau; }
-    public List<TacheMPM> getPrecedents() { return precedents ; }
-    public List<TacheMPM> getSuivants  () { return suivants   ; }
+    public String         getNom       () { return this.nom       ; }
+    public int            getDuree     () { return this.duree     ; }
+    public int            getDateTot   () { return this.dateTot   ; }
+    public int            getDateTard  () { return this.dateTard  ; }
+    public int            getMarge     () { return this.marge     ; }
+    public int            getNiveau    () { return this.niveau    ; }
+    public List<TacheMPM> getPrecedents() { return this.precedents; }
+    public List<TacheMPM> getSuivants  () { return this.suivants  ; }
 
     // Setters
     public void setDateTot (int dateTot)  { this.dateTot  = dateTot ; }
