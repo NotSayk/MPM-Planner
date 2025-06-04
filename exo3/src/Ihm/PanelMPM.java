@@ -127,6 +127,7 @@ public class PanelMPM extends JPanel
                         PanelMPM.this.popup.add(new JSeparator());
                         PanelMPM.this.popup.add(new JLabel("• Niveau: " + entite.getNiveauTache()));
                         PanelMPM.this.popup.add(new JLabel("• Position: (" + entite.getX() + ", " + entite.getY() + ")"));
+                        PanelMPM.this.popup.add(new JLabel("• Chemin critique: " + (entite.getTache().estCritique() ? "Oui" : "Non")));
                         PanelMPM.this.popup.add(new JSeparator());
                         PanelMPM.this.popup.add(new JLabel("Clic droit pour modifier la tâche"));
 
@@ -226,7 +227,7 @@ public class PanelMPM extends JPanel
     
     private void dessinerConnexions(Graphics g)
     {
-        g.setColor(Color.BLACK);
+        g.setColor(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
         for (Entite entite : this.getEntites())
         {
             TacheMPM tache = entite.getTache();
