@@ -82,6 +82,7 @@ public class PanelMPM extends JPanel
                 {
                     offsetX = e.getX() - entiteSelectionnee.getX();
                     offsetY = e.getY() - entiteSelectionnee.getY();
+                    popup.setVisible(false);
                 }
             }
             
@@ -118,14 +119,21 @@ public class PanelMPM extends JPanel
                         PanelMPM.this.popup.removeAll();
                         PanelMPM.this.popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
                         PanelMPM.this.popup.add(new JSeparator());
-                        PanelMPM.this.popup.add(new JLabel("• Statut: Actif"));
-                        PanelMPM.this.popup.add(new JLabel("• Date: " + java.time.LocalDate.now()));
+                        PanelMPM.this.popup.add(new JLabel("• Antériorité: " + "z"));
+                        PanelMPM.this.popup.add(new JLabel("• Date au plus tot: " + entite.getTache().getDateTot()));
+                        PanelMPM.this.popup.add(new JLabel("• Date au plus tard: " + entite.getTache().getDateTard()));
+                        PanelMPM.this.popup.add(new JLabel("• Durée: " + entite.getTache().getDuree()));
+                        PanelMPM.this.popup.add(new JSeparator());
+                        PanelMPM.this.popup.add(new JLabel("• Niveau: " + entite.getNiveauTache()));
+                        PanelMPM.this.popup.add(new JLabel("• Position: (" + entite.getX() + ", " + entite.getY() + ")"));
+                        PanelMPM.this.popup.add(new JSeparator());
+                        PanelMPM.this.popup.add(new JLabel("Clic droit pour modifier la tâche"));
+
                         PanelMPM.this.popup.revalidate(); 
                         PanelMPM.this.popup.pack();
         
                         this.dernierEntite = entite;
         
-                        // 💡 Position de l'entité sur le panel
                         Point entitePos = new Point(entite.getX(), entite.getY());
                         Point screenPoint = PanelMPM.this.getLocationOnScreen();
         
