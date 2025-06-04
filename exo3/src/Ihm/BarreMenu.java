@@ -1,11 +1,15 @@
 package src.Ihm;
 
+import src.Controleur;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.File;
 
 public class BarreMenu extends JMenuBar implements ActionListener
 {
+   private Controleur    ctrl;
+
    private JMenuItem     menuiCharger;
    private JMenuItem     menuiSauvegarder;
    private JMenuItem     menuiQuitter;
@@ -14,8 +18,11 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem     menuiSupprimerTache;
    private JMenuItem     menuiChangerDureeTache;
 
-   public BarreMenu()
+   public BarreMenu(Controleur ctrl)
    {
+      this.ctrl = ctrl;
+
+
       /*----------------------------*/
       /* Création des composants    */
       /*----------------------------*/
@@ -71,7 +78,38 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
    public void actionPerformed ( ActionEvent e )
    {
-      return;
+      if(e.getSource() == this.menuiCharger)
+      {
+         JFileChooser selectionFichier = new JFileChooser();
+
+         if (selectionFichier.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+            //this.ctrl.initialiserProjet(this.ctrl.getDateDuJour(),'D' , "" + selectionFichier.getSelectedFile());
+      }
+
+      if(e.getSource() == this.menuiSauvegarder)
+      {
+
+      }
+
+      if(e.getSource() == this.menuiQuitter)
+      {
+         System.exit(0);
+      }
+
+      if(e.getSource() == this.menuiRajouterTache)
+      {
+
+      }
+
+      if(e.getSource() == this.menuiSupprimerTache)
+      {
+
+      }
+
+      if(e.getSource() == this.menuiChangerDureeTache)
+      {
+
+      }
    }
 
 }
