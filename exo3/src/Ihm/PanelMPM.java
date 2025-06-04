@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import src.Controleur;
 import src.Ihm.composants.Entite;
 import src.Metier.GrapheMPM;
@@ -107,7 +106,7 @@ public class PanelMPM extends JPanel
     {
         this.getEntites().clear();
 
-        List<TacheMPM> taches = graphe.getTaches();
+        List<TacheMPM> taches = this.ctrl.getTaches();
         
         for (TacheMPM tache : taches) 
         {

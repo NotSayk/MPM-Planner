@@ -12,12 +12,15 @@ public class Fichier
 {
 
     private GrapheMPM      graphe;
-    private List<TacheMPM> lstTacheMPMs = new ArrayList<TacheMPM>();
+    private List<TacheMPM> lstTacheMPMs;
     
     public Fichier(GrapheMPM graphe)
     {
         this.graphe = graphe;
+        this.lstTacheMPMs = new ArrayList<TacheMPM>();
+
         this.initTache();
+        System.out.println(this.toString());
         /*this.sauvegarder();
 
         System.out.println("Fichier initialisé avec " + this.lstTacheMPMs.size() + " tâches.");
@@ -69,6 +72,7 @@ public class Fichier
     public void ajouterTacheFichier(TacheMPM tacheAjout) 
     {
         this.lstTacheMPMs.add(tacheAjout);
+        this.sauvegarder();
     }
 
     public void modifierTacheFichier(TacheMPM tacheModif) 
@@ -79,6 +83,7 @@ public class Fichier
                 break;
             }
         }
+        this.sauvegarder();
     }
 
     public void sauvegarder()

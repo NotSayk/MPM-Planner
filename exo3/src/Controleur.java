@@ -13,8 +13,8 @@ public class Controleur
     private String    dateRef;
     private char      typeDate;
 
-    private FrameMPM frame;
-    private Fichier fichier;
+    private FrameMPM  frame;
+    private Fichier   fichier;
 
     public static void main(String[] args) { new Controleur(); }
 
@@ -27,9 +27,10 @@ public class Controleur
     public void initialiserProjet(String dateRef, char typeDate) 
     {
         System.out.println("Initialisation du projet avec la date de référence : " + dateRef + " et le type de date : " + typeDate);
+        this.fichier  = new Fichier(this.graphe); 
+        
         this.dateRef  = dateRef ;
         this.typeDate = typeDate;
-        this.fichier  = new Fichier(this.graphe); 
 
         this.graphe.setDateRef   (dateRef) ;
         this.graphe.setTypeDate  (typeDate);
@@ -42,12 +43,13 @@ public class Controleur
         IhmCui ihm     = new IhmCui   (this);
     }
     
-    public List<TacheMPM> getTaches() { return this.fichier.getLstTacheMPMs();            }
-    public String getDateDuJour    () { return GrapheMPM.getDateDuJour   ();              }
-    public String getGrapheString  () { return this.graphe.toString      ();              }
-    public String getDateReference () { return this.dateRef                ;              }
-    public int    getDureeProjet   () { return this.graphe.getDureeProjet();              }
-    public String getDateProjet    () { return this.graphe.getDateProjet (this.typeDate);     }
+    public List<TacheMPM> getTaches() { return this.fichier.getLstTacheMPMs();                 }
+    public String getDateDuJour    () { return GrapheMPM.getDateDuJour   ();                   }
+    public String getGrapheString  () { return this.graphe.toString      ();                   }
+    public String getDateReference () { return this.dateRef                ;                   }
+    public int    getDureeProjet   () { return this.graphe.getDureeProjet();                   }
+    public String getDateProjet    () { return this.graphe.getDateProjet (this.typeDate);      }
     public int    getNiveauTaches (TacheMPM tache)  { return this.graphe.getNiveauTache(tache);}
-    public int[]  getNiveauxTaches ()               { return this.graphe.getNiveaux(); }
+    public int[]  getNiveauxTaches ()               { return this.graphe.getNiveaux();         }
+    public void   resetPositions() { this.frame.resetPositions(); this.frame.repaint(); }
 }
