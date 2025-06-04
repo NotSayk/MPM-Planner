@@ -19,6 +19,7 @@ import src.Controleur;
 import src.Ihm.composants.Entite;
 import src.Metier.GrapheMPM;
 import src.Metier.TacheMPM;
+import src.utils.DateUtils;
 
 public class PanelMPM extends JPanel 
 {
@@ -120,8 +121,8 @@ public class PanelMPM extends JPanel
                         PanelMPM.this.popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
                         PanelMPM.this.popup.add(new JSeparator());
                         PanelMPM.this.popup.add(new JLabel("• Antériorité: " + "z"));
-                        PanelMPM.this.popup.add(new JLabel("• Date au plus tot: " + entite.getTache().getDateTot()));
-                        PanelMPM.this.popup.add(new JLabel("• Date au plus tard: " + entite.getTache().getDateTard()));
+                        PanelMPM.this.popup.add(new JLabel("• Date au plus tot: " + DateUtils.ajouterJourDate(DateUtils.getDateDuJour(), entite.getTache().getDateTot()) ));
+                        PanelMPM.this.popup.add(new JLabel("• Date au plus tard: " + DateUtils.ajouterJourDate(DateUtils.getDateDuJour(), entite.getTache().getDateTard())));
                         PanelMPM.this.popup.add(new JLabel("• Durée: " + entite.getTache().getDuree()));
                         PanelMPM.this.popup.add(new JSeparator());
                         PanelMPM.this.popup.add(new JLabel("• Niveau: " + entite.getNiveauTache()));
