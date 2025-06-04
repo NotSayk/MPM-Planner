@@ -9,18 +9,22 @@ public class FrameMPM extends JFrame
     
     private Controleur ctrl;
     private GrapheMPM graphe;
-    private PanelMPM panelMPM;
+
+    private PanelMPM  panelMPM;
+    private PanelPara panelPara;
 
     public FrameMPM(Controleur ctrl, GrapheMPM graphe) 
     {
-        this.ctrl = ctrl;
+        this.ctrl   = ctrl;
         this.graphe = graphe;
+        this.panelMPM = new PanelMPM(this.graphe, this.ctrl);
+        this.panelPara = new PanelPara(this.ctrl);
 
         this.setTitle("MPM - Choix des paramètres");
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
 
-        this.add(new PanelPara(ctrl));
+        this.add(this.panelPara);
 
         this.setVisible(true);
         
@@ -30,7 +34,6 @@ public class FrameMPM extends JFrame
     public void changerPanel() 
     {
         this.getContentPane().removeAll();
-        this.panelMPM = new PanelMPM(this.graphe, this.ctrl);
         this.add(this.panelMPM);
         this.revalidate();
         this.repaint();
