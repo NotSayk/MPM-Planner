@@ -59,7 +59,7 @@ public class Fichier
                 List<TacheMPM> tachesPrecedentes = new ArrayList<TacheMPM>();
 
                 for (String precedent : precedents) {
-                    tachesPrecedentes.add(this.graphe.trouverTache(precedent.trim()));
+                    tachesPrecedentes.add(this.trouverTache(precedent.trim()));
                 }
                 
                 TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
@@ -118,5 +118,12 @@ public class Fichier
         return sb.toString();
     }
 
+    private TacheMPM trouverTache(String nom) 
+    {
+        for (TacheMPM tache : this.lstTacheMPMs) 
+            if (tache.getNom().equals(nom)) 
+                return tache;
+        return null;
+    }
 
 }
