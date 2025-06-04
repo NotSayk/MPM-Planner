@@ -74,6 +74,9 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiChangerDureeTache.addActionListener(this);
 
 
+      this.menuiCharger    .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiSauvegarder.setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiQuitter    .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F4,InputEvent.ALT_DOWN_MASK  ));
    }
 
    public void actionPerformed ( ActionEvent e )
