@@ -78,7 +78,6 @@ public class GrapheMPM
     private void initDateTard() 
     {
 
-
         for (int i = this.ctrl.getTaches().size() - 1; i >= 0; i--) 
         {
             TacheMPM tache = this.ctrl.getTaches().get(i);
@@ -107,17 +106,6 @@ public class GrapheMPM
             int marge    = dateTard - dateTot ;
             tache.setMarge(marge);
         }
-    }
-
-    public void ajouterTache(TacheMPM tache)
-    {
-        if (tache != null) 
-        {
-            this.ctrl.getTaches().add(tache);
-            return;
-        }
-
-        System.out.println("Erreur : la tâche à ajouter est nulle.");
     }
 
     public void initSuivants()
