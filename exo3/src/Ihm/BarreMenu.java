@@ -1,12 +1,17 @@
 package src.Ihm;
 
 import java.awt.event.*;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+
 import javax.swing.*;
 import src.Controleur;
 
 public class BarreMenu extends JMenuBar implements ActionListener
 {
    private Controleur    ctrl;
+   private PanelMPM      panelMere;
 
    private JMenuItem     menuiCharger;
    private JMenuItem     menuiSauvegarder;
@@ -16,9 +21,10 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem     menuiSupprimerTache;
    private JMenuItem     menuiChangerDureeTache;
 
-   public BarreMenu(Controleur ctrl)
+   public BarreMenu(Controleur ctrl, PanelMPM panelMere)
    {
-      this.ctrl = ctrl;
+      this.ctrl      = ctrl;
+      this.panelMere = panelMere;
 
 
       /*----------------------------*/
@@ -89,7 +95,27 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
       if(e.getSource() == this.menuiSauvegarder)
       {
-         this.ctrl.sauvegarder();
+         try
+         {
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream("listeTache.MC"), "UTF8" ));
+
+            for (src.Metier.TacheMPM tache:ctrl.getTaches() )
+            {
+               pw.println ( tache.getNom()                                                                                        + "|" + 
+                            tache.getDuree()                                                                                      + "|" + 
+                           (tache.getPrecedents().isEmpty() ? "" : String.join(",",
+                            tache.getPrecedents().stream().map(src.Metier.TacheMPM::getNom).toArray(String[]::new)))              + "|" +
+                            panelMere.getEntiteParNom(tache.getNom()).getX()                                                      + "|" + 
+                            panelMere.getEntiteParNom(tache.getNom()).getY()                                                      + "|" +
+                            (tache.getDateTot()  + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
+                             ctrl.getDateReference().substring(2)                                                      +"|" +
+                            (tache.getDateTard() + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
+                             ctrl.getDateReference().substring(2));
+
+            }
+            pw.close();
+         }
+         catch (Exception exc){ exc.printStackTrace(); }
       }
 
       if(e.getSource() == this.menuiQuitter)
@@ -112,5 +138,4 @@ public class BarreMenu extends JMenuBar implements ActionListener
          this.ctrl.afficherModification();
       }
    }
-
 }
