@@ -127,7 +127,7 @@ public class PanelMPM extends JPanel
                         PanelMPM.this.popup.add(new JSeparator());
                         PanelMPM.this.popup.add(new JLabel("• Niveau: " + entite.getNiveauTache()));
                         PanelMPM.this.popup.add(new JLabel("• Position: (" + entite.getX() + ", " + entite.getY() + ")"));
-                        PanelMPM.this.popup.add(new JLabel("• Chemin critique: " + (entite.getTache().estCritique()() ? "Oui" : "Non")));
+                        PanelMPM.this.popup.add(new JLabel("• Chemin critique: " + (entite.getTache().estCritique() ? "Oui" : "Non")));
                         PanelMPM.this.popup.add(new JSeparator());
                         PanelMPM.this.popup.add(new JLabel("Clic droit pour modifier la tâche"));
 
