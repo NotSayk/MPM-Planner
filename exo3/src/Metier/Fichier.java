@@ -14,15 +14,15 @@ public class Fichier
     private GrapheMPM      graphe;
     private List<TacheMPM> lstTacheMPMs;
     
-    public Fichier(GrapheMPM graphe)
+    public Fichier(GrapheMPM graphe, String nomFichier)
     {
         this.graphe       = graphe;
         this.lstTacheMPMs = new ArrayList<TacheMPM>();
-        this.initTache();
+        this.initTache(nomFichier);
     }
 
 
-    public void initTache()
+    public void initTache(String nomFichier)
     {
         Scanner  scMPM     ;
         String   ligne     ;
@@ -30,9 +30,11 @@ public class Fichier
         int      duree     ;
         String[] precedents;
 
+        this.lstTacheMPMs.clear();
+
         try
         {
-            scMPM = new Scanner(new File("listeTache.txt"), "UTF-8");
+            scMPM = new Scanner(new File(nomFichier), "UTF-8");
 
             while (scMPM.hasNextLine())
             {

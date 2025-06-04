@@ -49,7 +49,7 @@ public class PanelMPM extends JPanel
 
         this.add(new panelButton(this.ctrl), BorderLayout.SOUTH);
 
-        this.add(new BarreMenu(), BorderLayout.NORTH);
+        this.add(new BarreMenu(ctrl), BorderLayout.NORTH);
     }
     
     private void ajouterEcouteursSouris() 

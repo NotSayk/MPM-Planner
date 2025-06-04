@@ -28,10 +28,10 @@ public class Controleur
         this.frameMPM          = new FrameMPM(this, this.graphe);
     }
 
-    public void initialiserProjet(String dateRef, char typeDate) 
+    public void initialiserProjet(String dateRef, char typeDate, String nomFichier) 
     {
         System.out.println("Initialisation du projet avec la date de référence : " + dateRef + " et le type de date : " + typeDate);
-        this.fichier  = new Fichier(this.graphe); 
+        this.fichier  = new Fichier(this.graphe, nomFichier); 
 
         this.dateRef  = dateRef ;
         this.typeDate = typeDate;
