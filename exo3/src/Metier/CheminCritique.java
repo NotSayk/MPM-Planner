@@ -11,13 +11,7 @@ public class CheminCritique
         this.cheminCritique = new ArrayList<TacheMPM>();
     }
 
-    public void ajouterTache(TacheMPM t)
-    {
-        this.cheminCritique.add(t);
-    }   
+    public void ajouterTache(TacheMPM t) { this.cheminCritique.add(t); }   
     
-    public ArrayList<TacheMPM> getListTache()
-    {
-        return this.cheminCritique;
-    }
+    public ArrayList<TacheMPM> getListTache() { return this.cheminCritique; }
 }
