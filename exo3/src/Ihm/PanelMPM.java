@@ -58,6 +58,7 @@ public class PanelMPM extends JPanel
 
         this.initEntites();
         this.ajouterEcouteursSouris();
+        this.afficherDateTot() ;
 
         for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
         {
@@ -337,6 +338,7 @@ public class PanelMPM extends JPanel
         this.afficherDateTot  = false;
         this.afficherDateTard = false;
         this.numNiveauxTot    = -1;
+        this.afficherDateTot();
         this.numNiveauxTard   = 0;
         for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
         {
