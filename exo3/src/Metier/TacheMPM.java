@@ -18,14 +18,15 @@ public class TacheMPM
 
     public TacheMPM(String nom, int duree, List<TacheMPM> precedents) 
     {
-        this.nom        = nom;
-        this.duree      = duree;
-        this.precedents = precedents;
-        this.suivants   = new ArrayList<TacheMPM>();
-        this.dateTot    = 0;
-        this.dateTard   = 0; 
-        this.marge      = 0;
-        this.niveau     = 0;
+        this.nom         = nom;
+        this.duree       = duree;
+        this.precedents  = precedents;
+        this.suivants    = new ArrayList<TacheMPM>();
+        this.dateTot     = 0;
+        this.dateTard    = 0; 
+        this.marge       = 0;
+        this.niveau      = 0;
+        this.estCritique = false;
     }
 
     public void setSuivants(List<TacheMPM> suivants) 
@@ -49,6 +50,7 @@ public class TacheMPM
     public int            getNiveau    () { return this.niveau    ; }
     public List<TacheMPM> getPrecedents() { return this.precedents; }
     public List<TacheMPM> getSuivants  () { return this.suivants  ; }
+    public boolean        EstCritique  () { return this.estCritique; }
 
     // Setters
     public void setDateTot (int dateTot)  { this.dateTot  = dateTot ; }
