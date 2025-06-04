@@ -218,90 +218,105 @@ public class GrapheMPM
     public void calculNiveauTaches() 
     {
         for (TacheMPM tache : taches) 
-        {
             tache.setNiveau(0);
-        }
         
         for (TacheMPM tache : taches) 
         {
             for (TacheMPM predecesseur : tache.getPrecedents()) 
             {
                 if (predecesseur.getNiveau() + 1 > tache.getNiveau()) 
-                {
                     tache.setNiveau(predecesseur.getNiveau() + 1);
-                    
-                }
             }
-                this.niveaux[tache.getNiveau()] += 1;
+            this.niveaux[tache.getNiveau()] += 1;
         }
 
     }
 
-    public int getNiveauTache (TacheMPM tache) 
+    public int   getNiveauTache (TacheMPM tache) { return tache.getNiveau(); }
+    public int[] getNiveaux     ()               { return niveaux;           }
+
+    public void initCheminCritique() 
     {
-        return tache.getNiveau();
-    }
+        TacheMPM fin   = this.taches.get(this.taches.size() - 1);
+        TacheMPM debut = this.taches.get(0);
 
-    public int[] getNiveaux() { return niveaux; }
-
-     public void initCheminCritique() {
-        TacheMPM fin = this.taches.get(this.taches.size() - 1);
-        List<TacheMPM> precedentsCritiques = new ArrayList<>();
+        List<List<TacheMPM>> tousChemin   = new ArrayList<>();
+        List<TacheMPM>       cheminActuel = new ArrayList<>();
         
-        // Trouver tous les prédécesseurs critiques de la tâche finale
-        for (TacheMPM precedent : fin.getPrecedents()) 
+        // Recherche récursive de tous les chemins critiques
+        this.trouverTousCheminsCritiques(debut, fin, cheminActuel, tousChemin);
+        
+        // Afficher tous les chemins trouvés
+        for (int i = 0; i < tousChemin.size(); i++) 
         {
-            if (precedent.getMarge() == 0 && 
-                precedent.getDateTot() + precedent.getDuree() == fin.getDateTot()) {
-                precedentsCritiques.add(precedent);
-            }
-        }
-        
-        // Afficher un chemin pour chaque prédécesseur critique
-        for (int i = 0; i < precedentsCritiques.size(); i++) {
             System.out.println("=== Chemin critique " + (i + 1) + " ===");
-            afficherCheminDepuis(precedentsCritiques.get(i), fin);
+            afficherChemin(tousChemin.get(i));
             System.out.println();
         }
     }
-
-    private TacheMPM trouverPrecedentCritique(TacheMPM tache) {
-        for (TacheMPM precedent : tache.getPrecedents()) 
+  
+    private void trouverTousCheminsCritiques(TacheMPM actuelle, TacheMPM fin, 
+                                            List<TacheMPM> cheminActuel, 
+                                            List<List<TacheMPM>> tousChemin) 
+    {
+        // Ajouter la tâche actuelle au chemin
+        cheminActuel.add(actuelle);
+        
+        // Si on atteint la fin, vérifier si le chemin est critique
+        if (actuelle.equals(fin)) 
         {
-            if (precedent.getMarge() == 0 && 
-                precedent.getDateTot() + precedent.getDuree() == tache.getDateTot()) 
-                {
-                return precedent;
-            }
+            if (estCheminCritique(cheminActuel))
+                tousChemin.add(new ArrayList<>(cheminActuel));
+        } 
+        else 
+        {
+
+            // Continuer avec les successeurs critiques
+            for (TacheMPM successeur : getSuccesseurs(actuelle))
+                if (estLienCritique(actuelle, successeur))
+                    trouverTousCheminsCritiques(successeur, fin, cheminActuel, tousChemin);
         }
-        return null;
+        
+        cheminActuel.remove(cheminActuel.size() - 1);
     }
 
-    private void afficherCheminDepuis(TacheMPM debut, TacheMPM fin) {
-        List<TacheMPM> chemin = new ArrayList<>();
-        TacheMPM actuelle = debut;
+    private boolean estLienCritique(TacheMPM precedent, TacheMPM successeur) 
+    {
+        // Un lien est critique si les deux tâches ont une marge de 0
+        // et si les dates sont cohérentes
+        return precedent.getMarge  () == 0 && successeur.getMarge() == 0 &&
+               precedent.getDateTot() + precedent.getDuree() == successeur.getDateTot();
+    }
+
+    private boolean estCheminCritique(List<TacheMPM> chemin) 
+    {
+        // Un chemin est critique si toutes ses tâches ont une marge de 0
+        for (TacheMPM tache : chemin) if (tache.getMarge() != 0)return false;
+        return true;
+    }
+
+    private void afficherChemin(List<TacheMPM> chemin) 
+    {
         CheminCritique cheminCritique = new CheminCritique();
         
-        while (actuelle != null) 
+        for (TacheMPM tache : chemin) 
         {
-            chemin.add(actuelle);
-            actuelle = trouverPrecedentCritique(actuelle);
-        }
-        
-        // Afficher en ordre inverse + ajouter la tâche finale
-        for (int i = chemin.size() - 1; i >= 0; i--) 
-        {
-           chemin.get(i).getNom();
-            cheminCritique.ajouterTache(chemin.get(i));
-        }
-        cheminCritique.ajouterTache(fin);
-        this.lstChemins.add(cheminCritique);
-        for (TacheMPM tache : cheminCritique.getListTache()) 
-        {
+            cheminCritique.ajouterTache(tache);
             System.out.print(tache.getNom() + " -> ");
         }
+        
+        this.lstChemins.add(cheminCritique);
     }
-  
+
+    private List<TacheMPM> getSuccesseurs(TacheMPM tache) 
+    {
+        List<TacheMPM> successeurs = new ArrayList<>();
+        
+        for (TacheMPM autreTache : this.taches)
+            if (autreTache.getPrecedents().contains(tache)) successeurs.add(autreTache);
+        
+        return successeurs;
+    }
 
     public ArrayList<TacheMPM> getTaches  () { return taches  ; }
     public String              getDateRef () { return dateRef ; }
