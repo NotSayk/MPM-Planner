@@ -56,8 +56,9 @@ public class Controleur
         this.frameModification.setVisible(true);
     }
 
-    public void   resetPositions() { this.frameMPM.resetPositions(); this.frameMPM.repaint(); }
-
+    public void   resetPositions   () { this.frameMPM.resetPositions(); this.frameMPM.repaint(); }
+    
+    public void   sauvegarder      () { this.fichier.sauvegarder();                            }
 
     public List<TacheMPM> getTaches() { return this.fichier.getLstTacheMPMs();                 }
     public String getDateDuJour    () { return DateUtils.getDateDuJour   ();                   }
