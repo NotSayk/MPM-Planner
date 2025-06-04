@@ -64,11 +64,6 @@ public class GrilleDonneesModel extends AbstractTableModel
 	public Object getValueAt    (int row, int col) { return this.tabDonnees[row][col];   }
 	public Class  getColumnClass(int c)            { return getValueAt(0, c).getClass(); }
 
-	public boolean isCellEditable(int row, int col)
-	{
-		return col == 2;
-	}
-
 	/*public void setValueAt(Object value, int row, int col)
 	{
 		boolean bRet;
