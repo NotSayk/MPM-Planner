@@ -128,4 +128,6 @@ public class Controleur
 
     public FrameMPM       getFrameMPM() { return this.frameMPM;                                   }
 
+    public Fichier          getFichier  () { return this.fichier;                                    }
+
 }

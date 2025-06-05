@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 import src.Ihm.PanelMPM;
 import src.utils.ErrorUtils;
 
@@ -234,6 +235,52 @@ public class Fichier
             }
         }
         return null;
+    }
+
+   public void supprimerTacheFichier(TacheMPM tacheSuppr) {
+    List<TacheMPM> precedents = new ArrayList<>(tacheSuppr.getPrecedents());
+    List<TacheMPM> suivants = new ArrayList<>(tacheSuppr.getSuivants());
+    
+    this.lstTacheMPMs.removeIf(tache -> tache.getNom().equals(tacheSuppr.getNom()));
+    
+    this.lierPrecedentsSuivants(tacheSuppr, precedents, suivants);
+    
+    this.etablirRelationsSuivants();
+    
+    // Sauvegarder les modifications
+    this.sauvegarder();
+    
+    // Recharger complètement à partir du fichier pour garantir la cohérence
+    this.initTache(this.nomFichier);
+    
+    // Recalculer toutes les données du graphe MPM
+    this.graphe.calculerDates();
+    this.graphe.initCheminCritique();
+    this.graphe.initNiveauTaches();
+    }
+
+    private void lierPrecedentsSuivants(TacheMPM tacheSuppr, List<TacheMPM> precedents, List<TacheMPM> suivants) {
+        for (TacheMPM precedent : tacheSuppr.getPrecedents()) {
+            TacheMPM precedentActuel = trouverTache(precedent.getNom());
+            if (precedentActuel != null) {
+                for (TacheMPM suivant : tacheSuppr.getSuivants()) {
+                    if (!precedentActuel.getSuivants().contains(suivant)) {
+                        precedentActuel.getSuivants().add(suivant);
+                    }
+                }
+            }
+        }
+        
+        for (TacheMPM suivant : tacheSuppr.getSuivants()) {
+            TacheMPM suivantActuel = trouverTache(suivant.getNom());
+            if (suivantActuel != null) {
+                for (TacheMPM precedent : tacheSuppr.getPrecedents()) {
+                    if (!suivantActuel.getPrecedents().contains(precedent)) {
+                        suivantActuel.getPrecedents().add(precedent);
+                    }
+                }
+            }
+        }
     }
 
     // Getters

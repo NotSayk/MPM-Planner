@@ -347,15 +347,40 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     @Override
     public void mousePressed(MouseEvent e) 
     {
-        entiteSelectionnee = trouverEntiteAuPoint(e.getX(), e.getY());
-        if (entiteSelectionnee != null) 
-        {
-            offsetX = e.getX() - entiteSelectionnee.getX();
-            offsetY = e.getY() - entiteSelectionnee.getY();
-            popup.setVisible(false);
+         if (e.getButton() == MouseEvent.BUTTON1) {
+            entiteSelectionnee = trouverEntiteAuPoint(e.getX(), e.getY());
+            if (entiteSelectionnee != null) 
+            {
+                offsetX = e.getX() - entiteSelectionnee.getX();
+                offsetY = e.getY() - entiteSelectionnee.getY();
+                popup.setVisible(false);
+            }
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            entiteSelectionnee = trouverEntiteAuPoint(e.getX(), e.getY());
+            if (entiteSelectionnee == null) 
+            {
+                return;  
+            }
+            if (entiteSelectionnee.getTache().getNom().equals("DEBUT") || entiteSelectionnee.getTache().getNom().equals("FIN")) 
+            {
+                return;
+            }
+            supprimerTache(entiteSelectionnee.getTache());
         }
     }
     
+    private void supprimerTache(TacheMPM tache) 
+    {
+        this.ctrl.getFichier().supprimerTacheFichier(tache);
+        this.initEntites();
+    
+        // Réappliquer le thème et l'affichage du chemin critique
+        this.setTheme(this.getTheme());
+        this.afficherCheminCritique(this.afficher);
+        
+        this.repaint();
+    }
+
     @Override
     public void mouseReleased(MouseEvent e) 
     {
