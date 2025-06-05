@@ -2,6 +2,7 @@ package src.Ihm.composants;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import src.Metier.TacheMPM;
 
 public class Entite 
@@ -11,11 +12,9 @@ public class Entite
 
     private TacheMPM tache;
 
-    private int      x;
-    private int      y;
+    private Point location;
 
-    private int      intialX;
-    private int      initialY;
+    private Point locationInitial;
 
     private int      largeur;
     private int      hauteur;
@@ -25,13 +24,10 @@ public class Entite
     
     public Entite(TacheMPM tache, int x, int y) 
     {
-        this.tache          = tache;
+        this.tache           = tache;
 
-        this.x              = x;
-        this.y              = y;
-        
-        this.intialX        = x;
-        this.initialY       = y;
+        this.location        = new Point(x, y);
+        this.locationInitial = new Point(x, y);
 
         this.largeur        = TAILLE_CASE;
         this.hauteur        = TAILLE_CASE;
@@ -41,10 +37,8 @@ public class Entite
 
     public void setPosition(int x, int y) 
     {
-        this.x = x;
-        this.y = y;
+        this.location.setLocation(x, y);
     }
-
     
     public void setDimensions(int largeur, int hauteur) 
     {
@@ -55,20 +49,23 @@ public class Entite
     public void setCouleurContour (Color couleur) { this.couleurContour = couleur; }
     
     // Getters
-    public TacheMPM getTache () { return this.tache;             }
-    public int getX          () { return this.x;                 }
-    public int getY          () { return this.y;                 }
-    public int getLargeur    () { return this.largeur;           }
-    public int getHauteur    () { return this.hauteur;           }
-    public int getNiveauTache() { return this.tache.getNiveau(); }
+    public TacheMPM getTache      () { return this.tache;             }
+    public Point    getLocation   () { return this.location;          }
+    public int      getX          () { return this.location.x;        }
+    public int      getY          () { return this.location.y;        }
+    public int      getLargeur    () { return this.largeur;           }
+    public int      getHauteur    () { return this.hauteur;           }
+    public int      getNiveauTache() { return this.tache.getNiveau(); }
 
     public void resetPosition() 
     {
-        this.x = intialX;
-        this.y = initialY;
+        this.location.setLocation(this.locationInitial);
     }
 
     public void paint(Graphics g) {
+        int x = this.location.x;
+        int y = this.location.y;
+
         // Dessin du rectangle principal
         g.setColor(this.couleurContour);
         g.drawRect(x, y, largeur, hauteur);
