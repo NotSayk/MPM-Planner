@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import src.Controleur;
+import src.utils.ErrorUtils;
 
 public class PanelModification extends JPanel implements ActionListener
 {
@@ -91,18 +92,18 @@ public class PanelModification extends JPanel implements ActionListener
 						} 
 						catch (NumberFormatException ex) 
 						{
-							System.err.println("Erreur : Durée invalide.");
+							ErrorUtils.showError("La durée doit être un nombre entier.");
 						}
 					} 
 					else 
 					{
-						System.err.println("Erreur : Tâche non sélectionnée.");
+						ErrorUtils.showError("Tache non valide.");
 					}
 				}
 			} 
 			else 
 			{
-				System.err.println("Erreur : Aucune tâche sélectionnée.");
+				ErrorUtils.showError("Aucune tâche sélectionnée.");
 			}
 		}
 	}
