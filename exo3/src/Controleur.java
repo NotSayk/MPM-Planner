@@ -87,6 +87,7 @@ public class Controleur
         if(this.frameModification == null) 
             this.frameModification = new FrameModification(this);
         this.frameModification.setVisible(true);
+        //update la grille de données
     }   
 
     public void cacherModification() 
