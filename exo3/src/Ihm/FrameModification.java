@@ -1,6 +1,8 @@
 package src.Ihm;
 
 import java.awt.Frame;
+import java.util.ResourceBundle.Control;
+
 import javax.swing.JFrame;
 import src.Controleur;
 import src.Metier.GrapheMPM;
@@ -9,13 +11,11 @@ public class FrameModification extends JFrame
 {
     
     private Controleur ctrl;
-    private GrapheMPM graphe;
-    private PanelMPM panelMPM;
+    private PanelModification panelModification;
 
-    public FrameModification(Controleur ctrl, GrapheMPM graphe) 
+    public FrameModification(Controleur ctrl) 
     {
         this.ctrl = ctrl;
-        this.graphe = graphe;
 
         this.setTitle("MPM - Modification du graphe");
         this.setSize(400, 600);
@@ -24,11 +24,17 @@ public class FrameModification extends JFrame
         Frame frameMPM = this.ctrl.getFrameMPM();
         this.setLocation(frameMPM.getX() + frameMPM.getWidth() + 25, frameMPM.getY());
 
-        this.add(new PanelModification(ctrl));
+        this.panelModification = new PanelModification(ctrl);
+        this.add(this.panelModification);
 
         this.setVisible(false);
         
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
+    public void afficherAjout()
+    {
+        this.panelModification.afficherAjout();
+    }
+    
 }
