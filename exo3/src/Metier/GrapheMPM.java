@@ -72,34 +72,7 @@ public class GrapheMPM
         for (TacheMPM tache : this.ctrl.getTaches()) 
             tache.setMarge(tache.getDateTard() - tache.getDateTot() );
     }
-
-    public void initSuivants()
-    {
-        List<TacheMPM> taches = this.ctrl.getTaches();
-        
-        for (TacheMPM tache : taches) 
-        {
-            List<TacheMPM> suivants = new ArrayList<>();
-            String nomTache = tache.getNom();
-            
-            for (TacheMPM autreTache : taches) 
-            {
-                if (autreTache == tache) continue; 
-                
-                List<TacheMPM> precedents = autreTache.getPrecedents();
-                for (TacheMPM precedent : precedents) 
-                {
-                    if (precedent.getNom().equals(nomTache)) 
-                    {
-                        suivants.add(autreTache);
-                        break;
-                    }
-                }
-            }
-            tache.setSuivants(suivants);
-        }
-    }
-
+    
     public void initNiveauTaches() 
     {
         for (TacheMPM tache : ctrl.getTaches()) tache.setNiveau(0);

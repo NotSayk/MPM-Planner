@@ -39,7 +39,7 @@ public class Controleur
         this.graphe.setDateRef   (dateRef) ;
         this.graphe.setTypeDate  (typeDate);
 
-        this.graphe.initSuivants      ();
+        //this.graphe.initSuivants      ();
         this.graphe.calculerDates     ();
         this.graphe.initCheminCritique();
         this.graphe.initNiveauTaches  ();
