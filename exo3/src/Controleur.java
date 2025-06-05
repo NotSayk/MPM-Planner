@@ -85,8 +85,8 @@ public class Controleur
     public void afficherModification()
     {
         if(this.frameModification == null) 
-            this.frameModification = new FrameModification(this, this.graphe);
-        this.frameModification.affiche();
+            this.frameModification = new FrameModification(this);
+        this.frameModification.setVisible(true);
     }   
 
     public void cacherModification() 
@@ -144,8 +144,8 @@ public class Controleur
         return this.frameMPM;
     }
 
-    public FrameModification getFrameModification() 
+    public void afficherAjout() 
     {
-        return this.frameModification;
+         this.frameModification.afficherAjout();
     }
 }

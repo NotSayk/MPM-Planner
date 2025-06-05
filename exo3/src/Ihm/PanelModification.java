@@ -112,4 +112,11 @@ public class PanelModification extends JPanel implements ActionListener
 		}
 	}
 
+	public void afficherAjout() 
+	{
+		
+		this.txtTacheDuree.setText("");
+		this.tblGrilleDonnees.clearSelection();
+	}	
+
 }
