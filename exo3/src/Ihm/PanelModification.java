@@ -20,9 +20,10 @@ public class PanelModification extends JPanel implements ActionListener
 {
 	private Controleur ctrl;
 
-	private JTable     tblGrilleDonnees;
-	private JTextField txtTacheDuree;
-	private JButton    btnMaj;
+	private JTable             tblGrilleDonnees;
+	private GrilleDonneesModel grilleDonneesModel;
+	private JTextField         txtTacheDuree;
+	private JButton            btnMaj;
 
 	public PanelModification (Controleur ctrl)
 	{
@@ -32,7 +33,8 @@ public class PanelModification extends JPanel implements ActionListener
 		JScrollPane spGrilleDonnees;
 		
 		// CrÃƒÂ©ation des composants
-		this.tblGrilleDonnees = new JTable ( new GrilleDonneesModel(ctrl) );
+		this.grilleDonneesModel = new GrilleDonneesModel(ctrl);
+		this.tblGrilleDonnees = new JTable ( this.grilleDonneesModel );
 		this.tblGrilleDonnees.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		this.tblGrilleDonnees.getSelectionModel().addListSelectionListener(e -> {
@@ -88,7 +90,8 @@ public class PanelModification extends JPanel implements ActionListener
 						try 
 						{
 							int duree = Integer.parseInt(dureeStr);
-							ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
+							this.ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
+							this.grilleDonneesModel.refreshTab();
 						} 
 						catch (NumberFormatException ex) 
 						{
