@@ -37,7 +37,17 @@ public class PanelModification extends JPanel implements ActionListener
 		this.tblGrilleDonnees.getSelectionModel().addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
 				int[] selectedRows = this.tblGrilleDonnees.getSelectedRows();
-				System.out.println("Lignes sélectionnées : " + Arrays.toString(selectedRows));
+				if (selectedRows.length == 1) {
+					int selectedRow = selectedRows[0];
+					Object dureeValue = this.tblGrilleDonnees.getValueAt(selectedRow, 1); 
+					if (dureeValue != null) {
+						this.txtTacheDuree.setText(dureeValue.toString());
+					} else {
+						this.txtTacheDuree.setText("");
+					}
+				} else {
+					this.txtTacheDuree.setText("");
+				}
 			}
 		});
 		this.tblGrilleDonnees.setFillsViewportHeight(true);
@@ -64,18 +74,30 @@ public class PanelModification extends JPanel implements ActionListener
     {
         if (e.getSource() == this.btnMaj) 
         {
-			int tacheSelectionnee = this.tblGrilleDonnees.getSelectedRow();
-			if (tacheSelectionnee >= 0) 
+			int[] lignesSelectionnees = this.tblGrilleDonnees.getSelectedRows();
+
+			if (lignesSelectionnees.length >= 1) 
 			{
 				String dureeStr = this.txtTacheDuree.getText();
-				try 
+				for (int i = 0; i < lignesSelectionnees.length; i++) 
 				{
-					int duree = Integer.parseInt(dureeStr);
-					ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
-				} 
-				catch (NumberFormatException ex) 
-				{
-					System.err.println("Erreur : Durée invalide.");
+					int tacheSelectionnee = lignesSelectionnees[i];
+					if (tacheSelectionnee >= 0 && tacheSelectionnee < this.tblGrilleDonnees.getRowCount()) 
+					{
+						try 
+						{
+							int duree = Integer.parseInt(dureeStr);
+							ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
+						} 
+						catch (NumberFormatException ex) 
+						{
+							System.err.println("Erreur : Durée invalide.");
+						}
+					} 
+					else 
+					{
+						System.err.println("Erreur : Tâche non sélectionnée.");
+					}
 				}
 			} 
 			else 
