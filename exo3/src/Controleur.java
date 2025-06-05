@@ -147,6 +147,9 @@ public class Controleur
 
     public void afficherAjout() 
     {
+        if(this.frameModification == null) 
+            this.frameModification = new FrameModification(this);
+        this.frameModification.setVisible(true);
          this.frameModification.afficherAjout();
     }
 }
