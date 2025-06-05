@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import src.Controleur;
+import src.utils.ErrorUtils;
 
 public class PanelPara extends JPanel implements ActionListener
 {   
@@ -88,7 +89,7 @@ public class PanelPara extends JPanel implements ActionListener
             if (!dateRef.matches("\\d{2}/\\d{2}/\\d{4}")) 
             {
                 dateRef = this.ctrl.getDateDuJour(); 
-                System.out.println("Date invalide, réinitialisation à la date du jour : " + dateRef);
+                ErrorUtils.showError("Date invalide, réinitialisation à la date du jour : " + dateRef);
             }
 
             // Appel du contrôleur pour initialiser le projet
