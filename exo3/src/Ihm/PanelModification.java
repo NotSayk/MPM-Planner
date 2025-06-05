@@ -3,12 +3,15 @@ package src.Ihm;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 import src.Controleur;
 
@@ -29,6 +32,14 @@ public class PanelModification extends JPanel implements ActionListener
 		
 		// CrÃƒÂ©ation des composants
 		this.tblGrilleDonnees = new JTable ( new GrilleDonneesModel(ctrl) );
+		this.tblGrilleDonnees.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+		this.tblGrilleDonnees.getSelectionModel().addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				int[] selectedRows = this.tblGrilleDonnees.getSelectedRows();
+				System.out.println("Lignes sélectionnées : " + Arrays.toString(selectedRows));
+			}
+		});
 		this.tblGrilleDonnees.setFillsViewportHeight(true);
 
 		JPanel panelInfo = new JPanel();
