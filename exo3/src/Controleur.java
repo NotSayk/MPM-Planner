@@ -96,16 +96,14 @@ public class Controleur
             this.frameModification.setVisible(false);
     }
 
-    public void changerTheme()
-    {
-        this.frameMPM.changerTheme();
-    }
+    public void changerTheme       () { this.frameMPM.changerTheme(); }
 
-    public void   resetPositions   () { this.frameMPM.resetPositions(); this.frameMPM.repaint(); }
+    public void resetPositions     () { this.frameMPM.resetPositions(); this.frameMPM.repaint(); }
     
-    public void   sauvegarder      () { this.fichier.sauvegarder();                            }
+    public void sauvegarder        () { this.fichier.sauvegarder() ;}
+    public void sauvegarderFichier () { this.fichier.sauvegarderFichier(this.getTheme(), this.isCritique(), this.dateRef, this.frameMPM.getPanelMPM()); }
 
-    public void   mettreAJourDureeTache (int index, int duree) 
+    public void mettreAJourDureeTache (int index, int duree) 
     {
         List<TacheMPM> taches = this.fichier.getLstTacheMPMs();
         if (index >= 0 && index < taches.size()) 
@@ -131,10 +129,7 @@ public class Controleur
     public int    getNiveauTaches (TacheMPM tache)  { return this.graphe.getNiveauTache(tache);}
     public int[]  getNiveauxTaches ()               { return this.graphe.getNiveaux();         }
     public List<Entite> getEntites () { return this.frameMPM.getEntites(); }
-    public String getTheme() 
-    {
-        return this.frameMPM.getTheme();
-    }
+    public String getTheme() { return this.frameMPM.getTheme(); }
     public boolean isCritique() 
     {
         return this.frameMPM.isCritique();

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import src.Ihm.PanelMPM;
+import src.utils.ErrorUtils;
+
 public class Fichier 
 {
 
@@ -103,14 +106,13 @@ public class Fichier
 		catch (Exception e){ e.printStackTrace(); }
 	}
 
-    /*
-    public void sauvegarderFichier()
+    public void sauvegarderFichier(String theme, boolean critique, String dateRef, PanelMPM panelMere)
     {
         try
         {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream("listeTache.MC"), "UTF8" ));
 
-            for (src.Metier.TacheMPM tache:ctrl.getTaches() )
+            for (TacheMPM tache:this.lstTacheMPMs )
             {
                 pw.println ( tache.getNom()                                                                                        + "|" + 
                             tache.getDuree()                                                                                      + "|" + 
@@ -118,25 +120,17 @@ public class Fichier
                             tache.getPrecedents().stream().map(src.Metier.TacheMPM::getNom).toArray(String[]::new)))              + "|" +
                             panelMere.getEntiteParNom(tache.getNom()).getX()                                                      + "|" + 
                             panelMere.getEntiteParNom(tache.getNom()).getY()                                                      + "|" +
-                            (tache.getDateTot()  + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
-                                ctrl.getDateReference().substring(2)                                                      + "|" +
-                            (tache.getDateTard() + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
-                                ctrl.getDateReference().substring(2));
+                            (tache.getDateTot()  + Integer.parseInt(dateRef.substring(0, 2))) +
+                                dateRef.substring(2)                                                      + "|" +
+                            (tache.getDateTard() + Integer.parseInt(dateRef.substring(0, 2))) +
+                                dateRef.substring(2));
             }
-            pw.println(this.ctrl.getTheme());
-            pw.println(this.ctrl.isCritique()+"");
+            pw.println(theme);
+            pw.println(critique);
             pw.close();
 
             ErrorUtils.showSucces("sauvegarde du fichier réussi");
         } catch (Exception exc){ ErrorUtils.showError("erreur lors de la sauvegarde du fichier"); }
-    }*/
-
-    private TacheMPM trouverTache(String nom) 
-    {
-        for (TacheMPM tache : this.lstTacheMPMs) 
-            if (tache.getNom().equals(nom)) 
-                return tache;
-        return null;
     }
 
     public List<TacheMPM> getLstTacheMPMs() { return this.lstTacheMPMs                               ; }
@@ -198,6 +192,14 @@ public class Fichier
         }
         catch (Exception e) { e.printStackTrace(); }
         
+        return null;
+    }
+
+    private TacheMPM trouverTache(String nom) 
+    {
+        for (TacheMPM tache : this.lstTacheMPMs) 
+            if (tache.getNom().equals(nom)) 
+                return tache;
         return null;
     }
 

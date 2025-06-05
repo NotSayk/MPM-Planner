@@ -113,7 +113,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
       if(e.getSource() == this.menuiSauvegarder)
       {
-         
+         this.ctrl.sauvegarderFichier();
       }
 
       if(e.getSource() == this.menuiQuitter)           System.exit(0);
