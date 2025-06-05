@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import src.utils.ErrorUtils;
-
 public class Fichier 
 {
 
@@ -21,8 +19,8 @@ public class Fichier
     {
         this.graphe       = graphe;
         this.lstTacheMPMs = new ArrayList<TacheMPM>();
-        this.initTache(nomFichier);
         this.nomFichier   = nomFichier;
+        this.initTache(nomFichier);
     }
 
 
@@ -47,18 +45,17 @@ public class Fichier
 
                 String[] parties = ligne.split("\\|", -1);
 
-                nom = parties[0];
+                nom   = parties[0];
                 duree = Integer.parseInt(parties[1]);
 
                 if (parties.length > 2 && !parties[2].isEmpty()) precedents = parties[2].split(","); 
-                else precedents = new String[0];
+                else                                             precedents = new String[0];
 
                 List<TacheMPM> tachesPrecedentes = new ArrayList<TacheMPM>();
 
-                for (String precedent : precedents) {
+                for (String precedent : precedents)
                     tachesPrecedentes.add(this.trouverTache(precedent.trim()));
-                }
-                
+
                 TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
                 this.lstTacheMPMs.add(tache);
             }
@@ -74,8 +71,10 @@ public class Fichier
 
     public void modifierTacheFichier(TacheMPM tacheModif) 
     {
-        for (int i = 0; i < this.lstTacheMPMs.size(); i++) {
-            if (this.lstTacheMPMs.get(i).getNom().equals(tacheModif.getNom())) {
+        for (int i = 0; i < this.lstTacheMPMs.size(); i++) 
+        {
+            if (this.lstTacheMPMs.get(i).getNom().equals(tacheModif.getNom())) 
+            {
                 this.lstTacheMPMs.set(i, tacheModif);
                 break;
             }
@@ -142,47 +141,35 @@ public class Fichier
         return null;
     }
 
-    public boolean isCritique()
-    {
-        return getLigne("critique").equals("true");
-    }
-
-    public String getTheme() 
-    {
-        return getLigne("theme");
-    }
+    public boolean isCritique  () { return getLigne("critique").equals("true"); }
+    public String getTheme     () { return getLigne("theme")                           ; }
+    public String getNomFichier() { return this.nomFichier                                 ;  }
 
     public String getLigne(String nom) 
     {
         try {
             Scanner sc = new Scanner(new File(this.nomFichier), "UTF-8");
             String ligneActuelle = "";
-            String ligneAvant = "";
+            String ligneAvant    = "";
             
-            while (sc.hasNextLine()) {
-                ligneAvant = ligneActuelle;
+            while (sc.hasNextLine()) 
+            {
+                ligneAvant    = ligneActuelle;
                 ligneActuelle = sc.nextLine();
             }
             
             sc.close();
             
-            if (nom.equals("theme")) {
-                return ligneAvant;  
-            }
-            else if (nom.equals("critique")) {
-                return ligneActuelle; 
-            } else {
-                return "";
-            }
-        } catch (Exception e) {
+            if      (nom.equals("theme"))    return ligneAvant;  
+            else if (nom.equals("critique")) return ligneActuelle; 
+            else                                      return "";
+        } catch (Exception e) 
+        {
             e.printStackTrace();
             return "";
         }
 
     }
-
-    public String getNomFichier() { return this.nomFichier;  }
-
 
     public int[] getLocation(TacheMPM tache, String fichier)
     {
