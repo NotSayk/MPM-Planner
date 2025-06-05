@@ -13,7 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import java.util.List;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
+import java.awt.GridLayout;
 
 import src.Controleur;
 import src.utils.ErrorUtils;
@@ -26,11 +27,11 @@ public class PanelModification extends JPanel implements ActionListener
 	private JTable             tblGrilleDonnees;
 	private GrilleDonneesModel grilleDonneesModel;
 	private JTextField         txtTacheDuree;
+	private JTextField         txtAjoutDuree;
 	private JButton            btnMaj;
 	private JButton            btnAjout;
 	private JTextField         txtNomTache;
 	private JPanel             panelInfo;
-	private List<JCheckBox>    lstTaches;
 
 	public PanelModification (Controleur ctrl)
 	{
@@ -44,7 +45,6 @@ public class PanelModification extends JPanel implements ActionListener
 		this.tblGrilleDonnees = new JTable ( this.grilleDonneesModel );
 		this.tblGrilleDonnees.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		this.panelInfo = new JPanel();
-		this.lstTaches = new java.util.ArrayList<>();
 
 		this.tblGrilleDonnees.getSelectionModel().addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
@@ -71,7 +71,7 @@ public class PanelModification extends JPanel implements ActionListener
 		this.panelInfo.add(this.txtTacheDuree);
 		this.panelInfo.add(this.btnMaj);
 
- 		spGrilleDonnees   = new JScrollPane( this.tblGrilleDonnees );
+		spGrilleDonnees   = new JScrollPane( this.tblGrilleDonnees );
 
 		this.add ( spGrilleDonnees, BorderLayout.NORTH );
 		this.add ( panelInfo, BorderLayout.SOUTH );
@@ -81,9 +81,9 @@ public class PanelModification extends JPanel implements ActionListener
 	}
 
 	public void actionPerformed(ActionEvent e) 
-    {
-        if (e.getSource() == this.btnMaj) 
-        {
+	{
+		if (e.getSource() == this.btnMaj) 
+		{
 			int[] lignesSelectionnees = this.tblGrilleDonnees.getSelectedRows();
 
 			if (lignesSelectionnees.length >= 1) 
@@ -118,15 +118,18 @@ public class PanelModification extends JPanel implements ActionListener
 				ErrorUtils.showError("Aucune tâche sélectionnée.");
 			}
 		}
-	}
 
+	}
+	
 	public void afficherAjout() 
 	{
 		this.panelInfo.setVisible(false);
 		List<TacheMPM> lstTache = this.ctrl.getTaches();
-		JPanel panelAjout = new JPanel(new BorderLayout());
 		
-		// Create a table model for dependencies
+		// Création du panel principal
+		JPanel panelAjout = new JPanel(new GridLayout(1, 2, 10, 0));
+		
+		// Préparation des données pour les tableaux
 		String[] columnNames = {"Tâche", "Sélectionner"};
 		Object[][] data = new Object[lstTache.size()][2];
 		
@@ -135,37 +138,70 @@ public class PanelModification extends JPanel implements ActionListener
 			data[i][1] = Boolean.FALSE;
 		}
 		
-		// Create a non-editable table except for the checkbox column
-		JTable tableDependencies = new JTable(new javax.swing.table.DefaultTableModel(data, columnNames) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return column == 1; // Only the "Sélectionner" column is editable
-			}
-			
-			@Override
-			public Class<?> getColumnClass(int column) {
-				return column == 1 ? Boolean.class : String.class;
-			}
-		});
+		// Création des modèles de table avec les mêmes caractéristiques
+		DefaultTableModel predModel = creerModeleTable(data, columnNames);
+		DefaultTableModel succModel = creerModeleTable(data, columnNames);
 		
-		tableDependencies.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		JScrollPane scrollPane = new JScrollPane(tableDependencies);
+		// Création des tables
+		JTable tablePredecesseurs = new JTable(predModel);
+		JTable tableSuccesseurs = new JTable(succModel);
 		
+		tablePredecesseurs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tableSuccesseurs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		
+		// Création des panels pour les prédécesseurs et successeurs
+		JPanel panelPredecesseurs = creerPanelAvecTable("Sélectionnez les prédécesseurs :", tablePredecesseurs);
+		JPanel panelSuccesseurs = creerPanelAvecTable("Sélectionnez les successeurs :", tableSuccesseurs);
+		
+		// Assemblage du panel principal
+		panelAjout.add(panelPredecesseurs);
+		panelAjout.add(panelSuccesseurs);
+		
+		// Création du panel des contrôles
 		JPanel panelBottom = new JPanel();
 		this.txtNomTache = new JTextField(10);
+		this.txtAjoutDuree = new JTextField(5);
 		this.btnAjout = new JButton("Ajouter");
 		this.btnAjout.addActionListener(this);
 		
 		panelBottom.add(new JLabel("Nom de la nouvelle tâche :"));
 		panelBottom.add(this.txtNomTache);
+		panelBottom.add(new JLabel("Durée :"));
+		panelBottom.add(this.txtAjoutDuree);
 		panelBottom.add(this.btnAjout);
 		
-		panelAjout.add(new JLabel("Sélectionnez les tâches dépendantes :"), BorderLayout.NORTH);
-		panelAjout.add(scrollPane, BorderLayout.CENTER);
-		panelAjout.add(panelBottom, BorderLayout.SOUTH);
+		// Création et ajout du conteneur final
+		JPanel panelContainer = new JPanel(new BorderLayout());
+		panelContainer.add(panelAjout, BorderLayout.CENTER);
+		panelContainer.add(panelBottom, BorderLayout.SOUTH);
 		
-		this.add(panelAjout, BorderLayout.CENTER);
+		this.add(panelContainer, BorderLayout.CENTER);
 		this.revalidate();
 	}
 
+	// Méthode utilitaire pour créer un modèle de table
+	private DefaultTableModel creerModeleTable(Object[][] data, String[] columnNames) 
+	{
+		return new DefaultTableModel(data, columnNames) 
+		{
+			public boolean isCellEditable(int row, int column) 
+			{
+				return column == 1; // Seule la colonne "Sélectionner" est modifiable
+			}
+			
+			public Class<?> getColumnClass(int column) 
+			{
+				return column == 1 ? Boolean.class : String.class;
+			}
+		};
+	}
+
+	// Méthode utilitaire pour créer un panel avec label et table
+	private JPanel creerPanelAvecTable(String labelText, JTable table) 
+	{
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(new JLabel(labelText), BorderLayout.NORTH);
+		panel.add(new JScrollPane(table), BorderLayout.CENTER);
+		return panel;
+	}
 }
