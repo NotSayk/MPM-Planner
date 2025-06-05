@@ -11,22 +11,23 @@ public class TacheMPM
     private int            dateTot;
     private int            dateTard;
     private int            marge;
-    private List<TacheMPM> precedents;
-    private List<TacheMPM> suivants;
     private int            niveau;
     private boolean        estCritique;
+    private List<TacheMPM> precedents;
+    private List<TacheMPM> suivants;
 
     public TacheMPM(String nom, int duree, List<TacheMPM> precedents) 
     {
         this.nom         = nom;
         this.duree       = duree;
-        this.precedents  = precedents;
-        this.suivants    = new ArrayList<TacheMPM>();
         this.dateTot     = 0;
         this.dateTard    = 0; 
         this.marge       = 0;
         this.niveau      = 0;
         this.estCritique = false;
+
+        this.precedents  = precedents;
+        this.suivants    = new ArrayList<TacheMPM>();
     }
 
     public void setSuivants(List<TacheMPM> suivants) 
