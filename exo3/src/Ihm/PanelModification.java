@@ -14,6 +14,8 @@ import javax.swing.ListSelectionModel;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.awt.GridLayout;
+import javax.swing.SwingUtilities;
+import java.util.ArrayList;
 
 import src.Controleur;
 import src.utils.ErrorUtils;
@@ -132,11 +134,13 @@ public class PanelModification extends JPanel implements ActionListener
 			}
 		}
 
+
+
 	}
-	
+
 	public void afficherAjout() 
 	{
-		this.panelInfo.setVisible(false);
+		/*this.panelInfo.setVisible(false);
 		List<TacheMPM> lstTache = this.ctrl.getTaches();
 		
 		// Création du panel principal
@@ -159,8 +163,28 @@ public class PanelModification extends JPanel implements ActionListener
 		JTable tablePredecesseurs = new JTable(predModel);
 		JTable tableSuccesseurs   = new JTable(succModel);
 		
-		tablePredecesseurs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		tableSuccesseurs.  setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		// Ajout des listeners pour afficher les clics dans la console
+		tablePredecesseurs.getSelectionModel().addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				int selectedRow = tablePredecesseurs.getSelectedRow();
+				if (selectedRow >= 0) {
+					System.out.println("Prédécesseur sélectionné: " + 
+						tablePredecesseurs.getValueAt(selectedRow, 0) + 
+						", Sélectionné: " + tablePredecesseurs.getValueAt(selectedRow, 1));
+				}
+			}
+		});
+		
+		tableSuccesseurs.getSelectionModel().addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				int selectedRow = tableSuccesseurs.getSelectedRow();
+				if (selectedRow >= 0) {
+					System.out.println("Successeur sélectionné: " + 
+						tableSuccesseurs.getValueAt(selectedRow, 0) + 
+						", Sélectionné: " + tableSuccesseurs.getValueAt(selectedRow, 1));
+				}
+			}
+		});
 		
 		// Création des panels pour les prédécesseurs et successeurs
 		JPanel panelPredecesseurs = creerPanelAvecTable("Sélectionnez les prédécesseurs :", tablePredecesseurs);
@@ -218,6 +242,6 @@ public class PanelModification extends JPanel implements ActionListener
 		panel.add(new JLabel(labelText),  BorderLayout.NORTH );
 		panel.add(new JScrollPane(table), BorderLayout.CENTER);
 		
-		return panel;
+		return panel;*/
 	}
 }
