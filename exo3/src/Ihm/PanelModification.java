@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,7 +14,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import src.Controleur;
-import src.utils.ErrorUtils;
 
 public class PanelModification extends JPanel implements ActionListener
 {
@@ -39,7 +37,17 @@ public class PanelModification extends JPanel implements ActionListener
 		this.tblGrilleDonnees.getSelectionModel().addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
 				int[] selectedRows = this.tblGrilleDonnees.getSelectedRows();
-				System.out.println("Lignes sélectionnées : " + Arrays.toString(selectedRows));
+				if (selectedRows.length == 1) {
+					int selectedRow = selectedRows[0];
+					Object dureeValue = this.tblGrilleDonnees.getValueAt(selectedRow, 1); 
+					if (dureeValue != null) {
+						this.txtTacheDuree.setText(dureeValue.toString());
+					} else {
+						this.txtTacheDuree.setText("");
+					}
+				} else {
+					this.txtTacheDuree.setText("");
+				}
 			}
 		});
 		this.tblGrilleDonnees.setFillsViewportHeight(true);
@@ -66,19 +74,30 @@ public class PanelModification extends JPanel implements ActionListener
     {
         if (e.getSource() == this.btnMaj) 
         {
-			int tacheSelectionnee = this.tblGrilleDonnees.getSelectedRow();
-			if (tacheSelectionnee >= 0) 
+			int[] lignesSelectionnees = this.tblGrilleDonnees.getSelectedRows();
+
+			if (lignesSelectionnees.length >= 1) 
 			{
 				String dureeStr = this.txtTacheDuree.getText();
-				try 
+				for (int i = 0; i < lignesSelectionnees.length; i++) 
 				{
-					int duree = Integer.parseInt(dureeStr);
-					ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
-					ErrorUtils.showSucces("La durée de la tâche a été mise à jour avec succès.");
-				} 
-				catch (NumberFormatException ex) 
-				{
-					System.err.println("Erreur : Durée invalide.");
+					int tacheSelectionnee = lignesSelectionnees[i];
+					if (tacheSelectionnee >= 0 && tacheSelectionnee < this.tblGrilleDonnees.getRowCount()) 
+					{
+						try 
+						{
+							int duree = Integer.parseInt(dureeStr);
+							ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
+						} 
+						catch (NumberFormatException ex) 
+						{
+							System.err.println("Erreur : Durée invalide.");
+						}
+					} 
+					else 
+					{
+						System.err.println("Erreur : Tâche non sélectionnée.");
+					}
 				}
 			} 
 			else 
