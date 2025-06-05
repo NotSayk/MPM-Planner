@@ -391,20 +391,33 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     {
         Entite entite = trouverEntiteAuPoint(e.getX(), e.getY());
         
-        if (entite != null) {
-            if (entite != this.dernierEntite) {
+        if (entite != null) 
+        {
+            if (entite != this.dernierEntite) 
+            {
+
+                TacheMPM tache = entite.getTache();
+
+                String anterieur = "";
+                if (!tache.getPrecedents().isEmpty()) {
+                    for (int i = 0; i < tache.getPrecedents().size(); i++) {
+                        anterieur += tache.getPrecedents().get(i).getNom();
+                        if (i < tache.getPrecedents().size() - 1) anterieur += ", ";
+                    }
+                }
+
                 PanelMPM.this.popup.setVisible(false);
                 PanelMPM.this.popup.removeAll();
                 PanelMPM.this.popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
                 PanelMPM.this.popup.add(new JSeparator());
-                PanelMPM.this.popup.add(new JLabel("• Antériorité: " + "z"));
+                PanelMPM.this.popup.add(new JLabel("• Antériorité: " + (anterieur.isEmpty() ? "Aucune" : anterieur)));
                 PanelMPM.this.popup.add(new JLabel("• Date au plus tot: " + DateUtils.ajouterJourDate(DateUtils.getDateDuJour(), entite.getTache().getDateTot()) ));
                 PanelMPM.this.popup.add(new JLabel("• Date au plus tard: " + DateUtils.ajouterJourDate(DateUtils.getDateDuJour(), entite.getTache().getDateTard())));
-                PanelMPM.this.popup.add(new JLabel("• Durée: " + entite.getTache().getDuree()));
+                PanelMPM.this.popup.add(new JLabel("• Durée: "  + tache.getDuree()));
                 PanelMPM.this.popup.add(new JSeparator());
-                PanelMPM.this.popup.add(new JLabel("• Niveau: " + entite.getNiveauTache()));
+                PanelMPM.this.popup.add(new JLabel("• Niveau: " + tache.getNiveau()));
                 PanelMPM.this.popup.add(new JLabel("• Position: (" + entite.getX() + ", " + entite.getY() + ")"));
-                PanelMPM.this.popup.add(new JLabel("• Chemin critique: " + (entite.getTache().estCritique() ? "Oui" : "Non")));
+                PanelMPM.this.popup.add(new JLabel("• Chemin critique: " + (tache.estCritique() ? "Oui" : "Non")));
                 PanelMPM.this.popup.add(new JSeparator());
                 PanelMPM.this.popup.add(new JLabel("Clic droit pour modifier la tâche"));
 
@@ -422,10 +435,9 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
                 PanelMPM.this.popup.setLocation(newX, newY);
                 PanelMPM.this.popup.setVisible(true);
             }
-        } else {
-            if (PanelMPM.this.popup.isVisible()) {
-                PanelMPM.this.popup.setVisible(false);
-            }
+        } else 
+        {
+            if (PanelMPM.this.popup.isVisible()) PanelMPM.this.popup.setVisible(false);
             this.dernierEntite = null;
         }
     }

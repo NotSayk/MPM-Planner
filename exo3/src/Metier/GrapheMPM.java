@@ -72,7 +72,7 @@ public class GrapheMPM
         for (TacheMPM tache : this.ctrl.getTaches()) 
             tache.setMarge(tache.getDateTard() - tache.getDateTot() );
     }
-    
+
     public void initNiveauTaches() 
     {
         for (TacheMPM tache : ctrl.getTaches()) tache.setNiveau(0);
@@ -171,6 +171,8 @@ public class GrapheMPM
         
         return successeurs;
     }
+
+    
 
     public String              getDateRef     ()               { return dateRef          ; }
     public char                getTypeDate    ()               { return typeDate         ; }
