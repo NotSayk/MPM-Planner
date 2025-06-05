@@ -93,11 +93,13 @@ public class PanelModification extends JPanel implements ActionListener
 						catch (NumberFormatException ex) 
 						{
 							ErrorUtils.showError("La durée doit être un nombre entier.");
+							break;
 						}
 					} 
 					else 
 					{
 						ErrorUtils.showError("Tache non valide.");
+						break;
 					}
 				}
 			} 
