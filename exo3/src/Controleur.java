@@ -86,7 +86,7 @@ public class Controleur
     {
         if(this.frameModification == null) 
             this.frameModification = new FrameModification(this, this.graphe);
-        this.frameModification.setVisible(true);
+        this.frameModification.affiche();
     }   
 
     public void cacherModification() 
@@ -142,5 +142,10 @@ public class Controleur
     public FrameMPM getFrameMPM() 
     {
         return this.frameMPM;
+    }
+
+    public FrameModification getFrameModification() 
+    {
+        return this.frameModification;
     }
 }
