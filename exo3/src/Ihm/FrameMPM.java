@@ -25,15 +25,29 @@ public class FrameMPM extends JFrame
         this.setTitle("MPM - Choix des paramètres");
         this.setSize(800, 600);
 
+
         this.setLocationRelativeTo(null);
         this.setLocation(this.getX() - 50, this.getY());
 
-        this.add(this.panelPara);
 
+        this.add(this.panelPara);
+        
+        
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+    
+    
+    public void         setTheme      ( String  theme    ) { this.panelMPM.setTheme      ( theme    ); }
+    public void         setCritique   ( boolean critique ) { this.panelMPM.setCritique   ( critique ); }
+    public void         resetPositions(                  ) { this.panelMPM.resetPositions(          ); }
+    
+    public boolean      isCritique    (                  ) { return this.panelMPM.isCritique( ); }
+    public List<Entite> getEntites    (                  ) { return this.panelMPM.getEntites( ); }
+    public String       getTheme      (                  ) { return this.panelMPM.getTheme  ( ); }
+    public PanelMPM     getPanelMPM   (                  ) { return this.panelMPM;               }
 
+    
     public void changerPanel() 
     {
         this.getContentPane().removeAll();
@@ -43,21 +57,6 @@ public class FrameMPM extends JFrame
         this.repaint();
     }
 
-    public void setTheme(String theme) 
-    {
-        this.panelMPM.setTheme(theme);
-    }
-
-    public void setCritique(boolean critique) 
-    {
-        this.panelMPM.setCritique(critique);
-    }
-
-
-    public void resetPositions() 
-    {
-        this.panelMPM.resetPositions();
-    }
 
     public void changerTheme() 
     {
@@ -72,18 +71,5 @@ public class FrameMPM extends JFrame
         this.repaint();
     }
 
-    public List<Entite> getEntites() { return panelMPM.getEntites(); }
-    public String getTheme() 
-    {
-        return this.panelMPM.getTheme();
-    }
-    public boolean isCritique()
-    {
-        return this.panelMPM.isCritique();
-    }
-
-    public PanelMPM getPanelMPM() 
-    {
-        return this.panelMPM;
-    }
+    
 }

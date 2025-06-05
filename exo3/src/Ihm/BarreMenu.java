@@ -130,7 +130,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
                             panelMere.getEntiteParNom(tache.getNom()).getX()                                                      + "|" + 
                             panelMere.getEntiteParNom(tache.getNom()).getY()                                                      + "|" +
                             (tache.getDateTot()  + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
-                             ctrl.getDateReference().substring(2)                                                      +"|" +
+                             ctrl.getDateReference().substring(2)                                                      + "|" +
                             (tache.getDateTard() + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
                              ctrl.getDateReference().substring(2));
             }
