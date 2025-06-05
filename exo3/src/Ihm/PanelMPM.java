@@ -6,9 +6,9 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
@@ -21,8 +21,12 @@ import src.Metier.GrapheMPM;
 import src.Metier.TacheMPM;
 import src.utils.DateUtils;
 
-public class PanelMPM extends JPanel 
+public class PanelMPM extends JPanel implements MouseListener, MouseMotionListener
 {
+
+    private static final int MARGE = 50;
+    private static final int ESPACEMENT = 120;
+
     private Controleur   ctrl;
 
     private List<Entite> entites;
@@ -39,10 +43,10 @@ public class PanelMPM extends JPanel
     
     private Entite entiteSelectionnee;
     private int    offsetX, offsetY;
+
+    private Entite dernierEntite;
     
     // Constantes pour la disposition
-    private static final int MARGE = 50;
-    private static final int ESPACEMENT = 120;
 
     public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
     {
@@ -65,7 +69,6 @@ public class PanelMPM extends JPanel
         this.add(new JLabel("Graphe MPM"), BorderLayout.NORTH);
 
         this.initEntites();
-        this.ajouterEcouteursSouris();
         this.afficherDateTot() ;
 
         for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
@@ -77,90 +80,9 @@ public class PanelMPM extends JPanel
 
         this.add(this.panelButton, BorderLayout.SOUTH);
         this.add(new BarreMenu(ctrl, this), BorderLayout.NORTH);
-    }
 
-    private void ajouterEcouteursSouris() 
-    {
-        // Écouteur pour les clics de souris
-        this.addMouseListener(new MouseAdapter() 
-        {
-            public void mousePressed(MouseEvent e) 
-            {
-                entiteSelectionnee = trouverEntiteAuPoint(e.getX(), e.getY());
-                if (entiteSelectionnee != null) 
-                {
-                    offsetX = e.getX() - entiteSelectionnee.getX();
-                    offsetY = e.getY() - entiteSelectionnee.getY();
-                    popup.setVisible(false);
-                }
-            }
-            
-            public void mouseReleased(MouseEvent e) 
-            {
-                entiteSelectionnee = null;
-            }
-        });
-        
-        // Écouteur pour les mouvements de souris
-        this.addMouseMotionListener(new MouseMotionAdapter() 
-        {
-            public void mouseDragged(MouseEvent e) 
-            {
-                if (entiteSelectionnee != null) 
-                {
-                    int newX = e.getX() - offsetX;
-                    int newY = e.getY() - offsetY;
-                    entiteSelectionnee.setPosition(newX, newY);
-                    repaint();
-                }
-            }
-        });
-
-         this.addMouseMotionListener(new MouseMotionAdapter() {
-            Entite dernierEntite = null;
-        
-            public void mouseMoved(MouseEvent e) {
-                Entite entite = trouverEntiteAuPoint(e.getX(), e.getY());
-        
-                if (entite != null) {
-                    if (entite != this.dernierEntite) {
-                        PanelMPM.this.popup.setVisible(false);
-                        PanelMPM.this.popup.removeAll();
-                        PanelMPM.this.popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
-                        PanelMPM.this.popup.add(new JSeparator());
-                        PanelMPM.this.popup.add(new JLabel("• Antériorité: " + "z"));
-                        PanelMPM.this.popup.add(new JLabel("• Date au plus tot: " + DateUtils.ajouterJourDate(DateUtils.getDateDuJour(), entite.getTache().getDateTot()) ));
-                        PanelMPM.this.popup.add(new JLabel("• Date au plus tard: " + DateUtils.ajouterJourDate(DateUtils.getDateDuJour(), entite.getTache().getDateTard())));
-                        PanelMPM.this.popup.add(new JLabel("• Durée: " + entite.getTache().getDuree()));
-                        PanelMPM.this.popup.add(new JSeparator());
-                        PanelMPM.this.popup.add(new JLabel("• Niveau: " + entite.getNiveauTache()));
-                        PanelMPM.this.popup.add(new JLabel("• Position: (" + entite.getX() + ", " + entite.getY() + ")"));
-                        PanelMPM.this.popup.add(new JLabel("• Chemin critique: " + (entite.getTache().estCritique() ? "Oui" : "Non")));
-                        PanelMPM.this.popup.add(new JSeparator());
-                        PanelMPM.this.popup.add(new JLabel("Clic droit pour modifier la tâche"));
-
-                        PanelMPM.this.popup.revalidate(); 
-                        PanelMPM.this.popup.pack();
-        
-                        this.dernierEntite = entite;
-        
-                        Point entitePos = new Point(entite.getX(), entite.getY());
-                        Point screenPoint = PanelMPM.this.getLocationOnScreen();
-        
-                        int newX = screenPoint.x + entitePos.x + entite.getLargeur() + 10;
-                        int newY = screenPoint.y + entitePos.y;                        
-        
-                        PanelMPM.this.popup.setLocation(newX, newY);
-                        PanelMPM.this.popup.setVisible(true);
-                    }
-                } else {
-                    if (PanelMPM.this.popup.isVisible()) {
-                        PanelMPM.this.popup.setVisible(false);
-                    }
-                    this.dernierEntite = null;
-                }
-            }
-        });
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
     }
     
     private Entite trouverEntiteAuPoint(int x, int y) 
@@ -415,6 +337,97 @@ public class PanelMPM extends JPanel
         this.afficher = critique;
         this.afficherCheminCritique();
         this.panelButton.setCritiqueButton(!critique);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) 
+    {
+    }
+    
+    @Override
+    public void mousePressed(MouseEvent e) 
+    {
+        entiteSelectionnee = trouverEntiteAuPoint(e.getX(), e.getY());
+        if (entiteSelectionnee != null) 
+        {
+            offsetX = e.getX() - entiteSelectionnee.getX();
+            offsetY = e.getY() - entiteSelectionnee.getY();
+            popup.setVisible(false);
+        }
+    }
+    
+    @Override
+    public void mouseReleased(MouseEvent e) 
+    {
+        entiteSelectionnee = null;
+    }
+    
+    @Override
+    public void mouseEntered(MouseEvent e) 
+    {
+        // Implémentation vide
+    }
+    
+    @Override
+    public void mouseExited(MouseEvent e) 
+    {
+        // Implémentation vide
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) 
+    {
+        if (entiteSelectionnee != null) 
+        {
+            int newX = e.getX() - offsetX;
+            int newY = e.getY() - offsetY;
+            entiteSelectionnee.setPosition(newX, newY);
+            repaint();
+        }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) 
+    {
+        Entite entite = trouverEntiteAuPoint(e.getX(), e.getY());
+        
+        if (entite != null) {
+            if (entite != this.dernierEntite) {
+                PanelMPM.this.popup.setVisible(false);
+                PanelMPM.this.popup.removeAll();
+                PanelMPM.this.popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
+                PanelMPM.this.popup.add(new JSeparator());
+                PanelMPM.this.popup.add(new JLabel("• Antériorité: " + "z"));
+                PanelMPM.this.popup.add(new JLabel("• Date au plus tot: " + DateUtils.ajouterJourDate(DateUtils.getDateDuJour(), entite.getTache().getDateTot()) ));
+                PanelMPM.this.popup.add(new JLabel("• Date au plus tard: " + DateUtils.ajouterJourDate(DateUtils.getDateDuJour(), entite.getTache().getDateTard())));
+                PanelMPM.this.popup.add(new JLabel("• Durée: " + entite.getTache().getDuree()));
+                PanelMPM.this.popup.add(new JSeparator());
+                PanelMPM.this.popup.add(new JLabel("• Niveau: " + entite.getNiveauTache()));
+                PanelMPM.this.popup.add(new JLabel("• Position: (" + entite.getX() + ", " + entite.getY() + ")"));
+                PanelMPM.this.popup.add(new JLabel("• Chemin critique: " + (entite.getTache().estCritique() ? "Oui" : "Non")));
+                PanelMPM.this.popup.add(new JSeparator());
+                PanelMPM.this.popup.add(new JLabel("Clic droit pour modifier la tâche"));
+
+                PanelMPM.this.popup.revalidate(); 
+                PanelMPM.this.popup.pack();
+
+                this.dernierEntite = entite;
+
+                Point entitePos = new Point(entite.getX(), entite.getY());
+                Point screenPoint = PanelMPM.this.getLocationOnScreen();
+
+                int newX = screenPoint.x + entitePos.x + entite.getLargeur() + 10;
+                int newY = screenPoint.y + entitePos.y;                        
+
+                PanelMPM.this.popup.setLocation(newX, newY);
+                PanelMPM.this.popup.setVisible(true);
+            }
+        } else {
+            if (PanelMPM.this.popup.isVisible()) {
+                PanelMPM.this.popup.setVisible(false);
+            }
+            this.dernierEntite = null;
+        }
     }
 
 }
