@@ -1,6 +1,7 @@
 package src.Ihm.composants;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import src.Metier.TacheMPM;
 
 public class Entite 

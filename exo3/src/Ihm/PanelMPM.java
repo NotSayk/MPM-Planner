@@ -25,20 +25,18 @@ public class PanelMPM extends JPanel
 {
     private Controleur   ctrl;
 
-    private GrapheMPM    graphe;
     private List<Entite> entites;
 
-    private boolean afficherDateTot;
-    private boolean afficherDateTard;
-    private boolean afficher;
+    private boolean      afficherDateTot;
+    private boolean      afficherDateTard;
+    private boolean      afficher;
 
-    private int     numNiveauxTot    = -1;
-    private int     numNiveauxTard;
+    private int          numNiveauxTot;
+    private int          numNiveauxTard;
 
-    private panelButton panelButton;
-    private JPopupMenu popup;
+    private panelButton  panelButton;
+    private JPopupMenu   popup;
     
-    // Variables pour le déplacement
     private Entite entiteSelectionnee;
     private int    offsetX, offsetY;
     
@@ -48,7 +46,6 @@ public class PanelMPM extends JPanel
 
     public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
     {
-        this.graphe           = graphe;
         this.ctrl             = ctrl;
 
         this.afficherDateTot  = false;
@@ -58,6 +55,8 @@ public class PanelMPM extends JPanel
         this.entites          = new ArrayList<>();
         this.popup            = new JPopupMenu();
         this.panelButton      = new panelButton(this.ctrl, this);
+
+        this.numNiveauxTot    = -1;
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
