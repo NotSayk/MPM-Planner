@@ -12,7 +12,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import java.util.List;
-import javax.swing.JCheckBox;
 import javax.swing.table.DefaultTableModel;
 import java.awt.GridLayout;
 
@@ -40,44 +39,58 @@ public class PanelModification extends JPanel implements ActionListener
 
 		JScrollPane spGrilleDonnees;
 		
-		// CrÃƒÂ©ation des composants
-		this.grilleDonneesModel = new GrilleDonneesModel(ctrl);
-		this.tblGrilleDonnees = new JTable ( this.grilleDonneesModel );
+
+		// Création des composants
+		this.grilleDonneesModel = new GrilleDonneesModel( ctrl                    );
+		this.tblGrilleDonnees   = new JTable            ( this.grilleDonneesModel );
+		this.panelInfo          = new JPanel            (                         );
+
 		this.tblGrilleDonnees.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		this.panelInfo = new JPanel();
+
 
 		this.tblGrilleDonnees.getSelectionModel().addListSelectionListener(e -> {
-			if (!e.getValueIsAdjusting()) {
+			if (!e.getValueIsAdjusting())
+			{
 				int[] selectedRows = this.tblGrilleDonnees.getSelectedRows();
-				if (selectedRows.length == 1) {
+
+				if (selectedRows.length == 1)
+				{
 					int selectedRow = selectedRows[0];
-					Object dureeValue = this.tblGrilleDonnees.getValueAt(selectedRow, 1); 
-					if (dureeValue != null) {
+
+					Object dureeValue = this.tblGrilleDonnees.getValueAt(selectedRow, 1);
+					if (dureeValue != null)
+					{
 						this.txtTacheDuree.setText(dureeValue.toString());
-					} else {
+					}
+					else
+					{
 						this.txtTacheDuree.setText("");
 					}
-				} else {
+				}
+				else
+				{
 					this.txtTacheDuree.setText("");
 				}
 			}
 		});
+
 		this.tblGrilleDonnees.setFillsViewportHeight(true);
 
-		JLabel lblDuree  = new JLabel("Durée de la tâche :");
-		this.txtTacheDuree = new JTextField(10);
-		this.btnMaj = new JButton("Mettre à jour");
-		this.panelInfo.add(lblDuree);
-		this.panelInfo.add(this.txtTacheDuree);
-		this.panelInfo.add(this.btnMaj);
+		JLabel lblDuree    = new JLabel    ( "Durée de la tâche :" );
+		this.txtTacheDuree = new JTextField( 10                    );
+		this.btnMaj        = new JButton   ( "Mettre à jour"       );
+
+		this.panelInfo.add( lblDuree          );
+		this.panelInfo.add( this.txtTacheDuree);
+		this.panelInfo.add( this.btnMaj       );
 
 		spGrilleDonnees   = new JScrollPane( this.tblGrilleDonnees );
 
 		this.add ( spGrilleDonnees, BorderLayout.NORTH );
-		this.add ( panelInfo, BorderLayout.SOUTH );
+		this.add ( panelInfo,       BorderLayout.SOUTH );
+
 
 		this.btnMaj.addActionListener(this);
-
 	}
 
 	public void actionPerformed(ActionEvent e) 
@@ -144,31 +157,32 @@ public class PanelModification extends JPanel implements ActionListener
 		
 		// Création des tables
 		JTable tablePredecesseurs = new JTable(predModel);
-		JTable tableSuccesseurs = new JTable(succModel);
+		JTable tableSuccesseurs   = new JTable(succModel);
 		
 		tablePredecesseurs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		tableSuccesseurs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tableSuccesseurs.  setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		
 		// Création des panels pour les prédécesseurs et successeurs
 		JPanel panelPredecesseurs = creerPanelAvecTable("Sélectionnez les prédécesseurs :", tablePredecesseurs);
-		JPanel panelSuccesseurs = creerPanelAvecTable("Sélectionnez les successeurs :", tableSuccesseurs);
+		JPanel panelSuccesseurs   = creerPanelAvecTable("Sélectionnez les successeurs :", tableSuccesseurs);
 		
 		// Assemblage du panel principal
 		panelAjout.add(panelPredecesseurs);
-		panelAjout.add(panelSuccesseurs);
+		panelAjout.add(panelSuccesseurs  );
 		
 		// Création du panel des contrôles
-		JPanel panelBottom = new JPanel();
-		this.txtNomTache = new JTextField(10);
-		this.txtAjoutDuree = new JTextField(5);
-		this.btnAjout = new JButton("Ajouter");
+		JPanel panelBottom = new JPanel    (         );
+		this.txtNomTache   = new JTextField(10       );
+		this.txtAjoutDuree = new JTextField(5        );
+		this.btnAjout      = new JButton   ("Ajouter");
+
 		this.btnAjout.addActionListener(this);
 		
 		panelBottom.add(new JLabel("Nom de la nouvelle tâche :"));
-		panelBottom.add(this.txtNomTache);
-		panelBottom.add(new JLabel("Durée :"));
-		panelBottom.add(this.txtAjoutDuree);
-		panelBottom.add(this.btnAjout);
+		panelBottom.add(this.txtNomTache                        );
+		panelBottom.add(new JLabel("Durée :")                   );
+		panelBottom.add(this.txtAjoutDuree                      );
+		panelBottom.add(this.btnAjout                           );
 		
 		// Création et ajout du conteneur final
 		JPanel panelContainer = new JPanel(new BorderLayout());
@@ -200,8 +214,10 @@ public class PanelModification extends JPanel implements ActionListener
 	private JPanel creerPanelAvecTable(String labelText, JTable table) 
 	{
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(new JLabel(labelText), BorderLayout.NORTH);
+
+		panel.add(new JLabel(labelText),  BorderLayout.NORTH );
 		panel.add(new JScrollPane(table), BorderLayout.CENTER);
+		
 		return panel;
 	}
 }
