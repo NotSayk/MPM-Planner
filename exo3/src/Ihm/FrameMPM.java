@@ -38,14 +38,14 @@ public class FrameMPM extends JFrame
     }
     
     
-    public void         setTheme      ( String  theme    ) { this.panelMPM.setTheme      ( theme    ); }
-    public void         setCritique   ( boolean critique ) { this.panelMPM.setCritique   ( critique ); }
-    public void         resetPositions(                  ) { this.panelMPM.resetPositions(          ); }
+    public void         setTheme      ( String  theme    ) { this.panelMPM.setTheme         ( theme    ); }
+    public void         setCritique   ( boolean critique ) { this.panelMPM.setCritique      ( critique ); }
+    public void         resetPositions(                  ) { this.panelMPM.resetPositions   (          ); }
     
-    public boolean      isCritique    (                  ) { return this.panelMPM.isCritique( ); }
-    public List<Entite> getEntites    (                  ) { return this.panelMPM.getEntites( ); }
-    public String       getTheme      (                  ) { return this.panelMPM.getTheme  ( ); }
-    public PanelMPM     getPanelMPM   (                  ) { return this.panelMPM;               }
+    public boolean      isCritique    (                  ) { return this.panelMPM.isCritique(          ); }
+    public List<Entite> getEntites    (                  ) { return this.panelMPM.getEntites(          ); }
+    public String       getTheme      (                  ) { return this.panelMPM.getTheme  (          ); }
+    public PanelMPM     getPanelMPM   (                  ) { return this.panelMPM                       ; }
 
     
     public void changerPanel() 
