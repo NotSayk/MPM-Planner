@@ -112,20 +112,20 @@ public class Controleur
     }
 
     public String  getDateDuJour     () { return DateUtils.getDateDuJour();                       }
-    public String  getGrapheString   () { return this.graphe.toString();                          }
+    public String  getGrapheString   () { return this.graphe.toString   ();                       }
     public String  getDateReference  () { return this.dateRef;                                    }
-    public String  getTheme          () { return this.frameMPM.getTheme();                        }
+    public String  getTheme          () { return this.frameMPM.getTheme ();                       }
     
     public char    getTypeDate       () { return this.typeDate;                                   }
     public int     getDureeProjet    () { return this.graphe.getDureeProjet();                    }
     public int     getNiveauTaches   (TacheMPM tache) { return this.graphe.getNiveauTache(tache); }
     public int[]   getNiveauxTaches  () { return this.graphe.getNiveaux();                        }
     
-    public List<TacheMPM> getTaches  () { return this.fichier.getLstTacheMPMs();                 }
-    public List<Entite>   getEntites () { return this.frameMPM.getEntites();                     }
+    public List<TacheMPM> getTaches  () { return this.fichier.getLstTacheMPMs();                  }
+    public List<Entite>   getEntites () { return this.frameMPM.getEntites    ();                  }
 
-    public boolean        isCritique () { return this.frameMPM.isCritique();                     }
+    public boolean        isCritique () { return this.frameMPM.isCritique    ();                  }
 
-    public FrameMPM       getFrameMPM() { return this.frameMPM;                                  }
+    public FrameMPM       getFrameMPM() { return this.frameMPM;                                   }
 
 }
