@@ -12,9 +12,9 @@ public class Entite
 
     private TacheMPM tache;
 
-    private Point location;
+    private Point    location;
 
-    private Point locationInitial;
+    private Point    locationInitial;
 
     private int      largeur;
     private int      hauteur;
