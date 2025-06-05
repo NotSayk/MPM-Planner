@@ -53,8 +53,7 @@ public class FrameMPM extends JFrame
         this.getContentPane().removeAll();
         this.panelMPM  = new PanelMPM(this.graphe, this.ctrl);
         this.add(this.panelMPM);
-        this.revalidate();
-        this.repaint();
+        this.maj();
     }
 
 
@@ -62,14 +61,20 @@ public class FrameMPM extends JFrame
     {
         String currentTheme = this.panelMPM.getTheme();
         
-        if (currentTheme.equals("LIGHT")) {
-            this.panelMPM.setTheme("DARK");
-        } else {
-            this.panelMPM.setTheme("LIGHT");
+        switch (currentTheme) {
+            case "LIGHT" -> this.panelMPM.setTheme("DARK");
+            case "DARK"  -> this.panelMPM.setTheme("LIGHT");
+            default      -> throw new AssertionError();
         }
         
-        this.repaint();
+        this.maj();
     }
 
+
+    private void maj() 
+    {
+        this.revalidate();
+        this.repaint();
+    }
     
 }
