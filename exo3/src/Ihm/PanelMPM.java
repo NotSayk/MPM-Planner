@@ -29,7 +29,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
 
     private Controleur   ctrl;
 
-    private List<Entite> entites;
+    private List<Entite> lstEntites;
 
     private boolean      afficherDateTot;
     private boolean      afficherDateTard;
@@ -56,7 +56,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         this.afficherDateTard = false;
         this.afficher         = false;
 
-        this.entites          = new ArrayList<>();
+        this.lstEntites       = new ArrayList<>();
         this.popup            = new JPopupMenu();
         this.panelButton      = new panelButton(this.ctrl, this);
 
@@ -87,7 +87,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     
     private Entite trouverEntiteAuPoint(int x, int y) 
     {
-        for (Entite entite : entites) 
+        for (Entite entite : this.lstEntites) 
         {
             if (x >= entite.getX() && x <= entite.getX() + entite.getLargeur() &&
                 y >= entite.getY() && y <= entite.getY() + entite.getHauteur()) 
@@ -100,7 +100,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     
     private void initEntites() 
     {
-        this.getEntites().clear();
+        this.lstEntites.clear();
 
         List<TacheMPM> taches = this.ctrl.getTaches();
         
@@ -120,7 +120,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
             else             y = MARGE + positionNiveau * ESPACEMENT;
             
             Entite entite = new Entite(tache, x, y);
-            entites.add(entite);
+            this.lstEntites.add(entite);
         }
     }
 
@@ -134,14 +134,14 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     {
         if (!afficher) 
         {
-            for (Entite entite : entites) 
+            for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
             repaint();
             return;
         }
         else
         {
-            for (Entite entite : entites) 
+            for (Entite entite : this.lstEntites) 
             {
                 if (entite.getTache().estCritique()) 
                     entite.setCouleurContour(Color.RED);
@@ -155,7 +155,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         super.paintComponent(g);
         
         // Peindre toutes les entités
-        for (Entite entite : entites)
+        for (Entite entite : this.lstEntites)
         {
             entite.paint(g);
 
@@ -186,7 +186,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     private void dessinerConnexions(Graphics g)
     {
         g.setColor(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
-        for (Entite entite : this.getEntites())
+        for (Entite entite : this.lstEntites)
         {
             TacheMPM tache = entite.getTache();
             // Dessiner les connexions vers les tâches suivantes
@@ -255,26 +255,26 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     
     private Entite getEntiteParTache(TacheMPM tache) 
     {
-        for (Entite entite : entites) 
+        for (Entite entite : this.lstEntites) 
             if (entite.getTache().getNom().equals(tache.getNom())) return entite;
         return null;
     }
     
     public Entite getEntiteParNom(String nomTache) 
     {
-        for (Entite entite : entites) 
+        for (Entite entite : this.lstEntites) 
             if (entite.getTache().getNom().equals(nomTache)) return entite;
         return null;
     }
 
     public void resetPositions() 
     {
-        for (Entite entite : entites) 
+        for (Entite entite : this.lstEntites) 
             entite.resetPosition();
         repaint();
     }
 
-    public List<Entite> getEntites() { return this.entites; }
+    public List<Entite> getEntites() { return this.lstEntites; }
 
     public void afficherDateTot()
     {
@@ -313,14 +313,14 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         if (theme.equals("LIGHT")) 
         {
             this.setBackground(Color.WHITE);
-            for (Entite entite : entites) 
+            for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.BLACK);
             this.afficherCheminCritique();
         } 
         else if (theme.equals("DARK")) 
         {
             this.setBackground(Color.DARK_GRAY);
-            for (Entite entite : entites) 
+            for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.WHITE);
             this.afficherCheminCritique();
         }
