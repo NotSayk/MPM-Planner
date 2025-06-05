@@ -1,10 +1,10 @@
 package src.Ihm;
 
+import java.util.List;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import src.Controleur;
 import src.Metier.TacheMPM;
-import javax.swing.JRadioButton;
-import java.util.List;
 
 
 public class PanelAjout extends JPanel
@@ -14,17 +14,21 @@ public class PanelAjout extends JPanel
     public PanelAjout(Controleur ctrl)
     {
         this.ctrl = ctrl;
+
         this.setLayout(null);
         this.setOpaque(false); 
         // Initialisation des composants
 
-        List<TacheMPM> lstTache =   this.ctrl.getTaches();
+        List<TacheMPM> lstTache = this.ctrl.getTaches();
+        
+        TacheMPM       tache    = null;
+        JRadioButton   rb       = null;
 
         for (int i = 0; i < lstTache.size(); i++) 
         {
-            TacheMPM tache = lstTache.get(i);
-            tache.getNom();
-            JRadioButton rb = new JRadioButton(tache.getNom());
+            tache = lstTache.get(i);
+            rb    = new JRadioButton(tache.getNom());
+
             rb.setBounds(10, 10 + i * 30, 200, 20);
             this.add(rb);
         }
