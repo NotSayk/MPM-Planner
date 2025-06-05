@@ -9,7 +9,6 @@ import src.utils.ErrorUtils;
 public class BarreMenu extends JMenuBar implements ActionListener
 {
    private Controleur    ctrl;
-   private PanelMPM      panelMere;
 
    private JMenuItem     menuiCharger;
    private JMenuItem     menuiSauvegarder;
@@ -19,10 +18,9 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem     menuiSupprimerTache;
    private JMenuItem     menuiChangerDureeTache;
 
-   public BarreMenu(Controleur ctrl, PanelMPM panelMere)
+   public BarreMenu(Controleur ctrl)
    {
       this.ctrl      = ctrl;
-      this.panelMere = panelMere;
 
 
       /*----------------------------*/
@@ -42,8 +40,6 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiSupprimerTache    = new JMenuItem("supprimer une tâche"      );
       this.menuiChangerDureeTache = new JMenuItem("Changer durée d'une tâche");
 
-
-
       /*-------------------------------*/
       /* positionnement des composants */
       /*-------------------------------*/
@@ -58,11 +54,9 @@ public class BarreMenu extends JMenuBar implements ActionListener
       menuEdition.add( this.menuiSupprimerTache    );
       menuEdition.add( this.menuiChangerDureeTache );
 
-
       //rajout des menus
       this.add( menuFichier );
       this.add( menuEdition );
-
 
       /*-------------------------------*/
       /* Activation des composants     */
@@ -102,7 +96,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
             }
             else
             {
-               this.ctrl.initialiserProjet(this.ctrl.getDateReference(),this.ctrl.getTypeDate() , "" + fichierSelectionner);
+               this.ctrl.initProjet(this.ctrl.getDateReference(),this.ctrl.getTypeDate() , "" + fichierSelectionner);
                ErrorUtils.showSucces("chargement d'un fichier de données simple réussi");
             }
 

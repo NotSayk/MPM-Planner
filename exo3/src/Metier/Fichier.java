@@ -59,6 +59,7 @@ public class Fichier
                 for (String precedent : precedents)
                     tachesPrecedentes.add(this.trouverTache(precedent.trim()));
 
+
                 TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
                 this.lstTacheMPMs.add(tache);
             }

@@ -17,7 +17,7 @@ import src.utils.ErrorUtils;
 public class PanelPara extends JPanel implements ActionListener
 {   
 
-    Controleur    ctrl;
+    Controleur   ctrl;
 
     JTextField   txtDateRef;
 
@@ -28,15 +28,16 @@ public class PanelPara extends JPanel implements ActionListener
 
     public PanelPara(Controleur ctrl) 
     {
-        this.setLayout(new BorderLayout());
         this.ctrl = ctrl;
+        
+        this.setLayout(new BorderLayout());
 
-        JPanel panel   = new JPanel( new GridLayout(3,1));
+        JPanel panel     = new JPanel( new GridLayout(3,1));
         
         // Panel référence
-        JPanel panelRef = new JPanel();
-        JLabel labelRef = new JLabel("Date de référence :");
-        this.txtDateRef = new JTextField(this.ctrl.getDateDuJour(), 10);
+        JPanel panelRef  = new JPanel();
+        JLabel labelRef  = new JLabel("Date de référence :");
+        this.txtDateRef  = new JTextField(this.ctrl.getDateDuJour(), 10);
 
         // Panel type de date
         JPanel panelType = new JPanel();
@@ -51,11 +52,10 @@ public class PanelPara extends JPanel implements ActionListener
         btnGroup.add(this.rbDateFin);
 
         // Bouton Valider
-        JPanel panelButton = new JPanel();
-        this.btnValider    = new JButton("Valider");
+        JPanel panelBtn = new JPanel();
+        this.btnValider = new JButton("Valider");
 
         // Ajout des composants au panel
-
         panelRef .add(labelRef);
         panelRef .add(this.txtDateRef);
         
@@ -63,14 +63,14 @@ public class PanelPara extends JPanel implements ActionListener
         panelType.add(this.rbDateDebut);
         panelType.add(this.rbDateFin);
 
-        panelButton.add(this.btnValider, new FlowLayout(FlowLayout.CENTER));
+        panelBtn .add(this.btnValider, new FlowLayout(FlowLayout.CENTER));
 
-        panel.add(panelRef);
+        panel.add(panelRef );
         panel.add(panelType);
-        panel.add(panelButton);
+        panel.add(panelBtn);
 
         this.add(panel, BorderLayout.NORTH);
-
+        
         this.setVisible(true);
 
         // Ajout des écouteurs d'événements
@@ -95,12 +95,8 @@ public class PanelPara extends JPanel implements ActionListener
             }
 
             // Appel du contrôleur pour initialiser le projet
-            this.ctrl.initialiserProjet(dateRef, typeDate, "listeTache.txt");
-
-            //this.ctrl.getCheminCritique();
+            this.ctrl.initProjet(dateRef, typeDate, "listeTache.txt");
         }
     }
 
-
-    
 }

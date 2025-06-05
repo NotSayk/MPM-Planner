@@ -60,14 +60,9 @@ public class PanelModification extends JPanel implements ActionListener
 					int selectedRow = selectedRows[0];
 
 					Object dureeValue = this.tblGrilleDonnees.getValueAt(selectedRow, 1);
-					if (dureeValue != null)
-					{
-						this.txtTacheDuree.setText(dureeValue.toString());
-					}
-					else
-					{
-						this.txtTacheDuree.setText("");
-					}
+
+					if (dureeValue != null) this.txtTacheDuree.setText(dureeValue.toString());
+					else                    this.txtTacheDuree.setText("");
 				}
 				else
 				{

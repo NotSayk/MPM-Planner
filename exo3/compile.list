@@ -7,7 +7,6 @@ src/Metier/TacheMPM.java
 src/Metier/GrapheMPM.java
 src/Metier/CheminCritique.java
 
-src/Ihm/IhmCui.java
 src/Ihm/FrameMPM.java
 src/Ihm/FrameModification.java
 

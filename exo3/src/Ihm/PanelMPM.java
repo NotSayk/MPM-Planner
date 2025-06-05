@@ -75,7 +75,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         
 
         this.add(this.panelButton, BorderLayout.SOUTH);
-        this.add(new BarreMenu(ctrl, this), BorderLayout.NORTH);
+        this.add(new BarreMenu(ctrl), BorderLayout.NORTH);
 
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
@@ -135,7 +135,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         this.afficherCheminCritique();
     }
 
-    public void afficherCheminCritique()
+    private void afficherCheminCritique()
     {
         if (!afficher) 
         {

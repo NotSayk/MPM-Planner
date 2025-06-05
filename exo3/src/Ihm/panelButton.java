@@ -11,13 +11,14 @@ import src.utils.ErrorUtils;
 
 public class panelButton extends JPanel implements ActionListener
 {
+    private Controleur ctrl;
 
     private JButton btnPlusTot;
     private JButton btnPlusTard;
     private JButton btnReset;
     private JButton btnTheme;
-    private Controleur ctrl;
     private JButton btnCritique;
+
     private boolean cheminCritique;
 
     private PanelMPM panelMPM;
@@ -25,12 +26,12 @@ public class panelButton extends JPanel implements ActionListener
 
     public panelButton(Controleur ctrl, PanelMPM panelMPM)
     {
-        this.ctrl = ctrl;
-        this.panelMPM = panelMPM;
-        this.cheminCritique =true;
+        this.ctrl           = ctrl;
+        this.panelMPM       = panelMPM;
+        this.cheminCritique = true;
 
         this.setBackground(new Color(ABORT, 51, 51, 51));
-        this.setLayout(new FlowLayout());
+        this.setLayout    (new FlowLayout());
 
         this.btnPlusTot  = new JButton("+ tôt");
         this.btnPlusTard = new JButton("+ tard");
@@ -57,7 +58,6 @@ public class panelButton extends JPanel implements ActionListener
     {
         if (e.getSource() == this.btnPlusTot) 
         {
-            // Logique pour le bouton "+ tôt"
             panelMPM.afficherDateTot();
             if ( this.panelMPM.estGriseTot() )
             {
@@ -68,19 +68,15 @@ public class panelButton extends JPanel implements ActionListener
         } 
         else if (e.getSource() == this.btnPlusTard) 
         {
-            // Logique pour le bouton "+ tard"
-            panelMPM.afficherDateTard();
-            if(this.panelMPM.estGriseTard())
-            {
-                this.btnPlusTard.setEnabled(false); 
-            }
+            this.panelMPM.afficherDateTard();
+            if(this.panelMPM.estGriseTard()) this.btnPlusTard.setEnabled(false); 
         }
         else if (e.getSource() == this.btnReset) 
         {
-            this.ctrl.resetPositions(); 
+            this.ctrl       .resetPositions(); 
             this.btnPlusTard.setEnabled(false);
-            this.btnPlusTot.setEnabled (true);
-            panelMPM.cacherDates();
+            this.btnPlusTot .setEnabled (true);
+            this.panelMPM.cacherDates();
             ErrorUtils.showInfo("les tâches ont été réinitialisées");
         }
         else if (e.getSource() == this.btnCritique) 
@@ -95,10 +91,6 @@ public class panelButton extends JPanel implements ActionListener
         }
     }
 
-    public void setCritiqueButton(boolean critique) 
-    {
-        System.out.println("setCritiqueButton: " + critique);
-        this.cheminCritique = critique;
-    }
+    public void setCritiqueButton(boolean critique) { this.cheminCritique = critique ; }
 
 }

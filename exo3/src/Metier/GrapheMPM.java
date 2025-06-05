@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.Controleur;
-import src.utils.DateUtils;
 
 public class GrapheMPM
 {
@@ -18,7 +17,7 @@ public class GrapheMPM
     public GrapheMPM(Controleur ctrl)
     {
         this.ctrl       = ctrl;
-        this.niveaux    = new int[100];
+        this.niveaux    = new int[1000];
         this.lstChemins = new ArrayList<CheminCritique>();
     }
 
@@ -49,7 +48,6 @@ public class GrapheMPM
 
     private void initDateTard() 
     {
-
         for (int i = this.ctrl.getTaches().size() - 1; i >= 0; i--) 
         {
             TacheMPM tache = this.ctrl.getTaches().get(i);
@@ -72,30 +70,29 @@ public class GrapheMPM
     private void initMarge()
     {
         for (TacheMPM tache : this.ctrl.getTaches()) 
-        {
-            int dateTot  = tache.getDateTot ();
-            int dateTard = tache.getDateTard();
-            int marge    = dateTard - dateTot ;
-            tache.setMarge(marge);
-        }
+            tache.setMarge(tache.getDateTard() - tache.getDateTot() );
     }
 
     public void initSuivants()
     {
-        for (TacheMPM tache : this.ctrl.getTaches()) 
+        List<TacheMPM> taches = this.ctrl.getTaches();
+        
+        for (TacheMPM tache : taches) 
         {
             List<TacheMPM> suivants = new ArrayList<>();
-            for (TacheMPM autreTache : this.ctrl.getTaches()) 
+            String nomTache = tache.getNom();
+            
+            for (TacheMPM autreTache : taches) 
             {
-                if (autreTache != tache) 
+                if (autreTache == tache) continue; 
+                
+                List<TacheMPM> precedents = autreTache.getPrecedents();
+                for (TacheMPM precedent : precedents) 
                 {
-                    for (TacheMPM precedent : autreTache.getPrecedents()) 
+                    if (precedent.getNom().equals(nomTache)) 
                     {
-                        if (precedent.getNom().equals(tache.getNom())) 
-                        {
-                            suivants.add(autreTache);
-                            break;
-                        }
+                        suivants.add(autreTache);
+                        break;
                     }
                 }
             }
@@ -105,16 +102,12 @@ public class GrapheMPM
 
     public void initNiveauTaches() 
     {
-        for (TacheMPM tache : ctrl.getTaches()) 
-            tache.setNiveau(0);
+        for (TacheMPM tache : ctrl.getTaches()) tache.setNiveau(0);
         
         for (TacheMPM tache : ctrl.getTaches()) 
         {
             for (TacheMPM predecesseur : tache.getPrecedents()) 
-            {
-                if (predecesseur.getNiveau() + 1 > tache.getNiveau()) 
-                    tache.setNiveau(predecesseur.getNiveau() + 1);
-            }
+                if (predecesseur.getNiveau() + 1 > tache.getNiveau()) tache.setNiveau(predecesseur.getNiveau() + 1);
             this.niveaux[tache.getNiveau()] += 1;
         }
 
@@ -144,18 +137,6 @@ public class GrapheMPM
         return dureeMax;
     }
 
-    public String getDateProjet(char typeDemande) 
-    {
-        int dureeProjet = getDureeProjet();
-        if (typeDemande == 'F') 
-            return "Date de fin du projet : "   + DateUtils.ajouterJourDate(this.dateRef, dureeProjet) ;
-        else                    
-            return "Date de début du projet : " + DateUtils.ajouterJourDate(this.dateRef, -dureeProjet);
-    }
-
-    public int   getNiveauTache (TacheMPM tache) { return tache.getNiveau(); }
-    public int[] getNiveaux     ()               { return niveaux;           }
-
     public void initCheminCritique() 
     {
         TacheMPM fin   = this.ctrl.getTaches().get(this.ctrl.getTaches().size() - 1);
@@ -168,12 +149,7 @@ public class GrapheMPM
         this.trouverTousCheminsCritiques(debut, fin, cheminActuel, tousChemin);
         
         // Afficher tous les chemins trouvés
-        for (int i = 0; i < tousChemin.size(); i++) 
-        {
-            System.out.println("=== Chemin critique " + (i + 1) + " ===");
-            definirCritique(tousChemin.get(i));
-            System.out.println();
-        }
+        for (int i = 0; i < tousChemin.size(); i++) definirCritique(tousChemin.get(i));
     }
   
     private void trouverTousCheminsCritiques(TacheMPM actuelle, TacheMPM fin, 
@@ -186,34 +162,18 @@ public class GrapheMPM
         // Si on atteint la fin, vérifier si le chemin est critique
         if (actuelle.equals(fin)) 
         {
-            if (estCheminCritique(cheminActuel))
+            if (CheminCritique.estCheminCritique(cheminActuel))
                 tousChemin.add(new ArrayList<>(cheminActuel));
         } 
         else 
         {
-
             // Continuer avec les successeurs critiques
             for (TacheMPM successeur : getSuccesseurs(actuelle))
-                if (estLienCritique(actuelle, successeur))
+                if (CheminCritique.estLienCritique(actuelle, successeur))
                     trouverTousCheminsCritiques(successeur, fin, cheminActuel, tousChemin);
         }
         
         cheminActuel.remove(cheminActuel.size() - 1);
-    }
-
-    private boolean estLienCritique(TacheMPM precedent, TacheMPM successeur) 
-    {
-        // Un lien est critique si les deux tâches ont une marge de 0
-        // et si les dates sont cohérentes
-        return precedent.getMarge  () == 0 && successeur.getMarge() == 0 &&
-               precedent.getDateTot() + precedent.getDuree() == successeur.getDateTot();
-    }
-
-    private boolean estCheminCritique(List<TacheMPM> chemin) 
-    {
-        // Un chemin est critique si toutes ses tâches ont une marge de 0
-        for (TacheMPM tache : chemin) if (tache.getMarge() != 0)return false;
-        return true;
     }
 
     private void definirCritique(List<TacheMPM> chemin) 
@@ -224,7 +184,6 @@ public class GrapheMPM
         {
             cheminCritique.ajouterTache(tache);
             tache.setCritique(true);
-            System.out.print(tache.getNom() + " -> ");
         }
         
         this.lstChemins.add(cheminCritique);
@@ -240,8 +199,10 @@ public class GrapheMPM
         return successeurs;
     }
 
-    public String              getDateRef () { return dateRef ; }
-    public char                getTypeDate() { return typeDate; }
+    public String              getDateRef     ()               { return dateRef          ; }
+    public char                getTypeDate    ()               { return typeDate         ; }
+    public int                 getNiveauTache (TacheMPM tache) { return tache.getNiveau(); }
+    public int[]               getNiveaux     ()               { return niveaux          ; }
     
     public void setDateRef(String dateRef) { this.dateRef = dateRef  ; }
     public void setTypeDate(char typeDate) { this.typeDate = typeDate; }

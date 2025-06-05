@@ -44,6 +44,7 @@ public class Entite
         this.x = x;
         this.y = y;
     }
+
     
     public void setDimensions(int largeur, int hauteur) 
     {
