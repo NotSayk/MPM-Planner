@@ -131,8 +131,6 @@ public class Fichier
         } catch (Exception exc){ ErrorUtils.showError("erreur lors de la sauvegarde du fichier"); }
     }*/
 
-    public List<TacheMPM> getLstTacheMPMs() { return this.lstTacheMPMs; }
-
     private TacheMPM trouverTache(String nom) 
     {
         for (TacheMPM tache : this.lstTacheMPMs) 
@@ -141,9 +139,10 @@ public class Fichier
         return null;
     }
 
-    public boolean isCritique  () { return getLigne("critique").equals("true"); }
-    public String getTheme     () { return getLigne("theme")                           ; }
-    public String getNomFichier() { return this.nomFichier                                 ;  }
+    public List<TacheMPM> getLstTacheMPMs() { return this.lstTacheMPMs                               ; }
+    public boolean isCritique            () { return getLigne("critique").equals("true"); }
+    public String getTheme               () { return getLigne("theme")                           ; }
+    public String getNomFichier          () { return this.nomFichier                                 ; }
 
     public String getLigne(String nom) 
     {
