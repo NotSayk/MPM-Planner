@@ -1,5 +1,4 @@
 package src;
-import java.util.ArrayList;
 import java.util.List;
 import src.Ihm.FrameMPM;
 import src.Ihm.FrameModification;
@@ -26,7 +25,7 @@ public class Controleur
 
     public Controleur() 
     {
-        this.graphe    = new GrapheMPM(this);
+        this.graphe   = new GrapheMPM(this);
         this.frameMPM = new FrameMPM(this, this.graphe);
     }
 
@@ -138,5 +137,10 @@ public class Controleur
     public boolean isCritique() 
     {
         return this.frameMPM.isCritique();
+    }
+
+    public FrameMPM getFrameMPM() 
+    {
+        return this.frameMPM;
     }
 }

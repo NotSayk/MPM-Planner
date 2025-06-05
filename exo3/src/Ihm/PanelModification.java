@@ -74,7 +74,7 @@ public class PanelModification extends JPanel implements ActionListener
 				{
 					int duree = Integer.parseInt(dureeStr);
 					ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
-					ErrorUtils.showConfirmation("La durée de la tâche a été mise à jour avec succès.");
+					ErrorUtils.showSucces("La durée de la tâche a été mise à jour avec succès.");
 				} 
 				catch (NumberFormatException ex) 
 				{

@@ -1,9 +1,7 @@
 package src.Ihm;
 
 import java.util.List;
-
 import javax.swing.JFrame;
-
 import src.Controleur;
 import src.Ihm.composants.Entite;
 import src.Metier.GrapheMPM;
@@ -26,12 +24,13 @@ public class FrameMPM extends JFrame
 
         this.setTitle("MPM - Choix des paramètres");
         this.setSize(800, 600);
+
         this.setLocationRelativeTo(null);
+        this.setLocation(this.getX() - 50, this.getY());
 
         this.add(this.panelPara);
 
         this.setVisible(true);
-        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -81,5 +80,10 @@ public class FrameMPM extends JFrame
     public boolean isCritique()
     {
         return this.panelMPM.isCritique();
+    }
+
+    public PanelMPM getPanelMPM() 
+    {
+        return this.panelMPM;
     }
 }
