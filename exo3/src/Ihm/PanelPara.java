@@ -17,11 +17,13 @@ import src.utils.ErrorUtils;
 public class PanelPara extends JPanel implements ActionListener
 {   
 
-    Controleur ctrl;
+    Controleur    ctrl;
 
     JTextField   txtDateRef;
+
     JRadioButton rbDateDebut;
     JRadioButton rbDateFin;
+
     JButton      btnValider;
 
     public PanelPara(Controleur ctrl) 
@@ -29,8 +31,8 @@ public class PanelPara extends JPanel implements ActionListener
         this.setLayout(new BorderLayout());
         this.ctrl = ctrl;
 
-
-        JPanel panel = new JPanel( new GridLayout(3,1));
+        JPanel panel   = new JPanel( new GridLayout(3,1));
+        
         // Panel référence
         JPanel panelRef = new JPanel();
         JLabel labelRef = new JLabel("Date de référence :");

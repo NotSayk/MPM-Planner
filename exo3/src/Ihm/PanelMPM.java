@@ -28,13 +28,14 @@ public class PanelMPM extends JPanel
     private GrapheMPM    graphe;
     private List<Entite> entites;
 
-    private boolean afficherDateTot  = false;
-    private boolean afficherDateTard = false;
+    private boolean afficherDateTot;
+    private boolean afficherDateTard;
+    private boolean afficher;
+
     private int     numNiveauxTot    = -1;
     private int     numNiveauxTard;
-    private boolean afficher;
-    private panelButton panelButton;
 
+    private panelButton panelButton;
     private JPopupMenu popup;
     
     // Variables pour le déplacement
@@ -47,12 +48,16 @@ public class PanelMPM extends JPanel
 
     public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
     {
-        this.afficher = false;
-        this.graphe  = graphe;
-        this.ctrl    = ctrl;
-        this.entites = new ArrayList<>();
-        this.popup   = new JPopupMenu();
-        this.panelButton = new panelButton(this.ctrl, this);
+        this.graphe           = graphe;
+        this.ctrl             = ctrl;
+
+        this.afficherDateTot  = false;
+        this.afficherDateTard = false;
+        this.afficher         = false;
+
+        this.entites          = new ArrayList<>();
+        this.popup            = new JPopupMenu();
+        this.panelButton      = new panelButton(this.ctrl, this);
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
@@ -72,7 +77,6 @@ public class PanelMPM extends JPanel
         
 
         this.add(this.panelButton, BorderLayout.SOUTH);
-
         this.add(new BarreMenu(ctrl, this), BorderLayout.NORTH);
     }
 
@@ -191,11 +195,8 @@ public class PanelMPM extends JPanel
                 positionNiveau++;
             
             int y;
-            if (niveau == 0) {
-            y = 230;
-            } else {
-            y = MARGE + positionNiveau * ESPACEMENT;
-            }
+            if (niveau == 0) y = 230;
+            else             y = MARGE + positionNiveau * ESPACEMENT;
             
             Entite entite = new Entite(tache, x, y);
             entites.add(entite);
@@ -213,9 +214,7 @@ public class PanelMPM extends JPanel
         if (!afficher) 
         {
             for (Entite entite : entites) 
-            {
                 entite.setCouleurContour(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
-            }
             repaint();
             return;
         }
@@ -224,9 +223,7 @@ public class PanelMPM extends JPanel
             for (Entite entite : entites) 
             {
                 if (entite.getTache().estCritique()) 
-                {
                     entite.setCouleurContour(Color.RED);
-                } 
             }
             repaint();
         }
@@ -396,44 +393,29 @@ public class PanelMPM extends JPanel
         {
             this.setBackground(Color.WHITE);
             for (Entite entite : entites) 
-            {
                 entite.setCouleurContour(Color.BLACK);
-            }
             this.afficherCheminCritique();
         } 
         else if (theme.equals("DARK")) 
         {
             this.setBackground(Color.DARK_GRAY);
             for (Entite entite : entites) 
-            {
                 entite.setCouleurContour(Color.WHITE);
-            }
             this.afficherCheminCritique();
         }
         repaint();
     }
 
-    public boolean estGriseTot () { return this.numNiveauxTot == numNiveauxTard-1; }
-    public boolean estGriseTard() { return this.numNiveauxTard == 0;               }
-    public String getTheme() 
-    {
-        return this.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK";
-    }
-    public boolean isCritique() 
-    {
-        return this.afficher;
-    }
+    public boolean estGriseTot () { return this.numNiveauxTot  == numNiveauxTard-1;                     }
+    public boolean estGriseTard() { return this.numNiveauxTard == 0;                                    }
+    public String  getTheme    () { return this.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK"; }
+    public boolean isCritique  () { return this.afficher;                                               }
 
     public void setCritique(boolean critique) 
     {
         this.afficher = critique;
         this.afficherCheminCritique();
-            this.panelButton.setCritiqueButton(!critique);
-
+        this.panelButton.setCritiqueButton(!critique);
     }
-
-
-
-
 
 }
