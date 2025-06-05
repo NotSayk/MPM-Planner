@@ -39,7 +39,6 @@ public class Controleur
         this.graphe.setDateRef   (dateRef) ;
         this.graphe.setTypeDate  (typeDate);
 
-        //this.graphe.initSuivants      ();
         this.graphe.calculerDates     ();
         this.graphe.initCheminCritique();
         this.graphe.initNiveauTaches  ();
@@ -72,20 +71,18 @@ public class Controleur
 
     public void afficherModification()
     {
-        if(this.frameModification == null) 
-            this.frameModification = new FrameModification(this);
+        if(this.frameModification == null) this.frameModification = new FrameModification(this);
         this.frameModification.setVisible(true);
     }   
 
     public void cacherModification() 
     {
-        if(this.frameModification != null) 
-            this.frameModification.setVisible(false);
+        if(this.frameModification != null) this.frameModification.setVisible(false);
     }
 
-    public void changerTheme       () { this.frameMPM.changerTheme()                                ; }
-    public void resetPositions     () { this.frameMPM.resetPositions(); this.frameMPM.repaint()     ; }
-    public void sauvegarder        () { this.fichier.sauvegarder()                                  ; }
+    public void changerTheme       () { this.frameMPM.changerTheme  ();                               }
+    public void resetPositions     () { this.frameMPM.resetPositions(); this.frameMPM.repaint();      }
+    public void sauvegarder        () { this.fichier.sauvegarder    ();                               }
     public void sauvegarderFichier () { this.fichier.sauvegarderFichier(this.getTheme  (),
                                                                         this.isCritique(),
                                                                         this.dateRef     ,  
@@ -110,7 +107,7 @@ public class Controleur
     
     public void afficherAjout() 
     {
-        afficherModification() ;
+        this.afficherModification() ;
         this.frameModification.afficherAjout();
     }
 
