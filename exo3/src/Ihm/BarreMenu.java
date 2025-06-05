@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.io.File;
 import javax.swing.*;
 import src.Controleur;
+import src.utils.ErrorUtils;
 
 public class BarreMenu extends JMenuBar implements ActionListener
 {
@@ -90,18 +91,22 @@ public class BarreMenu extends JMenuBar implements ActionListener
          File         fichierSelectionner = null;
          JFileChooser selectionFichier    = new JFileChooser();
 
-         if (selectionFichier.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-            fichierSelectionner = selectionFichier.getSelectedFile();
+         try
+         {
+            if (selectionFichier.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+               fichierSelectionner = selectionFichier.getSelectedFile();   
+         }
+         catch (Exception except){}
 
          if(fichierSelectionner.getName().substring(fichierSelectionner.getName().lastIndexOf('.') + 1).equals("MC"))
          {
             this.ctrl.initComplet(this.ctrl.getTypeDate(), "" + fichierSelectionner);
-            System.out.println("chargement d'un fichier complet");
+            ErrorUtils.showSucces("chargement d'un fichier de données complexe réussi");
          }
          else
          {
             this.ctrl.initialiserProjet(this.ctrl.getDateReference(),this.ctrl.getTypeDate() , "" + fichierSelectionner);
-            System.out.println("chargement d'un fichier simple");
+            ErrorUtils.showSucces("chargement d'un fichier de données simple réussi");
          }
       }
 
@@ -129,8 +134,10 @@ public class BarreMenu extends JMenuBar implements ActionListener
             pw.println(this.ctrl.getTheme());
             pw.println(this.ctrl.isCritique()+"");
             pw.close();
+            
+            ErrorUtils.showSucces("sauvegarde du fichier réussi");
          }
-         catch (Exception exc){ exc.printStackTrace(); }
+         catch (Exception exc){ ErrorUtils.showError("erreur lors de la sauvegarde du fichier"); }
       }
 
 
