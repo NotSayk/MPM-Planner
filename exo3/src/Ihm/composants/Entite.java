@@ -6,7 +6,7 @@ import src.Metier.TacheMPM;
 public class Entite 
 {
     private static final int TAILLE_CASE = 70;
-    private static final int DEMI_CASE = TAILLE_CASE / 2;
+    private static final int DEMI_CASE   = TAILLE_CASE / 2;
 
     private TacheMPM tache;
 
