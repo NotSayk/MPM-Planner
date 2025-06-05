@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import src.Controleur;
+import src.utils.ErrorUtils;
 
 public class panelButton extends JPanel implements ActionListener
 {
@@ -80,7 +81,8 @@ public class panelButton extends JPanel implements ActionListener
             this.btnPlusTard.setEnabled(false);
             this.btnPlusTot.setEnabled (true);
             panelMPM.cacherDates();
-        } 
+            ErrorUtils.showInfo("la position des tâches a été réinitialisée");
+        }
         else if (e.getSource() == this.btnCritique) 
         {
             this.panelMPM.afficherCheminCritique(this.cheminCritique);

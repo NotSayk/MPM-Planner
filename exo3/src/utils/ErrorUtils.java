@@ -9,7 +9,7 @@ public class ErrorUtils
     {
         JOptionPane.showMessageDialog(
             null,
-            "Attention, vous allez supprimer une ligne.",
+            message,
             "Avertissement",
             JOptionPane.WARNING_MESSAGE
         );
