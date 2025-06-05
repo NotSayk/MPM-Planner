@@ -61,6 +61,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         this.panelButton      = new panelButton(this.ctrl, this);
 
         this.numNiveauxTot    = -1;
+        this.numNiveauxTard   = 0;
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
@@ -70,12 +71,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
 
         this.initEntites();
         this.afficherDateTot() ;
-
-        for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
-        {
-            if (this.ctrl.getNiveauxTaches()[i] !=  0) this.numNiveauxTard ++;
-            else                                       break;
-        }
+        this.incrementeNiveauxTard();
         
 
         this.add(this.panelButton, BorderLayout.SOUTH);
@@ -85,6 +81,15 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         this.addMouseMotionListener(this);
     }
     
+    private void incrementeNiveauxTard() 
+    {
+        for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
+        {
+            if (this.ctrl.getNiveauxTaches()[i] !=  0) this.numNiveauxTard ++;
+            else                                       break;
+        }
+    }
+
     private Entite trouverEntiteAuPoint(int x, int y) 
     {
         for (Entite entite : this.lstEntites) 
@@ -139,15 +144,10 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
             repaint();
             return;
         }
-        else
-        {
-            for (Entite entite : this.lstEntites) 
-            {
-                if (entite.getTache().estCritique()) 
-                    entite.setCouleurContour(Color.RED);
-            }
-            repaint();
-        }
+        for (Entite entite : this.lstEntites) 
+            if (entite.getTache().estCritique()) 
+                entite.setCouleurContour(Color.RED);
+        repaint();
     }
 
     protected void paintComponent(Graphics g)
