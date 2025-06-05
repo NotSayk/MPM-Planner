@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import src.utils.ErrorUtils;
+
 public class Fichier 
 {
 
     private GrapheMPM      graphe;
     private List<TacheMPM> lstTacheMPMs;
-    String             nomFichier;
+    String                 nomFichier;
     
     public Fichier(GrapheMPM graphe, String nomFichier)
     {
@@ -101,6 +103,34 @@ public class Fichier
 		}
 		catch (Exception e){ e.printStackTrace(); }
 	}
+
+    /*
+    public void sauvegarderFichier()
+    {
+        try
+        {
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream("listeTache.MC"), "UTF8" ));
+
+            for (src.Metier.TacheMPM tache:ctrl.getTaches() )
+            {
+                pw.println ( tache.getNom()                                                                                        + "|" + 
+                            tache.getDuree()                                                                                      + "|" + 
+                            (tache.getPrecedents().isEmpty() ? "" : String.join(",",
+                            tache.getPrecedents().stream().map(src.Metier.TacheMPM::getNom).toArray(String[]::new)))              + "|" +
+                            panelMere.getEntiteParNom(tache.getNom()).getX()                                                      + "|" + 
+                            panelMere.getEntiteParNom(tache.getNom()).getY()                                                      + "|" +
+                            (tache.getDateTot()  + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
+                                ctrl.getDateReference().substring(2)                                                      + "|" +
+                            (tache.getDateTard() + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
+                                ctrl.getDateReference().substring(2));
+            }
+            pw.println(this.ctrl.getTheme());
+            pw.println(this.ctrl.isCritique()+"");
+            pw.close();
+
+            ErrorUtils.showSucces("sauvegarde du fichier réussi");
+        } catch (Exception exc){ ErrorUtils.showError("erreur lors de la sauvegarde du fichier"); }
+    }*/
 
     public List<TacheMPM> getLstTacheMPMs() { return this.lstTacheMPMs; }
 

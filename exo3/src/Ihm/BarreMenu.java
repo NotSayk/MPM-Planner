@@ -1,9 +1,6 @@
 package src.Ihm;
 
 import java.awt.event.*;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.File;
 import javax.swing.*;
 import src.Controleur;
@@ -109,66 +106,22 @@ public class BarreMenu extends JMenuBar implements ActionListener
                ErrorUtils.showSucces("chargement d'un fichier de données simple réussi");
             }
 
-         }
-         catch (Exception exc) { ErrorUtils.showError("erreur durant le chargement du fichier"); }
-         }
+         }catch (Exception exc) { ErrorUtils.showError("erreur durant le chargement du fichier"); }
+      }
 
 
 
       if(e.getSource() == this.menuiSauvegarder)
       {
-         try
-         {
-            PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream("listeTache.MC"), "UTF8" ));
-
-            for (src.Metier.TacheMPM tache:ctrl.getTaches() )
-            {
-               pw.println ( tache.getNom()                                                                                        + "|" + 
-                            tache.getDuree()                                                                                      + "|" + 
-                           (tache.getPrecedents().isEmpty() ? "" : String.join(",",
-                            tache.getPrecedents().stream().map(src.Metier.TacheMPM::getNom).toArray(String[]::new)))              + "|" +
-                            panelMere.getEntiteParNom(tache.getNom()).getX()                                                      + "|" + 
-                            panelMere.getEntiteParNom(tache.getNom()).getY()                                                      + "|" +
-                            (tache.getDateTot()  + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
-                             ctrl.getDateReference().substring(2)                                                      + "|" +
-                            (tache.getDateTard() + Integer.parseInt(ctrl.getDateReference().substring(0, 2))) +
-                             ctrl.getDateReference().substring(2));
-            }
-            pw.println(this.ctrl.getTheme());
-            pw.println(this.ctrl.isCritique()+"");
-            pw.close();
-
-            ErrorUtils.showSucces("sauvegarde du fichier réussi");
-         }
-         catch (Exception exc){ ErrorUtils.showError("erreur lors de la sauvegarde du fichier"); }
+         
       }
 
+      if(e.getSource() == this.menuiQuitter)           System.exit(0);
 
+      if(e.getSource() == this.menuiRajouterTache)     this.ctrl.afficherAjout       ();
 
-      if(e.getSource() == this.menuiQuitter)
-      {
-         System.exit(0);
-      }
+      if(e.getSource() == this.menuiSupprimerTache)    this.ctrl.afficherModification();
 
-
-
-      if(e.getSource() == this.menuiRajouterTache)
-      {
-         this.ctrl.afficherAjout();
-      }
-
-
-
-      if(e.getSource() == this.menuiSupprimerTache)
-      {
-         this.ctrl.afficherModification();
-      }
-
-
-
-      if(e.getSource() == this.menuiChangerDureeTache)
-      {
-         this.ctrl.afficherModification();
-      }
+      if(e.getSource() == this.menuiChangerDureeTache) this.ctrl.afficherModification();
    }
 }
