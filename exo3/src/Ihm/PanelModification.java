@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -14,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import src.Controleur;
+import src.utils.ErrorUtils;
 
 public class PanelModification extends JPanel implements ActionListener
 {
@@ -72,6 +74,7 @@ public class PanelModification extends JPanel implements ActionListener
 				{
 					int duree = Integer.parseInt(dureeStr);
 					ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
+					ErrorUtils.showConfirmation("La durée de la tâche a été mise à jour avec succès.");
 				} 
 				catch (NumberFormatException ex) 
 				{
