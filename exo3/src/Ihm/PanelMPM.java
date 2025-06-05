@@ -315,15 +315,14 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
             this.setBackground(Color.WHITE);
             for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.BLACK);
-            this.afficherCheminCritique();
         } 
         else if (theme.equals("DARK")) 
         {
             this.setBackground(Color.DARK_GRAY);
             for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.WHITE);
-            this.afficherCheminCritique();
         }
+        this.afficherCheminCritique();
         repaint();
     }
 
