@@ -23,6 +23,9 @@ public class PanelModification extends JPanel implements ActionListener
 	private JTable             tblGrilleDonnees;
 	private GrilleDonneesModel grilleDonneesModel;
 	private JTextField         txtTacheDuree;
+	private JTextField		   txtTacheNom;
+
+	private JButton			   btnValider;
 	private JButton            btnMaj;
 	private JPanel             panelInfo;
 
@@ -65,11 +68,17 @@ public class PanelModification extends JPanel implements ActionListener
 
 		this.tblGrilleDonnees.setFillsViewportHeight(true);
 
-		JLabel lblDuree    = new JLabel    ( "Durée de la tâche :" );
+		this.txtTacheNom = new JTextField( 20 );
+		this.btnValider   = new JButton   ( "Valider" );
+
 		this.txtTacheDuree = new JTextField( 10                    );
 		this.btnMaj        = new JButton   ( "Mettre à jour"       );
 
-		this.panelInfo.add( lblDuree          );
+		this.panelInfo.add( new JLabel("Tâche à ajouter :") );
+		this.panelInfo.add( this.txtTacheNom );
+		this.panelInfo.add( this.btnValider );
+
+		this.panelInfo.add( new JLabel    ( "Durée de la tâche :" )          );
 		this.panelInfo.add( this.txtTacheDuree);
 		this.panelInfo.add( this.btnMaj       );
 
@@ -118,6 +127,18 @@ public class PanelModification extends JPanel implements ActionListener
 			else 
 			{
 				ErrorUtils.showError("Aucune tâche sélectionnée.");
+			}
+		}
+		else if (e.getSource() == this.btnValider) 
+		{
+			String nomTache = this.txtTacheNom.getText().trim();
+			if (!nomTache.isEmpty()) 
+			{
+				//à faire
+			} 
+			else 
+			{
+				ErrorUtils.showError("Le nom de la tâche ne peut pas être vide.");
 			}
 		}
 

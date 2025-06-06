@@ -1,15 +1,15 @@
 package src;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import src.Ihm.FrameMPM;
 import src.Ihm.FrameModification;
 import src.Ihm.composants.Entite;
 import src.Metier.Fichier;
 import src.Metier.GrapheMPM;
 import src.Metier.TacheMPM;
-import src.utils.DateUtils;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;   
+import src.utils.DateUtils;   
 
 
 public class Controleur 
@@ -177,6 +177,7 @@ public class Controleur
     public boolean        isCritique () { return this.frameMPM.isCritique    ();                  }
 
     public FrameMPM       getFrameMPM() { return this.frameMPM;                                   }
+    public GrapheMPM getGraphe  () { return this.graphe;                                     }
 
     public Fichier          getFichier  () { return this.fichier;                                    }
 

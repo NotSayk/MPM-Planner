@@ -36,10 +36,12 @@ public class Fichier
 
         this.lstTacheMPMs.clear();
 
-        try {
+        try 
+        {
             scMPM = new Scanner(new File(nomFichier), "UTF-8");
 
-            while (scMPM.hasNextLine()) {
+            while (scMPM.hasNextLine()) 
+            {
                 ligne = scMPM.nextLine().trim();
                 if (ligne.isEmpty()) continue;
 
@@ -48,18 +50,17 @@ public class Fichier
                 nom = parties[0];
                 duree = Integer.parseInt(parties[1]);
 
-                if (parties.length > 2 && !parties[2].isEmpty()) {
+                if (parties.length > 2 && !parties[2].isEmpty()) 
                     precedents = parties[2].split(",");
-                } else {
+                else
                     precedents = new String[0];
-                }
 
                 List<TacheMPM> tachesPrecedentes = new ArrayList<>();
-                for (String precedent : precedents) {
+                for (String precedent : precedents) 
+                {
                     TacheMPM tachePrecedente = this.trouverTache(precedent.trim());
-                    if (tachePrecedente != null) {
+                    if (tachePrecedente != null) 
                         tachesPrecedentes.add(tachePrecedente);
-                    }
                 }
 
                 TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
@@ -70,21 +71,24 @@ public class Fichier
             
             this.etablirRelationsSuivants();
             
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
-    private void etablirRelationsSuivants() {
-        for (TacheMPM tache : this.lstTacheMPMs) {
+    private void etablirRelationsSuivants() 
+    {
+        for (TacheMPM tache : this.lstTacheMPMs) 
+        {
             List<TacheMPM> suivants = new ArrayList<>();
             String nomTache = tache.getNom();
             
-            for (TacheMPM autreTache : this.lstTacheMPMs) {
+            for (TacheMPM autreTache : this.lstTacheMPMs) 
+            {
                 if (autreTache == tache) continue;
                 
-                for (TacheMPM precedent : autreTache.getPrecedents()) {
-                    if (precedent.getNom().equals(nomTache)) {
+                for (TacheMPM precedent : autreTache.getPrecedents()) 
+                {
+                    if (precedent.getNom().equals(nomTache)) 
+                    {
                         suivants.add(autreTache);
                         break;
                     }
@@ -94,15 +98,19 @@ public class Fichier
         }
     }
 
-    public void ajouterTacheFichier(TacheMPM tacheAjout) {
+    public void ajouterTacheFichier(TacheMPM tacheAjout) 
+    {
         this.lstTacheMPMs.add(tacheAjout);
         this.etablirRelationsSuivants();
         this.sauvegarder();
     }
 
-    public void modifierTacheFichier(TacheMPM tacheModif) {
-        for (int i = 0; i < this.lstTacheMPMs.size(); i++) {
-            if (this.lstTacheMPMs.get(i).getNom().equals(tacheModif.getNom())) {
+    public void modifierTacheFichier(TacheMPM tacheModif) 
+    {
+        for (int i = 0; i < this.lstTacheMPMs.size(); i++) 
+        {
+            if (this.lstTacheMPMs.get(i).getNom().equals(tacheModif.getNom())) 
+            {
                 this.lstTacheMPMs.set(i, tacheModif);
                 break;
             }
@@ -111,20 +119,24 @@ public class Fichier
         this.sauvegarder();
     }
 
-    public void sauvegarder() {
-        try {
+    public void sauvegarder() 
+    {
+        try 
+        {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(
                 new FileOutputStream(this.nomFichier), "UTF8"));
 
-            for (TacheMPM tache : this.lstTacheMPMs) {
+            for (TacheMPM tache : this.lstTacheMPMs) 
+            {
                 String precedentsStr = "";
-                if (!tache.getPrecedents().isEmpty()) {
+                if (!tache.getPrecedents().isEmpty()) 
+                {
                     StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < tache.getPrecedents().size(); i++) {
+                    for (int i = 0; i < tache.getPrecedents().size(); i++) 
+                    {
                         sb.append(tache.getPrecedents().get(i).getNom());
-                        if (i < tache.getPrecedents().size() - 1) {
+                        if (i < tache.getPrecedents().size() - 1)
                             sb.append(",");
-                        }
                     }
                     precedentsStr = sb.toString();
                 }
@@ -134,25 +146,27 @@ public class Fichier
                           precedentsStr);
             }
             pw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
-    public void sauvegarderFichier(String theme, boolean critique, String dateRef, PanelMPM panelMere) {
-        try {
+    public void sauvegarderFichier(String theme, boolean critique, String dateRef, PanelMPM panelMere) 
+    {
+        try 
+        {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(
                 new FileOutputStream("listeTache.MC"), "UTF8"));
 
-            for (TacheMPM tache : this.lstTacheMPMs) {
+            for (TacheMPM tache : this.lstTacheMPMs) 
+            {
                 String precedentsStr = "";
-                if (!tache.getPrecedents().isEmpty()) {
+                if (!tache.getPrecedents().isEmpty()) 
+                {
                     StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < tache.getPrecedents().size(); i++) {
+                    for (int i = 0; i < tache.getPrecedents().size(); i++) 
+                    {
                         sb.append(tache.getPrecedents().get(i).getNom());
-                        if (i < tache.getPrecedents().size() - 1) {
+                        if (i < tache.getPrecedents().size() - 1)
                             sb.append(",");
-                        }
                     }
                     precedentsStr = sb.toString();
                 }
@@ -174,22 +188,28 @@ public class Fichier
             pw.close();
 
             ErrorUtils.showSucces("sauvegarde du fichier réussi");
-        } catch (Exception exc) {
+        } 
+        catch (Exception exc) 
+        {
             ErrorUtils.showError("erreur lors de la sauvegarde du fichier");
         }
     }
 
-    public int[] getLocation(TacheMPM tache, String fichier) {
-        try {
+    public int[] getLocation(TacheMPM tache, String fichier) 
+    {
+        try 
+        {
             Scanner scMPM = new Scanner(new File(fichier), "UTF-8");
             
-            while (scMPM.hasNextLine()) {
+            while (scMPM.hasNextLine()) 
+            {
                 String ligne = scMPM.nextLine().trim();
                 if (ligne.isEmpty()) continue;
 
                 String[] parties = ligne.split("\\|", -1);
 
-                if (tache.getNom().equals(parties[0]) && parties.length >= 5) {
+                if (tache.getNom().equals(parties[0]) && parties.length >= 5) 
+                {
                     int[] pos = new int[2];
                     pos[0] = Integer.parseInt(parties[3]);
                     pos[1] = Integer.parseInt(parties[4]);
@@ -198,15 +218,15 @@ public class Fichier
                 }
             }
             scMPM.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace();}
         
         return null;
     }
 
-    public String getLigne(String nom) {
-        try {
+    public String getLigne(String nom) 
+    {
+        try 
+        {
             Scanner sc = new Scanner(new File(this.nomFichier), "UTF-8");
             String ligneActuelle = "";
             String ligneAvant = "";
@@ -222,65 +242,63 @@ public class Fichier
             else if (nom.equals("critique")) return ligneActuelle; 
             else return "";
             
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
+        } catch (Exception e) { e.printStackTrace(); return ""; }
     }
 
-    private TacheMPM trouverTache(String nom) {
-        for (TacheMPM tache : this.lstTacheMPMs) {
-            if (tache.getNom().equals(nom)) {
+    private TacheMPM trouverTache(String nom) 
+    {
+        for (TacheMPM tache : this.lstTacheMPMs) 
+            if (tache.getNom().equals(nom)) 
                 return tache;
-            }
-        }
         return null;
     }
 
 
 
-   public void supprimerTacheFichier(TacheMPM tacheSuppr) {
-    List<TacheMPM> precedents = new ArrayList<>(tacheSuppr.getPrecedents());
-    List<TacheMPM> suivants = new ArrayList<>(tacheSuppr.getSuivants());
-    
-    this.lstTacheMPMs.removeIf(tache -> tache.getNom().equals(tacheSuppr.getNom()));
-    
-    this.lierPrecedentsSuivants(tacheSuppr, precedents, suivants);
-    
-    this.etablirRelationsSuivants();
-    
-    // Sauvegarder les modifications
-    this.sauvegarder();
-    
-    // Recharger complètement à partir du fichier pour garantir la cohérence
-    this.initTache(this.nomFichier);
-    
-    // Recalculer toutes les données du graphe MPM
-    this.graphe.calculerDates();
-    this.graphe.initCheminCritique();
-    this.graphe.initNiveauTaches();
+    public void supprimerTacheFichier(TacheMPM tacheSuppr) 
+    {
+        List<TacheMPM> precedents = new ArrayList<>(tacheSuppr.getPrecedents());
+        List<TacheMPM> suivants = new ArrayList<>(tacheSuppr.getSuivants());
+
+        this.lstTacheMPMs.removeIf(tache -> tache.getNom().equals(tacheSuppr.getNom()));
+
+        this.lierPrecedentsSuivants(tacheSuppr, precedents, suivants);
+
+        this.etablirRelationsSuivants();
+
+        // Sauvegarder les modifications
+        this.sauvegarder();
+
+        // Recharger complètement à partir du fichier pour garantir la cohérence
+        this.initTache(this.nomFichier);
+
+        // Recalculer toutes les données du graphe MPM
+        this.graphe.calculerDates();
+        this.graphe.initCheminCritique();
+        this.graphe.initNiveauTaches();
     }
 
-    private void lierPrecedentsSuivants(TacheMPM tacheSuppr, List<TacheMPM> precedents, List<TacheMPM> suivants) {
-        for (TacheMPM precedent : tacheSuppr.getPrecedents()) {
+    private void lierPrecedentsSuivants(TacheMPM tacheSuppr, List<TacheMPM> precedents, List<TacheMPM> suivants) 
+    {
+        for (TacheMPM precedent : tacheSuppr.getPrecedents()) 
+        {
             TacheMPM precedentActuel = trouverTache(precedent.getNom());
-            if (precedentActuel != null) {
-                for (TacheMPM suivant : tacheSuppr.getSuivants()) {
-                    if (!precedentActuel.getSuivants().contains(suivant)) {
+            if (precedentActuel != null) 
+            {
+                for (TacheMPM suivant : tacheSuppr.getSuivants())
+                    if (!precedentActuel.getSuivants().contains(suivant)) 
                         precedentActuel.getSuivants().add(suivant);
-                    }
-                }
             }
         }
         
-        for (TacheMPM suivant : tacheSuppr.getSuivants()) {
+        for (TacheMPM suivant : tacheSuppr.getSuivants()) 
+        {
             TacheMPM suivantActuel = trouverTache(suivant.getNom());
-            if (suivantActuel != null) {
-                for (TacheMPM precedent : tacheSuppr.getPrecedents()) {
-                    if (!suivantActuel.getPrecedents().contains(precedent)) {
+            if (suivantActuel != null) 
+            {
+                for (TacheMPM precedent : tacheSuppr.getPrecedents())
+                    if (!suivantActuel.getPrecedents().contains(precedent))                         
                         suivantActuel.getPrecedents().add(precedent);
-                    }
-                }
             }
         }
     }
