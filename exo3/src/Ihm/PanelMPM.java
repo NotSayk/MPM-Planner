@@ -45,16 +45,13 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     private int    offsetX, offsetY;
 
     private Entite dernierEntite;
-    
-    // Constantes pour la disposition
 
     public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
     {
         this.ctrl             = ctrl;
-
         this.afficherDateTot  = false;
         this.afficherDateTard = false;
-        this.afficher         = false;
+        this.afficher         = false; // Initialement pas d'affichage du chemin critique
 
         this.lstEntites       = new ArrayList<>();
         this.popup            = new JPopupMenu();
@@ -129,37 +126,41 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         }
     }
 
-    public void afficherCheminCritique(boolean afficher) 
+    public void afficherCheminCritique(boolean aff) 
     {
-        this.afficher = afficher;
-        this.afficherCheminCritique();
+        this.afficher = aff; // Synchroniser l'état interne
+        
+        if (!aff) 
+        {
+            for (Entite entite : this.lstEntites) 
+                entite.setCouleurContour(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
+        }
+        else
+        {
+            for (Entite entite : this.lstEntites) 
+            {
+                if (entite.getTache().estCritique()) 
+                    entite.setCouleurContour(Color.RED);
+                else
+                    entite.setCouleurContour(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
+            }
+        }
+        repaint();
     }
 
     private void afficherCheminCritique()
     {
-        if (!afficher) 
-        {
-            for (Entite entite : this.lstEntites) 
-                entite.setCouleurContour(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
-            repaint();
-            return;
-        }
-        for (Entite entite : this.lstEntites) 
-            if (entite.getTache().estCritique()) 
-                entite.setCouleurContour(Color.RED);
-        repaint();
+        this.afficherCheminCritique(this.afficher);
     }
 
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
         
-        // Peindre toutes les entités
         for (Entite entite : this.lstEntites)
         {
             entite.paint(g);
 
-            // Affichage des dates selon le flag
             if (afficherDateTot) 
             {
                 if (entite.getNiveauTache() <= numNiveauxTot) 
@@ -179,7 +180,6 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
             }
         }
         
-        // Dessiner les connexions entre les tâches
         this.dessinerConnexions(g);
     }
     
@@ -189,22 +189,18 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         for (Entite entite : this.lstEntites)
         {
             TacheMPM tache = entite.getTache();
-            // Dessiner les connexions vers les tâches suivantes
             for (TacheMPM tacheSuivante : tache.getSuivants())
             {
                 Entite entiteSuivante = this.getEntiteParTache(tacheSuivante);
                 if (entiteSuivante == null) continue;
 
-                // Calculer les points de connexion
                 int x1 = entite.getX() + entite.getLargeur();
                 int y1 = entite.getY() + entite.getHauteur() / 2;
                 int x2 = entiteSuivante.getX();
                 int y2 = entiteSuivante.getY() + entiteSuivante.getHauteur() / 2;
                 
-                // Dessiner la ligne
                 g.drawLine(x1, y1, x2, y2);
                 
-                // Calculer le point central de la ligne
                 int xCentre = (x1 + x2) / 2;
                 int yCentre = (y1 + y2) / 2;
                 
@@ -213,21 +209,17 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
                 int largeurTexte = fm.stringWidth(texte);
                 int hauteurTexte = fm.getHeight();
                 
-                // Calculer les coordonnées du rectangle
                 int xRect       = xCentre - largeurTexte / 2 - 2;
                 int yRect       = yCentre - hauteurTexte / 2 - 2;
                 int largeurRect = largeurTexte + 2 * 2;
                 int hauteurRect = hauteurTexte + 2 * 2;
                 
-                // Dessiner le rectangle blanc avec bordure
                 g.setColor(this.getBackground());
                 g.fillRect(xRect, yRect, largeurRect, hauteurRect);
                 g.setColor(this.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
 
-                // Centrer le texte par rapport au point central
                 g.drawString(texte, xCentre - largeurTexte / 2, yCentre + hauteurTexte / 4);
                 
-                // Dessiner la pointe de la flèche
                 dessinerFleche(g, x1, y1, x2, y2);
             }
         }
@@ -334,8 +326,8 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     public void setCritique(boolean critique) 
     {
         this.afficher = critique;
-        this.afficherCheminCritique();
-        this.panelButton.setCritiqueButton(!critique);
+        this.afficherCheminCritique(critique);
+        this.panelButton.setCritiqueButton(critique);
     }
 
     @Override
@@ -434,8 +426,8 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
                 PanelMPM.this.popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
                 PanelMPM.this.popup.add(new JSeparator());
                 PanelMPM.this.popup.add(new JLabel("• Antériorité: " + (anterieur.isEmpty() ? "Aucune" : anterieur)));
-                PanelMPM.this.popup.add(new JLabel("• Date au plus tot: " + DateUtils.ajouterJourDate(DateUtils.getDateDuJour(), entite.getTache().getDateTot()) ));
-                PanelMPM.this.popup.add(new JLabel("• Date au plus tard: " + DateUtils.ajouterJourDate(DateUtils.getDateDuJour(), entite.getTache().getDateTard())));
+                PanelMPM.this.popup.add(new JLabel("• Date au plus tot: " + DateUtils.ajouterJourDate(this.ctrl.getDateReference(), entite.getTache().getDateTot()) ));
+                PanelMPM.this.popup.add(new JLabel("• Date au plus tard: " + DateUtils.ajouterJourDate(this.ctrl.getDateReference(), entite.getTache().getDateTard())));
                 PanelMPM.this.popup.add(new JLabel("• Durée: "  + tache.getDuree()));
                 PanelMPM.this.popup.add(new JSeparator());
                 PanelMPM.this.popup.add(new JLabel("• Niveau: " + tache.getNiveau()));

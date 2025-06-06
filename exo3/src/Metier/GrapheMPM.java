@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.Controleur;
+import src.utils.DateUtils;
 
 public class GrapheMPM
 {
@@ -26,6 +27,14 @@ public class GrapheMPM
         this.initDateTot ();
         this.initDateTard();
         this.initMarge   ();
+    }
+
+    public void setDateFin(String dateFin) 
+    {
+        this.dateRef = DateUtils.ajouterJourDate(dateFin, -this.getDureeProjet());
+        System.out.println("Durée du projet : " + this.getDureeProjet() + " jours");
+        System.out.println("Date de référence mise à jour : " + this.dateRef);
+        this.calculerDates();
     }
 
     private void initDateTot() 

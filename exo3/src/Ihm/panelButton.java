@@ -25,7 +25,7 @@ public class panelButton extends JPanel implements ActionListener {
     public panelButton(Controleur ctrl, PanelMPM panelMPM) {
         this.ctrl = ctrl;
         this.panelMPM = panelMPM;
-        this.cheminCritique = true;
+        this.cheminCritique = false;
         
         this.setBackground(new Color(45, 45, 55));
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 10));
@@ -170,8 +170,8 @@ public class panelButton extends JPanel implements ActionListener {
         else if (e.getSource() == btnCritique) 
         {
             this.cheminCritique = !this.cheminCritique;
-            panelMPM.afficherCheminCritique(cheminCritique);
-            btnCritique.setText(cheminCritique ? "Chemin critique" : "Masquer critique");
+            panelMPM.afficherCheminCritique(this.cheminCritique);
+            btnCritique.setText(this.cheminCritique ? "Masquer critique" : "Chemin critique");
         }
         else if (e.getSource() == btnTheme) 
         {
@@ -200,7 +200,7 @@ public class panelButton extends JPanel implements ActionListener {
     public void setCritiqueButton(boolean critique) 
     { 
         this.cheminCritique = critique;
-        btnCritique.setText(critique ? "Chemin critique" : "Masquer critique");
+        btnCritique.setText(critique ? "Masquer critique" : "Chemin critique");
     }
     
     public void updateTheme(boolean darkMode) {

@@ -44,7 +44,7 @@ public class FrameMPM extends JFrame
     public String       getTheme      (                  ) { return this.panelMPM.getTheme  (          ); }
     public PanelMPM     getPanelMPM   (                  ) { return this.panelMPM                       ; }
 
-    
+  
     public void changerPanel() 
     {
         this.getContentPane().removeAll();

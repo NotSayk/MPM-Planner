@@ -21,7 +21,6 @@ public class Controleur
     private Fichier            fichier;
     private GrapheMPM          graphe;
 
-    private String             dateRef ;
     private char               typeDate;
 
     public static void main(String[] args) { new Controleur(); }
@@ -36,22 +35,29 @@ public class Controleur
     {
         this.fichier  = new Fichier(this.graphe, nomFichier); 
 
-        this.dateRef  = dateRef ;
         this.typeDate = typeDate;
 
         this.graphe.setDateRef   (dateRef) ;
         this.graphe.setTypeDate  (typeDate);
 
         this.graphe.calculerDates     ();
+        if (this.typeDate == 'F') 
+        {
+            this.graphe.setDateFin  (dateRef);
+        } 
+
         this.graphe.initCheminCritique();
         this.graphe.initNiveauTaches  ();
+
+      
+
 
         this.afficherGraphe();
     }
 
     public void initComplet(char typeDate, String nomFichier) 
     {
-        this.initProjet(this.dateRef, typeDate, nomFichier);
+        this.initProjet(this.getDateReference(), typeDate, nomFichier);
 
         this.afficherGraphe();
         this.frameMPM.setTheme   (this.fichier.getTheme  ());
@@ -88,7 +94,7 @@ public class Controleur
     public void sauvegarder        () { this.fichier.sauvegarder    ();                               }
     public void sauvegarderFichier () { this.fichier.sauvegarderFichier(this.getTheme  (),
                                                                         this.isCritique(),
-                                                                        this.dateRef     ,  
+                                                                        this.getDateReference()     ,  
                                                                         this.frameMPM.getPanelMPM()); }
 
     public void mettreAJourDureeTache (int index, int duree) 
@@ -99,7 +105,7 @@ public class Controleur
             TacheMPM tache = taches.get(index);
             tache.setDuree(duree);
             this.fichier.modifierTacheFichier(tache);
-            initProjet(dateRef, typeDate, fichier.getNomFichier());
+            initProjet(this.getDateReference(), typeDate, fichier.getNomFichier());
         } 
         else 
         {
@@ -130,7 +136,7 @@ public class Controleur
         
         // Mettre à jour le graphe et l'interface
         this.fichier.modifierTacheFichier(tache);
-        initProjet(dateRef, typeDate, fichier.getNomFichier());
+        initProjet(this.getDateReference(), typeDate, fichier.getNomFichier());
     }
 
     public void modifierSuivants(TacheMPM tache, String nouveauxSuivants) {
@@ -157,13 +163,13 @@ public class Controleur
         
         // Mettre à jour le graphe et l'interface
         this.fichier.modifierTacheFichier(tache);
-        initProjet(dateRef, typeDate, fichier.getNomFichier());
+        initProjet(this.getDateReference(), typeDate, fichier.getNomFichier());
     }
     
 
     public String  getDateDuJour     () { return DateUtils.getDateDuJour();                       }
     public String  getGrapheString   () { return this.graphe.toString   ();                       }
-    public String  getDateReference  () { return this.dateRef;                                    }
+    public String  getDateReference  () { return this.graphe.getDateRef();                                    }
     public String  getTheme          () { return this.frameMPM.getTheme ();                       }
     
     public char    getTypeDate       () { return this.typeDate;                                   }
