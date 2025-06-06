@@ -373,7 +373,6 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         this.ctrl.getFichier().supprimerTacheFichier(tache);
         this.initEntites();
     
-        // Réappliquer le thème et l'affichage du chemin critique
         this.setTheme(this.getTheme());
         this.afficherCheminCritique(this.afficher);
         
