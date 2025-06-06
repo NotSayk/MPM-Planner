@@ -105,11 +105,6 @@ public class Controleur
     }
 
     
-    public void afficherAjout() 
-    {
-        this.afficherModification() ;
-        this.frameModification.afficherAjout();
-    }
 
     public String  getDateDuJour     () { return DateUtils.getDateDuJour();                       }
     public String  getGrapheString   () { return this.graphe.toString   ();                       }

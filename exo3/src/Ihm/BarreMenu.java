@@ -112,7 +112,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
       if(e.getSource() == this.menuiQuitter)           System.exit(0);
 
-      if(e.getSource() == this.menuiRajouterTache)     this.ctrl.afficherAjout       ();
+      if(e.getSource() == this.menuiRajouterTache)     this.ctrl.afficherModification();
 
       if(e.getSource() == this.menuiSupprimerTache)    this.ctrl.afficherModification();
 

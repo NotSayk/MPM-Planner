@@ -31,7 +31,4 @@ public class FrameModification extends JFrame
         
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
-
-
-    public void afficherAjout() { this.panelModification.afficherAjout(); }
 }
