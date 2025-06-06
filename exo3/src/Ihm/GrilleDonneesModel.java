@@ -6,6 +6,8 @@ import src.Controleur;
 import src.Metier.TacheMPM;
 
 import java.util.List;
+import src.utils.ErrorUtils;
+
 
 public class GrilleDonneesModel extends AbstractTableModel
 {
@@ -70,6 +72,35 @@ public class GrilleDonneesModel extends AbstractTableModel
 		}
 
 		this.fireTableDataChanged();
+	}
+
+	@Override
+	public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        if (columnIndex == 4 || columnIndex == 5) { // Colonnes précédents ou suivants
+            String nouvelleValeur = value.toString().trim();
+            TacheMPM tacheModifiee = ctrl.getTaches().get(rowIndex);
+            
+            try {
+                if (columnIndex == 4) { // Précédents
+                    ctrl.modifierPrecedents(tacheModifiee, nouvelleValeur);
+                } else { // Suivants
+                    ctrl.modifierSuivants(tacheModifiee, nouvelleValeur);
+                }
+                refreshTab();
+            } catch (IllegalArgumentException e) {
+                ErrorUtils.showError(e.getMessage());
+            }
+        }
+    }
+
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex)
+	 {
+		if (columnIndex == 4 && rowIndex == 0) // DEBUT ne peut pas avoir de précédents
+			return false;
+		if (columnIndex == 5 && rowIndex == getRowCount() - 1) // FIN ne peut pas avoir de suivants
+			return false;
+		return columnIndex == 4 || columnIndex == 5;
 	}
 
 }

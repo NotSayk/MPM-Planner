@@ -7,6 +7,9 @@ import src.Metier.Fichier;
 import src.Metier.GrapheMPM;
 import src.Metier.TacheMPM;
 import src.utils.DateUtils;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;   
 
 
 public class Controleur 
@@ -103,7 +106,59 @@ public class Controleur
             System.err.println("Index de tâche invalide : " + index);
         }
     }
+    public void modifierPrecedents(TacheMPM tache, String nouveauxPrecedents) {
+        Set<TacheMPM> nouveauxPrecedentsSet = new HashSet<>();
+        
+        if (!nouveauxPrecedents.isEmpty()) {
+            for (String nomTache : nouveauxPrecedents.split(",")) {
+                TacheMPM precedent = this.graphe.trouverTache(nomTache.trim());
+                if (precedent != null && !precedent.equals(tache)) {
+                    nouveauxPrecedentsSet.add(precedent);
+                }
+            }
+        }
+        
+        // Mettre à jour les relations
+        for (TacheMPM ancienPrecedent : tache.getPrecedents()) {
+            ancienPrecedent.getSuivants().remove(tache);
+        }
+        
+        tache.setPrecedents(new ArrayList<>(nouveauxPrecedentsSet));
+        for (TacheMPM precedent : nouveauxPrecedentsSet) {
+            precedent.getSuivants().add(tache);
+        }
+        
+        // Mettre à jour le graphe et l'interface
+        this.fichier.modifierTacheFichier(tache);
+        initProjet(dateRef, typeDate, fichier.getNomFichier());
+    }
 
+    public void modifierSuivants(TacheMPM tache, String nouveauxSuivants) {
+        Set<TacheMPM> nouveauxSuivantsSet = new HashSet<>();
+        
+        if (!nouveauxSuivants.isEmpty()) {
+            for (String nomTache : nouveauxSuivants.split(",")) {
+                TacheMPM suivant = this.graphe.trouverTache(nomTache.trim());
+                if (suivant != null && !suivant.equals(tache)) {
+                    nouveauxSuivantsSet.add(suivant);
+                }
+            }
+        }
+        
+        // Mettre à jour les relations
+        for (TacheMPM ancienSuivant : tache.getSuivants()) {
+            ancienSuivant.getPrecedents().remove(tache);
+        }
+        
+        tache.setSuivants(new ArrayList<>(nouveauxSuivantsSet));
+        for (TacheMPM suivant : nouveauxSuivantsSet) {
+            suivant.getPrecedents().add(tache);
+        }
+        
+        // Mettre à jour le graphe et l'interface
+        this.fichier.modifierTacheFichier(tache);
+        initProjet(dateRef, typeDate, fichier.getNomFichier());
+    }
     
 
     public String  getDateDuJour     () { return DateUtils.getDateDuJour();                       }

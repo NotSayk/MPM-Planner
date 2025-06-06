@@ -11,15 +11,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
-import java.awt.GridLayout;
-import javax.swing.SwingUtilities;
-import java.util.ArrayList;
+
 
 import src.Controleur;
 import src.utils.ErrorUtils;
-import src.Metier.TacheMPM;
 
 public class PanelModification extends JPanel implements ActionListener
 {
@@ -28,10 +23,7 @@ public class PanelModification extends JPanel implements ActionListener
 	private JTable             tblGrilleDonnees;
 	private GrilleDonneesModel grilleDonneesModel;
 	private JTextField         txtTacheDuree;
-	private JTextField         txtAjoutDuree;
 	private JButton            btnMaj;
-	private JButton            btnAjout;
-	private JTextField         txtNomTache;
 	private JPanel             panelInfo;
 
 	public PanelModification (Controleur ctrl)
