@@ -77,7 +77,7 @@ public class panelButton extends JPanel implements ActionListener
             this.btnPlusTard.setEnabled(false);
             this.btnPlusTot .setEnabled (true);
             this.panelMPM.cacherDates();
-            ErrorUtils.showInfo("les tâches ont été réinitialisées");
+            ErrorUtils.showInfo("Les tâches ont été réinitialisées !");
         }
         else if (e.getSource() == this.btnCritique) 
         {
