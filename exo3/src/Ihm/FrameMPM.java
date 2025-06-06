@@ -23,7 +23,7 @@ public class FrameMPM extends JFrame
 
 
         this.setTitle("MPM - Choix des paramètres");
-        this.setSize(800, 600);
+        this.setSize(850, 600);
 
         this.setLocationRelativeTo(null);
         this.setLocation(this.getX() - 50, this.getY());
