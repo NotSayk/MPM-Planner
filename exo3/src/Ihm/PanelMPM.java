@@ -24,7 +24,7 @@ import src.utils.DateUtils;
 public class PanelMPM extends JPanel implements MouseListener, MouseMotionListener
 {
 
-    private static final int MARGE = 50;
+    private static final int MARGE      = 50;
     private static final int ESPACEMENT = 120;
 
     private Controleur   ctrl;
