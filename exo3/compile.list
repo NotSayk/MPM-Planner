@@ -1,6 +1,7 @@
 src/Controleur.java
 
 src/utils/DateUtils.java
+src/utils/ErrorUtils.java
 
 src/Metier/Fichier.java
 src/Metier/TacheMPM.java
@@ -15,3 +16,6 @@ src/Ihm/PanelMPM.java
 src/Ihm/BarreMenu.java
 src/Ihm/GrilleDonneesModel.java
 src/Ihm/PanelModification.java
+src/Ihm/panelButton.java
+
+src/Ihm/composants/Entite.java
