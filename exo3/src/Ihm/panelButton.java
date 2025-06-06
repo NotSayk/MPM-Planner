@@ -31,7 +31,7 @@ public class panelButton extends JPanel implements ActionListener {
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 10));
         this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        btnPlusTot  = creerBtn("Plus tôt", new Color(45, 45, 55), "Afficher les dates au plus tôt");
+        btnPlusTot  = creerBtn("Plus tôt", new Color(0, 183, 14), "Afficher les dates au plus tôt");
         btnPlusTard = creerBtn("Plus tard", new Color(255, 27, 14), "Afficher les dates au plus tard");
         btnReset    = creerBtn("Réinitialiser", new Color(255, 193, 7), "Remettre à zéro les positions");
         btnCritique = creerBtn("Chemin critique", new Color(220, 53, 69), "Afficher/masquer le chemin critique");
