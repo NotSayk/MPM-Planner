@@ -10,8 +10,7 @@ import javax.swing.border.Border;
 import src.Controleur;
 import src.utils.ErrorUtils;
 
-public class panelButton extends JPanel implements ActionListener 
-{
+public class panelButton extends JPanel implements ActionListener {
 
     private Controleur ctrl;
     private PanelMPM   panelMPM;
@@ -23,8 +22,7 @@ public class panelButton extends JPanel implements ActionListener
     private JButton    btnTheme;
     private JButton    btnCritique;
 
-    public panelButton(Controleur ctrl, PanelMPM panelMPM) 
-    {
+    public panelButton(Controleur ctrl, PanelMPM panelMPM) {
         this.ctrl = ctrl;
         this.panelMPM = panelMPM;
         this.cheminCritique = true;
@@ -55,13 +53,10 @@ public class panelButton extends JPanel implements ActionListener
     }
     
     
-    private JButton creerBtn(String text, Color baseColor, String tooltip) 
-    {
-        JButton button = new JButton(text) 
-        {
+    private JButton creerBtn(String text, Color baseColor, String tooltip) {
+        JButton button = new JButton(text) {
             @Override
-            protected void paintComponent(Graphics g) 
-            {
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
@@ -139,10 +134,9 @@ public class panelButton extends JPanel implements ActionListener
     
     
     @Override
-    public void actionPerformed(ActionEvent e) 
-    {
+    public void actionPerformed(ActionEvent e) {
         JButton sourceButton = (JButton) e.getSource();
-        animationClique(sourceButton);
+        animateButtonClick(sourceButton);
         
         if (e.getSource() == btnPlusTot) 
         {
@@ -176,6 +170,7 @@ public class panelButton extends JPanel implements ActionListener
         else if (e.getSource() == btnCritique) 
         {
             this.cheminCritique = !this.cheminCritique;
+            panelMPM.afficherCheminCritique(cheminCritique);
             btnCritique.setText(cheminCritique ? "Chemin critique" : "Masquer critique");
         }
         else if (e.getSource() == btnTheme) 
@@ -186,7 +181,7 @@ public class panelButton extends JPanel implements ActionListener
         }
     }
     
-    private void animationClique(JButton button) 
+    private void animateButtonClick(JButton button) 
     {
         Timer timer = new Timer(100, e -> button.repaint());
         timer.setRepeats(false);
