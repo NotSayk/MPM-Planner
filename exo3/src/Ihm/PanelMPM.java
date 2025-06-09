@@ -1,4 +1,4 @@
-package src.Ihm;
+package src.ihm;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import src.Controleur;
-import src.Ihm.composants.Entite;
-import src.Metier.GrapheMPM;
-import src.Metier.TacheMPM;
+import src.ihm.composants.Entite;
+import src.metier.GrapheMPM;
+import src.metier.TacheMPM;
 import src.utils.DateUtils;
 
 public class PanelMPM extends JPanel implements MouseListener, MouseMotionListener
@@ -102,26 +102,28 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     
     private void initEntites() 
     {
+        Entite entite;
+        int    niveau, x, y;
+
         this.lstEntites.clear();
 
         List<TacheMPM> taches = this.ctrl.getTaches();
         
         for (TacheMPM tache : taches) 
         {
-            int niveau = ctrl.getNiveauTaches(tache);
-            
-            int x = MARGE + niveau * ESPACEMENT;
+            niveau = this.ctrl.getNiveauTache(tache); 
+            x = MARGE + niveau * ESPACEMENT;
+            y = 0;
             
             int positionNiveau = 0;
             for (TacheMPM t : taches)
-            if (ctrl.getNiveauTaches(t) == niveau && taches.indexOf(t) < taches.indexOf(tache)) 
-                positionNiveau++;
+                if (this.ctrl.getNiveauTache(t) == niveau && taches.indexOf(t) < taches.indexOf(tache)) 
+                    positionNiveau++;
             
-            int y;
             if (niveau == 0) y = 230;
             else             y = MARGE + positionNiveau * ESPACEMENT;
             
-            Entite entite = new Entite(tache, x, y);
+            entite = new Entite(tache, x, y);
             this.lstEntites.add(entite);
         }
     }
@@ -146,11 +148,6 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
             }
         }
         repaint();
-    }
-
-    private void afficherCheminCritique()
-    {
-        this.afficherCheminCritique(this.afficher);
     }
 
     protected void paintComponent(Graphics g)
@@ -314,7 +311,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
             for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.WHITE);
         }
-        this.afficherCheminCritique();
+        this.afficherCheminCritique(this.afficher);
         repaint();
     }
 
@@ -333,6 +330,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     @Override
     public void mouseClicked(MouseEvent e) 
     {
+        // Implémentation vide
     }
     
     @Override
@@ -421,13 +419,14 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
                     }
                 }
 
+                // Popup menu
                 PanelMPM.this.popup.setVisible(false);
                 PanelMPM.this.popup.removeAll();
                 PanelMPM.this.popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
                 PanelMPM.this.popup.add(new JSeparator());
                 PanelMPM.this.popup.add(new JLabel("• Antériorité: " + (anterieur.isEmpty() ? "Aucune" : anterieur)));
-                PanelMPM.this.popup.add(new JLabel("• Date au plus tot: " + DateUtils.ajouterJourDate(this.ctrl.getDateReference(), entite.getTache().getDateTot()) ));
-                PanelMPM.this.popup.add(new JLabel("• Date au plus tard: " + DateUtils.ajouterJourDate(this.ctrl.getDateReference(), entite.getTache().getDateTard())));
+                PanelMPM.this.popup.add(new JLabel("• Date au plus tot: " + DateUtils.ajouterJourDate(this.ctrl.getDateRef(), entite.getTache().getDateTot()) ));
+                PanelMPM.this.popup.add(new JLabel("• Date au plus tard: " + DateUtils.ajouterJourDate(this.ctrl.getDateRef(), entite.getTache().getDateTard())));
                 PanelMPM.this.popup.add(new JLabel("• Durée: "  + tache.getDuree()));
                 PanelMPM.this.popup.add(new JSeparator());
                 PanelMPM.this.popup.add(new JLabel("• Niveau: " + tache.getNiveau()));

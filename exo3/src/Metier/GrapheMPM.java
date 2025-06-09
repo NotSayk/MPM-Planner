@@ -1,9 +1,11 @@
-package src.Metier;
+package src.metier;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import src.Controleur;
+import src.ihm.composants.Entite;
 import src.utils.DateUtils;
 
 public class GrapheMPM
@@ -11,15 +13,18 @@ public class GrapheMPM
     private Controleur           ctrl;
 
     private String               dateRef ; 
-    private char                 typeDate;
+    private char                 dateType;
     private int[]                niveaux ;
+
     private List<CheminCritique> lstChemins;
+    private List<TacheMPM>       lstTacheMPMs;
 
     public GrapheMPM(Controleur ctrl)
     {
-        this.ctrl       = ctrl;
-        this.niveaux    = new int[1000];
-        this.lstChemins = new ArrayList<CheminCritique>();
+        this.ctrl         = ctrl;
+        this.niveaux      = new int[1000];
+        this.lstChemins   = new ArrayList<CheminCritique>();
+        this.lstTacheMPMs = new ArrayList<TacheMPM>();
     }
 
     public void calculerDates() 
@@ -27,6 +32,8 @@ public class GrapheMPM
         this.initDateTot ();
         this.initDateTard();
         this.initMarge   ();
+
+        if (this.dateType == 'F') this.setDateFin (dateRef);
     }
 
     public void setDateFin(String dateFin) 
@@ -171,6 +178,85 @@ public class GrapheMPM
         this.lstChemins.add(cheminCritique);
     }
 
+    public void chargerEntites(String nomFichier)
+    {
+        for(Entite e : this.ctrl.getEntites())
+        {
+            int[] pos = this.ctrl.getFichier().getLocation(e.getTache(), nomFichier);
+            e.setPosition(pos[0], pos[1]);
+        }
+    }
+
+    public void mettreAJourDureeTache (int index, int duree) 
+    {
+        List<TacheMPM> taches = this.lstTacheMPMs;
+        if (index >= 0 && index < taches.size()) 
+        {
+            TacheMPM tache = taches.get(index);
+            tache.setDuree(duree);
+            this.ctrl.getFichier().modifierTacheFichier(tache);
+            this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
+        } 
+        else 
+        {
+            System.err.println("Index de tâche invalide : " + index);
+        }
+    }
+    
+    public void modifierPrecedents(TacheMPM tache, String nouveauxPrecedents) {
+        Set<TacheMPM> nouveauxPrecedentsSet = new HashSet<>();
+        
+        if (!nouveauxPrecedents.isEmpty()) {
+            for (String nomTache : nouveauxPrecedents.split(",")) {
+                TacheMPM precedent = this.trouverTache(nomTache.trim());
+                if (precedent != null && !precedent.equals(tache)) {
+                    nouveauxPrecedentsSet.add(precedent);
+                }
+            }
+        }
+        
+        // Mettre à jour les relations
+        for (TacheMPM ancienPrecedent : tache.getPrecedents()) {
+            ancienPrecedent.getSuivants().remove(tache);
+        }
+        
+        tache.setPrecedents(new ArrayList<>(nouveauxPrecedentsSet));
+        for (TacheMPM precedent : nouveauxPrecedentsSet) {
+            precedent.getSuivants().add(tache);
+        }
+        
+        // Mettre à jour le graphe et l'interface
+        this.ctrl.getFichier().modifierTacheFichier(tache);
+        this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
+    }
+
+    public void modifierSuivants(TacheMPM tache, String nouveauxSuivants) {
+        Set<TacheMPM> nouveauxSuivantsSet = new HashSet<>();
+        
+        if (!nouveauxSuivants.isEmpty()) {
+            for (String nomTache : nouveauxSuivants.split(",")) {
+                TacheMPM suivant = this.trouverTache(nomTache.trim());
+                if (suivant != null && !suivant.equals(tache)) {
+                    nouveauxSuivantsSet.add(suivant);
+                }
+            }
+        }
+        
+        // Mettre à jour les relations
+        for (TacheMPM ancienSuivant : tache.getSuivants()) {
+            ancienSuivant.getPrecedents().remove(tache);
+        }
+        
+        tache.setSuivants(new ArrayList<>(nouveauxSuivantsSet));
+        for (TacheMPM suivant : nouveauxSuivantsSet) {
+            suivant.getPrecedents().add(tache);
+        }
+        
+        // Mettre à jour le graphe et l'interface
+        this.ctrl.getFichier().modifierTacheFichier(tache);
+        this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
+    }
+
     private List<TacheMPM> getSuccesseurs(TacheMPM tache) 
     {
         List<TacheMPM> successeurs = new ArrayList<>();
@@ -180,16 +266,16 @@ public class GrapheMPM
         
         return successeurs;
     }
-
     
 
     public String              getDateRef     ()               { return dateRef          ; }
-    public char                getTypeDate    ()               { return typeDate         ; }
+    public char                getDateType    ()               { return dateType         ; }
     public int                 getNiveauTache (TacheMPM tache) { return tache.getNiveau(); }
     public int[]               getNiveaux     ()               { return niveaux          ; }
+    public List<TacheMPM>      getTaches      ()               { return this.lstTacheMPMs; }
     
     public void setDateRef(String dateRef) { this.dateRef = dateRef  ; }
-    public void setTypeDate(char typeDate) { this.typeDate = typeDate; }
+    public void setDateType(char dateType) { this.dateType = dateType; }
 
     public String toString()
     {

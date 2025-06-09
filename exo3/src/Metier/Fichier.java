@@ -1,4 +1,4 @@
-package src.Metier;
+package src.metier;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,20 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
-import src.Ihm.PanelMPM;
+import src.Controleur;
+import src.ihm.PanelMPM;
 import src.utils.ErrorUtils;
 
 public class Fichier 
 {
-    private GrapheMPM      graphe;
-    private List<TacheMPM> lstTacheMPMs;
+    private Controleur      ctrl;
     private String         nomFichier;
     
-    public Fichier(GrapheMPM graphe, String nomFichier) 
+    public Fichier(Controleur ctrl, String nomFichier) 
     {
-        this.graphe = graphe;
-        this.lstTacheMPMs = new ArrayList<>();
+        this.ctrl       = ctrl;
         this.nomFichier = nomFichier;
         this.initTache(nomFichier);
     }
@@ -34,7 +32,7 @@ public class Fichier
         int      duree;
         String[] precedents;
 
-        this.lstTacheMPMs.clear();
+        this.ctrl.getTaches().clear();
 
         try 
         {
@@ -64,7 +62,7 @@ public class Fichier
                 }
 
                 TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
-                this.lstTacheMPMs.add(tache);
+                this.ctrl.getTaches().add(tache);
             }
             
             scMPM.close();
@@ -76,12 +74,12 @@ public class Fichier
 
     private void etablirRelationsSuivants() 
     {
-        for (TacheMPM tache : this.lstTacheMPMs) 
+        for (TacheMPM tache : this.ctrl.getTaches()) 
         {
             List<TacheMPM> suivants = new ArrayList<>();
             String nomTache = tache.getNom();
             
-            for (TacheMPM autreTache : this.lstTacheMPMs) 
+            for (TacheMPM autreTache : this.ctrl.getTaches()) 
             {
                 if (autreTache == tache) continue;
                 
@@ -100,18 +98,18 @@ public class Fichier
 
     public void ajouterTacheFichier(TacheMPM tacheAjout) 
     {
-        this.lstTacheMPMs.add(tacheAjout);
+        this.ctrl.getTaches().add(tacheAjout);
         this.etablirRelationsSuivants();
         this.sauvegarder();
     }
 
     public void modifierTacheFichier(TacheMPM tacheModif) 
     {
-        for (int i = 0; i < this.lstTacheMPMs.size(); i++) 
+        for (int i = 0; i < this.ctrl.getTaches().size(); i++) 
         {
-            if (this.lstTacheMPMs.get(i).getNom().equals(tacheModif.getNom())) 
+            if (this.ctrl.getTaches().get(i).getNom().equals(tacheModif.getNom())) 
             {
-                this.lstTacheMPMs.set(i, tacheModif);
+                this.ctrl.getTaches().set(i, tacheModif);
                 break;
             }
         }
@@ -126,7 +124,7 @@ public class Fichier
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(
                 new FileOutputStream(this.nomFichier), "UTF8"));
 
-            for (TacheMPM tache : this.lstTacheMPMs) 
+            for (TacheMPM tache : this.ctrl.getTaches()) 
             {
                 String precedentsStr = "";
                 if (!tache.getPrecedents().isEmpty()) 
@@ -156,7 +154,7 @@ public class Fichier
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(
                 new FileOutputStream("listeTache.MC"), "UTF8"));
 
-            for (TacheMPM tache : this.lstTacheMPMs) 
+            for (TacheMPM tache : this.ctrl.getTaches()) 
             {
                 String precedentsStr = "";
                 if (!tache.getPrecedents().isEmpty()) 
@@ -247,7 +245,7 @@ public class Fichier
 
     private TacheMPM trouverTache(String nom) 
     {
-        for (TacheMPM tache : this.lstTacheMPMs) 
+        for (TacheMPM tache : this.ctrl.getTaches()) 
             if (tache.getNom().equals(nom)) 
                 return tache;
         return null;
@@ -260,7 +258,7 @@ public class Fichier
         List<TacheMPM> precedents = new ArrayList<>(tacheSuppr.getPrecedents());
         List<TacheMPM> suivants = new ArrayList<>(tacheSuppr.getSuivants());
 
-        this.lstTacheMPMs.removeIf(tache -> tache.getNom().equals(tacheSuppr.getNom()));
+        this.ctrl.getTaches().removeIf(tache -> tache.getNom().equals(tacheSuppr.getNom()));
 
         this.lierPrecedentsSuivants(tacheSuppr, precedents, suivants);
 
@@ -273,9 +271,9 @@ public class Fichier
         this.initTache(this.nomFichier);
 
         // Recalculer toutes les données du graphe MPM
-        this.graphe.calculerDates();
-        this.graphe.initCheminCritique();
-        this.graphe.initNiveauTaches();
+        this.ctrl.getGraphe().calculerDates();
+        this.ctrl.getGraphe().initCheminCritique();
+        this.ctrl.getGraphe().initNiveauTaches();
     }
 
     private void lierPrecedentsSuivants(TacheMPM tacheSuppr, List<TacheMPM> precedents, List<TacheMPM> suivants) 
@@ -305,7 +303,6 @@ public class Fichier
 
 
     // Getters
-    public List<TacheMPM> getLstTacheMPMs() { return this.lstTacheMPMs;                                }
     public String         getNomFichier  () { return this.nomFichier;                                  }
     public String         getTheme       () { return getLigne("theme");                            }
     public boolean        isCritique     () { return getLigne("critique").equals("true"); }

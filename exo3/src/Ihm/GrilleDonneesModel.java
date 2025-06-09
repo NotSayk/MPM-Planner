@@ -1,9 +1,9 @@
-package src.Ihm;
+package src.ihm;
 
 import javax.swing.table.AbstractTableModel;
 
 import src.Controleur;
-import src.Metier.TacheMPM;
+import src.metier.TacheMPM;
 
 import java.util.List;
 import src.utils.ErrorUtils;
@@ -82,7 +82,7 @@ public class GrilleDonneesModel extends AbstractTableModel
             
             try {
                 if (columnIndex == 4) { // Précédents
-                    ctrl.modifierPrecedents(tacheModifiee, nouvelleValeur);
+                    this.ctrl.modifierPrecedents(tacheModifiee, nouvelleValeur);
                 } else { // Suivants
                     ctrl.modifierSuivants(tacheModifiee, nouvelleValeur);
                 }

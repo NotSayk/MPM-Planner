@@ -1,4 +1,4 @@
-package src.Ihm;
+package src.ihm;
 
 import java.awt.Frame;
 import javax.swing.JFrame;

@@ -8,14 +8,14 @@ src/Metier/TacheMPM.java
 src/Metier/GrapheMPM.java
 src/Metier/CheminCritique.java
 
-src/Ihm/FrameMPM.java
-src/Ihm/FrameModification.java
+src/ihm/FrameMPM.java
+src/ihm/FrameModification.java
 
-src/Ihm/PanelPara.java
-src/Ihm/PanelMPM.java
-src/Ihm/BarreMenu.java
-src/Ihm/GrilleDonneesModel.java
-src/Ihm/PanelModification.java
-src/Ihm/panelButton.java
+src/ihm/PanelPara.java
+src/ihm/PanelMPM.java
+src/ihm/BarreMenu.java
+src/ihm/GrilleDonneesModel.java
+src/ihm/PanelModification.java
+src/ihm/panelButton.java
 
-src/Ihm/composants/Entite.java
+src/ihm/composants/Entite.java

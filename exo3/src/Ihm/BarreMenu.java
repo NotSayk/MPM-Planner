@@ -1,4 +1,4 @@
-package src.Ihm;
+package src.ihm;
 
 import java.awt.event.*;
 import java.io.File;
@@ -91,12 +91,12 @@ public class BarreMenu extends JMenuBar implements ActionListener
             
             if(fichierSelectionner.getName().substring(fichierSelectionner.getName().lastIndexOf('.') + 1).equals("MC"))
             {
-               this.ctrl.initComplet(this.ctrl.getTypeDate(), "" + fichierSelectionner);
+               this.ctrl.initComplet(this.ctrl.getDateType(), "" + fichierSelectionner);
                ErrorUtils.showSucces("chargement d'un fichier de données complexe réussi");
             }
             else
             {
-               this.ctrl.initProjet(this.ctrl.getDateReference(),this.ctrl.getTypeDate() , "" + fichierSelectionner);
+               this.ctrl.initProjet(this.ctrl.getDateRef(),this.ctrl.getDateType() , "" + fichierSelectionner);
                ErrorUtils.showSucces("chargement d'un fichier de données simple réussi");
             }
 
