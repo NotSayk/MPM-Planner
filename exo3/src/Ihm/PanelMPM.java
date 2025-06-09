@@ -38,7 +38,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     private int          numNiveauxTot;
     private int          numNiveauxTard;
 
-    private panelButton  panelButton;
+    private PanelButton  panelButton;
     private JPopupMenu   popup;
     
     private Entite entiteSelectionnee;
@@ -55,7 +55,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
 
         this.lstEntites       = new ArrayList<>();
         this.popup            = new JPopupMenu();
-        this.panelButton      = new panelButton(this.ctrl, this);
+        this.panelButton      = new PanelButton(this.ctrl, this);
 
         this.numNiveauxTot    = -1;
         this.numNiveauxTard   = 0;

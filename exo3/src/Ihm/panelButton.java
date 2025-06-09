@@ -10,7 +10,7 @@ import javax.swing.border.Border;
 import src.Controleur;
 import src.utils.ErrorUtils;
 
-public class panelButton extends JPanel implements ActionListener {
+public class PanelButton extends JPanel implements ActionListener {
 
     private Controleur ctrl;
     private PanelMPM   panelMPM;
@@ -22,7 +22,7 @@ public class panelButton extends JPanel implements ActionListener {
     private JButton    btnTheme;
     private JButton    btnCritique;
 
-    public panelButton(Controleur ctrl, PanelMPM panelMPM) {
+    public PanelButton(Controleur ctrl, PanelMPM panelMPM) {
         this.ctrl = ctrl;
         this.panelMPM = panelMPM;
         this.cheminCritique = false;

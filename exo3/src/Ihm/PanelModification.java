@@ -68,11 +68,11 @@ public class PanelModification extends JPanel implements ActionListener
 
 		this.tblGrilleDonnees.setFillsViewportHeight(true);
 
-		this.txtTacheNom = new JTextField( 20 );
-		this.btnValider   = new JButton   ( "Valider" );
+		this.txtTacheNom   = new JTextField( 20     );
+		this.btnValider    = new JButton   ( "Valider" );
 
-		this.txtTacheDuree = new JTextField( 10                    );
-		this.btnMaj        = new JButton   ( "Mettre à jour"       );
+		this.txtTacheDuree = new JTextField( 10     );
+		this.btnMaj        = new JButton   ( "Mettre à jour" );
 
 		this.panelInfo.add( new JLabel("Tâche à ajouter :") );
 		this.panelInfo.add( this.txtTacheNom );
@@ -141,8 +141,6 @@ public class PanelModification extends JPanel implements ActionListener
 				ErrorUtils.showError("Le nom de la tâche ne peut pas être vide.");
 			}
 		}
-
-
 
 	}
 }
