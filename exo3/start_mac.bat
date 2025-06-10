@@ -7,6 +7,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 cp listeTache.txt bin/listeTache.txt >/dev/null 2>&1
+cp listeTache.MC bin/listeTache.MC >/dev/null 2>&1
 cd bin
 java src.Controleur
 cd ..
