@@ -23,7 +23,6 @@ public class TacheMPM
         this.duree       = duree;
         this.dateTot     = 0;
         this.dateTard    = 0; 
-        this.marge       = 0;
         this.niveau      = 0;
         this.estCritique = false;
 
@@ -57,7 +56,7 @@ public class TacheMPM
     // Setters
     public void setDateTot (int dateTot)  { this.dateTot  = dateTot ; }
     public void setDateTard(int dateTard) { this.dateTard = dateTard; }
-    public void setMarge   (int marge)    { this.marge    = marge   ; }
+    public void setMarge   (int marge)    { this.marge    = dateTard - dateTot; }
     public void setDuree   (int duree)    { this.duree    = duree   ; }
     public void setNiveau  (int niveau)   { this.niveau   = niveau  ; }
 
