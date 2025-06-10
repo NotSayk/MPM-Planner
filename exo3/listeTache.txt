@@ -1,11 +1,11 @@
 DEBUT|0|
-D|5|DEBUT
+Dcdksjfn|5|DEBUT
 E|3|DEBUT
 F|1|DEBUT
 Z|1|DEBUT
 W|2|Z,F
 X|1|W
-G|4|D,E,X
+G|4|Dcdksjfn,E,X
 H|2|F
 I|3|G
 J|3|G,F

@@ -131,22 +131,30 @@ public class PanelMPM extends JPanel
             {
                 //entite.paint(g);
                 entite.paint(g2);
+        
+                FontMetrics fm = g2.getFontMetrics();
 
-                if (afficherDateTot) 
-                {
-                    if (entite.getNiveauTache() <= numNiveauxTot) 
-                    {
+                if (afficherDateTot) {
+                    if (entite.getNiveauTache() <= numNiveauxTot) {
+                        String texte = "" + entite.getTache().getDateTot();
+                        int textWidth = fm.stringWidth(texte);
+                        int x = entite.getX() + 16 - textWidth / 2;
+                        int y = entite.getY() + 55;
+
                         g2.setColor(Color.GREEN);
-                        g2.drawString("" + entite.getTache().getDateTot(), entite.getX() + 15, entite.getY() + 55);
+                        g2.drawString(texte, x, y);
                     }
-                } 
-                
-                if (afficherDateTard) 
-                {
-                    if(entite.getNiveauTache() >= numNiveauxTard) 
-                    {
+                }
+
+                if (afficherDateTard) {
+                    if (entite.getNiveauTache() >= numNiveauxTard) {
+                        String texte = "" + entite.getTache().getDateTard();
+                        int textWidth = fm.stringWidth(texte);
+                        int x = entite.getX() + 52 - textWidth / 2;
+                        int y = entite.getY() + 55;
+
                         g2.setColor(Color.RED);
-                        g2.drawString("" + entite.getTache().getDateTard(), entite.getX() + 50, entite.getY() + 55);
+                        g2.drawString(texte, x, y);
                     }
                 }
             }

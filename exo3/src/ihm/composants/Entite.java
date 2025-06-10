@@ -77,7 +77,16 @@ public class Entite
         
         // Affichage du nom de la tâche
         String nomTache = tache.getNom();
-        g.drawString(nomTache, x + Entite.DEMI_CASE - 4 * nomTache.length(), y + Entite.DEMI_CASE - 20);
+        if (nomTache.length() > 6) {
+            nomTache = nomTache.substring(0, 6) + "...";
+        }
+
+        // Centrage du texte (approximatif basé sur la largeur moyenne d'un caractère)
+        int stringWidth = g.getFontMetrics().stringWidth(nomTache);
+        int textX = x + (largeur - stringWidth) / 2;
+        int textY = y + Entite.DEMI_CASE - 20;
+
+        g.drawString(nomTache, textX, textY);
         
     }
 }
