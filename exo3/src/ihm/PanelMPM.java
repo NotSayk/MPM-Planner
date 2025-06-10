@@ -574,6 +574,13 @@ public class PanelMPM extends JPanel
     public String  getTheme    () { return this.graphePanel.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK"; }
     public boolean isCritique  () { return this.afficher; }
 
+    public void resetScale() 
+    {
+        this.graphePanel.scale = 1.0;
+        this.graphePanel.updateSize();
+        this.repaint();
+    }
+
     public void setCritique(boolean critique) 
     {
         this.afficher = critique;
