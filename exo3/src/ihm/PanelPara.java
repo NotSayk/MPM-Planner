@@ -1,145 +1,115 @@
 package src.ihm;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import src.Controleur;
 import src.utils.ErrorUtils;
 
 public class PanelPara extends JPanel implements ActionListener
 {   
-    private static final Color MAIN_COLOR = new Color(70, 130, 180);
-    private static final Color ACCENT_COLOR = new Color(211, 211, 211);
-    private static final Font LABEL_FONT = new Font("Arial", Font.BOLD, 12);
-    private static final Font FIELD_FONT = new Font("Arial", Font.PLAIN, 12);
-    
-    private Controleur   ctrl;
-    private JTextField   txtDateRef;
-    private JRadioButton rbDateDebut;
-    private JRadioButton rbDateFin;
-    private JRadioButton rbDateFormatNum;
-    private JRadioButton rbDateFormatTexte;
-    private JButton      btnValider;
+
+    Controleur   ctrl;
+
+    JTextField   txtDateRef;
+
+    JRadioButton rbDateDebut;
+    JRadioButton rbDateFin;
+    JRadioButton rbDateFormatNum;
+    JRadioButton rbDateFormatTexte;
+
+    JButton      btnValider;
 
     public PanelPara(Controleur ctrl) 
     {
         this.ctrl = ctrl;
+        
         this.setLayout(new BorderLayout());
-        this.setBorder(new EmptyBorder(10, 10, 10, 10));
-        this.setBackground(Color.WHITE);
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBackground(Color.WHITE);
+        JPanel panel     = new JPanel( new GridLayout(4,1));
         
         // Panel référence
-        JPanel panelRef = createStyledPanel("Date de référence");
-        this.txtDateRef = new JTextField(this.ctrl.getDateDuJour(), 15);
-        txtDateRef.setFont(FIELD_FONT);
-        txtDateRef.setToolTipText("Entrez la date de référence au format jj/mm/aaaa");
-        panelRef.add(txtDateRef);
-        
+        JPanel panelRef  = new JPanel();
+        JLabel labelRef  = new JLabel("Date de référence :");
+        this.txtDateRef  = new JTextField(this.ctrl.getDateDuJour(), 10);
+
         // Panel type de date
-        JPanel panelType = createStyledPanel("Type de date");
-        this.rbDateDebut = createStyledRadioButton("Date de début", true);
-        this.rbDateFin = createStyledRadioButton("Date de fin", false);
-        
-        ButtonGroup typeGroup = new ButtonGroup();
-        typeGroup.add(rbDateDebut);
-        typeGroup.add(rbDateFin);
-        
-        panelType.add(rbDateDebut);
-        panelType.add(rbDateFin);
-        
-        // Panel format
-        JPanel panelFormat = createStyledPanel("Format de date");
-        this.rbDateFormatNum = createStyledRadioButton("Numérique", true);
-        this.rbDateFormatTexte = createStyledRadioButton("Texte", false);
-        
-        ButtonGroup formatGroup = new ButtonGroup();
-        formatGroup.add(rbDateFormatNum);
-        formatGroup.add(rbDateFormatTexte);
-        
-        panelFormat.add(rbDateFormatNum);
-        panelFormat.add(rbDateFormatTexte);
-        
+        JPanel panelType = new JPanel();
+
+        JLabel labelType = new JLabel("Type de date :");
+        this.rbDateDebut = new JRadioButton("Date de début");
+        this.rbDateFin   = new JRadioButton("Date de fin");
+        this.rbDateDebut.setSelected(true); // Par défaut, on choisit la date de début
+
+        ButtonGroup btnGroup = new ButtonGroup();
+        btnGroup.add(this.rbDateDebut);
+        btnGroup.add(this.rbDateFin);
+
+        //Panel format
+        JPanel panelFormat = new JPanel();
+        JLabel labelFormat = new JLabel("Format de date : ");
+        this.rbDateFormatNum   = new JRadioButton("Numérique");
+        this.rbDateFormatTexte = new JRadioButton("Texte");
+        this.rbDateFormatNum.setSelected(true); // Par défaut, on choisit le format numérique
+
+
         // Bouton Valider
-        JPanel panelBtn = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panelBtn.setBackground(Color.WHITE);
+        JPanel panelBtn = new JPanel();
         this.btnValider = new JButton("Valider");
-        btnValider.setFont(new Font("Arial", Font.BOLD, 12));
-        btnValider.setForeground(Color.WHITE);
-        btnValider.setBackground(MAIN_COLOR);
-        btnValider.setFocusPainted(false);
-        btnValider.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+
+        // Ajout des composants au panel
+        panelRef .add(labelRef);
+        panelRef .add(this.txtDateRef);
         
-        panelBtn.add(btnValider);
+        panelType.add(labelType);
+        panelType.add(this.rbDateDebut);
+        panelType.add(this.rbDateFin);
+
+        panelBtn .add(this.btnValider, new FlowLayout(FlowLayout.CENTER));
+
+        panelFormat.add(labelFormat);
+        panelFormat.add(this.rbDateFormatNum);
+        panelFormat.add(this.rbDateFormatTexte);
+
+        panel.add(panelRef );
+        panel.add(panelType);
+        panel.add(panelFormat);
+        panel.add(panelBtn);
+
+        this.add(panel, BorderLayout.NORTH);
         
-        // Add spacing between panels
-        mainPanel.add(Box.createVerticalStrut(10));
-        mainPanel.add(panelRef);
-        mainPanel.add(Box.createVerticalStrut(15));
-        mainPanel.add(panelType);
-        mainPanel.add(Box.createVerticalStrut(15));
-        mainPanel.add(panelFormat);
-        mainPanel.add(Box.createVerticalStrut(20));
-        mainPanel.add(panelBtn);
-        
-        this.add(mainPanel, BorderLayout.NORTH);
-        
+        this.setVisible(true);
+
         // Ajout des écouteurs d'événements
-        this.btnValider.addActionListener(this);
+        this.btnValider .addActionListener(this);
         this.rbDateDebut.addActionListener(this);
-        this.rbDateFin.addActionListener(this);
-        this.txtDateRef.addActionListener(this);
-        this.rbDateFormatNum.addActionListener(this);
-        this.rbDateFormatTexte.addActionListener(this);
-    }
-    
-    private JPanel createStyledPanel(String title) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        panel.setBackground(Color.WHITE);
-        panel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(MAIN_COLOR, 1),
-            title,
-            TitledBorder.LEFT,
-            TitledBorder.TOP,
-            LABEL_FONT,
-            MAIN_COLOR
-        ));
-        return panel;
-    }
-    
-    private JRadioButton createStyledRadioButton(String text, boolean selected) {
-        JRadioButton rb = new JRadioButton(text);
-        rb.setFont(FIELD_FONT);
-        rb.setSelected(selected);
-        rb.setBackground(Color.WHITE);
-        rb.setForeground(Color.DARK_GRAY);
-        return rb;
+        this.rbDateFin  .addActionListener(this);
+        this.txtDateRef .addActionListener(this);
+        this.txtDateRef .setToolTipText("Entrez la date de référence au format jj/mm/aaaa");
+        this.rbDateFormatNum   .addActionListener(this);
+        this.rbDateFormatTexte .addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e) 
     {
         if (e.getSource() == this.btnValider) 
         {
-            String dateRef = this.txtDateRef.getText().trim();
-            char typeDate = this.rbDateDebut.isSelected() ? 'D' : 'F';
-            char formatDate = this.rbDateFormatNum.isSelected() ? 'N' : 'T';
+            String dateRef  = this.txtDateRef.getText().trim();
+            char   typeDate = this.rbDateDebut.isSelected() ? 'D' : 'F';
 
             if (!dateRef.matches("\\d{2}/\\d{2}/\\d{4}")) 
             {
                 dateRef = this.ctrl.getDateDuJour(); 
                 ErrorUtils.showError("Date invalide, réinitialisation à la date du jour : " + dateRef);
-                txtDateRef.setText(dateRef);
             }
 
             // Appel du contrôleur pour initialiser le projet
             this.ctrl.initProjet(dateRef, typeDate, "listeTache.txt");
         }
+
     }
+
 }
