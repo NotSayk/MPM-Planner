@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -18,8 +19,6 @@ import src.ihm.composants.Entite;
 import src.metier.GrapheMPM;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;
-
-import java.awt.Graphics2D;
 
 
 public class PanelMPM extends JPanel
@@ -352,7 +351,7 @@ public class PanelMPM extends JPanel
         List<TacheMPM> taches = this.ctrl.getTaches();
         
         // Étape 1: Compter le nombre de tâches par niveau
-        int[] nbTachesParNiveau = new int[20];
+        int[] nbTachesParNiveau = new int[2000];
         int niveauMax = 0;
         
         for (TacheMPM tache : taches) 
@@ -377,7 +376,7 @@ public class PanelMPM extends JPanel
         int centreY = 150 + hauteurMaxNiveau / 2;
         
         // Étape 4: Créer les entités avec positionnement centré
-        int[] compteurParNiveau = new int[20];
+        int[] compteurParNiveau = new int[2000];
         
         for (TacheMPM tache : taches) 
         {
