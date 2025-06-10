@@ -24,6 +24,8 @@ public class PanelPara extends JPanel implements ActionListener
 
     JRadioButton rbDateDebut;
     JRadioButton rbDateFin;
+    JRadioButton rbDateFormatNum;
+    JRadioButton rbDateFormatTexte;
 
     JButton      btnValider;
 
@@ -33,7 +35,7 @@ public class PanelPara extends JPanel implements ActionListener
         
         this.setLayout(new BorderLayout());
 
-        JPanel panel     = new JPanel( new GridLayout(3,1));
+        JPanel panel     = new JPanel( new GridLayout(4,1));
         
         // Panel référence
         JPanel panelRef  = new JPanel();
@@ -52,6 +54,14 @@ public class PanelPara extends JPanel implements ActionListener
         btnGroup.add(this.rbDateDebut);
         btnGroup.add(this.rbDateFin);
 
+        //Panel format
+        JPanel panelFormat = new JPanel();
+        JLabel labelFormat = new JLabel("Format de date : ");
+        this.rbDateFormatNum   = new JRadioButton("Numérique");
+        this.rbDateFormatTexte = new JRadioButton("Texte");
+        this.rbDateFormatNum.setSelected(true); // Par défaut, on choisit le format numérique
+
+
         // Bouton Valider
         JPanel panelBtn = new JPanel();
         this.btnValider = new JButton("Valider");
@@ -66,8 +76,13 @@ public class PanelPara extends JPanel implements ActionListener
 
         panelBtn .add(this.btnValider, new FlowLayout(FlowLayout.CENTER));
 
+        panelFormat.add(labelFormat);
+        panelFormat.add(this.rbDateFormatNum);
+        panelFormat.add(this.rbDateFormatTexte);
+
         panel.add(panelRef );
         panel.add(panelType);
+        panel.add(panelFormat);
         panel.add(panelBtn);
 
         this.add(panel, BorderLayout.NORTH);
@@ -80,6 +95,8 @@ public class PanelPara extends JPanel implements ActionListener
         this.rbDateFin  .addActionListener(this);
         this.txtDateRef .addActionListener(this);
         this.txtDateRef .setToolTipText("Entrez la date de référence au format jj/mm/aaaa");
+        this.rbDateFormatNum   .addActionListener(this);
+        this.rbDateFormatTexte .addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e) 
@@ -98,6 +115,10 @@ public class PanelPara extends JPanel implements ActionListener
             // Appel du contrôleur pour initialiser le projet
             this.ctrl.initProjet(dateRef, typeDate, "listeTache.txt");
         }
+
+
+
+
     }
 
 }
