@@ -41,8 +41,8 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     private PanelButton  panelButton;
     private JPopupMenu   popup;
     
-    private Entite entiteSelectionnee;
-    private int    offsetX, offsetY;
+    private Entite       entiteSelectionnee;
+    private int          offsetX, offsetY;
 
     private Entite dernierEntite;
 
@@ -112,7 +112,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
         for (TacheMPM tache : taches) 
         {
             niveau = this.ctrl.getNiveauTache(tache); 
-            x = MARGE + niveau * ESPACEMENT;
+            x = PanelMPM.MARGE + niveau * PanelMPM.ESPACEMENT;
             y = 0;
             
             int positionNiveau = 0;
@@ -120,8 +120,7 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
                 if (this.ctrl.getNiveauTache(t) == niveau && taches.indexOf(t) < taches.indexOf(tache)) 
                     positionNiveau++;
             
-            if (niveau == 0) y = 230;
-            else             y = MARGE + positionNiveau * ESPACEMENT;
+            y = PanelMPM.MARGE + positionNiveau * PanelMPM.ESPACEMENT;
             
             entite = new Entite(tache, x, y);
             this.lstEntites.add(entite);
