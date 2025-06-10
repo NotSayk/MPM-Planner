@@ -11,6 +11,8 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -79,7 +81,7 @@ public class PanelMPM extends JPanel
     /**
      * Panel interne pour dessiner le graphe avec gestion des événements souris
      */
-    private class GraphePanel extends JPanel implements MouseListener, MouseMotionListener
+    private class GraphePanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener
     {
         private Entite entiteSelectionnee;
         private int    offsetX, offsetY;
@@ -91,17 +93,7 @@ public class PanelMPM extends JPanel
             this.setBackground(Color.WHITE);
             this.addMouseListener(this);
             this.addMouseMotionListener(this);
-            this.addMouseWheelListener(e -> 
-            {
-                if (e.isControlDown() || e.isMetaDown() || e.getPreciseWheelRotation() != 0) 
-                {
-                    if (e.getWheelRotation() < 0) scale *= 1.1;
-                    else scale /= 1.1;
-                    scale = Math.max(0.2, Math.min(scale, 5.0)); // Limite le zoom
-                    this.revalidate();
-                    this.repaint();
-                }
-            });
+            this.addMouseWheelListener(this);
 
             this.updateSize();
         }
@@ -310,6 +302,18 @@ public class PanelMPM extends JPanel
         {
             Dimension base = super.getPreferredSize();
             return new Dimension((int)(base.width * scale), (int)(base.height * scale));
+        }
+
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            if (e.isControlDown() || e.isMetaDown() || e.getPreciseWheelRotation() != 0) 
+            {
+                if (e.getWheelRotation() < 0) scale *= 1.1;
+                else scale /= 1.1;
+                scale = Math.max(0.2, Math.min(scale, 5.0)); // Limite le zoom
+                revalidate();
+                repaint();
+            }
         }
     }
     
