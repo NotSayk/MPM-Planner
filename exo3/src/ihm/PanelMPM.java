@@ -163,12 +163,6 @@ public class PanelMPM extends JPanel
             dessinerConnexions(g2);
             g2.dispose();
         }
-
-        @Override
-        public void mouseClicked(MouseEvent e) 
-        {
-            // Implémentation vide
-        }
         
         @Override
         public void mousePressed(MouseEvent e) 
@@ -209,18 +203,6 @@ public class PanelMPM extends JPanel
         public void mouseReleased(MouseEvent e) 
         {
             entiteSelectionnee = null;
-        }
-        
-        @Override
-        public void mouseEntered(MouseEvent e) 
-        {
-            // Implémentation vide
-        }
-        
-        @Override
-        public void mouseExited(MouseEvent e) 
-        {
-            // Implémentation vide
         }
 
         @Override
@@ -313,6 +295,15 @@ public class PanelMPM extends JPanel
                 this.dernierEntite = null;
             }
         }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {}
+
+        @Override
+        public void mouseEntered(MouseEvent e) {}
+        
+        @Override
+        public void mouseExited(MouseEvent e) {}
 
         @Override
         public Dimension getPreferredSize() 
