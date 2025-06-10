@@ -3,15 +3,12 @@ package src.metier;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.utils.DateUtils;
-
 public class TacheMPM 
 {
     private String         nom;
     private int            duree;
     private int            dateTot;
     private int            dateTard;
-    private int            marge;
     private int            niveau;
     private boolean        estCritique;
     private List<TacheMPM> precedents;
@@ -61,38 +58,4 @@ public class TacheMPM
 
     public void setCritique(boolean estCritique) { this.estCritique = estCritique; }
 
-    public String toString(String dateRef)
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append(nom).append(" : ").append(duree).append(" jour").append(duree > 1 ? "s" : "").append("\n")
-        .append("    date au plus tôt  : ").append(DateUtils.ajouterJourDate(dateRef, dateTot)).append("\n")
-        .append("    date au plus tard : ").append(DateUtils.ajouterJourDate(dateRef, dateTard)).append("\n")
-        .append("    marge             : ").append(marge).append(marge == 0 || marge == 1 ? " jour" : " jours").append("\n")
-        .append("    liste des tâches précédentes :\n")
-        .append("    ").append(precedents.isEmpty() ? "pas de tâche précédente\n" : "        ");
-        
-        if (!precedents.isEmpty()) {
-            sb.append("        ");
-            for (int i = 0; i < precedents.size(); i++) {
-                sb.append(precedents.get(i).getNom());
-                if (i < precedents.size() - 1) sb.append(", ");
-            }
-            sb.append("\n");
-        }
-        
-        sb.append("    liste des tâches suivantes :\n");
-        
-        if (suivants.isEmpty()) {
-            sb.append("        pas de tâche suivante\n");
-        } else {
-            sb.append("        ");
-            for (int i = 0; i < suivants.size(); i++) {
-                sb.append(suivants.get(i).getNom());
-                if (i < suivants.size() - 1) sb.append(", ");
-            }
-            sb.append("\n");
-        }
-        
-        return sb.toString();
-    }
 }
