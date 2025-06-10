@@ -85,16 +85,23 @@ public class GrilleDonneesModel extends AbstractTableModel
 
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        if (columnIndex == 5 || columnIndex == 6 ) 
+        if (columnIndex == 5 || columnIndex == 6 || columnIndex == 0) 
         {
             String nouvelleValeur = value.toString().trim();
             TacheMPM tacheModifiee = ctrl.getTaches().get(rowIndex);
             
             try {
-                if (columnIndex == 5) { // Précédents
+                if (columnIndex == 5) 
+                { // Précédents
                     this.ctrl.modifierPrecedents(tacheModifiee, nouvelleValeur);
-                } else { // Suivants
+                } 
+                if (columnIndex == 6)
+                { // Suivants
                     ctrl.modifierSuivants(tacheModifiee, nouvelleValeur);
+                }
+                if (columnIndex == 0) 
+                { // Nom
+                    ctrl.modifierNom(tacheModifiee, nouvelleValeur);
                 }
                 refreshTab();
             } catch (IllegalArgumentException e) {
@@ -114,6 +121,6 @@ public class GrilleDonneesModel extends AbstractTableModel
             return false;
         if (columnIndex == 0 && rowIndex == getRowCount() - 1)
             return false;
-        return columnIndex == 5 || columnIndex == 6 || columnIndex == 1; // Seules les colonnes précédents et suivants sont éditables
+        return columnIndex == 5 || columnIndex == 6 || columnIndex == 0; // Seules les colonnes précédents et suivants sont éditables
     }
 }

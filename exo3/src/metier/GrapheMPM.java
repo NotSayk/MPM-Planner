@@ -237,6 +237,29 @@ public class GrapheMPM
         this.ctrl.afficherGraphe(); 
     }
     
+    public void modifierNom(TacheMPM tache, String nouveauNom) 
+    {
+        if (nouveauNom == null || nouveauNom.trim().isEmpty()) 
+        {
+            throw new IllegalArgumentException("Le nom de la tâche ne peut pas être vide.");
+        }
+        
+        // Vérifier si le nom existe déjà
+        for (TacheMPM tacheCourante : this.getTaches()) 
+        {
+            if (tacheCourante.getNom().equals(nouveauNom)) 
+            {
+                throw new IllegalArgumentException("Une tâche avec ce nom existe déjà.");
+            }
+        }
+        
+        tache.setNom(nouveauNom);
+        
+        // Mettre à jour le graphe et l'interface
+        this.ctrl.getFichier().modifierTacheFichier(tache);
+        this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
+    }
+
     public void modifierPrecedents(TacheMPM tache, String nouveauxPrecedents) {
         Set<TacheMPM> nouveauxPrecedentsSet = new HashSet<>();
         

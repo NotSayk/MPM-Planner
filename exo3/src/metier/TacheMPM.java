@@ -55,6 +55,7 @@ public class TacheMPM
     public void setDateTard(int dateTard) { this.dateTard = dateTard; }
     public void setDuree   (int duree)    { this.duree    = duree   ; }
     public void setNiveau  (int niveau)   { this.niveau   = niveau  ; }
+    public void setNom     (String nom)   { this.nom      = nom     ; }
 
     public void setCritique(boolean estCritique) { this.estCritique = estCritique; }
 

@@ -141,6 +141,11 @@ public class Controleur
         return this.frameModification.getGrilleDonneesModel();
     }
 
+    public void modifierNom(TacheMPM tacheModifier, String nouvelleValeur) 
+    {
+        this.graphe.modifierNom(tacheModifier, nouvelleValeur);
+    }
+
     /*--------------------------------------------
      * Accesseurs - Données du graphe et de l’IHM
      *--------------------------------------------*/
