@@ -19,7 +19,6 @@ import src.metier.GrapheMPM;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;
 
-import java.awt.Rectangle;
 import java.awt.Graphics2D;
 
 
@@ -175,16 +174,26 @@ public class PanelMPM extends JPanel
         @Override
         public void mousePressed(MouseEvent e) 
         {
-             if (e.getButton() == MouseEvent.BUTTON1) {
-                entiteSelectionnee = trouverEntiteAuPoint(e.getX(), e.getY());
+            if (e.getButton() == MouseEvent.BUTTON1) 
+            {
+                // Ajuster les coordonnées en fonction du zoom
+                int Xscale = (int)(e.getX() / scale);
+                int Yscale = (int)(e.getY() / scale);
+                
+                entiteSelectionnee = trouverEntiteAuPoint(Xscale, Yscale);
                 if (entiteSelectionnee != null) 
                 {
-                    offsetX = e.getX() - entiteSelectionnee.getX();
-                    offsetY = e.getY() - entiteSelectionnee.getY();
+                    offsetX = Xscale - entiteSelectionnee.getX();
+                    offsetY = Yscale - entiteSelectionnee.getY();
                     popup.setVisible(false);
                 }
-            } else if (e.getButton() == MouseEvent.BUTTON3) {
-                entiteSelectionnee = trouverEntiteAuPoint(e.getX(), e.getY());
+            } 
+            else if (e.getButton() == MouseEvent.BUTTON3) 
+            {
+                int Xscale = (int)(e.getX() / scale);
+                int Yscale = (int)(e.getY() / scale);
+                
+                entiteSelectionnee = trouverEntiteAuPoint(Xscale, Yscale);
                 if (entiteSelectionnee == null) 
                 {
                     return;  
@@ -220,15 +229,18 @@ public class PanelMPM extends JPanel
         {
             if (entiteSelectionnee != null) 
             {
-                int newX = e.getX() - offsetX;
-                int newY = e.getY() - offsetY;
+                // Ajuster les coordonnées en fonction du zoom
+                int Xscale = (int)(e.getX() / scale);
+                int Yscale = (int)(e.getY() / scale);
+                
+                int newX = Xscale - offsetX;
+                int newY = Yscale - offsetY;
 
                 if(newX < 0) newX = 0;
                 if(newY < 0) newY = 0;
 
                 entiteSelectionnee.setPosition(newX, newY);
                 
-                // Mettre à jour la taille si nécessaire
                 this.updateSize();
                 this.scrollRectToVisible(new Rectangle(e.getX() - 100, e.getY() - 100, 100, 100));
                 repaint();
@@ -238,7 +250,11 @@ public class PanelMPM extends JPanel
         @Override
         public void mouseMoved(MouseEvent e) 
         {
-            Entite entite = trouverEntiteAuPoint(e.getX(), e.getY());
+            // Ajuster les coordonnées en fonction du zoom
+            int Xscale = (int)(e.getX() / scale);
+            int Yscale = (int)(e.getY() / scale);
+            
+            Entite entite = trouverEntiteAuPoint(Xscale, Yscale);
             
             if (entite != null) 
             {
@@ -247,8 +263,10 @@ public class PanelMPM extends JPanel
                     TacheMPM tache = entite.getTache();
 
                     String anterieur = "";
-                    if (!tache.getPrecedents().isEmpty()) {
-                        for (int i = 0; i < tache.getPrecedents().size(); i++) {
+                    if (!tache.getPrecedents().isEmpty()) 
+                    {
+                        for (int i = 0; i < tache.getPrecedents().size(); i++) 
+                        {
                             anterieur += tache.getPrecedents().get(i).getNom();
                             if (i < tache.getPrecedents().size() - 1) anterieur += ", ";
                         }
@@ -275,16 +293,22 @@ public class PanelMPM extends JPanel
 
                     this.dernierEntite = entite;
 
-                    Point entitePos = new Point(entite.getX(), entite.getY());
+                    // Calculer la position du popup en tenant compte du zoom
                     Point screenPoint = this.getLocationOnScreen();
+                    
+                    // Position de l'entité à l'écran avec le zoom appliqué
+                    int entiteScreenX = (int)(entite.getX() * scale);
+                    int entiteScreenY = (int)(entite.getY() * scale);
+                    int entiteLargeurScaled = (int)(entite.getLargeur() * scale);
 
-                    int newX = screenPoint.x + entitePos.x + entite.getLargeur() + 10;
-                    int newY = screenPoint.y + entitePos.y;                        
+                    int newX = screenPoint.x + entiteScreenX + entiteLargeurScaled + 10;
+                    int newY = screenPoint.y + entiteScreenY;                        
 
                     popup.setLocation(newX, newY);
                     popup.setVisible(true);
                 }
-            } else 
+            } 
+            else 
             {
                 if (popup.isVisible()) popup.setVisible(false);
                 this.dernierEntite = null;
@@ -376,7 +400,8 @@ public class PanelMPM extends JPanel
         }
         
         // Mettre à jour la taille du panel de dessin
-        if (this.graphePanel != null) {
+        if (this.graphePanel != null) 
+        {
             this.graphePanel.updateSize();
         }
     }
@@ -545,10 +570,10 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
-    public boolean estGriseTot () { return this.numNiveauxTot  == numNiveauxTard-1;                                                }
-    public boolean estGriseTard() { return this.numNiveauxTard == 0;                                                             }
-    public String  getTheme    () { return this.graphePanel.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK";             }
-    public boolean isCritique  () { return this.afficher;                                                                        }
+    public boolean estGriseTot () { return this.numNiveauxTot  == numNiveauxTard-1; }
+    public boolean estGriseTard() { return this.numNiveauxTard == 0; }
+    public String  getTheme    () { return this.graphePanel.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK"; }
+    public boolean isCritique  () { return this.afficher; }
 
     public void setCritique(boolean critique) 
     {
