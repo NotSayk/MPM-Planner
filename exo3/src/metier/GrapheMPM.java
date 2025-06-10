@@ -32,8 +32,6 @@ public class GrapheMPM
     {
         this.initDateTot ();
         this.initDateTard();
-
-        if (this.dateType == 'F') this.setDateFin (dateRef);
     }
 
     public void setDateFin(String dateFin) 

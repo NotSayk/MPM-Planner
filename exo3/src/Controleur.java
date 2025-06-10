@@ -51,6 +51,7 @@ public class Controleur
         this.graphe.setDateType  (typeDate);
 
         this.graphe.calculerDates     ();
+        if (typeDate == 'F') this.graphe.setDateFin (dateRef);
         this.graphe.initCheminCritique();
         this.graphe.initNiveauTaches  ();
 
