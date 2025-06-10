@@ -260,9 +260,9 @@ public class Fichier
 
         this.ctrl.getTaches().removeIf(tache -> tache.getNom().equals(tacheSuppr.getNom()));
 
-        this.lierPrecedentsSuivants(tacheSuppr, precedents, suivants);
+        //this.lierPrecedentsSuivants(tacheSuppr, precedents, suivants);
 
-        this.etablirRelationsSuivants();
+        //this.etablirRelationsSuivants();
 
         // Sauvegarder les modifications
         this.sauvegarder();
