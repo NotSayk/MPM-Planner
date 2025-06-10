@@ -29,8 +29,8 @@ public class Entite
         this.location        = new Point(x, y);
         this.locationInitial = new Point(x, y);
 
-        this.largeur         = TAILLE_CASE;
-        this.hauteur         = TAILLE_CASE;
+        this.largeur         = Entite.TAILLE_CASE;
+        this.hauteur         = Entite.TAILLE_CASE;
 
         this.couleurContour  = Color.BLACK; 
     }
@@ -72,12 +72,12 @@ public class Entite
         
         // Dessin des lignes de séparation
         g.setColor(this.couleurContour);
-        g.drawLine(x + DEMI_CASE, y + DEMI_CASE - 5, x + DEMI_CASE, y + 70);
+        g.drawLine(x + Entite.DEMI_CASE, y + Entite.DEMI_CASE - 5, x + Entite.DEMI_CASE, y + 70);
         g.drawLine(x, y + 30, x + 70, y + 30);
         
         // Affichage du nom de la tâche
         String nomTache = tache.getNom();
-        g.drawString(nomTache, x + DEMI_CASE - 4 * nomTache.length(), y + DEMI_CASE - 20);
+        g.drawString(nomTache, x + Entite.DEMI_CASE - 4 * nomTache.length(), y + Entite.DEMI_CASE - 20);
         
     }
 }
