@@ -603,7 +603,6 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
-
     public TacheMPM getTacheSelectionnee() {return this.tacheSelectionnee;}
     public boolean estGriseTot () { return this.numNiveauxTot  == numNiveauxTard-1; }
     public boolean estGriseTard() { return this.numNiveauxTard == 0; }

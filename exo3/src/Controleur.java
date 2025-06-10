@@ -212,6 +212,9 @@ public class Controleur
     public FrameMPM       getFrameMPM() { return this.frameMPM;              }
     public GrapheMPM      getGraphe  () { return this.graphe;                }
     public Fichier        getFichier () { return this.fichier;               }
+    public void           setTheme   (String theme) { this.frameMPM.setTheme(theme); }
+    public boolean        getAfficher()  { return this.frameMPM.getPanelMPM().isCritique(); }
+    public void           afficherCheminCritique(boolean afficher) { this.frameMPM.getPanelMPM().afficherCheminCritique(afficher); }
 
     public String  getGrapheToString () { return this.graphe.toString    (); }
 }
