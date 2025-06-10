@@ -1,7 +1,9 @@
 DEBUT|0|
 A|2|DEBUT
-B|4|DEBUT
-C|3|A
-D|2|B
-E|1|C,D
-FIN|0|E
+B|2|DEBUT
+C|4|A
+D|4|B
+E|2|C
+F|2|D
+G|1|E,F
+FIN|0|G
