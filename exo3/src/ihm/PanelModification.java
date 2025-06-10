@@ -91,32 +91,56 @@ public class PanelModification extends JPanel implements ActionListener
 		if (e.getSource() == this.btnMaj) 
 		{
 			int[] lignesSelectionnees = this.tblGrilleDonnees.getSelectedRows();
-
+			
+			// Vérifier si la ligne sélectionnée est la première ou dernière du tableau
+			if (lignesSelectionnees.length == 1 && (lignesSelectionnees[0] == 0 || lignesSelectionnees[0] == this.grilleDonneesModel.getRowCount() - 1)) 
+			{
+				ErrorUtils.showError("Cette tâche ne peut pas être modifiée.");
+				return;
+			}
+			
 			if (lignesSelectionnees.length >= 1) 
 			{
-				String dureeStr = this.txtTacheDuree.getText();
-				for (int i = 0; i < lignesSelectionnees.length; i++) 
+				String dureeStr = this.txtTacheDuree.getText().trim();
+				
+				// Vérifier que la durée n'est pas vide
+				if (dureeStr.isEmpty()) {
+					ErrorUtils.showError("Veuillez saisir une durée.");
+					return;
+				}
+				
+				try 
 				{
-					int tacheSelectionnee = lignesSelectionnees[i];
-					if (tacheSelectionnee >= 0 && tacheSelectionnee < this.tblGrilleDonnees.getRowCount()) 
-					{
-						try 
-						{
-							int duree = Integer.parseInt(dureeStr);
-							this.ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
-							this.grilleDonneesModel.refreshTab();
-						} 
-						catch (NumberFormatException ex) 
-						{
-							ErrorUtils.showError("La durée doit être un nombre entier.");
-							break;
-						}
-					} 
-					else 
-					{
-						ErrorUtils.showError("Tache non valide.");
-						break;
+					int duree = Integer.parseInt(dureeStr);
+					
+					// Vérifier que la durée est positive
+					if (duree < 0) {
+						ErrorUtils.showError("La durée doit être un nombre positif.");
+						return;
 					}
+					
+					// Mettre à jour toutes les tâches sélectionnées
+					for (int i = 0; i < lignesSelectionnees.length; i++) 
+					{
+						int tacheSelectionnee = lignesSelectionnees[i];
+						if (tacheSelectionnee >= 0 && tacheSelectionnee < this.tblGrilleDonnees.getRowCount()) 
+						{
+							this.ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
+						} 
+						else 
+						{
+							ErrorUtils.showError("Tâche non valide.");
+							return;
+						}
+					}
+					
+					// Rafraîchir l'affichage une seule fois après toutes les modifications
+					this.grilleDonneesModel.refreshTab();
+					
+				} 
+				catch (NumberFormatException ex) 
+				{
+					ErrorUtils.showError("La durée doit être un nombre entier.");
 				}
 			} 
 			else 

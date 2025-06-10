@@ -190,21 +190,25 @@ public class GrapheMPM
         }
     }
 
-    public void mettreAJourDureeTache (int index, int duree) 
+    // Dans GrapheMPM.java - Méthode corrigée
+public void mettreAJourDureeTache(int index, int duree) 
+{
+    List<TacheMPM> taches = this.ctrl.getTaches();
+    if (index >= 0 && index < taches.size()) 
     {
-        List<TacheMPM> taches = this.lstTacheMPMs;
-        if (index >= 0 && index < taches.size()) 
-        {
-            TacheMPM tache = taches.get(index);
-            tache.setDuree(duree);
-            this.ctrl.getFichier().modifierTacheFichier(tache);
-            this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
-        } 
-        else 
-        {
-            System.err.println("Index de tâche invalide : " + index);
-        }
+        TacheMPM tache = taches.get(index);
+        tache.setDuree(duree);
+        this.calculerDates();
+        this.initCheminCritique();
+        this.initNiveauTaches();
+        this.ctrl.getFichier().modifierTacheFichier(tache);
+        this.ctrl.afficherGraphe();
+    } 
+    else 
+    {
+        System.err.println("Index de tâche invalide : " + index);
     }
+}
     
     public void modifierPrecedents(TacheMPM tache, String nouveauxPrecedents) {
         Set<TacheMPM> nouveauxPrecedentsSet = new HashSet<>();
