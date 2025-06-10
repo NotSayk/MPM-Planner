@@ -6,22 +6,18 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
+import javax.swing.*;
 import src.Controleur;
 import src.ihm.composants.Entite;
 import src.metier.GrapheMPM;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;
-import java.awt.Rectangle;
 
 public class PanelMPM extends JPanel
 {
