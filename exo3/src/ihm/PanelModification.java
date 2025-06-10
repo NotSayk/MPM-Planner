@@ -178,4 +178,9 @@ public class PanelModification extends JPanel implements ActionListener
 }
 
 	}
+	  public GrilleDonneesModel getGrilleDonneesModel() 
+    {
+        return this.grilleDonneesModel;
+    }
+    
 }

@@ -85,7 +85,8 @@ public class GrilleDonneesModel extends AbstractTableModel
 
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        if (columnIndex == 5 || columnIndex == 6) { // Colonnes précédents ou suivants
+        if (columnIndex == 5 || columnIndex == 6 ) 
+        {
             String nouvelleValeur = value.toString().trim();
             TacheMPM tacheModifiee = ctrl.getTaches().get(rowIndex);
             
@@ -109,6 +110,10 @@ public class GrilleDonneesModel extends AbstractTableModel
             return false;
         if (columnIndex == 6 && rowIndex == getRowCount() - 1) // FIN ne peut pas avoir de suivants
             return false;
-        return columnIndex == 5 || columnIndex == 6; // Seules les colonnes précédents et suivants sont éditables
+        if (columnIndex == 0 && rowIndex == 0)
+            return false;
+        if (columnIndex == 0 && rowIndex == getRowCount() - 1)
+            return false;
+        return columnIndex == 5 || columnIndex == 6 || columnIndex == 1; // Seules les colonnes précédents et suivants sont éditables
     }
 }

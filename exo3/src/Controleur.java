@@ -3,6 +3,7 @@ package src;
 import java.util.List;
 import src.ihm.FrameMPM;
 import src.ihm.FrameModification;
+import src.ihm.GrilleDonneesModel;
 import src.ihm.composants.Entite;
 import src.metier.Fichier;
 import src.metier.GrapheMPM;
@@ -148,6 +149,20 @@ public class Controleur
 
     public int     getNiveauTache    (TacheMPM tache)             { return this.graphe.getNiveauTache(tache) ; }
     public void    setNiveauTache    (TacheMPM tache, int niveau) { this.graphe.setNiveauTache(tache, niveau); }
+   public GrilleDonneesModel getGrilleDonneesModel() 
+    {
+        if (this.frameModification != null) 
+        {
+            return this.frameModification.getGrilleDonneesModel();
+        }
+        
+        if (this.frameModification == null) 
+        {
+            this.frameModification = new FrameModification(this);
+        }
+        
+        return this.frameModification.getGrilleDonneesModel();
+    }
 
     /*--------------------------------------------
      * Accesseurs - Données du graphe et de l’IHM

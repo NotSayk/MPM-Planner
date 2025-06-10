@@ -31,4 +31,15 @@ public class FrameModification extends JFrame
         
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
+
+        public PanelModification getPanelModification() 
+    {
+        return this.panelModification;
+    }
+
+     public GrilleDonneesModel getGrilleDonneesModel() 
+    {
+        return this.panelModification.getGrilleDonneesModel();
+    }
+    
 }

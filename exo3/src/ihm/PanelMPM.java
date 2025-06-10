@@ -196,6 +196,7 @@ public class PanelMPM extends JPanel
                     return;
                 }
                 supprimerTache(entiteSelectionnee.getTache());
+                ctrl.getGrilleDonneesModel().refreshTab();
             }
         }
 
