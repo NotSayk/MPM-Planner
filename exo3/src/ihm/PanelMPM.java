@@ -30,11 +30,13 @@ public class PanelMPM extends JPanel
 
     private Controleur   ctrl;
     private List<Entite> lstEntites;
+
     private boolean      afficherDateTot;
     private boolean      afficherDateTard;
     private boolean      afficher;
     private int          numNiveauxTot;
     private int          numNiveauxTard;
+    
     private PanelButton  panelButton;
     private JPopupMenu   popup;
     
