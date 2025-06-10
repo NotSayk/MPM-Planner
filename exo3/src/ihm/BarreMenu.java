@@ -3,6 +3,7 @@ package src.ihm;
 import java.awt.event.*;
 import java.io.File;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import src.Controleur;
 import src.utils.ErrorUtils;
@@ -81,8 +82,16 @@ public class BarreMenu extends JMenuBar implements ActionListener
       if(e.getSource() == this.menuiCharger)
       {
          File         fichierSelectionner = null;
-         JFileChooser selectionFichier    = new JFileChooser();
-
+          JFileChooser selectionFichier = new JFileChooser();
+        
+        FileNameExtensionFilter filterTxt = new FileNameExtensionFilter("Fichiers texte (*.txt)", "txt");
+        FileNameExtensionFilter filterMC = new FileNameExtensionFilter("Fichiers MPM (*.MC)", "MC");
+        
+        selectionFichier.addChoosableFileFilter(filterTxt);
+        selectionFichier.addChoosableFileFilter(filterMC);
+        selectionFichier.setAcceptAllFileFilterUsed(true);
+        
+        selectionFichier.setCurrentDirectory(new File("."));
 
          if (selectionFichier.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
             fichierSelectionner = selectionFichier.getSelectedFile();   
