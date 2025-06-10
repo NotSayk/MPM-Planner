@@ -15,6 +15,9 @@ public class Fichier
 {
     private Controleur     ctrl;
     private String         nomFichier;
+
+    private boolean        estCritique;
+    private String         theme;
     
     public Fichier(Controleur ctrl, String nomFichier) 
     {
@@ -44,24 +47,39 @@ public class Fichier
 
                 String[] parties = ligne.split("\\|", -1);
 
-                nom = parties[0];
-                duree = Integer.parseInt(parties[1]);
 
-                if (parties.length > 2 && !parties[2].isEmpty()) 
-                    precedents = parties[2].split(",");
-                else
-                    precedents = new String[0];
-
-                List<TacheMPM> tachesPrecedentes = new ArrayList<>();
-                for (String precedent : precedents) 
+                if(parties.length > 1)
                 {
-                    TacheMPM tachePrecedente = this.trouverTache(precedent.trim());
-                    if (tachePrecedente != null) 
+
+                    nom = parties[0];
+                    duree = Integer.parseInt(parties[1]);
+                    
+                    if(parties.length > 2 && !parties[2].isEmpty()) 
+                    precedents = parties[2].split(",");
+                    else
+                    precedents = new String[0];
+                    
+                    List<TacheMPM> tachesPrecedentes = new ArrayList<>();
+                    for (String precedent : precedents) 
+                    {
+                        TacheMPM tachePrecedente = this.trouverTache(precedent.trim());
+                        if (tachePrecedente != null) 
                         tachesPrecedentes.add(tachePrecedente);
+                    }
+                    
+                    TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
+                    this.ctrl.getTaches().add(tache);    
+
+                }
+                else
+                {
+                    if(parties[0].equals("false")) this.estCritique = false;
+                    else
+                        if(parties[0].equals("true" )) this.estCritique = true;
+                        else
+                            this.theme = parties[0];
                 }
 
-                TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
-                this.ctrl.getTaches().add(tache);
             }
             
             scMPM.close();
@@ -215,7 +233,7 @@ public class Fichier
                 }
             }
             scMPM.close();
-        } catch (Exception e) { e.printStackTrace();}
+        } catch (Exception e) { e.printStackTrace(); }
         
         return null;
     }
@@ -302,7 +320,7 @@ public class Fichier
 
 
     // Getters
-    public String         getNomFichier  () { return this.nomFichier;                                  }
-    public String         getTheme       () { return getLigne("theme");                            }
-    public boolean        isCritique     () { return getLigne("critique").equals("true"); }
+    public String         getNomFichier  () { return this.nomFichier;  }
+    public String         getTheme       () { return this.theme;       }
+    public boolean        isCritique     () { return this.estCritique; }
 }
