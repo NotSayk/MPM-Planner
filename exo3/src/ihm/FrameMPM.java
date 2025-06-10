@@ -77,4 +77,5 @@ public class FrameMPM extends JFrame
         this.repaint();
     }
     
+    public void setScale(double zoom) {this.panelMPM.setScale(zoom);}
 }

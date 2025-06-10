@@ -20,6 +20,13 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem     menuiRajouterTache;
    private JMenuItem     menuiSupprimerTache;
    private JMenuItem     menuiChangerDureeTache;
+
+   private JMenuItem     menuiZoom25;
+   private JMenuItem     menuiZoom50;
+   private JMenuItem     menuiZoom75;
+   private JMenuItem     menuiZoom100;
+   private JMenuItem     menuiZoom150;
+   private JMenuItem     menuiZoom200;
    private JMenuItem     menuiCopier;
 
    public BarreMenu(Controleur ctrl)
@@ -32,8 +39,10 @@ public class BarreMenu extends JMenuBar implements ActionListener
       /*----------------------------*/
 
       // les JMenu
-      JMenu menuFichier   = new JMenu("Fichier"  );
-      JMenu menuEdition   = new JMenu("Edition"  );
+      JMenu menuFichier   = new JMenu("Fichier"   );
+      JMenu menuEdition   = new JMenu("Edition"   );
+      JMenu menuAffichage = new JMenu("Affichage" );
+      JMenu menuZoom      = new JMenu("Zoom"      );
 
       // les JItemMenu
       this.menuiCharger           = new JMenuItem("Charger"                  );
@@ -44,11 +53,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiRajouterTache     = new JMenuItem("Rajouter une tâche"       );
       this.menuiSupprimerTache    = new JMenuItem("supprimer une tâche"      );
       this.menuiChangerDureeTache = new JMenuItem("Changer durée d'une tâche");
-      // Ajouter un menu pour copier
-      this.menuiCopier = new JMenuItem("Copier tâche");
-      this.menuiCopier.addActionListener(this);
-      menuiCopier.addActionListener(this);
-      
+
       /*-------------------------------*/
       /* positionnement des composants */
       /*-------------------------------*/
@@ -63,11 +68,11 @@ public class BarreMenu extends JMenuBar implements ActionListener
       menuEdition.add( this.menuiRajouterTache     );
       menuEdition.add( this.menuiSupprimerTache    );
       menuEdition.add( this.menuiChangerDureeTache );
-      menuEdition.add( menuiCopier                 );
 
       //rajout des menus
-      this.add( menuFichier );
-      this.add( menuEdition );
+      this.add( menuFichier   );
+      this.add( menuEdition   );
+      this.add( menuAffichage );
 
       /*-------------------------------*/
       /* Activation des composants     */
@@ -80,6 +85,13 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiSupprimerTache   .addActionListener(this);
       this.menuiChangerDureeTache.addActionListener(this);
       this.menuiColler           .addActionListener(this);
+
+      this.menuiZoom25           .addActionListener(this);
+      this.menuiZoom50           .addActionListener(this);
+      this.menuiZoom75           .addActionListener(this);
+      this.menuiZoom100          .addActionListener(this);
+      this.menuiZoom150          .addActionListener(this);
+      this.menuiZoom200          .addActionListener(this);
 
 
       this.menuiCharger    .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK ));
@@ -139,23 +151,5 @@ public class BarreMenu extends JMenuBar implements ActionListener
       if(e.getSource() == this.menuiSupprimerTache)    this.ctrl.afficherModification();
 
       if(e.getSource() == this.menuiChangerDureeTache) this.ctrl.afficherModification();
-
-      if(e.getSource() == this.menuiCopier)
-      {
-         try
-         {
-            this.ctrl.copierTache();
-            System.out.println("Copie d'une tâche");
-         }catch (Exception exc) { ErrorUtils.showError("erreur durant la copie d'une tâche"); }
-      }
-      
-      if(e.getSource() == this.menuiColler)
-      {
-         try
-         {
-            this.ctrl.collerTache();
-            System.out.println("Collage d'une tâche");
-         }catch (Exception exc) { ErrorUtils.showError("erreur durant le collage d'une tâche"); }
-      }
    }
 }

@@ -30,11 +30,13 @@ public class PanelMPM extends JPanel
 
     private Controleur   ctrl;
     private List<Entite> lstEntites;
+
     private boolean      afficherDateTot;
     private boolean      afficherDateTard;
     private boolean      afficher;
     private int          numNiveauxTot;
     private int          numNiveauxTard;
+    
     private PanelButton  panelButton;
     private JPopupMenu   popup;
     private TacheMPM tacheSelectionnee;
@@ -620,5 +622,12 @@ public class PanelMPM extends JPanel
         this.afficher = critique;
         this.afficherCheminCritique(critique);
         this.panelButton.setCritiqueButton(critique);
+    }
+
+    public void setScale(double zoom)
+    {
+        this.graphePanel.scale = zoom;
+        this.graphePanel.updateSize();
+        this.repaint();
     }
 }
