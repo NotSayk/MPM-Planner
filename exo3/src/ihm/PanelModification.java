@@ -167,7 +167,14 @@ public class PanelModification extends JPanel implements ActionListener
             this.ctrl.ajouterTacheAPosition(temp, this.ctrl.getEntites().size()-1);;
         }
         
-        this.ctrl.setNiveauTache(temp, 0); 
+		int niveau = 0;
+		if (lignesSelectionnees.length > 0) 
+		{
+			int selectedIndex = lignesSelectionnees[lignesSelectionnees.length - 1];
+			TacheMPM tacheSelectionee = this.ctrl.getEntites().get(selectedIndex).getTache();
+			niveau = tacheSelectionee.getNiveau();
+		}
+		this.ctrl.setNiveauTache(temp, niveau);
         this.grilleDonneesModel.refreshTab();
         this.txtTacheNom.setText("");
     } 
