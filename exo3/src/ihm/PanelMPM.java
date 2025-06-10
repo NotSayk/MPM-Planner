@@ -21,6 +21,7 @@ import src.ihm.composants.Entite;
 import src.metier.GrapheMPM;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;
+import java.awt.Rectangle;
 
 public class PanelMPM extends JPanel
 {
@@ -207,6 +208,7 @@ public class PanelMPM extends JPanel
                 
                 // Mettre à jour la taille si nécessaire
                 this.updateSize();
+                this.scrollRectToVisible(new Rectangle(e.getX() - 100, e.getY() - 100, 100, 100));
                 repaint();
             }
         }
