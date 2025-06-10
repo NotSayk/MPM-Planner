@@ -3,7 +3,6 @@ package src.ihm.composants;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-
 import src.metier.TacheMPM;
 
 public class Entite 
@@ -30,10 +29,10 @@ public class Entite
         this.location        = new Point(x, y);
         this.locationInitial = new Point(x, y);
 
-        this.largeur        = TAILLE_CASE;
-        this.hauteur        = TAILLE_CASE;
+        this.largeur         = TAILLE_CASE;
+        this.hauteur         = TAILLE_CASE;
 
-        this.couleurContour = Color.BLACK; 
+        this.couleurContour  = Color.BLACK; 
     }
 
     public void setPosition(int x, int y) 

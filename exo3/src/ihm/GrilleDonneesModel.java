@@ -73,21 +73,20 @@ public class GrilleDonneesModel extends AbstractTableModel
 	}
 
 	@Override
-	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        if (columnIndex == 4 || columnIndex == 5) { // Colonnes précédents ou suivants
+	public void setValueAt(Object value, int rowIndex, int columnIndex) 
+	{
+        if (columnIndex == 4 || columnIndex == 5) 
+		{
             String nouvelleValeur = value.toString().trim();
             TacheMPM tacheModifiee = ctrl.getTaches().get(rowIndex);
             
-            try {
-                if (columnIndex == 4) { // Précédents
-                    this.ctrl.modifierPrecedents(tacheModifiee, nouvelleValeur);
-                } else { // Suivants
-                    ctrl.modifierSuivants(tacheModifiee, nouvelleValeur);
-                }
+            try 
+			{
+                if (columnIndex == 4) this.ctrl.modifierPrecedents(tacheModifiee, nouvelleValeur);
+                else                  this.ctrl.modifierSuivants  (tacheModifiee, nouvelleValeur);
+				
                 refreshTab();
-            } catch (IllegalArgumentException e) {
-                ErrorUtils.showError(e.getMessage());
-            }
+            } catch (IllegalArgumentException e) { ErrorUtils.showError(e.getMessage()); }
         }
     }
 
