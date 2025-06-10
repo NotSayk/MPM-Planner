@@ -90,6 +90,34 @@ public class Controleur
      * Actions utilisateur - IHM
      *---------------------------*/
 
+     public void ajouterTacheAPosition(TacheMPM tache, int position) 
+    {
+        // Vérifier si le nom existe déjà
+        for (TacheMPM tacheCourante : this.getTaches()) 
+        {
+            if (tacheCourante.getNom().equals(tache.getNom())) 
+            {
+                return;
+            }
+        }
+        
+        List<TacheMPM> taches = this.getTaches();
+        
+        TacheMPM fin = taches.remove(taches.size()-1);
+        
+        if (position > taches.size()) 
+        {
+            position = taches.size();
+        }
+        
+        taches.add(position, tache);
+        
+        taches.add(fin);
+        
+        this.graphe.initNiveauTaches(); 
+        this.afficherGraphe(); 
+    }
+
     public void changerTheme       () { this.frameMPM.changerTheme  ();                               }
     public void resetPositions     () { this.frameMPM.resetPositions(); this.frameMPM.repaint();      }
     public void sauvegarder        () { this.fichier.sauvegarder    ();                               }
@@ -105,17 +133,6 @@ public class Controleur
 
     public void modifierSuivants  (TacheMPM tacheModifier, String nouvelleValeur) { this.graphe.modifierSuivants(tacheModifier, nouvelleValeur); }
 
-    public void ajouterTache     (TacheMPM tache) 
-    { 
-        List<TacheMPM> taches = this.getTaches();
-        TacheMPM fin = taches.remove(taches.size()-1);
-
-        taches.add(tache); 
-        taches.add(fin);
-        this.graphe.initNiveauTaches(); 
-        this.afficherGraphe(); 
-    }
-
     /*-----------------------------------------
      * Accesseurs - Informations sur le projet
      *-----------------------------------------*/
@@ -129,6 +146,7 @@ public class Controleur
     public int     getDureeProjet    () { return this.graphe.getDureeProjet();                    }
 
     public int     getNiveauTache    (TacheMPM tache) { return this.graphe.getNiveauTache(tache); }
+    public void    setNiveauTache    (TacheMPM tache, int niveau) { this.graphe.setNiveauTache(tache, niveau); }
 
     /*--------------------------------------------
      * Accesseurs - Données du graphe et de l’IHM

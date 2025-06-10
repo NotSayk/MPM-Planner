@@ -127,6 +127,17 @@ public class GrapheMPM
         return dureeMax;
     }
 
+    public void setNiveauTache(TacheMPM tache, int niveau) 
+    {
+        if (niveau < 0 || niveau >= this.niveaux.length) 
+        {
+            System.err.println("Niveau invalide : " + niveau);
+            return;
+        }
+        tache.setNiveau(niveau);
+        this.niveaux[niveau] += 1;
+    }
+
     public void initCheminCritique() 
     {
         TacheMPM fin   = this.ctrl.getTaches().get(this.ctrl.getTaches().size() - 1);
@@ -231,6 +242,7 @@ public class GrapheMPM
         this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
     }
 
+    
     public void modifierSuivants(TacheMPM tache, String nouveauxSuivants) {
         Set<TacheMPM> nouveauxSuivantsSet = new HashSet<>();
         

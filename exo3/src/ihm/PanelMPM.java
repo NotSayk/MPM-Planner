@@ -103,54 +103,34 @@ public class PanelMPM extends JPanel implements MouseListener, MouseMotionListen
     
     private void initEntites() 
     {
+        Entite entite;
+        int    niveau, x, y;
+
         this.lstEntites.clear();
-        
+
         List<TacheMPM> taches = this.ctrl.getTaches();
         
-        int[] nbTachesParNiveau = new int[99];
-        int niveauMax = 0;
-        
         for (TacheMPM tache : taches) 
         {
-            int niveau = this.ctrl.getNiveauTache(tache);
-            nbTachesParNiveau[niveau]++;
-            if (niveau > niveauMax) niveauMax = niveau;
-        }
-
-        int maxTachesParNiveau = 0;
-        for (int i = 0; i <= niveauMax; i++) 
-            if (nbTachesParNiveau[i] > maxTachesParNiveau) 
-                maxTachesParNiveau = nbTachesParNiveau[i];
-        
-        int hauteurMaxNiveau = maxTachesParNiveau * PanelMPM.ESPACEMENT;
-        int centreY = 150 + hauteurMaxNiveau / 2;
-        
-        int[] compteurParNiveau = new int[99];
-        
-        for (TacheMPM tache : taches) 
-        {
-            int niveau = this.ctrl.getNiveauTache(tache);
-            int x      = PanelMPM.MARGE + niveau * PanelMPM.ESPACEMENT;
+            niveau = this.ctrl.getNiveauTache(tache); 
+            x = PanelMPM.MARGE + niveau * PanelMPM.ESPACEMENT;
+            y = 0;
             
-            int nbTachesCeNiveau = nbTachesParNiveau[niveau];
-            int hauteurCeNiveau  = nbTachesCeNiveau * PanelMPM.ESPACEMENT;
-            int debutY           = centreY - hauteurCeNiveau / 2;
+            int positionNiveau = 0;
+            for (TacheMPM t : taches)
+                if (this.ctrl.getNiveauTache(t) == niveau && taches.indexOf(t) < taches.indexOf(tache)) 
+                    positionNiveau++;
             
-            int positionDansNiveau = compteurParNiveau[niveau];
-            int y                  = debutY + positionDansNiveau * PanelMPM.ESPACEMENT;
+            y = PanelMPM.MARGE + positionNiveau * PanelMPM.ESPACEMENT;
             
-            if (y < PanelMPM.MARGE) y = PanelMPM.MARGE + positionDansNiveau * PanelMPM.ESPACEMENT;
-            
-            Entite entite = new Entite(tache, x, y);
+            entite = new Entite(tache, x, y);
             this.lstEntites.add(entite);
-            
-            compteurParNiveau[niveau]++;
         }
     }
 
     public void afficherCheminCritique(boolean aff) 
     {
-        this.afficher = aff; // Synchronise l'état interne // faire autrement 
+        this.afficher = aff; // Synchroniser l'état interne
         
         if (!aff) 
         {

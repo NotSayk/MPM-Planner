@@ -131,18 +131,33 @@ public class PanelModification extends JPanel implements ActionListener
 			}
 		}
 		else if (e.getSource() == this.btnAjouter) 
-		{
-			String nomTache = this.txtTacheNom.getText().trim();
-			if (!nomTache.isEmpty()) 
-			{
-				this.ctrl.ajouterTache(new TacheMPM(nomTache, 0, new ArrayList<>()));
-				this.grilleDonneesModel.refreshTab();
-			} 
-			else 
-			{
-				ErrorUtils.showError("Le nom de la tâche ne peut pas être vide.");
-			}
-		}
+{
+    String nomTache = this.txtTacheNom.getText().trim();
+    if (!nomTache.isEmpty()) 
+    {
+        TacheMPM temp = new TacheMPM(nomTache, 0, new ArrayList<>());
+        
+        int[] lignesSelectionnees = this.tblGrilleDonnees.getSelectedRows();
+        if (lignesSelectionnees.length > 0) 
+        {
+            // Insérer après la dernière ligne sélectionnée
+            int positionInsertion = lignesSelectionnees[lignesSelectionnees.length - 1] + 1;
+            this.ctrl.ajouterTacheAPosition(temp, positionInsertion);
+        } 
+        else 
+        {
+            this.ctrl.ajouterTacheAPosition(temp, this.ctrl.getEntites().size()-1);;
+        }
+        
+        this.ctrl.setNiveauTache(temp, 0); 
+        this.grilleDonneesModel.refreshTab();
+        this.txtTacheNom.setText("");
+    } 
+    else 
+    {
+        ErrorUtils.showError("Le nom de la tâche ne peut pas être vide.");
+    }
+}
 
 	}
 }
