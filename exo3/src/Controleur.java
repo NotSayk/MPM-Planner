@@ -130,7 +130,7 @@ public class Controleur
 
     public int     getNiveauTache    (TacheMPM tache)             { return this.graphe.getNiveauTache(tache) ; }
     public void    setNiveauTache    (TacheMPM tache, int niveau) { this.graphe.setNiveauTache(tache, niveau); }
-   public GrilleDonneesModel getGrilleDonneesModel() 
+    public GrilleDonneesModel getGrilleDonneesModel() 
     {
         if (this.frameModification != null) 
         {
@@ -193,6 +193,7 @@ public class Controleur
         this.graphe.ajouterTacheAPosition(nouvelleTache, this.getTaches().size() - 1);
         
         System.out.println("Tâche collée : " + nomFinal);
+        this.getGrilleDonneesModel().refreshTab();
     }
 
     /*--------------------------------------------
