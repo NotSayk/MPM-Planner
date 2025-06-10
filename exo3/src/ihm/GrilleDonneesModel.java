@@ -1,10 +1,10 @@
-package src_save.ihm;
+package src.ihm;
 
 import javax.swing.table.AbstractTableModel;
 
-import src_save.Controleur;
-import src_save.metier.TacheMPM;
-import src_save.utils.ErrorUtils;
+import src.Controleur;
+import src.metier.TacheMPM;
+import src.utils.ErrorUtils;
 
 import java.util.List;
 

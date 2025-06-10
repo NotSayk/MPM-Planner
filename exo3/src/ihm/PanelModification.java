@@ -1,4 +1,4 @@
-package src_save.ihm;
+package src.ihm;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -12,8 +12,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
-import src_save.Controleur;
-import src_save.utils.ErrorUtils;
+import src.Controleur;
+import src.utils.ErrorUtils;
 
 public class PanelModification extends JPanel implements ActionListener
 {

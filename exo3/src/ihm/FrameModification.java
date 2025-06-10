@@ -1,9 +1,9 @@
-package src_save.ihm;
+package src.ihm;
 
 import java.awt.Frame;
 import javax.swing.JFrame;
 
-import src_save.Controleur;
+import src.Controleur;
 
 public class FrameModification extends JFrame
 {  

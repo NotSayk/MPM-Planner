@@ -1,14 +1,14 @@
-package src_save;
+package src;
 
 import java.util.List;
 
-import src_save.ihm.FrameMPM;
-import src_save.ihm.FrameModification;
-import src_save.ihm.composants.Entite;
-import src_save.metier.Fichier;
-import src_save.metier.GrapheMPM;
-import src_save.metier.TacheMPM;
-import src_save.utils.DateUtils;   
+import src.ihm.FrameMPM;
+import src.ihm.FrameModification;
+import src.ihm.composants.Entite;
+import src.metier.Fichier;
+import src.metier.GrapheMPM;
+import src.metier.TacheMPM;
+import src.utils.DateUtils;   
 
 
 public class Controleur 
