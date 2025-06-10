@@ -204,6 +204,10 @@ public class PanelMPM extends JPanel
             {
                 int newX = e.getX() - offsetX;
                 int newY = e.getY() - offsetY;
+
+                if(newX < 0) newX = 0;
+                if(newY < 0) newY = 0;
+
                 entiteSelectionnee.setPosition(newX, newY);
                 
                 // Mettre à jour la taille si nécessaire
