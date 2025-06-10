@@ -284,14 +284,4 @@ public void mettreAJourDureeTache(int index, int duree)
     
     public void setDateRef(String dateRef) { this.dateRef = dateRef  ; }
     public void setDateType(char dateType) { this.dateType = dateType; }
-
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Graphe MPM:\n");
-        for (TacheMPM tache : this.ctrl.getTaches()) 
-            sb.append(tache.toString(this.dateRef)).append("\n");
-        
-        return sb.toString();
-    }
 }
