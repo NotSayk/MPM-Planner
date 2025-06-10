@@ -190,24 +190,52 @@ public class GrapheMPM
     }
 
     // Dans GrapheMPM.java - Méthode corrigée
-public void mettreAJourDureeTache(int index, int duree) 
-{
-    List<TacheMPM> taches = this.ctrl.getTaches();
-    if (index >= 0 && index < taches.size()) 
+    public void mettreAJourDureeTache(int index, int duree) 
     {
-        TacheMPM tache = taches.get(index);
-        tache.setDuree(duree);
-        this.calculerDates();
-        this.initCheminCritique();
-        this.initNiveauTaches();
-        this.ctrl.getFichier().modifierTacheFichier(tache);
-        this.ctrl.afficherGraphe();
-    } 
-    else 
-    {
-        System.err.println("Index de tâche invalide : " + index);
+        List<TacheMPM> taches = this.ctrl.getTaches();
+        if (index >= 0 && index < taches.size()) 
+        {
+            TacheMPM tache = taches.get(index);
+            tache.setDuree(duree);
+            this.calculerDates();
+            this.initCheminCritique();
+            this.initNiveauTaches();
+            this.ctrl.getFichier().modifierTacheFichier(tache);
+            this.ctrl.afficherGraphe();
+        } 
+        else 
+        {
+            System.err.println("Index de tâche invalide : " + index);
+        }
     }
-}
+
+    public void ajouterTacheAPosition(TacheMPM tache, int position) 
+    {
+        // Vérifier si le nom existe déjà
+        for (TacheMPM tacheCourante : this.getTaches()) 
+        {
+            if (tacheCourante.getNom().equals(tache.getNom())) 
+            {
+                return;
+            }
+        }
+        
+        List<TacheMPM> taches = this.getTaches();
+        
+        TacheMPM fin = taches.remove(taches.size()-1);
+        
+        if (position > taches.size()) 
+        {
+            position = taches.size();
+        }
+        
+        taches.add(position, tache);
+        
+        taches.add(fin);
+        
+        this.initNiveauTaches(); 
+        this.ctrl.afficherGraphe(); 
+    }
     
     public void modifierPrecedents(TacheMPM tache, String nouveauxPrecedents) {
         Set<TacheMPM> nouveauxPrecedentsSet = new HashSet<>();

@@ -110,9 +110,6 @@ public class PanelPara extends JPanel implements ActionListener
             this.ctrl.initProjet(dateRef, typeDate, "listeTache.txt");
         }
 
-
-
-
     }
 
 }

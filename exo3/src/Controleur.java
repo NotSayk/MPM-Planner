@@ -92,32 +92,9 @@ public class Controleur
      * Actions utilisateur - IHM
      *---------------------------*/
 
-     public void ajouterTacheAPosition(TacheMPM tache, int position) 
+    public void ajouterTacheAPosition(TacheMPM tache, int position) 
     {
-        // Vérifier si le nom existe déjà
-        for (TacheMPM tacheCourante : this.getTaches()) 
-        {
-            if (tacheCourante.getNom().equals(tache.getNom())) 
-            {
-                return;
-            }
-        }
-        
-        List<TacheMPM> taches = this.getTaches();
-        
-        TacheMPM fin = taches.remove(taches.size()-1);
-        
-        if (position > taches.size()) 
-        {
-            position = taches.size();
-        }
-        
-        taches.add(position, tache);
-        
-        taches.add(fin);
-        
-        this.graphe.initNiveauTaches(); 
-        this.afficherGraphe(); 
+        this.graphe.ajouterTacheAPosition(tache, position);
     }
 
     public void changerTheme       () { this.frameMPM.changerTheme  ();                               }
