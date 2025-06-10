@@ -1,9 +1,10 @@
 package src.ihm;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,8 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-
 import src.Controleur;
+import src.metier.TacheMPM;
 import src.utils.ErrorUtils;
 
 public class PanelModification extends JPanel implements ActionListener
@@ -24,7 +25,7 @@ public class PanelModification extends JPanel implements ActionListener
 	private JTextField         txtTacheDuree;
 	private JTextField		   txtTacheNom;
 
-	private JButton			   btnValider;
+	private JButton			   btnAjouter;
 	private JButton            btnMaj;
 	private JPanel             panelInfo;
 
@@ -39,7 +40,7 @@ public class PanelModification extends JPanel implements ActionListener
 		// Création des composants
 		this.grilleDonneesModel = new GrilleDonneesModel( ctrl                    );
 		this.tblGrilleDonnees   = new JTable            ( this.grilleDonneesModel );
-		this.panelInfo          = new JPanel            (                         );
+		this.panelInfo          = new JPanel            ( new GridLayout(2, 3) );
 
 		this.tblGrilleDonnees.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -68,14 +69,14 @@ public class PanelModification extends JPanel implements ActionListener
 		this.tblGrilleDonnees.setFillsViewportHeight(true);
 
 		this.txtTacheNom   = new JTextField( 20     );
-		this.btnValider    = new JButton   ( "Valider" );
+		this.btnAjouter    = new JButton   ( "Ajouter" );
 
 		this.txtTacheDuree = new JTextField( 10     );
 		this.btnMaj        = new JButton   ( "Mettre à jour" );
 
 		this.panelInfo.add( new JLabel("Tâche à ajouter :") );
 		this.panelInfo.add( this.txtTacheNom );
-		this.panelInfo.add( this.btnValider );
+		this.panelInfo.add( this.btnAjouter );
 
 		this.panelInfo.add( new JLabel    ( "Durée de la tâche :" )          );
 		this.panelInfo.add( this.txtTacheDuree);
@@ -88,6 +89,7 @@ public class PanelModification extends JPanel implements ActionListener
 
 
 		this.btnMaj.addActionListener(this);
+		this.btnAjouter.addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e) 
@@ -128,12 +130,13 @@ public class PanelModification extends JPanel implements ActionListener
 				ErrorUtils.showError("Aucune tâche sélectionnée.");
 			}
 		}
-		else if (e.getSource() == this.btnValider) 
+		else if (e.getSource() == this.btnAjouter) 
 		{
 			String nomTache = this.txtTacheNom.getText().trim();
 			if (!nomTache.isEmpty()) 
 			{
-				//à faire
+				this.ctrl.ajouterTache(new TacheMPM(nomTache, 0, new ArrayList<>()));
+				this.grilleDonneesModel.refreshTab();
 			} 
 			else 
 			{

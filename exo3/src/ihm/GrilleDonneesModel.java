@@ -1,12 +1,10 @@
 package src.ihm;
 
+import java.util.List;
 import javax.swing.table.AbstractTableModel;
-
 import src.Controleur;
 import src.metier.TacheMPM;
 import src.utils.ErrorUtils;
-
-import java.util.List;
 
 
 public class GrilleDonneesModel extends AbstractTableModel
@@ -40,7 +38,7 @@ public class GrilleDonneesModel extends AbstractTableModel
 
 	public void refreshTab()
 	{
-		List<TacheMPM> lstTaches = ctrl.getTaches();
+		List<TacheMPM> lstTaches = this.ctrl.getTaches();
 		TacheMPM       tache     = null;
 
 		tabDonnees = new Object[lstTaches.size()][7];
@@ -48,7 +46,7 @@ public class GrilleDonneesModel extends AbstractTableModel
 		for ( int lig=0; lig<lstTaches.size(); lig++)
 		{
 			tache = lstTaches.get(lig);
-
+			
 			tabDonnees[lig][0] = tache.getNom       ();
 			tabDonnees[lig][1] = tache.getDateTot   ();
 			tabDonnees[lig][2] = tache.getMarge     ();

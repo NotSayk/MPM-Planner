@@ -1,7 +1,6 @@
 package src;
 
 import java.util.List;
-
 import src.ihm.FrameMPM;
 import src.ihm.FrameModification;
 import src.ihm.composants.Entite;
@@ -105,6 +104,17 @@ public class Controleur
     public void modifierPrecedents(TacheMPM tacheModifier, String nouvelleValeur) { this.graphe.modifierPrecedents(tacheModifier, nouvelleValeur); }
 
     public void modifierSuivants  (TacheMPM tacheModifier, String nouvelleValeur) { this.graphe.modifierSuivants(tacheModifier, nouvelleValeur); }
+
+    public void ajouterTache     (TacheMPM tache) 
+    { 
+        List<TacheMPM> taches = this.getTaches();
+        TacheMPM fin = taches.remove(taches.size()-1);
+
+        taches.add(tache); 
+        taches.add(fin);
+        this.graphe.initNiveauTaches(); 
+        this.afficherGraphe(); 
+    }
 
     /*-----------------------------------------
      * Accesseurs - Informations sur le projet
