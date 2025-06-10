@@ -19,6 +19,10 @@ import src.metier.GrapheMPM;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;
 
+import java.awt.Rectangle;
+import java.awt.Graphics2D;
+
+
 public class PanelMPM extends JPanel
 {
     private static final int MARGE      = 50;
@@ -83,11 +87,24 @@ public class PanelMPM extends JPanel
         private int    offsetX, offsetY;
         private Entite dernierEntite;
         
+        private double scale = 1.0;
         public GraphePanel()
         {
             this.setBackground(Color.WHITE);
             this.addMouseListener(this);
             this.addMouseMotionListener(this);
+            this.addMouseWheelListener(e -> 
+            {
+                if (e.isControlDown() || e.isMetaDown() || e.getPreciseWheelRotation() != 0) 
+                {
+                    if (e.getWheelRotation() < 0) scale *= 1.1;
+                    else scale /= 1.1;
+                    scale = Math.max(0.2, Math.min(scale, 5.0)); // Limite le zoom
+                    this.revalidate();
+                    this.repaint();
+                }
+            });
+
             this.updateSize();
         }
         
@@ -116,18 +133,21 @@ public class PanelMPM extends JPanel
         @Override
         protected void paintComponent(Graphics g)
         {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.scale(scale, scale);
             super.paintComponent(g);
             
             for (Entite entite : lstEntites)
             {
-                entite.paint(g);
+                //entite.paint(g);
+                entite.paint(g2);
 
                 if (afficherDateTot) 
                 {
                     if (entite.getNiveauTache() <= numNiveauxTot) 
                     {
-                        g.setColor(Color.GREEN);
-                        g.drawString("" + entite.getTache().getDateTot(), entite.getX() + 15, entite.getY() + 55);
+                        g2.setColor(Color.GREEN);
+                        g2.drawString("" + entite.getTache().getDateTot(), entite.getX() + 15, entite.getY() + 55);
                     }
                 } 
                 
@@ -135,13 +155,15 @@ public class PanelMPM extends JPanel
                 {
                     if(entite.getNiveauTache() >= numNiveauxTard) 
                     {
-                        g.setColor(Color.RED);
-                        g.drawString("" + entite.getTache().getDateTard(), entite.getX() + 50, entite.getY() + 55);
+                        g2.setColor(Color.RED);
+                        g2.drawString("" + entite.getTache().getDateTard(), entite.getX() + 50, entite.getY() + 55);
                     }
                 }
             }
             
-            dessinerConnexions(g);
+            //dessinerConnexions(g);
+            dessinerConnexions(g2);
+            g2.dispose();
         }
 
         @Override
@@ -267,6 +289,13 @@ public class PanelMPM extends JPanel
                 if (popup.isVisible()) popup.setVisible(false);
                 this.dernierEntite = null;
             }
+        }
+
+        @Override
+        public Dimension getPreferredSize() 
+        {
+            Dimension base = super.getPreferredSize();
+            return new Dimension((int)(base.width * scale), (int)(base.height * scale));
         }
     }
     
