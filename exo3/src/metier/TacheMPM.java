@@ -47,7 +47,7 @@ public class TacheMPM
     public int            getDuree     () { return this.duree     ; }
     public int            getDateTot   () { return this.dateTot   ; }
     public int            getDateTard  () { return this.dateTard  ; }
-    public int            getMarge     () { return this.marge     ; }
+    public int            getMarge     () { return this.dateTard - this.dateTot; }
     public int            getNiveau    () { return this.niveau    ; }
     public List<TacheMPM> getPrecedents() { return this.precedents; }
     public List<TacheMPM> getSuivants  () { return this.suivants  ; }
@@ -56,7 +56,6 @@ public class TacheMPM
     // Setters
     public void setDateTot (int dateTot)  { this.dateTot  = dateTot ; }
     public void setDateTard(int dateTard) { this.dateTard = dateTard; }
-    public void setMarge   (int marge)    { this.marge    = dateTard - dateTot; }
     public void setDuree   (int duree)    { this.duree    = duree   ; }
     public void setNiveau  (int niveau)   { this.niveau   = niveau  ; }
 

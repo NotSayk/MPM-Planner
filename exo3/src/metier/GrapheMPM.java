@@ -32,7 +32,6 @@ public class GrapheMPM
     {
         this.initDateTot ();
         this.initDateTard();
-        this.initMarge   ();
 
         if (this.dateType == 'F') this.setDateFin (dateRef);
     }
@@ -82,12 +81,6 @@ public class GrapheMPM
             }
             tache.setDateTard(tache.getDateTot());
         }
-    }
-
-    private void initMarge()
-    {
-        for (TacheMPM tache : this.ctrl.getTaches()) 
-            tache.setMarge(tache.getDateTard() - tache.getDateTot() );
     }
 
     public void initNiveauTaches() 
