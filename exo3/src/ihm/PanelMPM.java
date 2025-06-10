@@ -591,4 +591,11 @@ public class PanelMPM extends JPanel
         this.afficherCheminCritique(critique);
         this.panelButton.setCritiqueButton(critique);
     }
+
+    public void setScale(double zoom)
+    {
+        this.graphePanel.scale = zoom;
+        this.graphePanel.updateSize();
+        this.repaint();
+    }
 }
