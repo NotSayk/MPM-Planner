@@ -146,7 +146,7 @@ public class Controleur
     public int[]   getNiveauxTaches  () { return this.graphe.getNiveaux    ();                    }
     public int     getDureeProjet    () { return this.graphe.getDureeProjet();                    }
 
-    public int     getNiveauTache    (TacheMPM tache) { return this.graphe.getNiveauTache(tache); }
+    public int     getNiveauTache    (TacheMPM tache)             { return this.graphe.getNiveauTache(tache) ; }
     public void    setNiveauTache    (TacheMPM tache, int niveau) { this.graphe.setNiveauTache(tache, niveau); }
 
     /*--------------------------------------------

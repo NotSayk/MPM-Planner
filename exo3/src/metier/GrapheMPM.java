@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import src.Controleur;
 import src.ihm.composants.Entite;
 import src.utils.DateUtils;
@@ -18,14 +17,14 @@ public class GrapheMPM
     private int[]                niveaux ;
 
     private List<CheminCritique> lstChemins;
-    private List<TacheMPM>       lstTacheMPMs;
+    private List<TacheMPM>       lstTaches;
 
     public GrapheMPM(Controleur ctrl)
     {
         this.ctrl         = ctrl;
         this.niveaux      = new int[1000];
         this.lstChemins   = new ArrayList<CheminCritique>();
-        this.lstTacheMPMs = new ArrayList<TacheMPM>();
+        this.lstTaches    = new ArrayList<TacheMPM>();
     }
 
     public void calculerDates() 
@@ -280,7 +279,7 @@ public void mettreAJourDureeTache(int index, int duree)
     public char                getDateType    ()               { return dateType         ; }
     public int                 getNiveauTache (TacheMPM tache) { return tache.getNiveau(); }
     public int[]               getNiveaux     ()               { return niveaux          ; }
-    public List<TacheMPM>      getTaches      ()               { return this.lstTacheMPMs; }
+    public List<TacheMPM>      getTaches      ()               { return this.lstTaches   ; }
     
     public void setDateRef(String dateRef) { this.dateRef = dateRef  ; }
     public void setDateType(char dateType) { this.dateType = dateType; }
