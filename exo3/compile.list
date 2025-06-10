@@ -3,10 +3,10 @@ src/Controleur.java
 src/utils/DateUtils.java
 src/utils/ErrorUtils.java
 
-src/Metier/Fichier.java
-src/Metier/TacheMPM.java
-src/Metier/GrapheMPM.java
-src/Metier/CheminCritique.java
+src/metier/Fichier.java
+src/metier/TacheMPM.java
+src/metier/GrapheMPM.java
+src/metier/CheminCritique.java
 
 src/ihm/FrameMPM.java
 src/ihm/FrameModification.java

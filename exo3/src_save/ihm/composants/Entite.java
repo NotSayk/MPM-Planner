@@ -1,10 +1,10 @@
-package src.ihm.composants;
+package src_save.ihm.composants;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import src.metier.TacheMPM;
+import src_save.metier.TacheMPM;
 
 public class Entite 
 {

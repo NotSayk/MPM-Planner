@@ -1,12 +1,12 @@
-package src.ihm;
+package src_save.ihm;
 
 import javax.swing.table.AbstractTableModel;
 
-import src.Controleur;
-import src.metier.TacheMPM;
+import src_save.Controleur;
+import src_save.metier.TacheMPM;
+import src_save.utils.ErrorUtils;
 
 import java.util.List;
-import src.utils.ErrorUtils;
 
 
 public class GrilleDonneesModel extends AbstractTableModel

@@ -1,10 +1,11 @@
-package src.ihm;
+package src_save.ihm;
 
 import java.awt.event.*;
 import java.io.File;
 import javax.swing.*;
-import src.Controleur;
-import src.utils.ErrorUtils;
+
+import src_save.Controleur;
+import src_save.utils.ErrorUtils;
 
 public class BarreMenu extends JMenuBar implements ActionListener
 {

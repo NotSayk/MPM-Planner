@@ -1,4 +1,4 @@
-package src.ihm;
+package src_save.ihm;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -15,11 +15,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
-import src.Controleur;
-import src.ihm.composants.Entite;
-import src.metier.GrapheMPM;
-import src.metier.TacheMPM;
-import src.utils.DateUtils;
+
+import src_save.Controleur;
+import src_save.ihm.composants.Entite;
+import src_save.metier.GrapheMPM;
+import src_save.metier.TacheMPM;
+import src_save.utils.DateUtils;
 
 public class PanelMPM extends JPanel implements MouseListener, MouseMotionListener
 {

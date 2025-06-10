@@ -1,4 +1,4 @@
-package src.ihm;
+package src_save.ihm;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -11,8 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import src.Controleur;
-import src.utils.ErrorUtils;
+
+import src_save.Controleur;
+import src_save.utils.ErrorUtils;
 
 public class PanelPara extends JPanel implements ActionListener
 {   

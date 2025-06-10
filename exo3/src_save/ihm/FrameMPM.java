@@ -1,10 +1,11 @@
-package src.ihm;
+package src_save.ihm;
 
 import java.util.List;
 import javax.swing.JFrame;
-import src.Controleur;
-import src.ihm.composants.Entite;
-import src.metier.GrapheMPM;
+
+import src_save.Controleur;
+import src_save.ihm.composants.Entite;
+import src_save.metier.GrapheMPM;
 
 public class FrameMPM extends JFrame
 {

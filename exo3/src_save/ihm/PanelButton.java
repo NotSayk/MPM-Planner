@@ -1,4 +1,4 @@
-package src.ihm;
+package src_save_save.ihm;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,8 +7,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.Border;
-import src.Controleur;
-import src.utils.ErrorUtils;
+
+import src_save.Controleur;
+import src_save.utils.ErrorUtils;
 
 public class PanelButton extends JPanel implements ActionListener {
 

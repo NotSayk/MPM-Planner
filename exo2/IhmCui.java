@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-import src.Controleur;
+import src_save.Controleur;
 
 public class IhmCui 
 {
