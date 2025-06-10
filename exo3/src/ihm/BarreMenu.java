@@ -21,6 +21,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem     menuiChangerDureeTache;
    private JMenuItem     menuiCopier;
    private JMenuItem     menuiColler;
+   private JMenuItem     menuiChercherTache;
 
    private JMenuItem     menuiZoom25;
    private JMenuItem     menuiZoom50;
@@ -63,6 +64,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiCopier            = new JMenuItem("Copier"                  );
       this.menuiColler            = new JMenuItem("Coller"                  );
 
+      this.menuiChercherTache     = new JMenuItem("Chercher une tâche"      );
+
       /*-------------------------------*/
       /* positionnement des composants */
       /*-------------------------------*/
@@ -78,7 +81,9 @@ public class BarreMenu extends JMenuBar implements ActionListener
       menuEdition.add( this.menuiRajouterTache     );
       menuEdition.add( this.menuiSupprimerTache    );
       menuEdition.add( this.menuiChangerDureeTache );
-
+      menuEdition.addSeparator();
+      menuEdition.add( this.menuiChercherTache     );
+      
       menuZoom.   add( this.menuiZoom25            );
       menuZoom.   add( this.menuiZoom50            );
       menuZoom.   add( this.menuiZoom75            );
@@ -113,12 +118,15 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiCopier           .addActionListener(this);
       this.menuiColler           .addActionListener(this);
 
+      this.menuiChercherTache    .addActionListener(this);
+
 
       this.menuiCharger    .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK ));
       this.menuiSauvegarder.setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK ));
       this.menuiQuitter    .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F4,InputEvent.ALT_DOWN_MASK  ));
       this.menuiCopier     .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK ));
       this.menuiColler     .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiChercherTache.setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK ));
    }
 
    public void actionPerformed ( ActionEvent e )
@@ -172,6 +180,26 @@ public class BarreMenu extends JMenuBar implements ActionListener
       if(e.getSource() == this.menuiColler)
       {
          this.ctrl.collerTache();
+      }
+
+      if(e.getSource() == this.menuiChercherTache)
+      {
+         String nomTache = JOptionPane.showInputDialog(this.ctrl.getFrameMPM(), "Entrez le nom de la tâche à chercher :");
+         if(nomTache != null && !nomTache.isEmpty())
+         {
+            if(this.ctrl.chercherTache(nomTache))
+            {
+               ErrorUtils.showSucces("La tâche \"" + nomTache + "\" a été trouvée.");
+            }
+            else
+            {
+               ErrorUtils.showError("La tâche \"" + nomTache + "\" n'a pas été trouvée.");
+            }
+         }
+         else
+         {
+            ErrorUtils.showError("Le nom de la tâche ne peut pas être vide.");
+         }
       }
 
       if(e.getSource() == this.menuiQuitter)           System.exit(0);

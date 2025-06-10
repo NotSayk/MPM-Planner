@@ -248,6 +248,25 @@ public class GrapheMPM
         this.ctrl.afficherCheminCritique(cheminCritiqueActuel);
 
     }
+
+    public boolean chercherTache(String nomTache) 
+    {
+        if (nomTache == null || nomTache.trim().isEmpty()) 
+        {
+            throw new IllegalArgumentException("Le nom de la tâche ne peut pas être vide.");
+        }
+        
+        TacheMPM tache = this.trouverTache(nomTache);
+        
+        if (tache == null) 
+        {
+            throw new IllegalArgumentException("Aucune tâche trouvée avec le nom : " + nomTache);
+        }
+        
+        // Mettre à jour l'interface pour afficher la tâche trouvée
+        this.ctrl.getFrameMPM().setTacheSelectionnee(tache);
+        return true;
+    }
     
     public void modifierNom(TacheMPM tache, String nouveauNom) 
     {

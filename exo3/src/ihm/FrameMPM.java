@@ -70,6 +70,11 @@ public class FrameMPM extends JFrame
         this.maj();
     }
 
+    public void setTacheSelectionnee(TacheMPM tache) 
+    {
+        this.panelMPM.setTacheSelectionnee(tache);
+    }
+
 
     private void maj() 
     {

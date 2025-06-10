@@ -616,6 +616,30 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
+    public void setTacheSelectionnee(TacheMPM tache) 
+    {
+        this.tacheSelectionnee = tache;
+
+        Entite entite = getEntiteParTache(tache);
+        if (entite == null) return;
+        entite.setCouleurContour(Color.BLUE);
+        this.tacheSelectionnee = entite.getTache();
+
+        graphePanel.scale = 1.5;
+        graphePanel.updateSize();
+
+        Rectangle visibleRect = new Rectangle
+        (
+            (int)(entite.getX() * graphePanel.scale) - 100,
+            (int)(entite.getY() * graphePanel.scale) - 100,
+            (int)(entite.getLargeur() * graphePanel.scale) + 200,
+            (int)(entite.getHauteur() * graphePanel.scale) + 200
+        );
+        graphePanel.scrollRectToVisible(visibleRect);
+
+        repaint();
+    }
+
     public void setCritique(boolean critique) 
     {
         this.afficher = critique;

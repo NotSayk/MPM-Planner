@@ -196,6 +196,11 @@ public class Controleur
         this.getGrilleDonneesModel().refreshTab();
     }
 
+    public boolean chercherTache(String nomTache) 
+    {
+        return this.graphe.chercherTache(nomTache);
+    }
+
     /*--------------------------------------------
      * Accesseurs - Données du graphe et de l’IHM
      *--------------------------------------------*/
