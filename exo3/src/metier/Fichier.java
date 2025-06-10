@@ -7,14 +7,13 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import src.Controleur;
 import src.ihm.PanelMPM;
 import src.utils.ErrorUtils;
 
 public class Fichier 
 {
-    private Controleur      ctrl;
+    private Controleur     ctrl;
     private String         nomFichier;
     
     public Fichier(Controleur ctrl, String nomFichier) 

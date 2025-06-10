@@ -2,7 +2,6 @@ package src.ihm;
 
 import java.awt.Frame;
 import javax.swing.JFrame;
-
 import src.Controleur;
 
 public class FrameModification extends JFrame
@@ -18,7 +17,7 @@ public class FrameModification extends JFrame
         Frame frameMPM = this.ctrl.getFrameMPM();
 
         this.setTitle    ("MPM - Modification du graphe");
-        this.setSize     (600 ,600       );
+        this.setSize     (500 ,600       );
         this.setResizable(false);
 
 
