@@ -260,6 +260,43 @@ public class GrapheMPM
         this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
     }
 
+    public void collerTache(TacheMPM tacheOriginale)
+    {
+        if (tacheOriginale == null) 
+        {
+            throw new IllegalArgumentException("La tâche à coller ne peut pas être nulle.");
+        }
+        
+        // Créer une copie de la tâche avec un nouveau nom
+        String nouveauNom = tacheOriginale.getNom() + "_copie";
+        
+        // Vérifier si le nom existe déjà et l'ajuster
+        int compteur = 1;
+        String nomFinal = nouveauNom;
+        while (this.trouverTache(nomFinal) != null) 
+        {
+            nomFinal = nouveauNom + compteur;
+            compteur++;
+        }
+        
+        // Créer la nouvelle tâche (initialement sans les précédents et suivants)
+        List<TacheMPM> precedentsVides = new ArrayList<>();
+        TacheMPM nouvelleTache = new TacheMPM(nomFinal, tacheOriginale.getDuree(), precedentsVides);
+        
+        // Ajouter la tâche avant la tâche FIN
+        List<TacheMPM> taches = this.getTaches();
+        TacheMPM fin = taches.remove(taches.size()-1);
+        taches.add(nouvelleTache);
+        taches.add(fin);
+        
+        // Mettre à jour le fichier et recalculer
+        this.ctrl.getFichier().ajouterTacheFichier(nouvelleTache);
+        this.calculerDates();
+        this.initCheminCritique();
+        this.initNiveauTaches();
+        this.ctrl.afficherGraphe();
+    }
+    
     public void modifierPrecedents(TacheMPM tache, String nouveauxPrecedents) {
         Set<TacheMPM> nouveauxPrecedentsSet = new HashSet<>();
         

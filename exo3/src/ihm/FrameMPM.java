@@ -3,6 +3,7 @@ package src.ihm;
 import java.util.List;
 import javax.swing.JFrame;
 
+import src.metier.TacheMPM;
 import src.Controleur;
 import src.ihm.composants.Entite;
 import src.metier.GrapheMPM;
@@ -44,6 +45,7 @@ public class FrameMPM extends JFrame
     public List<Entite> getEntites    (                  ) { return this.panelMPM.getEntites(          ); }
     public String       getTheme      (                  ) { return this.panelMPM.getTheme  (          ); }
     public PanelMPM     getPanelMPM   (                  ) { return this.panelMPM                       ; }
+    public TacheMPM     getTacheSelectionnee(          ) { return this.panelMPM.getTacheSelectionnee(); }
 
   
     public void changerPanel() 

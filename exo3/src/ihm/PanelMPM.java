@@ -37,6 +37,7 @@ public class PanelMPM extends JPanel
     private int          numNiveauxTard;
     private PanelButton  panelButton;
     private JPopupMenu   popup;
+    private TacheMPM tacheSelectionnee;
     
     // Nouveau panel pour le dessin du graphe
     private GraphePanel  graphePanel;
@@ -52,6 +53,7 @@ public class PanelMPM extends JPanel
         this.lstEntites       = new ArrayList<>();
         this.popup            = new JPopupMenu();
         this.panelButton      = new PanelButton(this.ctrl, this);
+        this.tacheSelectionnee = null;
 
         this.numNiveauxTot    = -1;
         this.numNiveauxTard   = 0;
@@ -298,7 +300,33 @@ public class PanelMPM extends JPanel
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {}
+        public void mouseClicked(MouseEvent e) 
+        {
+            if (e.getButton() == MouseEvent.BUTTON1) 
+            {
+                // Ajuster les coordonnées en fonction du zoom
+                int Xscale = (int)(e.getX() / scale);
+                int Yscale = (int)(e.getY() / scale);
+                
+                // Trouver l'entité sous le clic
+                Entite entiteCliquee = trouverEntiteAuPoint(Xscale, Yscale);
+                if (entiteCliquee != null) 
+                {
+                    // Réinitialiser la couleur de toutes les entités
+                    for (Entite entite : lstEntites) {
+                        if (entite.getTache().estCritique() && afficher) {
+                            entite.setCouleurContour(Color.RED);
+                        } else {
+                            entite.setCouleurContour(graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
+                        }
+                    }
+                    
+                    PanelMPM.this.tacheSelectionnee = entiteCliquee.getTache();
+                    entiteCliquee.setCouleurContour(Color.BLUE);
+                    repaint();
+                }
+            }
+        }
 
         @Override
         public void mouseEntered(MouseEvent e) {}
@@ -573,6 +601,8 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
+
+    public TacheMPM getTacheSelectionnee() {return this.tacheSelectionnee;}
     public boolean estGriseTot () { return this.numNiveauxTot  == numNiveauxTard-1; }
     public boolean estGriseTard() { return this.numNiveauxTard == 0; }
     public String  getTheme    () { return this.graphePanel.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK"; }
