@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import src.Controleur;
+import src.utils.BtnUtils;
 import src.utils.ErrorUtils;
 
 public class PanelPara extends JPanel implements ActionListener
@@ -29,9 +30,14 @@ public class PanelPara extends JPanel implements ActionListener
     public PanelPara(Controleur ctrl) 
     {
         this.ctrl = ctrl;
-        
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
+        
+        // Panels vides pour centrer
+        this.add(new JPanel(), BorderLayout.NORTH);
+        this.add(new JPanel(), BorderLayout.SOUTH);
+        this.add(new JPanel(), BorderLayout.EAST);
+        this.add(new JPanel(), BorderLayout.WEST);
         
         // Panel principal centré
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -44,7 +50,7 @@ public class PanelPara extends JPanel implements ActionListener
         titre.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
         mainPanel.add(titre, BorderLayout.NORTH);
         
-        // Contenu centré
+        // Contenu
         JPanel content = new JPanel(new BorderLayout());
         content.setBackground(Color.WHITE);
         
@@ -90,20 +96,10 @@ public class PanelPara extends JPanel implements ActionListener
         content.add(optionsPanel, BorderLayout.CENTER);
         
         // Bouton
-        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        btnPanel.setBackground(Color.WHITE);
-        this.btnValider = new JButton("Valider");
-        this.btnValider.setFont(new Font("Arial", Font.BOLD, 14));
-        btnPanel.add(this.btnValider);
-        content.add(btnPanel, BorderLayout.SOUTH);
+        this.btnValider = BtnUtils.creerBtn("Valider", new Color(0, 183, 14), "Valider la configuration");
+        content.add(this.btnValider, BorderLayout.SOUTH);
         
         mainPanel.add(content, BorderLayout.CENTER);
-        
-        // Centrer le panel principal dans la fenêtre
-        this.add(new JPanel(), BorderLayout.NORTH);
-        this.add(new JPanel(), BorderLayout.SOUTH);
-        this.add(new JPanel(), BorderLayout.EAST);
-        this.add(new JPanel(), BorderLayout.WEST);
         this.add(mainPanel, BorderLayout.CENTER);
         
         this.btnValider.addActionListener(this);
