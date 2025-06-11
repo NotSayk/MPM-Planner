@@ -18,7 +18,9 @@ public class FrameMPM extends JFrame
     {
         this.ctrl      = ctrl;
         
+        this.panelMPM  = new PanelMPM(this.ctrl);
         this.panelPara = new PanelPara(this.ctrl);
+
 
         this.setTitle("MPM - Choix des paramètres");
         this.setSize (850, 600);
@@ -38,9 +40,10 @@ public class FrameMPM extends JFrame
     public void         setCritique   ( boolean critique ) { this.panelMPM.setCritique      ( critique ); }
     public void         resetPositions(                  ) { this.panelMPM.resetPositions   (          ); }
     
-    
+    public boolean      isCritique          () { return this.panelMPM.isCritique();           }
     public List<Entite> getEntites          () { return this.panelMPM.getEntites();           }
     public String       getTheme            () { return this.panelMPM.getTheme  ();           }
+    public TacheMPM     getTacheSelectionnee() { return this.panelMPM.getTacheSelectionnee(); }
     public double       getScale            () { return this.panelMPM.getScale();             }
 
     public PanelMPM     getPanelMPM         () { return this.panelMPM;                        }
@@ -50,8 +53,6 @@ public class FrameMPM extends JFrame
     public void changerPanel() 
     {
         this.getContentPane().remove(this.panelPara);
-
-        this.panelMPM  = new PanelMPM(this.ctrl);
         this.add(this.panelMPM);
         this.maj();
     }

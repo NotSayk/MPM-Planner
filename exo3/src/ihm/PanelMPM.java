@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import src.Controleur;
@@ -39,6 +40,14 @@ public class PanelMPM extends JPanel
     private PanelButton  panelButton;
     private PanelGraphe  panelGraphe;
 
+    private List<Entite> lstEntites;
+    private TacheMPM     tacheSelectionnee;
+
+    private boolean      afficherDateTot;
+    private boolean      afficherDateTard;
+    private boolean      critique;
+    private int          numNiveauxTot;
+    private int          numNiveauxTard;
     private JScrollPane  scrollPane;
 
     /*--------------*
@@ -47,8 +56,16 @@ public class PanelMPM extends JPanel
     public PanelMPM(Controleur ctrl) 
     {
         this.ctrl             = ctrl;
+        this.afficherDateTot  = false;
+        this.afficherDateTard = false;
+        this.critique         = false;
 
+        this.lstEntites        = new ArrayList<>();
         this.panelButton       = new PanelButton(this.ctrl);
+        this.tacheSelectionnee = null;
+
+        this.numNiveauxTot    = -1;
+        this.numNiveauxTard   = 0;
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
@@ -79,14 +96,14 @@ public class PanelMPM extends JPanel
     {
         for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
         {
-            if (this.ctrl.getNiveauxTaches()[i] !=  0) this.ctrl.setNumNiveauxTard(this.ctrl.getNumNiveauxTard() + 1);
+            if (this.ctrl.getNiveauxTaches()[i] !=  0) this.numNiveauxTard ++;
             else                                       break;
         }
     }
 
     private void initEntites() 
     {
-        this.ctrl.getEntites().clear();
+        this.lstEntites.clear();
         
         List<TacheMPM> taches = this.ctrl.getTaches();
         
@@ -153,7 +170,7 @@ public class PanelMPM extends JPanel
             int y = calculerPositionY(nbTachesParNiveau, centreY, niveau, compteurParNiveau[niveau]);
             
             Entite entite = new Entite(tache, x, y);
-            this.ctrl.getEntites().add(entite);
+            this.lstEntites.add(entite);
             
             compteurParNiveau[niveau]++;
         }
@@ -177,7 +194,7 @@ public class PanelMPM extends JPanel
      *----------------------------------*/
     private Entite trouverEntiteAuPoint(int x, int y) 
     {
-        for (Entite entite : this.ctrl.getEntites()) 
+        for (Entite entite : this.lstEntites) 
         {
             if (x >= entite.getX() && x <= entite.getX() + entite.getLargeur() &&
                 y >= entite.getY() && y <= entite.getY() + entite.getHauteur()) 
@@ -193,7 +210,7 @@ public class PanelMPM extends JPanel
         Color couleurLigne = obtenirCouleurLigne();
         g.setColor(couleurLigne);
         
-        for (Entite entite : this.ctrl.getEntites())
+        for (Entite entite : this.lstEntites)
         {
             dessinerConnexionsEntite(g, entite);
         }
@@ -279,7 +296,7 @@ public class PanelMPM extends JPanel
         this.initEntites();
     
         this.setTheme(this.getTheme());
-        this.afficherCheminCritique(this.ctrl.isCritique());
+        this.afficherCheminCritique(this.critique);
         
         this.repaint();
     }
@@ -289,9 +306,9 @@ public class PanelMPM extends JPanel
      *----------------------------------*/
     public void afficherCheminCritique(boolean aff) 
     {
-        this.ctrl.setCritique(aff);
+        this.critique = aff;
         
-        for (Entite entite : this.ctrl.getEntites()) 
+        for (Entite entite : this.lstEntites) 
         {
             Color couleurContour = determinerCouleurContour(entite, aff);
             entite.setCouleurContour(couleurContour);
@@ -310,30 +327,29 @@ public class PanelMPM extends JPanel
 
     public void afficherDateTot()
     {
-        this.ctrl.setAfficherDateTot(true);
-        
-        this.ctrl.setNumNiveauxTot(this.ctrl.getNumNiveauxTot() + 1);
+        this.afficherDateTot = true;
+        this.numNiveauxTot++;
         repaint();
     }
 
     public void afficherDateTard()
     {
-        this.ctrl.setAfficherDateTard(true);
-        this.ctrl.setNumNiveauxTard(this.ctrl.getNumNiveauxTard() - 1);
+        this.afficherDateTard = true;
+        this.numNiveauxTard--;
         repaint();
     }
 
     public void cacherDates()
     {
-        this.ctrl.setAfficherDateTot(false);
-        this.ctrl.setAfficherDateTard(false);
-        this.ctrl.setNumNiveauxTot(-1);
-        this.ctrl.setNumNiveauxTard(0);
+        this.afficherDateTot  = false;
+        this.afficherDateTard = false;
+        this.numNiveauxTot    = -1;
+        this.numNiveauxTard   = 0;
 
         this.afficherDateTot();
         for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
         {
-            if (this.ctrl.getNiveauxTaches()[i] !=  0) this.ctrl.setNumNiveauxTard(this.ctrl.getNumNiveauxTard() + 1);
+            if (this.ctrl.getNiveauxTaches()[i] !=  0) this.numNiveauxTard ++;
             else                                       break;
         }
         repaint();
@@ -343,7 +359,7 @@ public class PanelMPM extends JPanel
     {
         System.out.println("Changement de thème : " + theme);
         appliquerTheme(theme);
-        this.afficherCheminCritique(this.ctrl.isCritique());
+        this.afficherCheminCritique(this.critique);
         repaint();
     }
 
@@ -353,21 +369,21 @@ public class PanelMPM extends JPanel
         {
             this.setBackground(Color.WHITE);
             this.panelGraphe.setBackground(Color.WHITE);
-            for (Entite entite : this.ctrl.getEntites()) 
+            for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.BLACK);
         } 
         else if (theme.equals("DARK")) 
         {
             this.setBackground(Color.DARK_GRAY);
             this.panelGraphe.setBackground(Color.DARK_GRAY);
-            for (Entite entite : this.ctrl.getEntites()) 
+            for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.WHITE);
         }
     }
 
     public void resetPositions() 
     {
-        for (Entite entite : this.ctrl.getEntites()) 
+        for (Entite entite : this.lstEntites) 
             entite.resetPosition();
         this.panelGraphe.updateSize();
         repaint();
@@ -385,12 +401,12 @@ public class PanelMPM extends JPanel
      *----------------------------------*/
     public void setTacheSelectionnee(TacheMPM tache) 
     {
-        this.ctrl.setTacheSelectionnee(tache);
+        this.tacheSelectionnee = tache;
 
         Entite entite = getEntiteParTache(tache);
         if (entite == null) return;
         entite.setCouleurContour(Color.BLUE);
-        this.ctrl.setTacheSelectionnee(entite.getTache());
+        this.tacheSelectionnee = entite.getTache();
 
         panelGraphe.scale = 1.5;
         panelGraphe.updateSize();
@@ -413,8 +429,7 @@ public class PanelMPM extends JPanel
 
     public void setCritique(boolean critique) 
     {
-        this.ctrl.setCritique(critique);
-
+        this.critique = critique;
         this.afficherCheminCritique(critique);
         this.panelButton.setCritiqueButton(critique);
     }
@@ -429,23 +444,27 @@ public class PanelMPM extends JPanel
     /*----------------------------------*
      * Getters publics                  *
      *----------------------------------*/
-    public List<Entite> getEntites() { return this.ctrl.getEntites(); }
+    public List<Entite> getEntites() { return this.lstEntites; }
 
     public Entite getEntiteParTache(TacheMPM tache) 
     {
-        for (Entite entite : this.ctrl.getEntites()) 
+        for (Entite entite : this.lstEntites) 
             if (entite.getTache().getNom().equals(tache.getNom())) return entite;
         return null;
     }
     
     public Entite getEntiteParNom(String nomTache) 
     {
-        for (Entite entite : this.ctrl.getEntites()) 
+        for (Entite entite : this.lstEntites) 
             if (entite.getTache().getNom().equals(nomTache)) return entite;
         return null;
     }
 
+    public TacheMPM getTacheSelectionnee() { return this.tacheSelectionnee;                                                  }
+    public boolean  estGriseTot         () { return this.numNiveauxTot  == numNiveauxTard-1;                                 }
+    public boolean  estGriseTard        () { return this.numNiveauxTard == 0;                                                }
     public String   getTheme            () { return this.panelGraphe.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK"; }
+    public boolean  isCritique          () { return this.critique;                                                           }
     public double   getScale            () { return this.panelGraphe.scale;                                                  }
 
     /*------------------------------------------------------------*
@@ -519,7 +538,7 @@ public class PanelMPM extends JPanel
         private int[] calculerTaillePanneau() 
         {
             int maxX = 0, maxY = 0;
-            for (Entite entite : PanelMPM.this.ctrl.getEntites()) 
+            for (Entite entite : lstEntites) 
             {
                 maxX = Math.max(maxX, entite.getX() + entite.getLargeur());
                 maxY = Math.max(maxY, entite.getY() + entite.getHauteur());
@@ -560,7 +579,7 @@ public class PanelMPM extends JPanel
 
         private void dessinerEntites(Graphics2D g2) 
         {
-            for (Entite entite : PanelMPM.this.ctrl.getEntites())
+            for (Entite entite : lstEntites)
             {
                 entite.paint(g2);
                 dessinerDatesSurEntite(g2, entite);
@@ -571,12 +590,12 @@ public class PanelMPM extends JPanel
         {
             FontMetrics fm = g2.getFontMetrics();
 
-            if (PanelMPM.this.ctrl.isAfficherDateTot() && entite.getNiveauTache() <= PanelMPM.this.ctrl.getNumNiveauxTot()) 
+            if (afficherDateTot && entite.getNiveauTache() <= numNiveauxTot) 
             {
                 dessinerDateTot(g2, entite, fm);
             }
 
-            if (PanelMPM.this.ctrl.isAfficherDateTard() && entite.getNiveauTache() >= PanelMPM.this.ctrl.getNumNiveauxTard())
+            if (afficherDateTard && entite.getNiveauTache() >= numNiveauxTard) 
             {
                 dessinerDateTard(g2, entite, fm);
             }
@@ -680,7 +699,7 @@ public class PanelMPM extends JPanel
             if (entiteCliquee != null) 
             {
                 reinitialiserCouleursEntites();
-                PanelMPM.this.setTacheSelectionnee( entiteCliquee.getTache() );
+                PanelMPM.this.tacheSelectionnee = entiteCliquee.getTache();
                 entiteCliquee.setCouleurContour(Color.BLUE);
                 repaint();
             }
@@ -688,8 +707,8 @@ public class PanelMPM extends JPanel
 
         private void reinitialiserCouleursEntites() 
         {
-            for (Entite entite : PanelMPM.this.ctrl.getEntites()) {
-                Color couleur = determinerCouleurContour(entite, PanelMPM.this.ctrl.isCritique());
+            for (Entite entite : lstEntites) {
+                Color couleur = determinerCouleurContour(entite, critique);
                 entite.setCouleurContour(couleur);
             }
         }

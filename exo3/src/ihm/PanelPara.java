@@ -25,7 +25,6 @@ public class PanelPara extends JPanel implements ActionListener
      * Attributs privés   *
      *--------------------*/
     private Controleur   ctrl;
-    
     private JTextField   txtDateRef;
     private JRadioButton rbDateDebut;
     private JRadioButton rbDateFin;
