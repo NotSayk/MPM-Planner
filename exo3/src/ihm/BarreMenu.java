@@ -31,6 +31,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem     menuiZoom150;
    private JMenuItem     menuiZoom200;
 
+   private JMenuItem     menuiChangerAffichage;
+
    public BarreMenu(Controleur ctrl)
    {
       this.ctrl = ctrl;
@@ -75,6 +77,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiColler            = new JMenuItem("Coller"            , createMenuIcon("📌"));
       this.menuiChercherTache     = new JMenuItem("Chercher une tâche", createMenuIcon("🔎"));
 
+      this.menuiChangerAffichage  = new JMenuItem("Changer format d'affichage"               );
+
       // Application du style moderne
       styleMenu(menuFichier);
       styleMenu(menuEdition);
@@ -106,7 +110,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
       menuZoom.   add( this.menuiZoom150           );
       menuZoom.   add( this.menuiZoom200           );
 
-      menuAffichage.add(menuZoom);
+      menuAffichage.add(menuZoom                   );
+      menuAffichage.add(this.menuiChangerAffichage );
 
       //rajout des menus
       this.add( menuFichier   );
@@ -135,13 +140,16 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
       this.menuiChercherTache    .addActionListener(this);
 
+      this.menuiChangerAffichage .addActionListener(this);
 
-      this.menuiCharger      .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK ));
-      this.menuiSauvegarder  .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK ));
-      this.menuiQuitter      .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F4,InputEvent.ALT_DOWN_MASK  ));
-      this.menuiCopier       .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK ));
-      this.menuiColler       .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK ));
-      this.menuiChercherTache.setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK ));
+
+      this.menuiCharger         .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiSauvegarder     .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiQuitter         .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F4,InputEvent.ALT_DOWN_MASK  ));
+      this.menuiCopier          .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiColler          .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiChercherTache   .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiChangerAffichage.setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK ));
    }
 
    /**
@@ -266,21 +274,22 @@ public class BarreMenu extends JMenuBar implements ActionListener
     */
    private void styleAllMenuItems() 
    {
-      styleMenuItem(this.menuiCharger);
-      styleMenuItem(this.menuiSauvegarder);
-      styleMenuItem(this.menuiQuitter);
-      styleMenuItem(this.menuiRajouterTache);
-      styleMenuItem(this.menuiSupprimerTache);
-      styleMenuItem(this.menuiChangerDureeTache);
-      styleMenuItem(this.menuiCopier);
-      styleMenuItem(this.menuiColler);
-      styleMenuItem(this.menuiChercherTache);
-      styleMenuItem(this.menuiZoom25);
-      styleMenuItem(this.menuiZoom50);
-      styleMenuItem(this.menuiZoom75);
-      styleMenuItem(this.menuiZoom100);
-      styleMenuItem(this.menuiZoom150);
-      styleMenuItem(this.menuiZoom200);
+      styleMenuItem( this.menuiCharger           );
+      styleMenuItem( this.menuiSauvegarder       );
+      styleMenuItem( this.menuiQuitter           );
+      styleMenuItem( this.menuiRajouterTache     );
+      styleMenuItem( this.menuiSupprimerTache    );
+      styleMenuItem( this.menuiChangerDureeTache );
+      styleMenuItem( this.menuiCopier            );
+      styleMenuItem( this.menuiColler            );
+      styleMenuItem( this.menuiChercherTache     );
+      styleMenuItem( this.menuiZoom25            );
+      styleMenuItem( this.menuiZoom50            );
+      styleMenuItem( this.menuiZoom75            );
+      styleMenuItem( this.menuiZoom100           );
+      styleMenuItem( this.menuiZoom150           );
+      styleMenuItem( this.menuiZoom200           );
+      styleMenuItem( this.menuiChangerAffichage  );
    }
 
    public void actionPerformed ( ActionEvent e )
@@ -385,5 +394,16 @@ public class BarreMenu extends JMenuBar implements ActionListener
       if(e.getSource() == this.menuiZoom100)           this.ctrl.getFrameMPM().setScale(1.00);
       if(e.getSource() == this.menuiZoom150)           this.ctrl.getFrameMPM().setScale(1.50);
       if(e.getSource() == this.menuiZoom200)           this.ctrl.getFrameMPM().setScale(2.00);
+
+
+      if(e.getSource() == this.menuiChangerAffichage)
+      {
+         if(this.ctrl.isFormatDateTexte())
+            this.ctrl.setFormatDateTexte(false);
+         else
+            this.ctrl.setFormatDateTexte(true);
+         
+         this.ctrl.getFrameMPM().repaint();
+      }
    }
 }

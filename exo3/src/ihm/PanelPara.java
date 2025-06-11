@@ -114,8 +114,8 @@ public class PanelPara extends JPanel implements ActionListener
     {
         if (e.getSource() == this.btnValider) 
         {
-            String dateRef = this.txtDateRef.getText().trim();
-            char typeDate = this.rbDateDebut.isSelected() ? 'D' : 'F';
+            String  dateRef     = this.txtDateRef.getText().trim();
+            char    typeDate    = this.rbDateDebut.isSelected() ? 'D' : 'F';
             boolean formatTexte = this.rbDateFormatTexte.isSelected();
 
             if (!dateRef.matches("\\d{2}/\\d{2}/\\d{4}")) 

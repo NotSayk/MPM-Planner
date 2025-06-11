@@ -86,7 +86,7 @@ public class Controleur
         this.frameModification.setVisible(true);
     }   
 
-    public void cacherModification() 
+    public void cacherModification()
     {
         if(this.frameModification != null) this.frameModification.setVisible(false);
     }
@@ -175,4 +175,3 @@ public class Controleur
     public void           setFormatDateTexte(boolean format) { this.formatDateTexte = format; }
     public boolean        isFormatDateTexte()                { return this.formatDateTexte;   }
 }
-
