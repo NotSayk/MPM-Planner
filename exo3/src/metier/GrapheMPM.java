@@ -19,6 +19,8 @@ public class GrapheMPM
     private List<CheminCritique> lstChemins;
     private List<TacheMPM>       lstTaches;
 
+    private TacheMPM tacheCopiee;
+
     private boolean              formatDateTexte =  false;
 
     public GrapheMPM(Controleur ctrl)
@@ -387,6 +389,51 @@ public class GrapheMPM
         // Mettre à jour le graphe et l'interface
         this.ctrl.getFichier().modifierTacheFichier(tache);
         this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
+    }
+
+    public void copierTache() 
+    {
+        TacheMPM tacheSelectionnee = this.ctrl.getFrameMPM().getTacheSelectionnee();
+        if (tacheSelectionnee != null) 
+        {
+            this.tacheCopiee = tacheSelectionnee;
+            System.out.println("Tâche copiée : " + tacheSelectionnee.getNom());
+        }
+        else 
+        {
+            System.out.println("Aucune tâche sélectionnée pour la copie");
+        }
+    }
+
+    // Méthode pour coller une tâche
+    public void collerTache() 
+    {
+        if (this.tacheCopiee == null) 
+        {
+            System.out.println("Aucune tâche à coller");
+            return;
+        }
+        
+        // Créer une copie de la tâche avec un nouveau nom
+        String nouveauNom = this.tacheCopiee.getNom() + "_copie";
+        
+        // Vérifier si le nom existe déjà et l'ajuster
+        int compteur = 1;
+        String nomFinal = nouveauNom;
+        while (this.trouverTache(nomFinal) != null) 
+        {
+            nomFinal = nouveauNom + compteur;
+            compteur++;
+        }
+        
+        // Créer la nouvelle tâche
+        TacheMPM nouvelleTache = new TacheMPM(nomFinal, this.tacheCopiee.getDuree(), new ArrayList<>());
+        
+        // Ajouter la tâche
+        this.ajouterTacheAPosition(nouvelleTache, this.getTaches().size() - 1);
+        
+        System.out.println("Tâche collée : " + nomFinal);
+        this.ctrl.getGrilleDonneesModel().refreshTab();
     }
 
     private List<TacheMPM> getSuccesseurs(TacheMPM tache) 

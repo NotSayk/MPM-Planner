@@ -1,6 +1,5 @@
 package src;
 
-import java.util.ArrayList;
 import java.util.List;
 import src.ihm.FrameMPM;
 import src.ihm.FrameModification;
@@ -23,9 +22,6 @@ public class Controleur
 
     private Fichier            fichier;
     private GrapheMPM          graphe;
-
-    // Ajouter un attribut pour stocker la tâche copiée
-    private TacheMPM tacheCopiee;
 
     // Gerer le format de date - texte
     private boolean formatDateTexte = false; 
@@ -140,11 +136,8 @@ public class Controleur
             return this.frameModification.getGrilleDonneesModel();
         }
         
-        if (this.frameModification == null) 
-        {
-            this.frameModification = new FrameModification(this);
-        }
-        
+        this.frameModification = new FrameModification(this);
+
         return this.frameModification.getGrilleDonneesModel();
     }
 
@@ -153,56 +146,10 @@ public class Controleur
         this.graphe.modifierNom(tacheModifier, nouvelleValeur);
     }
 
-    // Méthode pour copier une tâche
-    public void copierTache() 
-    {
-        TacheMPM tacheSelectionnee = this.getTacheSelectionnee();
-        if (tacheSelectionnee != null) 
-        {
-            this.tacheCopiee = tacheSelectionnee;
-            System.out.println("Tâche copiée : " + tacheSelectionnee.getNom());
-        }
-        else 
-        {
-            System.out.println("Aucune tâche sélectionnée pour la copie");
-        }
-    }
+    public void copierTache() { this.graphe.copierTache(); }
+    public void collerTache() { this.graphe.collerTache(); }
 
-    // Méthode pour coller une tâche
-    public void collerTache() 
-    {
-        if (this.tacheCopiee == null) 
-        {
-            System.out.println("Aucune tâche à coller");
-            return;
-        }
-        
-        // Créer une copie de la tâche avec un nouveau nom
-        String nouveauNom = this.tacheCopiee.getNom() + "_copie";
-        
-        // Vérifier si le nom existe déjà et l'ajuster
-        int compteur = 1;
-        String nomFinal = nouveauNom;
-        while (this.graphe.trouverTache(nomFinal) != null) 
-        {
-            nomFinal = nouveauNom + compteur;
-            compteur++;
-        }
-        
-        // Créer la nouvelle tâche
-        TacheMPM nouvelleTache = new TacheMPM(nomFinal, this.tacheCopiee.getDuree(), new ArrayList<>());
-        
-        // Ajouter la tâche
-        this.graphe.ajouterTacheAPosition(nouvelleTache, this.getTaches().size() - 1);
-        
-        System.out.println("Tâche collée : " + nomFinal);
-        this.getGrilleDonneesModel().refreshTab();
-    }
-
-    public boolean chercherTache(String nomTache) 
-    {
-        return this.graphe.chercherTache(nomTache);
-    }
+    public boolean chercherTache(String nomTache) { return this.graphe.chercherTache(nomTache); }
 
     /*--------------------------------------------
      * Accesseurs - Données du graphe et de l’IHM
