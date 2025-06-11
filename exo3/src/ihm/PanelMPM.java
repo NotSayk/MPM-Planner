@@ -575,6 +575,8 @@ public class PanelMPM extends JPanel
                     offsetX = Xscale - entiteSelectionnee.getX();
                     offsetY = Yscale - entiteSelectionnee.getY();
                     popup.setVisible(false);
+
+                    System.out.println("Entité sélectionnée: " + entiteSelectionnee.getTache().getNom());
                 }
             }
         }
@@ -750,7 +752,7 @@ public class PanelMPM extends JPanel
             {
 
                 System.out.println("Suppression de la tâche : " + entiteSelectionnee.getTache().getNom());
-                
+
                 if (entiteSelectionnee == null) 
                     return;
 
