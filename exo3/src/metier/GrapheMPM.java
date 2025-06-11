@@ -457,6 +457,7 @@ public class GrapheMPM
     public int[]          getNiveaux()                      { return niveaux;              }
     public List<TacheMPM> getTaches()                       { return this.lstTaches;       }
     public boolean        isFormatDateTexte()               { return this.formatDateTexte; }
+    public List<CheminCritique> getCheminsCritiques()       { return this.lstChemins;      }
     
     /*---------------------------------*
      * Accesseurs - Setters            *

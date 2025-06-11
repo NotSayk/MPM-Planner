@@ -59,4 +59,10 @@ public class TacheMPM
 
     public void setCritique(boolean estCritique) { this.estCritique = estCritique; }
 
+    @Override
+    public String toString() 
+    {
+        return String.format(this.nom);
+    }
+
 }

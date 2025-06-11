@@ -13,6 +13,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem menuiCharger;
    private JMenuItem menuiSauvegarder;
    private JMenuItem menuiQuitter;
+   private JMenuItem menuiInfo;
 
    private JMenuItem menuiRajouterTache;
    private JMenuItem menuiSupprimerTache;
@@ -20,6 +21,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem menuiCopier;
    private JMenuItem menuiColler;
    private JMenuItem menuiChercherTache;
+
+   private JMenuItem menuiInfosCritique;
 
    private JMenuItem menuiZoom25;
    private JMenuItem menuiZoom50;
@@ -47,12 +50,14 @@ public class BarreMenu extends JMenuBar implements ActionListener
       JMenu menuEdition   = new JMenu("Edition");
       JMenu menuAffichage = new JMenu("Affichage");
       JMenu menuZoom      = new JMenu("Zoom");
+      JMenu menuInfos     = new JMenu("Informations");
 
       // Ajout d'icônes aux menus (avec gestion d'erreur)
       menuFichier.setIcon(createMenuIcon("📁"));
       menuEdition.setIcon(createMenuIcon("✏️"));
       menuAffichage.setIcon(createMenuIcon("👁️"));
       menuZoom.setIcon(createMenuIcon("🔍"));
+      menuInfos.setIcon(createMenuIcon("ℹ️"));
 
       // Création des éléments de menu
       this.menuiCharger           = new JMenuItem("Charger", createMenuIcon("📂"));
@@ -66,6 +71,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiColler            = new JMenuItem("Coller", createMenuIcon("📌"));
       this.menuiChercherTache     = new JMenuItem("Chercher une tâche", createMenuIcon("🔎"));
 
+      this.menuiInfosCritique     = new JMenuItem("Chemins critiques", createMenuIcon("🚧"));
+
       this.menuiZoom25            = new JMenuItem("25%");
       this.menuiZoom50            = new JMenuItem("50%");
       this.menuiZoom75            = new JMenuItem("75%");
@@ -76,10 +83,11 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiChangerAffichage  = new JMenuItem("Changer format d'affichage");
 
       // Application du style moderne
-      styleMenu(menuFichier);
-      styleMenu(menuEdition);
-      styleMenu(menuAffichage);
-      styleMenu(menuZoom);
+      this.styleMenu(menuFichier);
+      this.styleMenu(menuEdition);
+      this.styleMenu(menuAffichage);
+      this.styleMenu(menuZoom);
+      this.styleMenu(menuInfos);
 
       /*-------------------------------*/
       /* positionnement des composants */
@@ -99,6 +107,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
       menuEdition.addSeparator();
       menuEdition.add(this.menuiChercherTache);
 
+      menuInfos.add(this.menuiInfosCritique);  
+
       menuZoom.add(this.menuiZoom25);
       menuZoom.add(this.menuiZoom50);
       menuZoom.add(this.menuiZoom75);
@@ -113,6 +123,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.add(menuFichier);
       this.add(menuEdition);
       this.add(menuAffichage);
+      this.add(menuInfos);
 
       /*-------------------------------*/
       /* Activation des composants     */
@@ -124,6 +135,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiRajouterTache    .addActionListener(this);
       this.menuiSupprimerTache   .addActionListener(this);
       this.menuiChangerDureeTache.addActionListener(this);
+
+      this.menuiInfosCritique.addActionListener(this);
 
       this.menuiZoom25 .addActionListener(this);
       this.menuiZoom50 .addActionListener(this);
@@ -145,6 +158,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiColler          .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
       this.menuiChercherTache   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
       this.menuiChangerAffichage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
+      this.menuiInfosCritique   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK));
 
       styleMenuItem( this.menuiCharger           );
       styleMenuItem( this.menuiSauvegarder       );
@@ -162,6 +176,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       styleMenuItem( this.menuiZoom150           );
       styleMenuItem( this.menuiZoom200           );
       styleMenuItem( this.menuiChangerAffichage  );
+      styleMenuItem( this.menuiInfosCritique     );
    }
 
     @Override
@@ -210,6 +225,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
             this.ctrl.chercherTache();
          else if (source == this.menuiChangerAffichage)
             this.ctrl.changerAffichage();
+         else if (source == this.menuiInfosCritique) 
+            this.ctrl.afficherCritiques();
       }
     }
 

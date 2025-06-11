@@ -49,6 +49,22 @@ public class CheminCritique
      *---------------------------------*/
     public ArrayList<TacheMPM> getListTache() { return this.cheminCritique; }
 
+    public String toString() 
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Chemin Critique :\n");
+        for (int i = 0; i < this.cheminCritique.size(); i++) 
+        {
+            TacheMPM tache = this.cheminCritique.get(i);
+            sb.append(tache.getNom());
+            if (i < this.cheminCritique.size() - 1) 
+            {
+                sb.append(" -> ");
+            }
+        }
+        return sb.toString();
+    }
+
     /*---------------------------------*
      * Méthodes utilitaires            *
      *---------------------------------*/
