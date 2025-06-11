@@ -3,11 +3,8 @@ package src.ihm;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
-import java.io.File;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import src.Controleur;
-import src.utils.ErrorUtils;
 
 public class BarreMenu extends JMenuBar implements ActionListener
 {
