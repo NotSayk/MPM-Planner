@@ -27,7 +27,7 @@ public class FrameModification extends JFrame
 
         this.panelModification = new PanelModification(ctrl);
         this.add(this.panelModification);
-
+        
         
         this.setVisible(false);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
