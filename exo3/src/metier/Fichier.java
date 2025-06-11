@@ -1,4 +1,4 @@
-package src.metier;
+package metier;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,27 +11,26 @@ import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import src.Controleur;
-import src.ihm.PanelMPM;
-import src.utils.ErrorUtils;
+import ihm.PanelMPM;
+import utils.ErrorUtils;
 
 public class Fichier 
 {
     /*--------------------*
      * Attributs privés   *
      *--------------------*/
-    private Controleur ctrl;
     private String     nomFichier;
     private boolean    estCritique;
     private String     theme;
+    private List<TacheMPM> taches;
 
     /*--------------*
      * Constructeur *
      *--------------*/
-    public Fichier(Controleur ctrl, String nomFichier) 
+    public Fichier(String nomFichier) 
     {
-        this.ctrl       = ctrl;
         this.nomFichier = nomFichier;
+        this.taches = new ArrayList<>();
         this.initTache(nomFichier);
     }
 
@@ -45,8 +44,6 @@ public class Fichier
         String   nom;
         int      duree;
         String[] precedents;
-
-        this.ctrl.getTaches().clear();
 
         try 
         {
@@ -78,7 +75,7 @@ public class Fichier
                     }
                     
                     TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
-                    this.ctrl.getTaches().add(tache);    
+                    this.taches.add(tache);    
                 }
                 else
                 {
@@ -96,12 +93,12 @@ public class Fichier
 
     private void etablirRelationsSuivants() 
     {
-        for (TacheMPM tache : this.ctrl.getTaches()) 
+        for (TacheMPM tache : this.taches) 
         {
             List<TacheMPM> suivants  = new ArrayList<>();
             String         nomTache  = tache.getNom();
             
-            for (TacheMPM autreTache : this.ctrl.getTaches()) 
+            for (TacheMPM autreTache : this.taches) 
             {
                 if (autreTache == tache) continue;
                 
@@ -148,12 +145,14 @@ public class Fichier
             String extension = fichierSelectionner.getName().substring(fichierSelectionner.getName().lastIndexOf('.') + 1);
             if (extension.equals("MC"))
             {
-                this.ctrl.initComplet(this.ctrl.getDateType(), fichierSelectionner.getPath());
+                this.nomFichier = fichierSelectionner.getPath();
+                this.initTache(this.nomFichier);
                 ErrorUtils.showSucces("Chargement d'un fichier de données complexe réussi");
             }
             else
             {
-                this.ctrl.initProjet(this.ctrl.getDateRef(), this.ctrl.getDateType(), fichierSelectionner.getPath());
+                this.nomFichier = fichierSelectionner.getPath();
+                this.initTache(this.nomFichier);
                 ErrorUtils.showSucces("Chargement d'un fichier de données simple réussi");
             }
         }
@@ -178,7 +177,7 @@ public class Fichier
         {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(this.nomFichier), "UTF8"));
 
-            for (TacheMPM tache : this.ctrl.getTaches()) 
+            for (TacheMPM tache : this.taches) 
             {
                 String precedentsStr = "";
                 if (!tache.getPrecedents().isEmpty()) 
@@ -205,7 +204,7 @@ public class Fichier
         {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream("listeTache.MC"), "UTF8"));
 
-            for (TacheMPM tache : this.ctrl.getTaches()) 
+            for (TacheMPM tache : this.taches) 
             {
                 String precedentsStr = "";
                 if (!tache.getPrecedents().isEmpty()) 
@@ -250,7 +249,7 @@ public class Fichier
     public void ajouterTacheFichier(TacheMPM tacheAjout) 
     {
         boolean tacheExiste = false;
-        for (TacheMPM tache : this.ctrl.getTaches()) 
+        for (TacheMPM tache : this.taches) 
         {
             if (tache.getNom().equals(tacheAjout.getNom())) 
             {
@@ -260,7 +259,7 @@ public class Fichier
         }
         
         if (!tacheExiste) 
-            this.ctrl.getTaches().add(tacheAjout);
+            this.taches.add(tacheAjout);
         
         this.etablirRelationsSuivants();
         this.sauvegarder();
@@ -268,11 +267,11 @@ public class Fichier
 
     public void modifierTacheFichier(TacheMPM tacheModif) 
     {
-        for (int i = 0; i < this.ctrl.getTaches().size(); i++) 
+        for (int i = 0; i < this.taches.size(); i++) 
         {
-            if (this.ctrl.getTaches().get(i).getNom().equals(tacheModif.getNom())) 
+            if (this.taches.get(i).getNom().equals(tacheModif.getNom())) 
             {
-                this.ctrl.getTaches().set(i, tacheModif);
+                this.taches.set(i, tacheModif);
                 break;
             }
         }
@@ -282,17 +281,10 @@ public class Fichier
 
     public void supprimerTacheFichier(TacheMPM tacheSuppr) 
     {
-        this.ctrl.getTaches().removeIf(tache -> tache.getNom().equals(tacheSuppr.getNom()));
-
+        this.taches.removeIf(tache -> tache.getNom().equals(tacheSuppr.getNom()));
         this.sauvegarder();
         this.initTache(this.nomFichier);
-
-        this.ctrl.getGraphe().calculerDates();
-        this.ctrl.getGraphe().initCheminCritique();
-        this.ctrl.getGraphe().initNiveauTaches();
     }
-
-
 
     /*---------------------------------*
      * Méthodes utilitaires            *
@@ -350,7 +342,7 @@ public class Fichier
 
     private TacheMPM trouverTache(String nom) 
     {
-        for (TacheMPM tache : this.ctrl.getTaches()) 
+        for (TacheMPM tache : this.taches) 
             if (tache.getNom().equals(nom)) 
                 return tache;
         return null;
@@ -362,4 +354,5 @@ public class Fichier
     public String  getNomFichier() { return this.nomFichier;  }
     public String  getTheme()      { return this.theme;       }
     public boolean isCritique()    { return this.estCritique; }
+    public List<TacheMPM> getTaches() { return this.taches; }
 }

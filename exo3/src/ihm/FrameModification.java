@@ -8,8 +8,8 @@ import src.Controleur;
 public class FrameModification extends JFrame
 {  
     private Controleur        ctrl;
+    
     private PanelModification panelModification;
-
 
     public FrameModification(Controleur ctrl) 
     {

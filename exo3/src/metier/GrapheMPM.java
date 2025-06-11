@@ -1,4 +1,4 @@
-package src.metier;
+package metier;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -7,34 +7,46 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
-import src.Controleur;
-import src.ihm.composants.Entite;
-import src.utils.DateUtils;
-import src.utils.ErrorUtils;
+import ihm.composants.Entite;
+import utils.DateUtils;
+import utils.ErrorUtils;
 
 public class GrapheMPM
 {
     /*--------------------*
      * Attributs privés   *
      *--------------------*/
-    private Controleur           ctrl;
+    private TacheMPM             tacheSelectionnee;
+    private TacheMPM             tacheCopiee;
+
     private String               dateRef;
     private char                 dateType;
     private int[]                niveaux;
+    
     private List<CheminCritique> lstChemins;
     private List<TacheMPM>       lstTaches;
-    private TacheMPM             tacheCopiee;
-    private boolean              formatDateTexte = false;
+    private List<Entite>         lstEntites;
 
+    private boolean              formatDateTexte = false;
+    private boolean              afficherDateTot;
+    private boolean              afficherDateTard;
+    private boolean              critique;
+
+    private int                  numNiveauxTot;
+    private int                  numNiveauxTard;
     /*--------------*
      * Constructeur *
      *--------------*/
-    public GrapheMPM(Controleur ctrl)
+    public GrapheMPM()
     {
-        this.ctrl       = ctrl;
         this.niveaux    = new int[1000];
+
         this.lstChemins = new ArrayList<CheminCritique>();
         this.lstTaches  = new ArrayList<TacheMPM>();
+        this.lstEntites = new ArrayList<Entite>();
+
+        this.numNiveauxTot  = -1;
+        this.numNiveauxTard = 0;
     }
 
     /*---------------------------------*
@@ -56,7 +68,7 @@ public class GrapheMPM
 
     private void initDateTot() 
     {
-        for (TacheMPM tache : this.ctrl.getTaches()) 
+        for (TacheMPM tache : this.lstTaches) 
         {
             if (!tache.getPrecedents().isEmpty()) 
             {
@@ -74,9 +86,9 @@ public class GrapheMPM
 
     private void initDateTard() 
     {
-        for (int i = this.ctrl.getTaches().size() - 1; i >= 0; i--) 
+        for (int i = this.lstTaches.size() - 1; i >= 0; i--) 
         {
-            TacheMPM tache = this.ctrl.getTaches().get(i);
+            TacheMPM tache = this.lstTaches.get(i);
 
             if (!tache.getSuivants().isEmpty()) 
             {
@@ -98,10 +110,10 @@ public class GrapheMPM
      *---------------------------------*/
     public void initNiveauTaches() 
     {
-        for (TacheMPM tache : ctrl.getTaches()) 
+        for (TacheMPM tache : this.lstTaches) 
             tache.setNiveau(0);
         
-        for (TacheMPM tache : ctrl.getTaches()) 
+        for (TacheMPM tache : this.lstTaches) 
         {
             for (TacheMPM predecesseur : tache.getPrecedents()) 
                 if (predecesseur.getNiveau() + 1 > tache.getNiveau()) 
@@ -126,7 +138,7 @@ public class GrapheMPM
         String sRet = "";
         sRet += ("=== CHEMINS CRITIQUES ===\n\n");
         
-        List<CheminCritique> chemins = this.ctrl.getCheminsCritiques();
+        List<CheminCritique> chemins = this.lstChemins;
         
         if (chemins.isEmpty()) 
         {
@@ -146,7 +158,7 @@ public class GrapheMPM
      *----------------------------------*/
     public TacheMPM trouverTache(String nom) 
     {
-        for (TacheMPM tache : this.ctrl.getTaches()) 
+        for (TacheMPM tache : this.lstTaches) 
             if (tache.getNom().equals(nom)) 
                 return tache;
         return null;
@@ -154,7 +166,7 @@ public class GrapheMPM
 
     public void chercherTache() 
     {
-        String nomTache = JOptionPane.showInputDialog(this.ctrl.getFrameMPM(), "Entrez le nom de la tâche à chercher :");
+        String nomTache = JOptionPane.showInputDialog(null, "Entrez le nom de la tâche à chercher :");
         if (nomTache == null || nomTache.trim().isEmpty()) 
         {
             ErrorUtils.showError("Le nom de la tâche ne peut pas être vide.");
@@ -169,7 +181,7 @@ public class GrapheMPM
             return;
         }
         
-        this.ctrl.getFrameMPM().setTacheSelectionnee(tache);
+        this.tacheSelectionnee = tache;
     }
 
     /*---------------------------------*
@@ -177,8 +189,8 @@ public class GrapheMPM
      *---------------------------------*/
     public void initCheminCritique() 
     {
-        TacheMPM fin   = this.ctrl.getTaches().get(this.ctrl.getTaches().size() - 1);
-        TacheMPM debut = this.ctrl.getTaches().get(0);
+        TacheMPM fin   = this.lstTaches.get(this.lstTaches.size() - 1);
+        TacheMPM debut = this.lstTaches.get(0);
 
         List<List<TacheMPM>> tousChemin   = new ArrayList<>();
         List<TacheMPM>       cheminActuel = new ArrayList<>();
@@ -227,7 +239,7 @@ public class GrapheMPM
     {
         List<TacheMPM> successeurs = new ArrayList<>();
         
-        for (TacheMPM autreTache : this.ctrl.getTaches())
+        for (TacheMPM autreTache : this.lstTaches)
             if (autreTache.getPrecedents().contains(tache)) 
                 successeurs.add(autreTache);
         
@@ -239,13 +251,13 @@ public class GrapheMPM
      *---------------------------------*/
     public void ajouterTacheAPosition(TacheMPM tache, int position) 
     {
-        for (TacheMPM tacheCourante : this.getTaches()) 
+        for (TacheMPM tacheCourante : this.lstTaches) 
         {
             if (tacheCourante.getNom().equals(tache.getNom())) 
                 return;
         }
         
-        List<TacheMPM> taches = this.getTaches();
+        List<TacheMPM> taches = this.lstTaches;
         TacheMPM fin = taches.remove(taches.size() - 1);
         
         if (position > taches.size()) 
@@ -254,8 +266,8 @@ public class GrapheMPM
         taches.add(position, tache);
         taches.add(fin);
 
-        String  themeActuel         = this.ctrl.getTheme();
-        boolean cheminCritiqueActuel = this.ctrl.getAfficher();
+        String  themeActuel         = this.lstTaches.get(0).getTheme();
+        boolean cheminCritiqueActuel = this.lstTaches.get(0).isCritique();
         
         List<TacheMPM> precedents = new ArrayList<>();
         precedents.add(taches.get(position - 1));
@@ -264,15 +276,11 @@ public class GrapheMPM
         this.initNiveauTaches(); 
         this.calculerDates();
         this.initCheminCritique();
-        this.ctrl.getFichier().ajouterTacheFichier(tache);
-        this.ctrl.afficherGraphe(); 
-        this.ctrl.setTheme(themeActuel);
-        this.ctrl.afficherCheminCritique(cheminCritiqueActuel);
     }
 
     public void mettreAJourDureeTache(int index, int duree) 
     {
-        List<TacheMPM> taches = this.ctrl.getTaches();
+        List<TacheMPM> taches = this.lstTaches;
         if (index >= 0 && index < taches.size()) 
         {
             TacheMPM tache = taches.get(index);
@@ -281,16 +289,6 @@ public class GrapheMPM
             this.calculerDates();
             this.initCheminCritique();
             this.initNiveauTaches();
-            this.ctrl.getFichier().modifierTacheFichier(tache);
-            
-            double  zoom                = this.ctrl.getFrameMPM().getScale();
-            String  themeActuel         = this.ctrl.getTheme();
-            boolean cheminCritiqueActuel = this.ctrl.getAfficher();
-            
-            this.ctrl.afficherGraphe();
-            this.ctrl.setTheme(themeActuel);
-            this.ctrl.afficherCheminCritique(cheminCritiqueActuel);
-            this.ctrl.getFrameMPM().getPanelMPM().setScale(zoom);
         } 
         else 
         {
@@ -306,16 +304,13 @@ public class GrapheMPM
         if (nouveauNom == null || nouveauNom.trim().isEmpty()) 
             throw new IllegalArgumentException("Le nom de la tâche ne peut pas être vide.");
         
-        for (TacheMPM tacheCourante : this.getTaches()) 
+        for (TacheMPM tacheCourante : this.lstTaches) 
         {
             if (tacheCourante.getNom().equals(nouveauNom)) 
                 throw new IllegalArgumentException("Une tâche avec ce nom existe déjà.");
         }
         
         tache.setNom(nouveauNom);
-        
-        this.ctrl.getFichier().modifierTacheFichier(tache);
-        this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
     }
 
     public void modifierPrecedents(TacheMPM tache, String nouveauxPrecedents) 
@@ -338,9 +333,6 @@ public class GrapheMPM
         tache.setPrecedents(new ArrayList<>(nouveauxPrecedentsSet));
         for (TacheMPM precedent : nouveauxPrecedentsSet) 
             precedent.getSuivants().add(tache);
-        
-        this.ctrl.getFichier().modifierTacheFichier(tache);
-        this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
     }
 
     public void modifierSuivants(TacheMPM tache, String nouveauxSuivants) 
@@ -363,9 +355,6 @@ public class GrapheMPM
         tache.setSuivants(new ArrayList<>(nouveauxSuivantsSet));
         for (TacheMPM suivant : nouveauxSuivantsSet) 
             suivant.getPrecedents().add(tache);
-        
-        this.ctrl.getFichier().modifierTacheFichier(tache);
-        this.ctrl.initProjet(this.getDateRef(), this.getDateType(), this.ctrl.getFichier().getNomFichier());
     }
 
     /*---------------------------------*
@@ -373,7 +362,7 @@ public class GrapheMPM
      *---------------------------------*/
     public void copierTache() 
     {
-        TacheMPM tacheSelectionnee = this.ctrl.getFrameMPM().getTacheSelectionnee();
+        TacheMPM tacheSelectionnee = this.tacheSelectionnee;
         if (tacheSelectionnee != null) 
         {
             this.tacheCopiee = tacheSelectionnee;
@@ -405,10 +394,9 @@ public class GrapheMPM
         
         TacheMPM nouvelleTache = new TacheMPM(nomFinal, this.tacheCopiee.getDuree(), new ArrayList<>());
         
-        this.ajouterTacheAPosition(nouvelleTache, this.getTaches().size() - 1);
+        this.ajouterTacheAPosition(nouvelleTache, this.lstTaches.size() - 1);
         
         System.out.println("Tâche collée : " + nomFinal);
-        this.ctrl.getGrilleDonneesModel().refreshTab();
     }
 
     public void collerTache(TacheMPM tacheOriginale)
@@ -429,16 +417,14 @@ public class GrapheMPM
         List<TacheMPM> precedentsVides = new ArrayList<>();
         TacheMPM nouvelleTache = new TacheMPM(nomFinal, tacheOriginale.getDuree(), precedentsVides);
         
-        List<TacheMPM> taches = this.getTaches();
+        List<TacheMPM> taches = this.lstTaches;
         TacheMPM fin = taches.remove(taches.size() - 1);
         taches.add(nouvelleTache);
         taches.add(fin);
         
-        this.ctrl.getFichier().ajouterTacheFichier(nouvelleTache);
         this.calculerDates();
         this.initCheminCritique();
         this.initNiveauTaches();
-        this.ctrl.afficherGraphe();
     }
 
     /*---------------------------------*
@@ -446,17 +432,13 @@ public class GrapheMPM
      *---------------------------------*/
     public void chargerEntites(String nomFichier)
     {
-        for (Entite e : this.ctrl.getEntites())
-        {
-            int[] pos = this.ctrl.getFichier().getLocation(e.getTache(), nomFichier);
-            e.setPosition(pos[0], pos[1]);
-        }
+        // Cette méthode sera implémentée plus tard
     }
 
     public int getDureeProjet() 
     {
         int dureeMax = 0;
-        for (TacheMPM tache : this.ctrl.getTaches()) 
+        for (TacheMPM tache : this.lstTaches) 
         {
             if (tache.getSuivants().isEmpty()) 
             {
@@ -471,18 +453,39 @@ public class GrapheMPM
     /*---------------------------------*
      * Accesseurs - Getters            *
      *---------------------------------*/
-    public String         getDateRef()                      { return dateRef;              }
-    public char           getDateType()                     { return dateType;             }
-    public int            getNiveauTache(TacheMPM tache)    { return tache.getNiveau();    }
-    public int[]          getNiveaux()                      { return niveaux;              }
-    public List<TacheMPM> getTaches()                       { return this.lstTaches;       }
-    public boolean        isFormatDateTexte()               { return this.formatDateTexte; }
-    public List<CheminCritique> getCheminsCritiques()       { return this.lstChemins;      }
+    public String               getDateRef         ()                { return dateRef;              }
+    public char                 getDateType        ()                { return dateType;             }
+    public int                  getNiveauTache     (TacheMPM tache)  { return tache.getNiveau();    }
+    public int[]                getNiveaux         ()                { return niveaux;              }
+    public List<TacheMPM>       getTaches          ()                { return this.lstTaches;       }
+    public List<CheminCritique> getCheminsCritiques()                { return this.lstChemins;      }
+    public List<Entite>         getEntites         ()                { return this.lstEntites;      }
+    public boolean              isFormatDateTexte  ()                { return this.formatDateTexte; }
+
+    public int getNumNiveauxTot () { return this.numNiveauxTot;  }
+    public int getNumNiveauxTard() { return this.numNiveauxTard; }
+
+    public void setNumNiveauxTot(int val) { this.numNiveauxTot = val;  }
+    public void setNumNiveauxTard(int val) { this.numNiveauxTard = val; }
+
+    public TacheMPM getTacheSelectionnee() { return this.tacheSelectionnee; }
+    public void     setTacheSelectionnee(TacheMPM tache) { this.tacheSelectionnee = tache; }
+
+    public boolean  isGriseTot         () { return this.numNiveauxTot  == this.numNiveauxTard-1 ; }
+    public boolean  isGriseTard        () { return this.numNiveauxTard == 0; }
+
+    public boolean              isAfficherDateTot  ()                { return this.afficherDateTot; }
+    public boolean              isAfficherDateTard ()                { return this.afficherDateTard; }
+    public boolean              isCritique         ()                { return this.critique;        }
     
     /*---------------------------------*
      * Accesseurs - Setters            *
      *---------------------------------*/
-    public void setDateRef(String dateRef)                  { this.dateRef = dateRef;              }
-    public void setDateType(char dateType)                  { this.dateType = dateType;            }
-    public void setFormatDateTexte(boolean format)          { this.formatDateTexte = format;       }
+    public void setDateRef        (String dateRef) { this.dateRef = dateRef;        }
+    public void setDateType       (char dateType)  { this.dateType = dateType;      }
+    public void setFormatDateTexte(boolean format) { this.formatDateTexte = format; }
+
+    public void setAfficherDateTot (boolean val) { this.afficherDateTot  = val;  }
+    public void setAfficherDateTard(boolean val) { this.afficherDateTard = val; }
+    public void setCritique        (boolean val) { this.critique         = val; }
 }

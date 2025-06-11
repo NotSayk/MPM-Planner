@@ -23,7 +23,7 @@ public class PanelCritique extends JPanel
         JScrollPane scrollPane = new JScrollPane(textArea);
         this.add(scrollPane, BorderLayout.CENTER);
         
-        this.textArea.setText(this.ctrl.getGraphe().afficherCheminsCritiques());
+        this.textArea.setText(this.ctrl.afficherCheminsCritiques());
     }
     
     public void actualiser() 
