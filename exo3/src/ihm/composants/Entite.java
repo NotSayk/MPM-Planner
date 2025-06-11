@@ -62,7 +62,8 @@ public class Entite
         this.location.setLocation(this.locationInitial);
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics g) 
+    {
         int x = this.location.x;
         int y = this.location.y;
 
@@ -77,9 +78,8 @@ public class Entite
         
         // Affichage du nom de la tâche
         String nomTache = tache.getNom();
-        if (nomTache.length() > 6) {
+        if (nomTache.length() > 6) 
             nomTache = nomTache.substring(0, 6) + "...";
-        }
 
         // Centrage du texte (approximatif basé sur la largeur moyenne d'un caractère)
         int stringWidth = g.getFontMetrics().stringWidth(nomTache);
