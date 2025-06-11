@@ -151,7 +151,7 @@ public class PanelModification extends JPanel implements ActionListener
         else if (e.getSource() == this.btnAjouter) 
         {
             String nomTache = this.txtTacheNom.getText().trim();
-			int    niveau;
+			int    niveau   = 0;
 
             if (!nomTache.isEmpty()) 
             {

@@ -39,7 +39,8 @@ public class PanelMPM extends JPanel
     
     private PanelButton  panelButton;
     private JPopupMenu   popup;
-    private TacheMPM tacheSelectionnee;
+    private JPopupMenu   popupEdit;
+    private TacheMPM     tacheSelectionnee;
     
     // Nouveau panel pour le dessin du graphe
     private GraphePanel  graphePanel;
@@ -52,9 +53,10 @@ public class PanelMPM extends JPanel
         this.afficherDateTard = false;
         this.afficher         = false;
 
-        this.lstEntites       = new ArrayList<>();
-        this.popup            = new JPopupMenu();
-        this.panelButton      = new PanelButton(this.ctrl, this);
+        this.lstEntites        = new ArrayList<>();
+        this.popup             = new JPopupMenu();
+        this.popupEdit         = new JPopupMenu();
+        this.panelButton       = new PanelButton(this.ctrl, this);
         this.tacheSelectionnee = null;
 
         this.numNiveauxTot    = -1;
@@ -277,6 +279,7 @@ public class PanelMPM extends JPanel
                     }
 
                     // Popup menu
+                    
                     popup.setVisible(false);
                     popup.removeAll();
                     popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
@@ -345,6 +348,26 @@ public class PanelMPM extends JPanel
                     entiteCliquee.setCouleurContour(Color.BLUE);
                     repaint();
                 }
+            }
+            if(e.getButton() == MouseEvent.BUTTON3) 
+            {
+
+                PanelMPM.this.popupEdit.removeAll();
+                JMenuItem copier = new JMenuItem("Copy");
+                PanelMPM.this.popupEdit.add(copier);
+                JMenuItem couper = new JMenuItem("Cut");
+                PanelMPM.this.popupEdit.add(couper);
+                JMenuItem coller = new JMenuItem("Paste");
+                PanelMPM.this.popupEdit.add(coller);
+                
+                popup.addSeparator();
+                
+                JMenu m = new JMenu("New");
+                    JMenuItem f = new JMenuItem("Folder");
+                    m.add(f);
+                    JMenuItem s = new JMenuItem("Shortcut");
+                    m.add(s);
+                    popup.add(m);
             }
         }
 
