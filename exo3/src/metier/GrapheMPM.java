@@ -242,16 +242,21 @@ public class GrapheMPM
         taches.add(position, tache);
         
         taches.add(fin);
-        
-        this.initNiveauTaches(); 
-        this.calculerDates();
-        this.initCheminCritique();
+
         
         String themeActuel = this.ctrl.getTheme();
         boolean cheminCritiqueActuel = this.ctrl.getAfficher();
         
-        this.ctrl.afficherGraphe(); 
         
+        List<TacheMPM> precedents = new ArrayList<>();
+        precedents.add(taches.get(position - 1));
+        tache.setPrecedents(precedents);
+                
+        this.initNiveauTaches(); 
+        this.calculerDates();
+        this.initCheminCritique();
+        this.ctrl.getFichier().ajouterTacheFichier(tache);
+        this.ctrl.afficherGraphe(); 
         this.ctrl.setTheme(themeActuel);
         this.ctrl.afficherCheminCritique(cheminCritiqueActuel);
 

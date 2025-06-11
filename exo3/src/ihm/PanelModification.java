@@ -174,7 +174,7 @@ public class PanelModification extends JPanel implements ActionListener
 				{
 					int selectedIndex = lignesSelectionnees[lignesSelectionnees.length - 1];
 					TacheMPM tacheSelectionee = this.ctrl.getEntites().get(selectedIndex).getTache();
-					niveau = tacheSelectionee.getNiveau();
+					niveau = tacheSelectionee.getNiveau()+1;
 				}
 				this.ctrl.setNiveauTache(temp, niveau);
 				this.grilleDonneesModel.refreshTab();

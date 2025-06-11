@@ -115,9 +115,23 @@ public class Fichier
 
     public void ajouterTacheFichier(TacheMPM tacheAjout) 
     {
-        this.ctrl.getTaches().add(tacheAjout);
+        // Vérifier si la tâche n'est pas déjà dans la liste
+        boolean tacheExiste = false;
+        for (TacheMPM tache : this.ctrl.getTaches()) {
+            if (tache.getNom().equals(tacheAjout.getNom())) {
+                tacheExiste = true;
+                break;
+            }
+        }
+        
+        // N'ajouter que si elle n'existe pas déjà
+        if (!tacheExiste) {
+            this.ctrl.getTaches().add(tacheAjout);
+        }
+        
         this.etablirRelationsSuivants();
         this.sauvegarder();
+    
     }
 
     public void modifierTacheFichier(TacheMPM tacheModif) 
