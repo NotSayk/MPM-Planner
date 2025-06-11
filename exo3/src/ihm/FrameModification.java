@@ -1,6 +1,7 @@
 package src.ihm;
 
 import java.awt.Frame;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import src.Controleur;
 
@@ -20,8 +21,9 @@ public class FrameModification extends JFrame
         this.setSize     (500 ,600       );
         this.setResizable(false);
 
-
-        this.setLocation(frameMPM.getX() + frameMPM.getWidth() + 25, frameMPM.getY());
+        //place la fenêtre à droite de la frame principale si elle ne dépace pas 80% de la largeur de l'écran
+        if(frameMPM.getX() + frameMPM.getWidth() < 0.8 * Toolkit.getDefaultToolkit().getScreenSize().width)
+            this.setLocation(frameMPM.getX() + frameMPM.getWidth() + 25, frameMPM.getY());
 
         this.panelModification = new PanelModification(ctrl);
         this.add(this.panelModification);
