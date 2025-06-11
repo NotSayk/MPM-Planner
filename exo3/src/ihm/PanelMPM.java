@@ -846,7 +846,7 @@ public class PanelMPM extends JPanel
         {
             if (e.getSource() == this.jmCopier) 
             {
-                // Logique pour copier
+                PanelMPM.this.ctrl.copierTache();
             }
             else if (e.getSource() == this.jmSuprimer) 
             {
@@ -865,11 +865,36 @@ public class PanelMPM extends JPanel
             }
             else if (e.getSource() == this.jmDuree) 
             {
-                // Logique pour modifier durée
+                String dureeTache = JOptionPane.showInputDialog(this, "Modifier la durée de la tâche :", 
+                                                                entiteSelectionnee.getTache().getDuree());
+                if (dureeTache != null && !dureeTache.isEmpty())
+                {
+                    try 
+                    {
+                        int duree = Integer.parseInt(dureeTache);
+                        entiteSelectionnee.getTache().setDuree(duree);
+                        ctrl.getFichier().modifierTacheFichier(entiteSelectionnee.getTache());
+                        initEntites();
+                        repaint();
+                    } 
+                    catch (NumberFormatException ex) 
+                    {
+                        JOptionPane.showMessageDialog(this, "Durée invalide. Veuillez entrer un nombre entier.", 
+                                                      "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
             else if (e.getSource() == this.jmNom) 
             {
-                // Logique pour modifier nom
+                String nomTache = JOptionPane.showInputDialog(this, "Modifier le nom de la tâche :", 
+                                                              entiteSelectionnee.getTache().getNom());
+                if (nomTache != null && !nomTache.isEmpty())
+                {
+                    entiteSelectionnee.getTache().setNom(nomTache);
+                    ctrl.getFichier().modifierTacheFichier(entiteSelectionnee.getTache());
+                    initEntites();
+                    repaint();
+                }
             }
         }
     }
