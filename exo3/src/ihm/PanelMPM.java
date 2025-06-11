@@ -749,11 +749,15 @@ public class PanelMPM extends JPanel
             else if (e.getSource() == this.jmSuprimer) 
             {
 
+                System.out.println("Suppression de la tâche : " + entiteSelectionnee.getTache().getNom());
+                
                 if (entiteSelectionnee == null) 
                     return;
+
                 if (entiteSelectionnee.getTache().getNom().equals("DEBUT") || 
                     entiteSelectionnee.getTache().getNom().equals("FIN")) 
                     return;
+                
                 supprimerTache(entiteSelectionnee.getTache());
                 ctrl.getGrilleDonneesModel().refreshTab();
             }
