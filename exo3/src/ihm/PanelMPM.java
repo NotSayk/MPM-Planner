@@ -563,7 +563,7 @@ public class PanelMPM extends JPanel
         @Override
         public void mousePressed(MouseEvent e) 
         {
-            if (e.getButton() == MouseEvent.BUTTON1) 
+            if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON3) 
             {
                 // Ajuster les coordonnées en fonction du zoom
                 int Xscale = (int)(e.getX() / scale);
