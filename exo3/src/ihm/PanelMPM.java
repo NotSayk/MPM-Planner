@@ -65,6 +65,12 @@ public class PanelMPM extends JPanel
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
 
+        this.popupEdit.add(new JMenuItem("Copier"));
+        this.popupEdit.add(new JMenuItem("Supprimer"));
+        popup.addSeparator();
+        this.popupEdit.add(new JMenuItem("Modifier durée"));
+        this.popupEdit.add(new JMenuItem("Modifier nom"));
+
         // Créer le panel de dessin séparé
         this.graphePanel = new GraphePanel();
         
@@ -351,23 +357,7 @@ public class PanelMPM extends JPanel
             }
             if(e.getButton() == MouseEvent.BUTTON3) 
             {
-
-                PanelMPM.this.popupEdit.removeAll();
-                JMenuItem copier = new JMenuItem("Copy");
-                PanelMPM.this.popupEdit.add(copier);
-                JMenuItem couper = new JMenuItem("Cut");
-                PanelMPM.this.popupEdit.add(couper);
-                JMenuItem coller = new JMenuItem("Paste");
-                PanelMPM.this.popupEdit.add(coller);
-                
-                popup.addSeparator();
-                
-                JMenu m = new JMenu("New");
-                    JMenuItem f = new JMenuItem("Folder");
-                    m.add(f);
-                    JMenuItem s = new JMenuItem("Shortcut");
-                    m.add(s);
-                    popup.add(m);
+                PanelMPM.this.popupEdit.show(e.getComponent(),e.getX(),e.getY());
             }
         }
 
