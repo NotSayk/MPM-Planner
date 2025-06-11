@@ -201,7 +201,13 @@ public class GrapheMPM
             this.initCheminCritique();
             this.initNiveauTaches();
             this.ctrl.getFichier().modifierTacheFichier(tache);
+            double zoom = this.ctrl.getFrameMPM().getScale();
+            String themeActuel = this.ctrl.getTheme();
+            boolean cheminCritiqueActuel = this.ctrl.getAfficher();
             this.ctrl.afficherGraphe();
+            this.ctrl.setTheme(themeActuel);
+            this.ctrl.afficherCheminCritique(cheminCritiqueActuel);
+            this.ctrl.getFrameMPM().getPanelMPM().setScale(zoom);
         } 
         else 
         {
@@ -233,17 +239,15 @@ public class GrapheMPM
         
         taches.add(fin);
         
-         this.initNiveauTaches(); 
+        this.initNiveauTaches(); 
         this.calculerDates();
         this.initCheminCritique();
         
-        // Sauvegarder l'état du thème et du chemin critique AVANT de rafraîchir
         String themeActuel = this.ctrl.getTheme();
         boolean cheminCritiqueActuel = this.ctrl.getAfficher();
         
         this.ctrl.afficherGraphe(); 
         
-        // Réappliquer le thème et l'état du chemin critique APRÈS le rafraîchissement
         this.ctrl.setTheme(themeActuel);
         this.ctrl.afficherCheminCritique(cheminCritiqueActuel);
 

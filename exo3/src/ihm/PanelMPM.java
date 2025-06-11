@@ -608,6 +608,7 @@ public class PanelMPM extends JPanel
     public boolean estGriseTard() { return this.numNiveauxTard == 0; }
     public String  getTheme    () { return this.graphePanel.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK"; }
     public boolean isCritique  () { return this.afficher; }
+    public double getScale()     { return this.graphePanel.scale; }
 
     public void resetScale() 
     {

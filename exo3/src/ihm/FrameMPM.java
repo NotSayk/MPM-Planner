@@ -46,6 +46,7 @@ public class FrameMPM extends JFrame
     public String       getTheme      (                  ) { return this.panelMPM.getTheme  (          ); }
     public PanelMPM     getPanelMPM   (                  ) { return this.panelMPM                       ; }
     public TacheMPM     getTacheSelectionnee(          ) { return this.panelMPM.getTacheSelectionnee(); }
+    public double       getScale      (                  ) { return this.panelMPM.getScale  (          ); }
 
   
     public void changerPanel() 
