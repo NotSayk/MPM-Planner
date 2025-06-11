@@ -1,9 +1,9 @@
 package src;
 
 import java.util.List;
+import src.ihm.FrameCritique;
 import src.ihm.FrameMPM;
 import src.ihm.FrameModification;
-import src.ihm.FrameCritique;
 import src.ihm.GrilleDonneesModel;
 import src.ihm.composants.Entite;
 import src.metier.CheminCritique;
@@ -35,8 +35,8 @@ public class Controleur
      *-------------------------*/
     public Controleur() 
     {
-        this.grapheMPM   = new GrapheMPM(this);
-        this.frameMPM = new FrameMPM (this);
+        this.grapheMPM = new GrapheMPM(this);
+        this.frameMPM  = new FrameMPM (this);
     }
 
     /*--------------------------*

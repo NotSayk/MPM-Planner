@@ -17,8 +17,7 @@ public class FrameMPM extends JFrame
     public FrameMPM(Controleur ctrl) 
     {
         this.ctrl      = ctrl;
-        
-        this.panelMPM  = new PanelMPM(this.ctrl);
+    
         this.panelPara = new PanelPara(this.ctrl);
 
 
@@ -53,6 +52,7 @@ public class FrameMPM extends JFrame
     public void changerPanel() 
     {
         this.getContentPane().remove(this.panelPara);
+        this.panelMPM  = new PanelMPM(this.ctrl);
         this.add(this.panelMPM);
         this.maj();
     }
