@@ -108,16 +108,38 @@ public class PanelMPM extends JPanel
         
         // Étape 1: Compter le nombre de tâches par niveau
         int[] nbTachesParNiveau = new int[2000];
-        int niveauMax = 0;
+        int niveauMax = calculerNiveauxTaches(taches, nbTachesParNiveau);
         
+        // Étape 2: Trouver le niveau avec le plus de tâches
+        int maxTachesParNiveau = trouverMaxTachesParNiveau(nbTachesParNiveau, niveauMax);
+        
+        // Étape 3: Calculer le centre Y en fonction de la taille du plus gros niveau
+        int centreY = calculerCentreY(maxTachesParNiveau);
+        
+        // Étape 4: Créer les entités avec positionnement centré
+        creerEntitesPositionnees(taches, nbTachesParNiveau, centreY);
+        
+        // Mettre à jour la taille du panel de dessin
+        if (this.graphePanel != null) 
+        {
+            this.graphePanel.updateSize();
+        }
+    }
+
+    private int calculerNiveauxTaches(List<TacheMPM> taches, int[] nbTachesParNiveau) 
+    {
+        int niveauMax = 0;
         for (TacheMPM tache : taches) 
         {
             int niveau = this.ctrl.getNiveauTache(tache);
             nbTachesParNiveau[niveau]++;
             if (niveau > niveauMax) niveauMax = niveau;
         }
-        
-        // Étape 2: Trouver le niveau avec le plus de tâches
+        return niveauMax;
+    }
+
+    private int trouverMaxTachesParNiveau(int[] nbTachesParNiveau, int niveauMax) 
+    {
         int maxTachesParNiveau = 0;
         for (int i = 0; i <= niveauMax; i++) 
         {
@@ -126,12 +148,17 @@ public class PanelMPM extends JPanel
                 maxTachesParNiveau = nbTachesParNiveau[i];
             }
         }
-        
-        // Étape 3: Calculer le centre Y en fonction de la taille du plus gros niveau
+        return maxTachesParNiveau;
+    }
+
+    private int calculerCentreY(int maxTachesParNiveau) 
+    {
         int hauteurMaxNiveau = maxTachesParNiveau * PanelMPM.ESPACEMENT;
-        int centreY = 150 + hauteurMaxNiveau / 2;
-        
-        // Étape 4: Créer les entités avec positionnement centré
+        return 150 + hauteurMaxNiveau / 2;
+    }
+
+    private void creerEntitesPositionnees(List<TacheMPM> taches, int[] nbTachesParNiveau, int centreY) 
+    {
         int[] compteurParNiveau = new int[2000];
         
         for (TacheMPM tache : taches) 
@@ -139,26 +166,26 @@ public class PanelMPM extends JPanel
             int niveau = this.ctrl.getNiveauTache(tache);
             int x = PanelMPM.MARGE + niveau * PanelMPM.ESPACEMENT;
             
-            int nbTachesCeNiveau = nbTachesParNiveau[niveau];
-            int hauteurCeNiveau = nbTachesCeNiveau * PanelMPM.ESPACEMENT;
-            int debutY = centreY - hauteurCeNiveau / 2;
-            
-            int positionDansNiveau = compteurParNiveau[niveau];
-            int y = debutY + positionDansNiveau * PanelMPM.ESPACEMENT;
-            
-            if (y < PanelMPM.MARGE) y = PanelMPM.MARGE + positionDansNiveau * PanelMPM.ESPACEMENT;
+            int y = calculerPositionY(nbTachesParNiveau, centreY, niveau, compteurParNiveau[niveau]);
             
             Entite entite = new Entite(tache, x, y);
             this.lstEntites.add(entite);
             
             compteurParNiveau[niveau]++;
         }
+    }
+
+    private int calculerPositionY(int[] nbTachesParNiveau, int centreY, int niveau, int positionDansNiveau) 
+    {
+        int nbTachesCeNiveau = nbTachesParNiveau[niveau];
+        int hauteurCeNiveau  = nbTachesCeNiveau * PanelMPM.ESPACEMENT;
+        int debutY           = centreY - hauteurCeNiveau / 2;
         
-        // Mettre à jour la taille du panel de dessin
-        if (this.graphePanel != null) 
-        {
-            this.graphePanel.updateSize();
-        }
+        int y = debutY + positionDansNiveau * PanelMPM.ESPACEMENT;
+        
+        if (y < PanelMPM.MARGE) y = PanelMPM.MARGE + positionDansNiveau * PanelMPM.ESPACEMENT;
+        
+        return y;
     }
 
     /*----------------------------------*
@@ -179,44 +206,72 @@ public class PanelMPM extends JPanel
 
     private void dessinerConnexions(Graphics g)
     {
-        g.setColor(this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
+        Color couleurLigne = obtenirCouleurLigne();
+        g.setColor(couleurLigne);
+        
         for (Entite entite : this.lstEntites)
         {
-            TacheMPM tache = entite.getTache();
-            for (TacheMPM tacheSuivante : tache.getSuivants())
-            {
-                Entite entiteSuivante = this.getEntiteParTache(tacheSuivante);
-                if (entiteSuivante == null) continue;
-
-                int x1 = entite.getX() + entite.getLargeur();
-                int y1 = entite.getY() + entite.getHauteur() / 2;
-                int x2 = entiteSuivante.getX();
-                int y2 = entiteSuivante.getY() + entiteSuivante.getHauteur() / 2;
-                
-                g.drawLine(x1, y1, x2, y2);
-                
-                int xCentre = (x1 + x2) / 2;
-                int yCentre = (y1 + y2) / 2;
-                
-                FontMetrics fm   = g.getFontMetrics();
-                String texte     = String.valueOf(entite.getTache().getDuree());
-                int largeurTexte = fm.stringWidth(texte);
-                int hauteurTexte = fm.getHeight();
-                
-                int xRect       = xCentre - largeurTexte / 2 - 2;
-                int yRect       = yCentre - hauteurTexte / 2 - 2;
-                int largeurRect = largeurTexte + 2 * 2;
-                int hauteurRect = hauteurTexte + 2 * 2;
-                
-                g.setColor(this.graphePanel.getBackground());
-                g.fillRect(xRect, yRect, largeurRect, hauteurRect);
-                g.setColor(this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
-
-                g.drawString(texte, xCentre - largeurTexte / 2, yCentre + hauteurTexte / 4);
-                
-                dessinerFleche(g, x1, y1, x2, y2);
-            }
+            dessinerConnexionsEntite(g, entite);
         }
+    }
+
+    private Color obtenirCouleurLigne() 
+    {
+        return this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
+    }
+
+    private void dessinerConnexionsEntite(Graphics g, Entite entite) 
+    {
+        TacheMPM tache = entite.getTache();
+        for (TacheMPM tacheSuivante : tache.getSuivants())
+        {
+            Entite entiteSuivante = this.getEntiteParTache(tacheSuivante);
+            if (entiteSuivante == null) continue;
+
+            int[] coordonnees = calculerCoordonneesLigne(entite, entiteSuivante);
+            int x1 = coordonnees[0], y1 = coordonnees[1], x2 = coordonnees[2], y2 = coordonnees[3];
+            
+            g.drawLine(x1, y1, x2, y2);
+            
+            dessinerTexteDuree(g, entite, x1, y1, x2, y2);
+            dessinerFleche(g, x1, y1, x2, y2);
+        }
+    }
+
+    private int[] calculerCoordonneesLigne(Entite entite, Entite entiteSuivante) 
+    {
+        int x1 = entite.getX() + entite.getLargeur();
+        int y1 = entite.getY() + entite.getHauteur() / 2;
+        int x2 = entiteSuivante.getX();
+        int y2 = entiteSuivante.getY() + entiteSuivante.getHauteur() / 2;
+        return new int[]{x1, y1, x2, y2};
+    }
+
+    private void dessinerTexteDuree(Graphics g, Entite entite, int x1, int y1, int x2, int y2) 
+    {
+        int xCentre = (x1 + x2) / 2;
+        int yCentre = (y1 + y2) / 2;
+        
+        FontMetrics fm   = g.getFontMetrics();
+        String texte     = String.valueOf(entite.getTache().getDuree());
+        int largeurTexte = fm.stringWidth(texte);
+        int hauteurTexte = fm.getHeight();
+        
+        dessinerFondTexte(g, xCentre, yCentre, largeurTexte, hauteurTexte);
+        
+        g.setColor(obtenirCouleurLigne());
+        g.drawString(texte, xCentre - largeurTexte / 2, yCentre + hauteurTexte / 4);
+    }
+
+    private void dessinerFondTexte(Graphics g, int xCentre, int yCentre, int largeurTexte, int hauteurTexte) 
+    {
+        int xRect       = xCentre - largeurTexte / 2 - 2;
+        int yRect       = yCentre - hauteurTexte / 2 - 2;
+        int largeurRect = largeurTexte + 2 * 2;
+        int hauteurRect = hauteurTexte + 2 * 2;
+        
+        g.setColor(this.graphePanel.getBackground());
+        g.fillRect(xRect, yRect, largeurRect, hauteurRect);
     }
     
     private void dessinerFleche(Graphics g, int x1, int y1, int x2, int y2) 
@@ -252,22 +307,21 @@ public class PanelMPM extends JPanel
     {
         this.afficher = aff;
         
-        if (!aff) 
+        for (Entite entite : this.lstEntites) 
         {
-            for (Entite entite : this.lstEntites) 
-                entite.setCouleurContour(this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
-        }
-        else
-        {
-            for (Entite entite : this.lstEntites) 
-            {
-                if (entite.getTache().estCritique()) 
-                    entite.setCouleurContour(Color.RED);
-                else
-                    entite.setCouleurContour(this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
-            }
+            Color couleurContour = determinerCouleurContour(entite, aff);
+            entite.setCouleurContour(couleurContour);
         }
         repaint();
+    }
+
+    private Color determinerCouleurContour(Entite entite, boolean afficherCritique) 
+    {
+        if (afficherCritique && entite.getTache().estCritique()) 
+        {
+            return Color.RED;
+        }
+        return this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
     public void afficherDateTot()
@@ -289,8 +343,9 @@ public class PanelMPM extends JPanel
         this.afficherDateTot  = false;
         this.afficherDateTard = false;
         this.numNiveauxTot    = -1;
-        this.afficherDateTot();
         this.numNiveauxTard   = 0;
+
+        this.afficherDateTot();
         for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
         {
             if (this.ctrl.getNiveauxTaches()[i] !=  0) this.numNiveauxTard ++;
@@ -302,6 +357,13 @@ public class PanelMPM extends JPanel
     public void setTheme(String theme) 
     {
         System.out.println("Changement de thème : " + theme);
+        appliquerTheme(theme);
+        this.afficherCheminCritique(this.afficher);
+        repaint();
+    }
+
+    private void appliquerTheme(String theme) 
+    {
         if (theme.equals("LIGHT")) 
         {
             this.setBackground(Color.WHITE);
@@ -316,8 +378,6 @@ public class PanelMPM extends JPanel
             for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.WHITE);
         }
-        this.afficherCheminCritique(this.afficher);
-        repaint();
     }
 
     public void resetPositions() 
@@ -350,6 +410,12 @@ public class PanelMPM extends JPanel
         graphePanel.scale = 1.5;
         graphePanel.updateSize();
 
+        centrerSurEntite(entite);
+        repaint();
+    }
+
+    private void centrerSurEntite(Entite entite) 
+    {
         Rectangle visibleRect = new Rectangle
         (
             (int)(entite.getX() * graphePanel.scale) - 100,
@@ -358,8 +424,6 @@ public class PanelMPM extends JPanel
             (int)(entite.getHauteur() * graphePanel.scale) + 200
         );
         graphePanel.scrollRectToVisible(visibleRect);
-
-        repaint();
     }
 
     public void setCritique(boolean critique) 
@@ -464,6 +528,14 @@ public class PanelMPM extends JPanel
         public void updateSize()
         {
             // Calculer la taille nécessaire en fonction des entités
+            int[] taillePanneau = calculerTaillePanneau();
+            
+            this.setPreferredSize(new Dimension(taillePanneau[0], taillePanneau[1]));
+            this.revalidate();
+        }
+
+        private int[] calculerTaillePanneau() 
+        {
             int maxX = 0, maxY = 0;
             for (Entite entite : lstEntites) 
             {
@@ -479,8 +551,7 @@ public class PanelMPM extends JPanel
             maxX = Math.max(maxX, 1000);
             maxY = Math.max(maxY, 800);
             
-            this.setPreferredSize(new Dimension(maxX, maxY));
-            this.revalidate();
+            return new int[]{maxX, maxY};
         }
 
         @Override
@@ -500,61 +571,71 @@ public class PanelMPM extends JPanel
             g2.scale(scale, scale);
             super.paintComponent(g);
             
+            dessinerEntites(g2);
+            dessinerConnexions(g2);
+            g2.dispose();
+        }
+
+        private void dessinerEntites(Graphics2D g2) 
+        {
             for (Entite entite : lstEntites)
             {
                 entite.paint(g2);
-        
-                FontMetrics fm = g2.getFontMetrics();
-
-                if (afficherDateTot) 
-                {
-                    if (entite.getNiveauTache() <= numNiveauxTot) 
-                    {
-                        String texte;
-                        if(ctrl.isFormatDateTexte())
-                        {
-                            String date = DateUtils.ajouterJourDate(ctrl.getDateRef(), entite.getTache().getDateTot());
-                            if (date.length() >= 5) texte = date.substring(0, 5); // JJ/MM
-                            else                    texte = date;
-                        }
-                        else
-                            texte = "" + entite.getTache().getDateTot();
-                        
-                        int textWidth = fm.stringWidth(texte);
-                        int x = entite.getX() + 16 - textWidth / 2;
-                        int y = entite.getY() + 55;
-
-                        g2.setColor(Color.GREEN);
-                        g2.drawString(texte, x, y);
-                    }
-                }
-
-                if (afficherDateTard) 
-                {
-                    if (entite.getNiveauTache() >= numNiveauxTard) 
-                    {
-                        String texte;
-                        if( ctrl.isFormatDateTexte() )
-                        {
-                            String date = DateUtils.ajouterJourDate(ctrl.getDateRef(), entite.getTache().getDateTard());
-                            if (date.length() >= 5) texte = date.substring(0, 5); // JJ/MM
-                            else                    texte = date;
-                        }
-                        else 
-                            texte = "" + entite.getTache().getDateTard();
-
-                        int textWidth = fm.stringWidth(texte);
-                        int x = entite.getX() + 52 - textWidth / 2;
-                        int y = entite.getY() + 55;
-
-                        g2.setColor(Color.RED);
-                        g2.drawString(texte, x, y);
-                    }
-                }
+                dessinerDatesSurEntite(g2, entite);
             }
+        }
+
+        private void dessinerDatesSurEntite(Graphics2D g2, Entite entite) 
+        {
+            FontMetrics fm = g2.getFontMetrics();
+
+            if (afficherDateTot && entite.getNiveauTache() <= numNiveauxTot) 
+            {
+                dessinerDateTot(g2, entite, fm);
+            }
+
+            if (afficherDateTard && entite.getNiveauTache() >= numNiveauxTard) 
+            {
+                dessinerDateTard(g2, entite, fm);
+            }
+        }
+
+        private void dessinerDateTot(Graphics2D g2, Entite entite, FontMetrics fm) 
+        {
+            String texte = obtenirTexteDate(entite.getTache().getDateTot());
+            int[] coordonnees = calculerCoordonneesTexte(entite, fm, texte, 16, 55);
             
-            dessinerConnexions(g2);
-            g2.dispose();
+            g2.setColor(Color.GREEN);
+            g2.drawString(texte, coordonnees[0], coordonnees[1]);
+        }
+
+        private void dessinerDateTard(Graphics2D g2, Entite entite, FontMetrics fm) 
+        {
+            String texte = obtenirTexteDate(entite.getTache().getDateTard());
+            int[] coordonnees = calculerCoordonneesTexte(entite, fm, texte, 52, 55);
+            
+            g2.setColor(Color.RED);
+            g2.drawString(texte, coordonnees[0], coordonnees[1]);
+        }
+
+        private String obtenirTexteDate(int date) 
+        {
+            if(ctrl.isFormatDateTexte())
+            {
+                String dateStr = DateUtils.ajouterJourDate(ctrl.getDateRef(), date);
+                if (dateStr.length() >= 5) return dateStr.substring(0, 5); // JJ/MM
+                else                       return dateStr;
+            }
+            else 
+                return "" + date;
+        }
+
+        private int[] calculerCoordonneesTexte(Entite entite, FontMetrics fm, String texte, int offsetX, int offsetY) 
+        {
+            int textWidth = fm.stringWidth(texte);
+            int x = entite.getX() + offsetX - textWidth / 2;
+            int y = entite.getY() + offsetY;
+            return new int[]{x, y};
         }
 
         /*----------------------------------*
@@ -565,70 +646,77 @@ public class PanelMPM extends JPanel
         {
             if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON3) 
             {
-                // Ajuster les coordonnées en fonction du zoom
-                int Xscale = (int)(e.getX() / scale);
-                int Yscale = (int)(e.getY() / scale);
-                
-
-                Entite entiteOld = this.entiteSelectionnee;
-                this.entiteSelectionnee = trouverEntiteAuPoint(Xscale, Yscale);
-                if (entiteSelectionnee == null) return;
-
-                if( entiteOld != null && entiteOld.getTache().getNom().equals(entiteSelectionnee.getTache().getNom()) )
-                {
-                    this.entiteSelectionnee = null;
-                    return;
-                }
-
-                offsetX = Xscale - entiteSelectionnee.getX();
-                offsetY = Yscale - entiteSelectionnee.getY();
-                popup.setVisible(false);
-
-                System.out.println("Entité sélectionnée: " + entiteSelectionnee.getTache().getNom());
+                int[] coordonneesEchelle = obtenirCoordonneesEchelle(e);
+                gererSelectionEntite(coordonneesEchelle[0], coordonneesEchelle[1]);
             }
         }
 
-        @Override
-        public void mouseReleased(MouseEvent e) 
+        private int[] obtenirCoordonneesEchelle(MouseEvent e) 
         {
-            //entiteSelectionnee = null;
+            int Xscale = (int)(e.getX() / scale);
+            int Yscale = (int)(e.getY() / scale);
+            return new int[]{Xscale, Yscale};
+        }
+
+        private void gererSelectionEntite(int x, int y) 
+        {
+            Entite entiteOld = this.entiteSelectionnee;
+            this.entiteSelectionnee = trouverEntiteAuPoint(x, y);
+            if (entiteSelectionnee == null) return;
+
+            if( entiteOld != null && entiteOld.getTache().getNom().equals(entiteSelectionnee.getTache().getNom()) )
+            {
+                this.entiteSelectionnee = null;
+                return;
+            }
+
+            offsetX = x - entiteSelectionnee.getX();
+            offsetY = y - entiteSelectionnee.getY();
+            popup.setVisible(false);
+
+            System.out.println("Entité sélectionnée: " + entiteSelectionnee.getTache().getNom());
         }
 
         @Override
         public void mouseClicked(MouseEvent e) 
         {
-            int Xscale = (int)(e.getX() / scale);
-            int Yscale = (int)(e.getY() / scale);
-            
-            // Trouver l'entité sous le clic
-            Entite entiteCliquee = trouverEntiteAuPoint(Xscale, Yscale);
+            int[] coordonneesEchelle = obtenirCoordonneesEchelle(e);
+            Entite entiteCliquee = trouverEntiteAuPoint(coordonneesEchelle[0], coordonneesEchelle[1]);
 
             if (e.getButton() == MouseEvent.BUTTON1) 
             {
-                if (entiteCliquee != null) 
-                {
-                    // Réinitialiser la couleur de toutes les entités
-                    for (Entite entite : lstEntites) {
-                        if (entite.getTache().estCritique() && afficher) 
-                        {
-                            entite.setCouleurContour(Color.RED);
-                        } else 
-                        {
-                            entite.setCouleurContour(getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
-                        }
-                    }
-                    
-                    PanelMPM.this.tacheSelectionnee = entiteCliquee.getTache();
-                    entiteCliquee.setCouleurContour(Color.BLUE);
-                    repaint();
-                }
+                gererClicGauche(entiteCliquee);
             }
             if(e.getButton() == MouseEvent.BUTTON3) 
             {
-                this.popup.setVisible(false);
-                if (entiteCliquee != null) 
-                    this.popupEdit.show(e.getComponent(),e.getX(),e.getY());
+                gererClicDroit(e, entiteCliquee);
             }
+        }
+
+        private void gererClicGauche(Entite entiteCliquee) 
+        {
+            if (entiteCliquee != null) 
+            {
+                reinitialiserCouleursEntites();
+                PanelMPM.this.tacheSelectionnee = entiteCliquee.getTache();
+                entiteCliquee.setCouleurContour(Color.BLUE);
+                repaint();
+            }
+        }
+
+        private void reinitialiserCouleursEntites() 
+        {
+            for (Entite entite : lstEntites) {
+                Color couleur = determinerCouleurContour(entite, afficher);
+                entite.setCouleurContour(couleur);
+            }
+        }
+
+        private void gererClicDroit(MouseEvent e, Entite entiteCliquee) 
+        {
+            this.popup.setVisible(false);
+            if (entiteCliquee != null) 
+                this.popupEdit.show(e.getComponent(),e.getX(),e.getY());
         }
 
         @Override
@@ -636,22 +724,24 @@ public class PanelMPM extends JPanel
         {
             if (this.entiteSelectionnee != null) 
             {
-                // Ajuster les coordonnées en fonction du zoom
-                int Xscale = (int)(e.getX() / scale);
-                int Yscale = (int)(e.getY() / scale);
-                
-                int newX = Xscale - offsetX;
-                int newY = Yscale - offsetY;
-
-                if(newX < 0) newX = 0;
-                if(newY < 0) newY = 0;
-
-                entiteSelectionnee.setPosition(newX, newY);
-                
-                this.updateSize();
-                this.scrollRectToVisible(new Rectangle(e.getX() - 100, e.getY() - 100, 100, 100));
-                repaint();
+                int[] coordonneesEchelle = obtenirCoordonneesEchelle(e);
+                deplacerEntite(coordonneesEchelle[0], coordonneesEchelle[1], e);
             }
+        }
+
+        private void deplacerEntite(int x, int y, MouseEvent e) 
+        {
+            int newX = x - offsetX;
+            int newY = y - offsetY;
+
+            if(newX < 0) newX = 0;
+            if(newY < 0) newY = 0;
+
+            entiteSelectionnee.setPosition(newX, newY);
+            
+            this.updateSize();
+            this.scrollRectToVisible(new Rectangle(e.getX() - 100, e.getY() - 100, 100, 100));
+            repaint();
         }
 
         @Override
@@ -728,6 +818,9 @@ public class PanelMPM extends JPanel
         
         @Override
         public void mouseExited(MouseEvent e) {}
+
+        @Override
+        public void mouseReleased(MouseEvent e) {}
 
         /*----------------------------------*
          * Gestionnaire de zoom             *
