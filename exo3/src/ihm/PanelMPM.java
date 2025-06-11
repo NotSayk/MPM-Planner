@@ -429,8 +429,8 @@ public class PanelMPM extends JPanel
          *--------------*/
         public GraphePanel()
         {
-            this.popup             = new JPopupMenu();
-            this.popupEdit         = new JPopupMenu();
+            this.popup      = new JPopupMenu();
+            this.popupEdit  = new JPopupMenu();
 
             this.jmCopier   = new JMenuItem("Copier");
             this.jmSuprimer = new JMenuItem("Supprimer");
@@ -445,10 +445,10 @@ public class PanelMPM extends JPanel
 
             this.scale = 1.0;
 
-            this.setBackground(Color.WHITE);
-            this.addMouseListener(this);
+            this.setBackground         (Color.WHITE);
+            this.addMouseListener      (this);
             this.addMouseMotionListener(this);
-            this.addMouseWheelListener(this);
+            this.addMouseWheelListener (this);
 
             this.jmCopier  .addActionListener(this);
             this.jmSuprimer.addActionListener(this);
@@ -617,7 +617,7 @@ public class PanelMPM extends JPanel
             if(e.getButton() == MouseEvent.BUTTON3) 
             {
                 this.popup.setVisible(false);
-                if (this.entiteSelectionnee != null) 
+                if (entiteCliquee != null) 
                     this.popupEdit.show(e.getComponent(),e.getX(),e.getY());
             }
         }
@@ -625,7 +625,7 @@ public class PanelMPM extends JPanel
         @Override
         public void mouseDragged(MouseEvent e) 
         {
-            if (entiteSelectionnee != null) 
+            if (this.entiteSelectionnee != null) 
             {
                 // Ajuster les coordonnées en fonction du zoom
                 int Xscale = (int)(e.getX() / scale);
