@@ -21,10 +21,10 @@ public class PanelButton extends JPanel implements ActionListener
     private JButton    btnTheme;
     private JButton    btnCritique;
 
-    public PanelButton(Controleur ctrl, PanelMPM panelMPM) 
+    public PanelButton(Controleur ctrl) 
     {
         this.ctrl           = ctrl;
-        this.panelMPM       = panelMPM;
+        this.panelMPM       = this.ctrl.getFrameMPM().getPanelMPM();
         this.cheminCritique = false;
         
         this.setBackground(new Color(45, 45, 55));
@@ -60,11 +60,11 @@ public class PanelButton extends JPanel implements ActionListener
         
         if (e.getSource() == this.btnPlusTot) 
         {
-            panelMPM.afficherDateTot();
-            if (panelMPM.estGriseTot()) 
+            this.panelMPM.afficherDateTot();
+            if (this.panelMPM.estGriseTot()) 
             {
-                btnPlusTard.setEnabled(true);
-                btnPlusTot.setEnabled(false);
+                this.btnPlusTard.setEnabled(true);
+                this.btnPlusTot.setEnabled(false);
                 this.majBouttonEtat();
             }
         }
@@ -73,7 +73,7 @@ public class PanelButton extends JPanel implements ActionListener
             this.panelMPM.afficherDateTard();
             if (this.panelMPM.estGriseTard()) 
             {
-                btnPlusTard.setEnabled(false);
+                this.btnPlusTard.setEnabled(false);
                 this.majBouttonEtat();
             }
         }

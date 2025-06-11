@@ -20,7 +20,6 @@ import java.util.List;
 import javax.swing.*;
 import src.Controleur;
 import src.ihm.composants.Entite;
-import src.metier.GrapheMPM;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;
 
@@ -37,30 +36,32 @@ public class PanelMPM extends JPanel
      * Attributs privés   *
      *--------------------*/
     private Controleur   ctrl;
+
+    private PanelButton  panelButton;
+    private PanelGraphe  panelGraphe;
+
     private List<Entite> lstEntites;
     private TacheMPM     tacheSelectionnee;
 
     private boolean      afficherDateTot;
     private boolean      afficherDateTard;
-    private boolean      afficher;
+    private boolean      critique;
     private int          numNiveauxTot;
     private int          numNiveauxTard;
-    private PanelButton  panelButton;
-    private GraphePanel  graphePanel;
     private JScrollPane  scrollPane;
 
     /*--------------*
      * Constructeur *
      *--------------*/
-    public PanelMPM(GrapheMPM graphe, Controleur ctrl) 
+    public PanelMPM(Controleur ctrl) 
     {
         this.ctrl             = ctrl;
         this.afficherDateTot  = false;
         this.afficherDateTard = false;
-        this.afficher         = false;
+        this.critique         = false;
 
         this.lstEntites        = new ArrayList<>();
-        this.panelButton       = new PanelButton(this.ctrl, this);
+        this.panelButton       = new PanelButton(this.ctrl);
         this.tacheSelectionnee = null;
 
         this.numNiveauxTot    = -1;
@@ -70,10 +71,10 @@ public class PanelMPM extends JPanel
         this.setBackground(Color.WHITE);
 
         // Créer le panel de dessin séparé
-        this.graphePanel = new GraphePanel();
+        this.panelGraphe = new PanelGraphe();
         
         // Créer le JScrollPane avec le panel de dessin
-        this.scrollPane = new JScrollPane(this.graphePanel);
+        this.scrollPane = new JScrollPane(this.panelGraphe);
         this.scrollPane.setPreferredSize(new Dimension(800, 600));
         this.scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.scrollPane.setVerticalScrollBarPolicy  (JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -120,9 +121,9 @@ public class PanelMPM extends JPanel
         creerEntitesPositionnees(taches, nbTachesParNiveau, centreY);
         
         // Mettre à jour la taille du panel de dessin
-        if (this.graphePanel != null) 
+        if (this.panelGraphe != null) 
         {
-            this.graphePanel.updateSize();
+            this.panelGraphe.updateSize();
         }
     }
 
@@ -217,7 +218,7 @@ public class PanelMPM extends JPanel
 
     private Color obtenirCouleurLigne() 
     {
-        return this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
+        return this.panelGraphe.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
     private void dessinerConnexionsEntite(Graphics g, Entite entite) 
@@ -270,7 +271,7 @@ public class PanelMPM extends JPanel
         int largeurRect = largeurTexte + 2 * 2;
         int hauteurRect = hauteurTexte + 2 * 2;
         
-        g.setColor(this.graphePanel.getBackground());
+        g.setColor(this.panelGraphe.getBackground());
         g.fillRect(xRect, yRect, largeurRect, hauteurRect);
     }
     
@@ -295,7 +296,7 @@ public class PanelMPM extends JPanel
         this.initEntites();
     
         this.setTheme(this.getTheme());
-        this.afficherCheminCritique(this.afficher);
+        this.afficherCheminCritique(this.critique);
         
         this.repaint();
     }
@@ -305,7 +306,7 @@ public class PanelMPM extends JPanel
      *----------------------------------*/
     public void afficherCheminCritique(boolean aff) 
     {
-        this.afficher = aff;
+        this.critique = aff;
         
         for (Entite entite : this.lstEntites) 
         {
@@ -321,7 +322,7 @@ public class PanelMPM extends JPanel
         {
             return Color.RED;
         }
-        return this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
+        return this.panelGraphe.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
     public void afficherDateTot()
@@ -358,7 +359,7 @@ public class PanelMPM extends JPanel
     {
         System.out.println("Changement de thème : " + theme);
         appliquerTheme(theme);
-        this.afficherCheminCritique(this.afficher);
+        this.afficherCheminCritique(this.critique);
         repaint();
     }
 
@@ -367,14 +368,14 @@ public class PanelMPM extends JPanel
         if (theme.equals("LIGHT")) 
         {
             this.setBackground(Color.WHITE);
-            this.graphePanel.setBackground(Color.WHITE);
+            this.panelGraphe.setBackground(Color.WHITE);
             for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.BLACK);
         } 
         else if (theme.equals("DARK")) 
         {
             this.setBackground(Color.DARK_GRAY);
-            this.graphePanel.setBackground(Color.DARK_GRAY);
+            this.panelGraphe.setBackground(Color.DARK_GRAY);
             for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.WHITE);
         }
@@ -384,14 +385,14 @@ public class PanelMPM extends JPanel
     {
         for (Entite entite : this.lstEntites) 
             entite.resetPosition();
-        this.graphePanel.updateSize();
+        this.panelGraphe.updateSize();
         repaint();
     }
 
     public void resetScale() 
     {
-        this.graphePanel.scale = 1.0;
-        this.graphePanel.updateSize();
+        this.panelGraphe.scale = 1.0;
+        this.panelGraphe.updateSize();
         this.repaint();
     }
 
@@ -407,8 +408,8 @@ public class PanelMPM extends JPanel
         entite.setCouleurContour(Color.BLUE);
         this.tacheSelectionnee = entite.getTache();
 
-        graphePanel.scale = 1.5;
-        graphePanel.updateSize();
+        panelGraphe.scale = 1.5;
+        panelGraphe.updateSize();
 
         centrerSurEntite(entite);
         repaint();
@@ -418,25 +419,25 @@ public class PanelMPM extends JPanel
     {
         Rectangle visibleRect = new Rectangle
         (
-            (int)(entite.getX() * graphePanel.scale) - 100,
-            (int)(entite.getY() * graphePanel.scale) - 100,
-            (int)(entite.getLargeur() * graphePanel.scale) + 200,
-            (int)(entite.getHauteur() * graphePanel.scale) + 200
+            (int)(entite.getX() * panelGraphe.scale) - 100,
+            (int)(entite.getY() * panelGraphe.scale) - 100,
+            (int)(entite.getLargeur() * panelGraphe.scale) + 200,
+            (int)(entite.getHauteur() * panelGraphe.scale) + 200
         );
-        graphePanel.scrollRectToVisible(visibleRect);
+        panelGraphe.scrollRectToVisible(visibleRect);
     }
 
     public void setCritique(boolean critique) 
     {
-        this.afficher = critique;
+        this.critique = critique;
         this.afficherCheminCritique(critique);
         this.panelButton.setCritiqueButton(critique);
     }
 
     public void setScale(double zoom)
     {
-        this.graphePanel.scale = zoom;
-        this.graphePanel.updateSize();
+        this.panelGraphe.scale = zoom;
+        this.panelGraphe.updateSize();
         this.repaint();
     }
 
@@ -462,14 +463,14 @@ public class PanelMPM extends JPanel
     public TacheMPM getTacheSelectionnee() { return this.tacheSelectionnee;                                                  }
     public boolean  estGriseTot         () { return this.numNiveauxTot  == numNiveauxTard-1;                                 }
     public boolean  estGriseTard        () { return this.numNiveauxTard == 0;                                                }
-    public String   getTheme            () { return this.graphePanel.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK"; }
-    public boolean  isCritique          () { return this.afficher;                                                           }
-    public double   getScale            () { return this.graphePanel.scale;                                                  }
+    public String   getTheme            () { return this.panelGraphe.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK"; }
+    public boolean  isCritique          () { return this.critique;                                                           }
+    public double   getScale            () { return this.panelGraphe.scale;                                                  }
 
     /*------------------------------------------------------------*
      * Classe interne : Panel de dessin du graphe                *
      *------------------------------------------------------------*/
-    private class GraphePanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, 
+    private class PanelGraphe extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, 
                                                         ActionListener
     {
         /*--------------------*
@@ -491,7 +492,7 @@ public class PanelMPM extends JPanel
         /*--------------*
          * Constructeur *
          *--------------*/
-        public GraphePanel()
+        public PanelGraphe()
         {
             this.popup      = new JPopupMenu();
             this.popupEdit  = new JPopupMenu();
@@ -707,7 +708,7 @@ public class PanelMPM extends JPanel
         private void reinitialiserCouleursEntites() 
         {
             for (Entite entite : lstEntites) {
-                Color couleur = determinerCouleurContour(entite, afficher);
+                Color couleur = determinerCouleurContour(entite, critique);
                 entite.setCouleurContour(couleur);
             }
         }

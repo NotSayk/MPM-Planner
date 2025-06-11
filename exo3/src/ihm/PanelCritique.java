@@ -2,14 +2,13 @@ package src.ihm;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import src.Controleur;
-import src.metier.CheminCritique;
 
 public class PanelCritique extends JPanel 
 {
     private Controleur ctrl;
-    private JTextArea textArea;
+
+    private JTextArea  textArea;
     
     public PanelCritique(Controleur ctrl) 
     {
@@ -24,33 +23,11 @@ public class PanelCritique extends JPanel
         JScrollPane scrollPane = new JScrollPane(textArea);
         this.add(scrollPane, BorderLayout.CENTER);
         
-        afficherCheminsCritiques();
-    }
-    
-    private void afficherCheminsCritiques() 
-    {
-        String sRet = "";
-        sRet += ("=== CHEMINS CRITIQUES ===\n\n");
-        
-        List<CheminCritique> chemins = this.ctrl.getCheminsCritiques();
-        
-        if (chemins.isEmpty()) 
-        {
-            sRet += ("Aucun chemin critique trouvé.\n");
-        } 
-        else 
-        {
-            for (CheminCritique chemin : chemins) 
-            {
-                sRet += chemin.toString() + "\n";
-            }
-        }
-        
-        textArea.setText(sRet);
+        this.textArea.setText(this.ctrl.getGraphe().afficherCheminsCritiques());
     }
     
     public void actualiser() 
     {
-        afficherCheminsCritiques();
+        this.textArea.setText(this.ctrl.getGraphe().afficherCheminsCritiques());
     }
 }

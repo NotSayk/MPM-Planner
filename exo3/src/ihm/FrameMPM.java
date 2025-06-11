@@ -4,22 +4,21 @@ import java.util.List;
 import javax.swing.JFrame;
 import src.Controleur;
 import src.ihm.composants.Entite;
-import src.metier.GrapheMPM;
 import src.metier.TacheMPM;
 
 public class FrameMPM extends JFrame
 {
     
     private Controleur ctrl;
-    private GrapheMPM  graphe;
 
     private PanelMPM   panelMPM;
     private PanelPara  panelPara;
 
-    public FrameMPM(Controleur ctrl, GrapheMPM graphe) 
+    public FrameMPM(Controleur ctrl) 
     {
         this.ctrl      = ctrl;
-        this.graphe    = graphe;
+        
+        this.panelMPM  = new PanelMPM(this.ctrl);
         this.panelPara = new PanelPara(this.ctrl);
 
 
@@ -31,7 +30,7 @@ public class FrameMPM extends JFrame
 
         this.add(this.panelPara);
     
-        
+
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -41,18 +40,19 @@ public class FrameMPM extends JFrame
     public void         setCritique   ( boolean critique ) { this.panelMPM.setCritique      ( critique ); }
     public void         resetPositions(                  ) { this.panelMPM.resetPositions   (          ); }
     
-    public boolean      isCritique    (                  ) { return this.panelMPM.isCritique(          ); }
-    public List<Entite> getEntites    (                  ) { return this.panelMPM.getEntites(          ); }
-    public String       getTheme      (                  ) { return this.panelMPM.getTheme  (          ); }
-    public PanelMPM     getPanelMPM   (                  ) { return this.panelMPM                       ; }
-    public TacheMPM     getTacheSelectionnee(            ) { return this.panelMPM.getTacheSelectionnee(); }
-    public double       getScale      (                  ) { return this.panelMPM.getScale  (          ); }
+    public boolean      isCritique          () { return this.panelMPM.isCritique();           }
+    public List<Entite> getEntites          () { return this.panelMPM.getEntites();           }
+    public String       getTheme            () { return this.panelMPM.getTheme  ();           }
+    public TacheMPM     getTacheSelectionnee() { return this.panelMPM.getTacheSelectionnee(); }
+    public double       getScale            () { return this.panelMPM.getScale();             }
+
+    public PanelMPM     getPanelMPM         () { return this.panelMPM;                        }
+    public PanelPara    getPanelPara        () { return this.panelPara;                       }
 
   
     public void changerPanel() 
     {
-        this.getContentPane().removeAll();
-        this.panelMPM  = new PanelMPM(this.graphe, this.ctrl);
+        this.getContentPane().remove(this.panelPara);
         this.add(this.panelMPM);
         this.maj();
     }
@@ -85,4 +85,5 @@ public class FrameMPM extends JFrame
     }
     
     public void setScale(double zoom) {this.panelMPM.setScale(zoom);}
+
 }

@@ -40,7 +40,7 @@ public class GrilleDonneesModel extends AbstractTableModel
     public void refreshTab()
     {
         List<TacheMPM> lstTaches = this.ctrl.getTaches();
-        TacheMPM       tache     = null;
+        TacheMPM       tache;
 
         tabDonnees = new Object[lstTaches.size()][7];
 

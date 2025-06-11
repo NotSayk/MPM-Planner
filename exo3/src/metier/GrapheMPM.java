@@ -121,6 +121,26 @@ public class GrapheMPM
         this.niveaux[niveau] += 1;
     }
 
+    public String afficherCheminsCritiques() 
+    {
+        String sRet = "";
+        sRet += ("=== CHEMINS CRITIQUES ===\n\n");
+        
+        List<CheminCritique> chemins = this.ctrl.getCheminsCritiques();
+        
+        if (chemins.isEmpty()) 
+        {
+            sRet += ("Aucun chemin critique trouvé.\n");
+        } 
+        else 
+        {
+            for (CheminCritique chemin : chemins) 
+                sRet += chemin.toString() + "\n";
+        }
+        
+        return sRet;
+    }
+
     /*----------------------------------*
      * Méthodes de recherche de tâches  *
      *----------------------------------*/

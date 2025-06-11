@@ -12,6 +12,7 @@ src/ihm/FrameMPM.java
 src/ihm/FrameModification.java
 
 src/ihm/PanelPara.java
+src/ihm/PanelButton.java
 src/ihm/PanelMPM.java
 src/ihm/BarreMenu.java
 src/ihm/GrilleDonneesModel.java

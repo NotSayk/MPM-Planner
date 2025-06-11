@@ -2,7 +2,6 @@ package src.ihm;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import src.Controleur;
 
 public class FrameCritique extends JFrame
