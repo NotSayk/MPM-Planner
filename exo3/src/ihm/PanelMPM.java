@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -40,8 +42,6 @@ public class PanelMPM extends JPanel
     private int          numNiveauxTard;
     
     private PanelButton  panelButton;
-    private JPopupMenu   popup;
-    private JPopupMenu   popupEdit;
     
     // Nouveau panel pour le dessin du graphe
     private GraphePanel  graphePanel;
@@ -55,8 +55,6 @@ public class PanelMPM extends JPanel
         this.afficher         = false;
 
         this.lstEntites        = new ArrayList<>();
-        this.popup             = new JPopupMenu();
-        this.popupEdit         = new JPopupMenu();
         this.panelButton       = new PanelButton(this.ctrl, this);
         this.tacheSelectionnee = null;
 
@@ -66,12 +64,6 @@ public class PanelMPM extends JPanel
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
 
-        this.popupEdit.add(new JMenuItem("Copier"));
-        this.popupEdit.add(new JMenuItem("Supprimer"));
-        popup.addSeparator();
-        this.popupEdit.add(new JMenuItem("Modifier durée"));
-        this.popupEdit.add(new JMenuItem("Modifier nom"));
-
         // Créer le panel de dessin séparé
         this.graphePanel = new GraphePanel();
         
@@ -79,7 +71,7 @@ public class PanelMPM extends JPanel
         this.scrollPane = new JScrollPane(this.graphePanel);
         this.scrollPane.setPreferredSize(new Dimension(800, 600));
         this.scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        this.scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.scrollPane.setVerticalScrollBarPolicy  (JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         this.initEntites();
         this.afficherDateTot();
@@ -94,19 +86,50 @@ public class PanelMPM extends JPanel
     /**
      * Panel interne pour dessiner le graphe avec gestion des événements souris
      */
-    private class GraphePanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener
+    private class GraphePanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, 
+                                                        ActionListener
     {
-        private Entite entiteSelectionnee;
-        private int    offsetX, offsetY;
-        private Entite dernierEntite;
-        private double scale = 1.0;
+        private JPopupMenu   popup;
+        private JPopupMenu   popupEdit;
+        
+        private JMenuItem    jmCopier;
+        private JMenuItem    jmSuprimer;
+        private JMenuItem    jmDuree;
+        private JMenuItem    jmNom;
+
+        private Entite       entiteSelectionnee;
+        private int          offsetX, offsetY;
+        private Entite       dernierEntite;
+        private double       scale;
 
         public GraphePanel()
         {
+
+            this.popup             = new JPopupMenu();
+            this.popupEdit         = new JPopupMenu();
+
+            this.jmCopier   = new JMenuItem("Copier");
+            this.jmSuprimer = new JMenuItem("Supprimer");
+            this.jmDuree    = new JMenuItem("Modifier durée");
+            this.jmNom      = new JMenuItem("Modifier nom");
+
+            this.popupEdit.add(this.jmCopier);
+            this.popupEdit.add(this.jmSuprimer);
+            this.popupEdit.addSeparator();
+            this.popupEdit.add(this.jmDuree);
+            this.popupEdit.add(this.jmNom);
+
+            this.scale = 1.0;
+
             this.setBackground(Color.WHITE);
             this.addMouseListener(this);
             this.addMouseMotionListener(this);
             this.addMouseWheelListener(this);
+
+            this.jmCopier  .addActionListener(this);
+            this.jmSuprimer.addActionListener(this);
+            this.jmDuree   .addActionListener(this);
+            this.jmNom     .addActionListener(this);
 
             this.updateSize();
         }
@@ -333,14 +356,14 @@ public class PanelMPM extends JPanel
         @Override
         public void mouseClicked(MouseEvent e) 
         {
+            int Xscale = (int)(e.getX() / scale);
+            int Yscale = (int)(e.getY() / scale);
+            
+            // Trouver l'entité sous le clic
+            Entite entiteCliquee = trouverEntiteAuPoint(Xscale, Yscale);
+
             if (e.getButton() == MouseEvent.BUTTON1) 
             {
-                // Ajuster les coordonnées en fonction du zoom
-                int Xscale = (int)(e.getX() / scale);
-                int Yscale = (int)(e.getY() / scale);
-                
-                // Trouver l'entité sous le clic
-                Entite entiteCliquee = trouverEntiteAuPoint(Xscale, Yscale);
                 if (entiteCliquee != null) 
                 {
                     // Réinitialiser la couleur de toutes les entités
@@ -361,7 +384,9 @@ public class PanelMPM extends JPanel
             }
             if(e.getButton() == MouseEvent.BUTTON3) 
             {
-                PanelMPM.this.popupEdit.show(e.getComponent(),e.getX(),e.getY());
+                this.popup.setVisible(false);
+                if (entiteCliquee != null) 
+                    this.popupEdit.show(e.getComponent(),e.getX(),e.getY());
             }
         }
 
@@ -379,7 +404,8 @@ public class PanelMPM extends JPanel
         }
 
         @Override
-        public void mouseWheelMoved(MouseWheelEvent e) {
+        public void mouseWheelMoved(MouseWheelEvent e) 
+        {
             if (e.isControlDown() || e.isMetaDown() || e.getPreciseWheelRotation() != 0) 
             {
                 if (e.getWheelRotation() < 0) scale *= 1.1;
@@ -387,6 +413,27 @@ public class PanelMPM extends JPanel
                 scale = Math.max(0.2, Math.min(scale, 5.0)); // Limite le zoom
                 revalidate();
                 repaint();
+            }
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            if (e.getSource() == this.jmCopier) 
+            {
+                // Logique pour copier
+            }
+            else if (e.getSource() == this.jmSuprimer) 
+            {
+                // Logique pour supprimer
+            }
+            else if (e.getSource() == this.jmDuree) 
+            {
+                // Logique pour modifier durée
+            }
+            else if (e.getSource() == this.jmNom) 
+            {
+                // Logique pour modifier nom
             }
         }
     }
