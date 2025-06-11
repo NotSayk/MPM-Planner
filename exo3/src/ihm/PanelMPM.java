@@ -569,15 +569,22 @@ public class PanelMPM extends JPanel
                 int Xscale = (int)(e.getX() / scale);
                 int Yscale = (int)(e.getY() / scale);
                 
-                this.entiteSelectionnee = trouverEntiteAuPoint(Xscale, Yscale);
-                if (entiteSelectionnee != null) 
-                {
-                    offsetX = Xscale - entiteSelectionnee.getX();
-                    offsetY = Yscale - entiteSelectionnee.getY();
-                    popup.setVisible(false);
 
-                    System.out.println("Entité sélectionnée: " + entiteSelectionnee.getTache().getNom());
+                Entite entiteOld = this.entiteSelectionnee;
+                this.entiteSelectionnee = trouverEntiteAuPoint(Xscale, Yscale);
+                if (entiteSelectionnee == null) return;
+
+                if( entiteOld != null && entiteOld.getTache().getNom().equals(entiteSelectionnee.getTache().getNom()) )
+                {
+                    this.entiteSelectionnee = null;
+                    return;
                 }
+
+                offsetX = Xscale - entiteSelectionnee.getX();
+                offsetY = Yscale - entiteSelectionnee.getY();
+                popup.setVisible(false);
+
+                System.out.println("Entité sélectionnée: " + entiteSelectionnee.getTache().getNom());
             }
         }
 
