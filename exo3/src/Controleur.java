@@ -3,8 +3,10 @@ package src;
 import java.util.List;
 import src.ihm.FrameMPM;
 import src.ihm.FrameModification;
+import src.ihm.FrameCritique;
 import src.ihm.GrilleDonneesModel;
 import src.ihm.composants.Entite;
+import src.metier.CheminCritique;
 import src.metier.Fichier;
 import src.metier.GrapheMPM;
 import src.metier.TacheMPM;
@@ -17,6 +19,7 @@ public class Controleur
      *-------------------------*/
     private FrameMPM          frameMPM;
     private FrameModification frameModification;
+    private FrameCritique     frameCritique;
     private Fichier           fichier;
     private GrapheMPM         graphe;
     private boolean           formatDateTexte = false; 
@@ -89,6 +92,14 @@ public class Controleur
         this.graphe.ajouterTacheAPosition(tache, position);
     }
 
+    public void afficherCritiques()
+    {
+        if (this.frameCritique == null)
+            this.frameCritique = new FrameCritique(this);
+        
+        this.frameCritique.setVisible(true);
+    }
+
     public void changerTheme()       { this.frameMPM.changerTheme();                     }
     public void resetPositions()     { this.frameMPM.resetPositions(); 
                                        this.frameMPM.repaint();                          }
@@ -154,6 +165,8 @@ public class Controleur
     public boolean isFormatDateTexte() { return this.formatDateTexte;         }
     public boolean isCritique()        { return this.frameMPM.isCritique();   }
     public boolean getAfficher()       { return this.frameMPM.getPanelMPM().isCritique(); }
+
+    public List<CheminCritique> getCheminsCritiques() { return this.graphe.getCheminsCritiques(); }
 
     public void afficherCheminCritique(boolean afficher) 
     { 
