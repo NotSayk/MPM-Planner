@@ -89,9 +89,9 @@ public class Controleur
         this.graphe.ajouterTacheAPosition(tache, position);
     }
 
-    public void changerTheme()       { this.frameMPM.changerTheme();                      }
+    public void changerTheme()       { this.frameMPM.changerTheme();                     }
     public void resetPositions()     { this.frameMPM.resetPositions(); 
-                                       this.frameMPM.repaint();                           }
+                                       this.frameMPM.repaint();                          }
     public void sauvegarder()        { this.fichier.sauvegarder();                       }
     public void chargerFichier()     { this.fichier.chargerFichierB();                   }
     public void copierTache()        { this.graphe.copierTache();                        }
