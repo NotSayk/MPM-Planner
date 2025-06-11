@@ -1,14 +1,11 @@
 package src.ihm;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.*;
 import java.io.File;
-import java.io.FileNotFoundException;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import java.awt.Font;
-import java.awt.Color;
 import src.Controleur;
 import src.utils.ErrorUtils;
 
@@ -53,29 +50,29 @@ public class BarreMenu extends JMenuBar implements ActionListener
       JMenu menuZoom      = new JMenu("Zoom");
 
       // Ajout d'icônes aux menus (avec gestion d'erreur)
-      menuFichier.setIcon(createMenuIcon("📁"));
-      menuEdition.setIcon(createMenuIcon("✏️"));
+      menuFichier  .setIcon(createMenuIcon("📁"));
+      menuEdition  .setIcon(createMenuIcon("✏️"));
       menuAffichage.setIcon(createMenuIcon("👁️"));
-      menuZoom.setIcon(createMenuIcon("🔍"));
+      menuZoom     .setIcon(createMenuIcon("🔍"));
 
       // les JMenuItem avec icônes Unicode
-      this.menuiCharger           = new JMenuItem("Charger", createMenuIcon("📂"));
+      this.menuiCharger           = new JMenuItem("Charger"    , createMenuIcon("📂"));
       this.menuiSauvegarder       = new JMenuItem("Sauvegarder", createMenuIcon("💾"));
-      this.menuiQuitter           = new JMenuItem("Quitter", createMenuIcon("❌"));
+      this.menuiQuitter           = new JMenuItem("Quitter"    , createMenuIcon("❌"));
 
-      this.menuiRajouterTache     = new JMenuItem("Rajouter une tâche", createMenuIcon("➕"));
-      this.menuiSupprimerTache    = new JMenuItem("Supprimer une tâche", createMenuIcon("🗑️"));
+      this.menuiRajouterTache     = new JMenuItem("Rajouter une tâche"       , createMenuIcon("➕"));
+      this.menuiSupprimerTache    = new JMenuItem("Supprimer une tâche"      , createMenuIcon("🗑️"));
       this.menuiChangerDureeTache = new JMenuItem("Changer durée d'une tâche", createMenuIcon("⏱️"));
 
-      this.menuiZoom25            = new JMenuItem("25%", createMenuIcon("🔍"));
-      this.menuiZoom50            = new JMenuItem("50%", createMenuIcon("🔍"));
-      this.menuiZoom75            = new JMenuItem("75%", createMenuIcon("🔍"));
+      this.menuiZoom25            = new JMenuItem("25%" , createMenuIcon("🔍"));
+      this.menuiZoom50            = new JMenuItem("50%" , createMenuIcon("🔍"));
+      this.menuiZoom75            = new JMenuItem("75%" , createMenuIcon("🔍"));
       this.menuiZoom100           = new JMenuItem("100%", createMenuIcon("🔍"));
       this.menuiZoom150           = new JMenuItem("150%", createMenuIcon("🔍"));
       this.menuiZoom200           = new JMenuItem("200%", createMenuIcon("🔍"));
 
-      this.menuiCopier            = new JMenuItem("Copier", createMenuIcon("📋"));
-      this.menuiColler            = new JMenuItem("Coller", createMenuIcon("📌"));
+      this.menuiCopier            = new JMenuItem("Copier"            , createMenuIcon("📋"));
+      this.menuiColler            = new JMenuItem("Coller"            , createMenuIcon("📌"));
       this.menuiChercherTache     = new JMenuItem("Chercher une tâche", createMenuIcon("🔎"));
 
       // Application du style moderne
@@ -139,19 +136,21 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiChercherTache    .addActionListener(this);
 
 
-      this.menuiCharger    .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK ));
-      this.menuiSauvegarder.setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK ));
-      this.menuiQuitter    .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F4,InputEvent.ALT_DOWN_MASK  ));
-      this.menuiCopier     .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK ));
-      this.menuiColler     .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiCharger      .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiSauvegarder  .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiQuitter      .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F4,InputEvent.ALT_DOWN_MASK  ));
+      this.menuiCopier       .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK ));
+      this.menuiColler       .setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK ));
       this.menuiChercherTache.setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK ));
    }
 
    /**
     * Crée une icône à partir d'un caractère Unicode ou emoji
     */
-   private ImageIcon createMenuIcon(String unicode) {
-      try {
+   private ImageIcon createMenuIcon(String unicode) 
+   {
+      try 
+      {
          // Créer une image 16x16 pixels
          java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(16, 16, java.awt.image.BufferedImage.TYPE_INT_ARGB);
          java.awt.Graphics2D g2 = img.createGraphics();
@@ -173,7 +172,9 @@ public class BarreMenu extends JMenuBar implements ActionListener
          g2.dispose();
          
          return new ImageIcon(img);
-      } catch (Exception e) {
+      } 
+      catch (Exception e) 
+      {
          // En cas d'erreur, créer une icône simple avec une lettre
          return createSimpleIcon(unicode.substring(0, 1));
       }
@@ -182,7 +183,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
    /**
     * Crée une icône simple avec du texte (fallback)
     */
-   private ImageIcon createSimpleIcon(String text) {
+   private ImageIcon createSimpleIcon(String text) 
+   {
       java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(16, 16, java.awt.image.BufferedImage.TYPE_INT_ARGB);
       java.awt.Graphics2D g2 = img.createGraphics();
       g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
@@ -202,7 +204,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
    /**
     * Style moderne pour les menus
     */
-   private void styleMenu(JMenu menu) {
+   private void styleMenu(JMenu menu) 
+   {
       menu.setFont(new Font("Segoe UI", Font.PLAIN, 12));
       menu.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
       menu.setForeground(new Color(60, 60, 60));
@@ -210,14 +213,17 @@ public class BarreMenu extends JMenuBar implements ActionListener
       menu.setBackground(new Color(248, 249, 250));
       
       // Effet hover pour les menus
-      menu.addMouseListener(new MouseAdapter() {
+      menu.addMouseListener(new MouseAdapter()
+      {
          @Override
-         public void mouseEntered(MouseEvent e) {
+         public void mouseEntered(MouseEvent e) 
+         {
             menu.setBackground(new Color(230, 240, 250));
          }
          
          @Override
-         public void mouseExited(MouseEvent e) {
+         public void mouseExited(MouseEvent e) 
+         {
             menu.setBackground(new Color(248, 249, 250));
          }
       });
@@ -226,7 +232,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
    /**
     * Style moderne pour les éléments de menu
     */
-   private void styleMenuItem(JMenuItem item) {
+   private void styleMenuItem(JMenuItem item) 
+   {
       item.setFont(new Font("Segoe UI", Font.PLAIN, 11));
       item.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
       item.setBackground(Color.WHITE);
@@ -237,9 +244,11 @@ public class BarreMenu extends JMenuBar implements ActionListener
       item.setIconTextGap(8);
       
       // Effet hover
-      item.addMouseListener(new MouseAdapter() {
+      item.addMouseListener(new MouseAdapter() 
+      {
          @Override
-         public void mouseEntered(MouseEvent e) {
+         public void mouseEntered(MouseEvent e) 
+         {
             item.setBackground(new Color(240, 248, 255));
             item.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
          }
@@ -255,7 +264,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
    /**
     * Applique le style à tous les éléments de menu
     */
-   private void styleAllMenuItems() {
+   private void styleAllMenuItems() 
+   {
       styleMenuItem(this.menuiCharger);
       styleMenuItem(this.menuiSauvegarder);
       styleMenuItem(this.menuiQuitter);
@@ -278,10 +288,10 @@ public class BarreMenu extends JMenuBar implements ActionListener
       if(e.getSource() == this.menuiCharger)
       {
          File         fichierSelectionner = null;
-          JFileChooser selectionFichier = new JFileChooser();
+         JFileChooser selectionFichier    = new JFileChooser();
         
         FileNameExtensionFilter filterTxt = new FileNameExtensionFilter("Fichiers texte (*.txt)", "txt");
-        FileNameExtensionFilter filterMC = new FileNameExtensionFilter("Fichiers MPM (*.MC)", "MC");
+        FileNameExtensionFilter filterMC  = new FileNameExtensionFilter("Fichiers MPM (*.MC)", "MC");
         
         selectionFichier.addChoosableFileFilter(filterTxt);
         selectionFichier.addChoosableFileFilter(filterMC);
@@ -294,7 +304,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
          try
          {
-            if (fichierSelectionner == null) {
+            if (fichierSelectionner == null) 
+            {
                ErrorUtils.showError("Aucun fichier sélectionné");
                return;
             }
@@ -310,11 +321,14 @@ public class BarreMenu extends JMenuBar implements ActionListener
                ErrorUtils.showSucces("chargement d'un fichier de données simple réussi");
             }
 
-         }catch (NullPointerException e1) {
+         }catch (NullPointerException e1) 
+         {
             ErrorUtils.showError("Erreur lors de l'accès au fichier : " + e1.getMessage());
-         } catch (SecurityException e2) {
+         } catch (SecurityException e2) 
+         {
             ErrorUtils.showError("Accès refusé au fichier : " + e2.getMessage());
-         } catch (Exception e3) {
+         } catch (Exception e3) 
+         {
             ErrorUtils.showError("Erreur inattendue : " + e3.getMessage());
             e3.printStackTrace(); // Pour le debug
          }
