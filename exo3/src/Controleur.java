@@ -89,7 +89,6 @@ public class Controleur
         
         this.frameMPM .setTheme(this.fichier.getTheme());
         this.frameMPM.getPanelMPM().setCritique(this.fichier.isCritique());
-        this.grapheMPM.chargerEntites(nomFichier);
     }
 
     /*--------------------------*
@@ -132,6 +131,7 @@ public class Controleur
     {
         this.grapheMPM.ajouterTacheAPosition(tache, position);
         this.fichier.ajouterTacheFichier(tache);
+        this.frameMPM.getPanelMPM().initEntitesTest();
         this.afficherGraphe();
     }
 

@@ -60,7 +60,7 @@ public class TacheMPM
     public int           getDateTot()     { return this.dateTot;    }
     public int           getDateTard()    { return this.dateTard;   }
     public int           getNiveau()      { return this.niveau;     }
-    public boolean       isCritique()     { return this.critique;   }
+    public boolean       isCritique()     { return this.getMarge() == 0;   }
     public List<TacheMPM> getPrecedents() { return this.precedents; }
     public List<TacheMPM> getSuivants()   { return this.suivants;   }
     public int           getMarge()  { return this.dateTard - this.dateTot; }

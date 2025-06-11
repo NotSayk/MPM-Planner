@@ -117,6 +117,8 @@ public class PanelMPM extends JPanel
      * Initialise les entités du graphe en calculant leur position
      * Les tâches sont organisées par niveau et centrées verticalement
      */
+    public void initEntitesTest(){ this.initEntites();}
+
     private void initEntites() 
     {
         this.lstEntites.clear();
@@ -364,6 +366,7 @@ public class PanelMPM extends JPanel
     public void afficherCheminCritique(boolean aff) 
     {
         this.critique = aff;
+        System.out.println("Affichage des chemins critiques : " + aff);
         
         for (Entite entite : this.lstEntites) 
         {
@@ -377,6 +380,7 @@ public class PanelMPM extends JPanel
     {
         if (afficherCritique && entite.getTache().isCritique())
         {
+            System.out.println("Entité critique : " + entite.getTache().getNom());
             return Color.RED;
         }
         return this.panelGraphe.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
@@ -483,6 +487,16 @@ public class PanelMPM extends JPanel
      */
     public void setTacheSelectionnee(TacheMPM tache) 
     {
+        if (this.tacheSelectionnee != null) {
+            Entite ancienneEntite = getEntiteParTache(this.tacheSelectionnee);
+            if (ancienneEntite != null) 
+            {
+                Color couleur = this.critique && ancienneEntite.getTache().isCritique() ? 
+                                 Color.RED : 
+                                 (this.panelGraphe.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
+                ancienneEntite.setCouleurContour(couleur);
+            }
+        }
         this.tacheSelectionnee = tache;
 
         Entite entite = getEntiteParTache(tache);

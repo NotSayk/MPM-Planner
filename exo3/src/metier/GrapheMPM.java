@@ -71,107 +71,42 @@ public class GrapheMPM
      * Initialise les dates au plus tôt pour toutes les tâches
      * Parcours le graphe en largeur en partant des tâches sans précédents
      */
-    private void initDateTot() 
+       private void initDateTot() 
     {
-        // Réinitialiser toutes les dates au plus tôt
-        for (TacheMPM tache : this.lstTaches) 
-            tache.setDateTot(0);
-
-        // Trouver les tâches sans précédents (niveau 0)
-        List<TacheMPM> tachesNiveau0 = new ArrayList<>();
-        for (TacheMPM tache : this.lstTaches) 
-            if (tache.getPrecedents().isEmpty()) 
-                tachesNiveau0.add(tache);
-
-        // Calculer les dates au plus tôt niveau par niveau
-        int niveau = 0;
-        while (!tachesNiveau0.isEmpty()) 
+        for (TacheMPM tache : this.getTaches()) 
         {
-            List<TacheMPM> tachesNiveauSuivant = new ArrayList<>();
-            
-            for (TacheMPM tache : tachesNiveau0) 
+            if (!tache.getPrecedents().isEmpty()) 
             {
-                // Calculer la date au plus tôt de la tâche
-                int dateTot = 0;
-                for (TacheMPM precedent : tache.getPrecedents()) 
-                    dateTot = Math.max(dateTot, precedent.getDateTot() + precedent.getDuree());
-                
-                tache.setDateTot(dateTot);
-                this.niveaux[niveau]++;
-
-                // Ajouter les tâches suivantes au niveau suivant
-                for (TacheMPM suivant : tache.getSuivants()) 
+                int maxFinPrecedent = 0;
+                for (TacheMPM precedent : tache.getPrecedents())  
                 {
-                    boolean tousPrecedentsTraites = true;
-                    for (TacheMPM precedent : suivant.getPrecedents()) 
-                        if (precedent.getDateTot() == 0 && precedent != tache) 
-                        {
-                            tousPrecedentsTraites = false;
-                            break;
-                        }
-                    
-                    if (tousPrecedentsTraites) 
-                        tachesNiveauSuivant.add(suivant);
+                    int finPrecedent = precedent.getDateTot() + precedent.getDuree();
+                    if (finPrecedent > maxFinPrecedent)
+                        maxFinPrecedent = finPrecedent;
                 }
+                tache.setDateTot(maxFinPrecedent);
             }
-            
-            tachesNiveau0 = tachesNiveauSuivant;
-            niveau++;
         }
     }
 
-    /**
-     * Initialise les dates au plus tard pour toutes les tâches
-     * Parcours le graphe en largeur en partant des tâches sans suivants
-     */
     private void initDateTard() 
     {
-        // Trouver la durée totale du projet
-        int dureeProjet = 0;
-        for (TacheMPM tache : this.lstTaches) 
-            dureeProjet = Math.max(dureeProjet, tache.getDateTot() + tache.getDuree());
-
-        // Réinitialiser toutes les dates au plus tard
-        for (TacheMPM tache : this.lstTaches) 
-            tache.setDateTard(dureeProjet);
-
-        // Trouver les tâches sans suivants
-        List<TacheMPM> tachesSansSuivants = new ArrayList<>();
-        for (TacheMPM tache : this.lstTaches) 
-            if (tache.getSuivants().isEmpty()) 
-                tachesSansSuivants.add(tache);
-
-        // Calculer les dates au plus tard niveau par niveau
-        while (!tachesSansSuivants.isEmpty()) 
+        for (int i = this.getTaches().size() - 1; i >= 0; i--) 
         {
-            List<TacheMPM> tachesNiveauPrecedent = new ArrayList<>();
-            
-            for (TacheMPM tache : tachesSansSuivants) 
-            {
-                // Calculer la date au plus tard de la tâche
-                int dateTard = dureeProjet;
-                for (TacheMPM suivant : tache.getSuivants()) 
-                    dateTard = Math.min(dateTard, suivant.getDateTard() - tache.getDuree());
-                
-                tache.setDateTard(dateTard);
+            TacheMPM tache = this.getTaches().get(i);
 
-                // Ajouter les tâches précédentes au niveau précédent
-                for (TacheMPM precedent : tache.getPrecedents()) 
+            if (!tache.getSuivants().isEmpty()) 
+            {
+                int minDateTard = Integer.MAX_VALUE;
+                for (TacheMPM tacheSuivantes : tache.getSuivants())
                 {
-                    boolean tousSuivantsTraites = true;
-                    for (TacheMPM suivant : precedent.getSuivants()) 
-                        if (suivant.getDateTard() == dureeProjet && suivant != tache) 
-                        {
-                            tousSuivantsTraites = false;
-                            break;
-                        }
-                    
-                    if (tousSuivantsTraites) 
-                        tachesNiveauPrecedent.add(precedent);
+                    if (tacheSuivantes.getDateTard() < minDateTard) 
+                        minDateTard = tacheSuivantes.getDateTard();
                 }
+                tache.setDateTard(minDateTard - tache.getDuree());
+                continue;
             }
-            
-            tachesSansSuivants = tachesNiveauPrecedent;
+            tache.setDateTard(tache.getDateTot());
         }
     }
 
@@ -339,7 +274,7 @@ public class GrapheMPM
     /**
      * Ajoute une tâche à une position donnée
      */
-    public void ajouterTacheAPosition(TacheMPM tache, int position) 
+        public void ajouterTacheAPosition(TacheMPM tache, int position) 
     {
         for (TacheMPM tacheCourante : this.lstTaches) 
             if (tacheCourante.getNom().equals(tache.getNom())) 
@@ -361,10 +296,8 @@ public class GrapheMPM
         this.initNiveauTaches(); 
         this.calculerDates();
         this.initCheminCritique();
-        this.lstTaches.add(tache);
-        this.calculerDates();
-        this.initCheminCritique();
-        this.initNiveauTaches();
+        this.tacheSelectionnee = tache;
+        
     }
 
     /**
@@ -398,52 +331,47 @@ public class GrapheMPM
         tache.setNom(nouveauNom);
     }
 
-    /**
-     * Modifie les prédécesseurs d'une tâche
-     */
-    public void modifierPrecedents(TacheMPM tacheModifier, String nouvelleValeur) 
+    public void modifierPrecedents(TacheMPM tache, String nouveauxPrecedents) 
     {
-        List<TacheMPM> nouveauxPrecedents = new ArrayList<>();
-        String[] nomsPrecedents = nouvelleValeur.split(",");
+        Set<TacheMPM> nouveauxPrecedentsSet = new HashSet<>();
         
-        for (String nom : nomsPrecedents) 
+        if (!nouveauxPrecedents.isEmpty()) 
         {
-            nom = nom.trim();
-            if (!nom.isEmpty()) 
+            for (String nomTache : nouveauxPrecedents.split(",")) 
             {
-                TacheMPM precedent = this.trouverTache(nom);
-                if (precedent != null) 
-                    nouveauxPrecedents.add(precedent);
+                TacheMPM precedent = this.trouverTache(nomTache.trim());
+                if (precedent != null && !precedent.equals(tache)) 
+                    nouveauxPrecedentsSet.add(precedent);
             }
         }
         
-        tacheModifier.setPrecedents(nouveauxPrecedents);
-        this.calculerDates();
-        this.initCheminCritique();
+        for (TacheMPM ancienPrecedent : tache.getPrecedents()) 
+            ancienPrecedent.getSuivants().remove(tache);
+        
+        tache.setPrecedents(new ArrayList<>(nouveauxPrecedentsSet));
+        for (TacheMPM precedent : nouveauxPrecedentsSet) 
+            precedent.getSuivants().add(tache);
     }
 
-    /**
-     * Modifie les successeurs d'une tâche
-     */
-    public void modifierSuivants(TacheMPM tacheModifier, String nouvelleValeur) 
+    public void modifierSuivants(TacheMPM tache, String nouveauxSuivants) 
     {
-        List<TacheMPM> nouveauxSuivants = new ArrayList<>();
-        String[] nomsSuivants = nouvelleValeur.split(",");
-        
-        for (String nom : nomsSuivants) 
+        Set<TacheMPM> nouveauxSuivantsSet = new HashSet<>(); 
+        if (!nouveauxSuivants.isEmpty()) 
         {
-            nom = nom.trim();
-            if (!nom.isEmpty()) 
+            for (String nomTache : nouveauxSuivants.split(",")) 
             {
-                TacheMPM suivant = this.trouverTache(nom);
-                if (suivant != null) 
-                    nouveauxSuivants.add(suivant);
+                TacheMPM suivant = this.trouverTache(nomTache.trim());
+                if (suivant != null && !suivant.equals(tache)) 
+                    nouveauxSuivantsSet.add(suivant);
             }
         }
         
-        tacheModifier.setSuivants(nouveauxSuivants);
-        this.calculerDates();
-        this.initCheminCritique();
+        for (TacheMPM ancienSuivant : tache.getSuivants()) 
+            ancienSuivant.getPrecedents().remove(tache);
+        
+        tache.setSuivants(new ArrayList<>(nouveauxSuivantsSet));
+        for (TacheMPM suivant : nouveauxSuivantsSet) 
+            suivant.getPrecedents().add(tache);
     }
 
     /*---------------------------------*
@@ -514,11 +442,7 @@ public class GrapheMPM
     /**
      * Charge les entités depuis un fichier
      */
-    public void chargerEntites(String nomFichier)
-    {
-        // Assuming getEntites is called elsewhere in the code
-        // This method should be implemented to set positions for Entite objects
-    }
+
 
     /**
      * Calcule la durée totale du projet

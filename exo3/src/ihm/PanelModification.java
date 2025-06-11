@@ -191,6 +191,7 @@ public class PanelModification extends JPanel implements ActionListener
                 else 
                 {
                     this.ctrl.ajouterTacheAPosition(temp, 1);
+                    niveau = 1; 
                 }
             
                 if (lignesSelectionnees.length > 0) 
