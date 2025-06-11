@@ -569,7 +569,7 @@ public class PanelMPM extends JPanel
                 int Xscale = (int)(e.getX() / scale);
                 int Yscale = (int)(e.getY() / scale);
                 
-                entiteSelectionnee = trouverEntiteAuPoint(Xscale, Yscale);
+                this.entiteSelectionnee = trouverEntiteAuPoint(Xscale, Yscale);
                 if (entiteSelectionnee != null) 
                 {
                     offsetX = Xscale - entiteSelectionnee.getX();
@@ -584,7 +584,7 @@ public class PanelMPM extends JPanel
         @Override
         public void mouseReleased(MouseEvent e) 
         {
-            entiteSelectionnee = null;
+            //entiteSelectionnee = null;
         }
 
         @Override
