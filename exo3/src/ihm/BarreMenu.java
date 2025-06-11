@@ -2,9 +2,13 @@ package src.ihm;
 
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import java.awt.Font;
+import java.awt.Color;
 import src.Controleur;
 import src.utils.ErrorUtils;
 
@@ -32,39 +36,53 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
    public BarreMenu(Controleur ctrl)
    {
-      this.ctrl      = ctrl;
-
+      this.ctrl = ctrl;
 
       /*----------------------------*/
       /* Création des composants    */
       /*----------------------------*/
+    
+      // Style moderne de la barre de menu
+      this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
+      this.setBackground(new Color(248, 249, 250));
 
-      // les JMenu
-      JMenu menuFichier   = new JMenu("Fichier"   );
-      JMenu menuEdition   = new JMenu("Edition"   );
-      JMenu menuAffichage = new JMenu("Affichage" );
-      JMenu menuZoom      = new JMenu("Zoom"      );
+      // les JMenu avec icônes
+      JMenu menuFichier   = new JMenu("Fichier");
+      JMenu menuEdition   = new JMenu("Edition");
+      JMenu menuAffichage = new JMenu("Affichage");
+      JMenu menuZoom      = new JMenu("Zoom");
 
-      // les JItemMenu
-      this.menuiCharger           = new JMenuItem("Charger"                  );
-      this.menuiSauvegarder       = new JMenuItem("Sauvegarder"              );
-      this.menuiQuitter           = new JMenuItem("Quitter"                  );
+      // Ajout d'icônes aux menus (avec gestion d'erreur)
+      menuFichier.setIcon(createMenuIcon("📁"));
+      menuEdition.setIcon(createMenuIcon("✏️"));
+      menuAffichage.setIcon(createMenuIcon("👁️"));
+      menuZoom.setIcon(createMenuIcon("🔍"));
 
-      this.menuiRajouterTache     = new JMenuItem("Rajouter une tâche"       );
-      this.menuiSupprimerTache    = new JMenuItem("supprimer une tâche"      );
-      this.menuiChangerDureeTache = new JMenuItem("Changer durée d'une tâche");
+      // les JMenuItem avec icônes Unicode
+      this.menuiCharger           = new JMenuItem("Charger", createMenuIcon("📂"));
+      this.menuiSauvegarder       = new JMenuItem("Sauvegarder", createMenuIcon("💾"));
+      this.menuiQuitter           = new JMenuItem("Quitter", createMenuIcon("❌"));
 
-      this.menuiZoom25            = new JMenuItem("25%" );
-      this.menuiZoom50            = new JMenuItem("50%" );
-      this.menuiZoom75            = new JMenuItem("75%" );
-      this.menuiZoom100           = new JMenuItem("100%");
-      this.menuiZoom150           = new JMenuItem("150%");
-      this.menuiZoom200           = new JMenuItem("200%");
+      this.menuiRajouterTache     = new JMenuItem("Rajouter une tâche", createMenuIcon("➕"));
+      this.menuiSupprimerTache    = new JMenuItem("Supprimer une tâche", createMenuIcon("🗑️"));
+      this.menuiChangerDureeTache = new JMenuItem("Changer durée d'une tâche", createMenuIcon("⏱️"));
 
-      this.menuiCopier            = new JMenuItem("Copier"                  );
-      this.menuiColler            = new JMenuItem("Coller"                  );
+      this.menuiZoom25            = new JMenuItem("25%", createMenuIcon("🔍"));
+      this.menuiZoom50            = new JMenuItem("50%", createMenuIcon("🔍"));
+      this.menuiZoom75            = new JMenuItem("75%", createMenuIcon("🔍"));
+      this.menuiZoom100           = new JMenuItem("100%", createMenuIcon("🔍"));
+      this.menuiZoom150           = new JMenuItem("150%", createMenuIcon("🔍"));
+      this.menuiZoom200           = new JMenuItem("200%", createMenuIcon("🔍"));
 
-      this.menuiChercherTache     = new JMenuItem("Chercher une tâche"      );
+      this.menuiCopier            = new JMenuItem("Copier", createMenuIcon("📋"));
+      this.menuiColler            = new JMenuItem("Coller", createMenuIcon("📌"));
+      this.menuiChercherTache     = new JMenuItem("Chercher une tâche", createMenuIcon("🔎"));
+
+      // Application du style moderne
+      styleMenu(menuFichier);
+      styleMenu(menuEdition);
+      styleMenu(menuAffichage);
+      styleMenu(menuZoom);
 
       /*-------------------------------*/
       /* positionnement des composants */
@@ -129,6 +147,132 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiChercherTache.setAccelerator (KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK ));
    }
 
+   /**
+    * Crée une icône à partir d'un caractère Unicode ou emoji
+    */
+   private ImageIcon createMenuIcon(String unicode) {
+      try {
+         // Créer une image 16x16 pixels
+         java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(16, 16, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+         java.awt.Graphics2D g2 = img.createGraphics();
+         
+         // Améliorer le rendu
+         g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+         g2.setRenderingHint(java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+         
+         // Définir la couleur NOIRE pour les emojis
+         g2.setColor(Color.BLACK);
+         g2.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 12));
+         
+         // Dessiner l'emoji au centre
+         java.awt.FontMetrics fm = g2.getFontMetrics();
+         int x = (16 - fm.stringWidth(unicode)) / 2;
+         int y = (16 - fm.getHeight()) / 2 + fm.getAscent();
+         
+         g2.drawString(unicode, x, y);
+         g2.dispose();
+         
+         return new ImageIcon(img);
+      } catch (Exception e) {
+         // En cas d'erreur, créer une icône simple avec une lettre
+         return createSimpleIcon(unicode.substring(0, 1));
+      }
+   }
+
+   /**
+    * Crée une icône simple avec du texte (fallback)
+    */
+   private ImageIcon createSimpleIcon(String text) {
+      java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(16, 16, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+      java.awt.Graphics2D g2 = img.createGraphics();
+      g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setFont(new Font("Arial", Font.BOLD, 10));
+      g2.setColor(Color.BLACK); // Couleur noire au lieu de bleu
+      
+      java.awt.FontMetrics fm = g2.getFontMetrics();
+      int x = (16 - fm.stringWidth(text)) / 2;
+      int y = (16 - fm.getHeight()) / 2 + fm.getAscent();
+      
+      g2.drawString(text, x, y);
+      g2.dispose();
+      
+      return new ImageIcon(img);
+   }
+
+   /**
+    * Style moderne pour les menus
+    */
+   private void styleMenu(JMenu menu) {
+      menu.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+      menu.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
+      menu.setForeground(new Color(60, 60, 60));
+      menu.setOpaque(true);
+      menu.setBackground(new Color(248, 249, 250));
+      
+      // Effet hover pour les menus
+      menu.addMouseListener(new MouseAdapter() {
+         @Override
+         public void mouseEntered(MouseEvent e) {
+            menu.setBackground(new Color(230, 240, 250));
+         }
+         
+         @Override
+         public void mouseExited(MouseEvent e) {
+            menu.setBackground(new Color(248, 249, 250));
+         }
+      });
+   }
+
+   /**
+    * Style moderne pour les éléments de menu
+    */
+   private void styleMenuItem(JMenuItem item) {
+      item.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+      item.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
+      item.setBackground(Color.WHITE);
+      item.setForeground(new Color(60, 60, 60));
+      item.setOpaque(true);
+      
+      // Espacement entre l'icône et le texte
+      item.setIconTextGap(8);
+      
+      // Effet hover
+      item.addMouseListener(new MouseAdapter() {
+         @Override
+         public void mouseEntered(MouseEvent e) {
+            item.setBackground(new Color(240, 248, 255));
+            item.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
+         }
+         
+         @Override
+         public void mouseExited(MouseEvent e) {
+            item.setBackground(Color.WHITE);
+            item.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
+         }
+      });
+   }
+
+   /**
+    * Applique le style à tous les éléments de menu
+    */
+   private void styleAllMenuItems() {
+      styleMenuItem(this.menuiCharger);
+      styleMenuItem(this.menuiSauvegarder);
+      styleMenuItem(this.menuiQuitter);
+      styleMenuItem(this.menuiRajouterTache);
+      styleMenuItem(this.menuiSupprimerTache);
+      styleMenuItem(this.menuiChangerDureeTache);
+      styleMenuItem(this.menuiCopier);
+      styleMenuItem(this.menuiColler);
+      styleMenuItem(this.menuiChercherTache);
+      styleMenuItem(this.menuiZoom25);
+      styleMenuItem(this.menuiZoom50);
+      styleMenuItem(this.menuiZoom75);
+      styleMenuItem(this.menuiZoom100);
+      styleMenuItem(this.menuiZoom150);
+      styleMenuItem(this.menuiZoom200);
+   }
+
    public void actionPerformed ( ActionEvent e )
    {
       if(e.getSource() == this.menuiCharger)
@@ -150,6 +294,10 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
          try
          {
+            if (fichierSelectionner == null) {
+               ErrorUtils.showError("Aucun fichier sélectionné");
+               return;
+            }
             
             if(fichierSelectionner.getName().substring(fichierSelectionner.getName().lastIndexOf('.') + 1).equals("MC"))
             {
@@ -162,7 +310,14 @@ public class BarreMenu extends JMenuBar implements ActionListener
                ErrorUtils.showSucces("chargement d'un fichier de données simple réussi");
             }
 
-         }catch (Exception exc) { ErrorUtils.showError("erreur durant le chargement du fichier"); }
+         }catch (NullPointerException e1) {
+            ErrorUtils.showError("Erreur lors de l'accès au fichier : " + e1.getMessage());
+         } catch (SecurityException e2) {
+            ErrorUtils.showError("Accès refusé au fichier : " + e2.getMessage());
+         } catch (Exception e3) {
+            ErrorUtils.showError("Erreur inattendue : " + e3.getMessage());
+            e3.printStackTrace(); // Pour le debug
+         }
       }
 
 

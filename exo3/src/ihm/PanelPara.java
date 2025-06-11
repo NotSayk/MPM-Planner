@@ -73,6 +73,8 @@ public class PanelPara extends JPanel implements ActionListener
         typePanel.add(new JLabel("Type : "));
         this.rbDateDebut = new JRadioButton("Début", true);
         this.rbDateFin = new JRadioButton("Fin");
+        this.rbDateFin.setOpaque(false);
+        this.rbDateDebut.setOpaque(false);
         ButtonGroup typeGroup = new ButtonGroup();
         typeGroup.add(this.rbDateDebut);
         typeGroup.add(this.rbDateFin);
@@ -98,6 +100,9 @@ public class PanelPara extends JPanel implements ActionListener
         // Bouton
         this.btnValider = BtnUtils.creerBtn("Valider", new Color(0, 183, 14), "Valider la configuration");
         content.add(this.btnValider, BorderLayout.SOUTH);
+        
+        this.rbDateFormatNum.setOpaque(false);
+        this.rbDateFormatTexte.setOpaque(false);
         
         mainPanel.add(content, BorderLayout.CENTER);
         this.add(mainPanel, BorderLayout.CENTER);
