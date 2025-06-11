@@ -90,8 +90,8 @@ public class PanelMPM extends JPanel
         private Entite entiteSelectionnee;
         private int    offsetX, offsetY;
         private Entite dernierEntite;
-        
         private double scale = 1.0;
+
         public GraphePanel()
         {
             this.setBackground(Color.WHITE);
@@ -160,7 +160,8 @@ public class PanelMPM extends JPanel
                     }
                 }
 
-                if (afficherDateTard) {
+                if (afficherDateTard) 
+                {
                     if (entite.getNiveauTache() >= numNiveauxTard) 
                     {
                         String texte;
@@ -212,13 +213,10 @@ public class PanelMPM extends JPanel
                 
                 entiteSelectionnee = trouverEntiteAuPoint(Xscale, Yscale);
                 if (entiteSelectionnee == null) 
-                {
                     return;  
-                }
-                if (entiteSelectionnee.getTache().getNom().equals("DEBUT") || entiteSelectionnee.getTache().getNom().equals("FIN")) 
-                {
+                if (entiteSelectionnee.getTache().getNom().equals("DEBUT") || 
+                    entiteSelectionnee.getTache().getNom().equals("FIN")) 
                     return;
-                }
                 supprimerTache(entiteSelectionnee.getTache());
                 ctrl.getGrilleDonneesModel().refreshTab();
             }
