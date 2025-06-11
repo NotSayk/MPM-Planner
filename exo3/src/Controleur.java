@@ -14,8 +14,8 @@ import src.utils.DateUtils;
 
 public class Controleur 
 {
-    /*-------------------------
-     * Attributs du contrôleur
+    /*-------------------------*
+     * Attributs du contrôleur *
      *-------------------------*/
 
     private FrameMPM           frameMPM;
@@ -27,14 +27,17 @@ public class Controleur
     // Ajouter un attribut pour stocker la tâche copiée
     private TacheMPM tacheCopiee;
 
-    /*-----------------------------
-     * Point d’entrée du programme
+    // Gerer le format de date - texte
+    private boolean formatDateTexte = false; 
+
+    /*-----------------------------*
+     * Point d’entrée du programme *
      *-----------------------------*/
 
     public static void main(String[] args) { new Controleur(); }
 
-    /*-------------------------
-     * Constructeurs principal
+    /*-------------------------*
+     * Constructeurs principal *
      *-------------------------*/
 
     public Controleur() 
@@ -43,8 +46,8 @@ public class Controleur
         this.frameMPM = new FrameMPM (this, this.graphe);
     }
 
-    /*--------------------------
-     * Initialisation du projet
+    /*--------------------------*
+     * Initialisation du projet *
      *--------------------------*/
 
     // Initialisation avec une date de référence
@@ -221,5 +224,8 @@ public class Controleur
     public boolean        getAfficher()  { return this.frameMPM.getPanelMPM().isCritique(); }
     public void           afficherCheminCritique(boolean afficher) { this.frameMPM.getPanelMPM().afficherCheminCritique(afficher); }
 
-    public String  getGrapheToString () { return this.graphe.toString    (); }
+    public String         getGrapheToString ()               { return this.graphe.toString(); }
+    public void           setFormatDateTexte(boolean format) { this.formatDateTexte = format; }
+    public boolean        isFormatDateTexte()                { return this.formatDateTexte;   }
 }
+

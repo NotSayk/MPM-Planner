@@ -133,14 +133,24 @@ public class PanelMPM extends JPanel
             
             for (Entite entite : lstEntites)
             {
-                //entite.paint(g);
                 entite.paint(g2);
         
                 FontMetrics fm = g2.getFontMetrics();
 
-                if (afficherDateTot) {
-                    if (entite.getNiveauTache() <= numNiveauxTot) {
-                        String texte = "" + entite.getTache().getDateTot();
+                if (afficherDateTot) 
+                {
+                    if (entite.getNiveauTache() <= numNiveauxTot) 
+                    {
+                        String texte;
+                        if(ctrl.isFormatDateTexte())
+                        {
+                            String date = DateUtils.ajouterJourDate(ctrl.getDateRef(), entite.getTache().getDateTot());
+                            if (date.length() >= 5) texte = date.substring(0, 5); // JJ/MM
+                            else                    texte = date;
+                        }
+                        else
+                            texte = "" + entite.getTache().getDateTot();
+                        
                         int textWidth = fm.stringWidth(texte);
                         int x = entite.getX() + 16 - textWidth / 2;
                         int y = entite.getY() + 55;
@@ -151,8 +161,18 @@ public class PanelMPM extends JPanel
                 }
 
                 if (afficherDateTard) {
-                    if (entite.getNiveauTache() >= numNiveauxTard) {
-                        String texte = "" + entite.getTache().getDateTard();
+                    if (entite.getNiveauTache() >= numNiveauxTard) 
+                    {
+                        String texte;
+                        if( ctrl.isFormatDateTexte() )
+                        {
+                            String date = DateUtils.ajouterJourDate(ctrl.getDateRef(), entite.getTache().getDateTard());
+                            if (date.length() >= 5) texte = date.substring(0, 5); // JJ/MM
+                            else                    texte = date;
+                        }
+                        else 
+                            texte = "" + entite.getTache().getDateTard();
+
                         int textWidth = fm.stringWidth(texte);
                         int x = entite.getX() + 52 - textWidth / 2;
                         int y = entite.getY() + 55;
