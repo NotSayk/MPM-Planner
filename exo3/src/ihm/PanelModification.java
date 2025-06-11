@@ -166,7 +166,7 @@ public class PanelModification extends JPanel implements ActionListener
 				} 
 				else 
 				{
-					this.ctrl.ajouterTacheAPosition(temp, this.ctrl.getEntites().size()-1);;
+					this.ctrl.ajouterTacheAPosition(temp, 1);;
 				}
 				
 				int niveau = 0;
