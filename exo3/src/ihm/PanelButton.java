@@ -8,7 +8,8 @@ import src.Controleur;
 import src.utils.BtnUtils;
 import src.utils.ErrorUtils;
 
-public class PanelButton extends JPanel implements ActionListener {
+public class PanelButton extends JPanel implements ActionListener 
+{
 
     private Controleur ctrl;
     private PanelMPM   panelMPM;
@@ -20,7 +21,8 @@ public class PanelButton extends JPanel implements ActionListener {
     private JButton    btnTheme;
     private JButton    btnCritique;
 
-    public PanelButton(Controleur ctrl, PanelMPM panelMPM) {
+    public PanelButton(Controleur ctrl, PanelMPM panelMPM) 
+    {
         this.ctrl = ctrl;
         this.panelMPM = panelMPM;
         this.cheminCritique = false;
@@ -51,7 +53,8 @@ public class PanelButton extends JPanel implements ActionListener {
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) 
+    {
         JButton sourceButton = (JButton) e.getSource();
         animateButtonClick(sourceButton);
         
@@ -121,7 +124,8 @@ public class PanelButton extends JPanel implements ActionListener {
         btnCritique.setText(critique ? "Masquer critique" : "Chemin critique");
     }
     
-    public void updateTheme(boolean darkMode) {
+    public void updateTheme(boolean darkMode) 
+    {
         Color newBackground = darkMode ? new Color(45, 45, 55) : new Color(240, 240, 245);
         this.setBackground(newBackground);
         this.repaint();

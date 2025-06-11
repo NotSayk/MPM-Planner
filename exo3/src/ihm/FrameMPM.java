@@ -2,11 +2,10 @@ package src.ihm;
 
 import java.util.List;
 import javax.swing.JFrame;
-
-import src.metier.TacheMPM;
 import src.Controleur;
 import src.ihm.composants.Entite;
 import src.metier.GrapheMPM;
+import src.metier.TacheMPM;
 
 public class FrameMPM extends JFrame
 {
@@ -45,7 +44,7 @@ public class FrameMPM extends JFrame
     public List<Entite> getEntites    (                  ) { return this.panelMPM.getEntites(          ); }
     public String       getTheme      (                  ) { return this.panelMPM.getTheme  (          ); }
     public PanelMPM     getPanelMPM   (                  ) { return this.panelMPM                       ; }
-    public TacheMPM     getTacheSelectionnee(          ) { return this.panelMPM.getTacheSelectionnee(); }
+    public TacheMPM     getTacheSelectionnee(            ) { return this.panelMPM.getTacheSelectionnee(); }
     public double       getScale      (                  ) { return this.panelMPM.getScale  (          ); }
 
   
@@ -62,7 +61,8 @@ public class FrameMPM extends JFrame
     {
         String currentTheme = this.panelMPM.getTheme();
         
-        switch (currentTheme) {
+        switch (currentTheme) 
+        {
             case "LIGHT" -> this.panelMPM.setTheme("DARK");
             case "DARK"  -> this.panelMPM.setTheme("LIGHT");
             default      -> throw new AssertionError();

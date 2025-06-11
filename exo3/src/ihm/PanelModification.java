@@ -12,7 +12,7 @@ import src.utils.ErrorUtils;
 
 public class PanelModification extends JPanel implements ActionListener
 {
-	private Controleur ctrl;
+	private Controleur         ctrl;
 
 	private JTable             tblGrilleDonnees;
 	private GrilleDonneesModel grilleDonneesModel;
@@ -39,7 +39,8 @@ public class PanelModification extends JPanel implements ActionListener
 		this.tblGrilleDonnees.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 
-		this.tblGrilleDonnees.getSelectionModel().addListSelectionListener(e -> {
+		this.tblGrilleDonnees.getSelectionModel().addListSelectionListener(e -> 
+		{
 			if (!e.getValueIsAdjusting())
 			{
 				int[] selectedRows = this.tblGrilleDonnees.getSelectedRows();
@@ -82,7 +83,7 @@ public class PanelModification extends JPanel implements ActionListener
 		this.add ( panelInfo,       BorderLayout.SOUTH );
 
 
-		this.btnMaj.addActionListener(this);
+		this.btnMaj    .addActionListener(this);
 		this.btnAjouter.addActionListener(this);
 	}
 
@@ -114,7 +115,8 @@ public class PanelModification extends JPanel implements ActionListener
 					int duree = Integer.parseInt(dureeStr);
 					
 					// Vérifier que la durée est positive
-					if (duree < 0) {
+					if (duree < 0) 
+					{
 						ErrorUtils.showError("La durée doit être un nombre positif.");
 						return;
 					}
@@ -149,43 +151,43 @@ public class PanelModification extends JPanel implements ActionListener
 			}
 		}
 		else if (e.getSource() == this.btnAjouter) 
-{
-    String nomTache = this.txtTacheNom.getText().trim();
-    if (!nomTache.isEmpty()) 
-    {
-        TacheMPM temp = new TacheMPM(nomTache, 0, new ArrayList<>());
-        
-        int[] lignesSelectionnees = this.tblGrilleDonnees.getSelectedRows();
-        if (lignesSelectionnees.length > 0) 
-        {
-            // Insérer après la dernière ligne sélectionnée
-            int positionInsertion = lignesSelectionnees[lignesSelectionnees.length - 1] + 1;
-            this.ctrl.ajouterTacheAPosition(temp, positionInsertion);
-        } 
-        else 
-        {
-            this.ctrl.ajouterTacheAPosition(temp, this.ctrl.getEntites().size()-1);;
-        }
-        
-		int niveau = 0;
-		if (lignesSelectionnees.length > 0) 
 		{
-			int selectedIndex = lignesSelectionnees[lignesSelectionnees.length - 1];
-			TacheMPM tacheSelectionee = this.ctrl.getEntites().get(selectedIndex).getTache();
-			niveau = tacheSelectionee.getNiveau();
+			String nomTache = this.txtTacheNom.getText().trim();
+			if (!nomTache.isEmpty()) 
+			{
+				TacheMPM temp = new TacheMPM(nomTache, 0, new ArrayList<>());
+				
+				int[] lignesSelectionnees = this.tblGrilleDonnees.getSelectedRows();
+				if (lignesSelectionnees.length > 0) 
+				{
+					// Insérer après la dernière ligne sélectionnée
+					int positionInsertion = lignesSelectionnees[lignesSelectionnees.length - 1] + 1;
+					this.ctrl.ajouterTacheAPosition(temp, positionInsertion);
+				} 
+				else 
+				{
+					this.ctrl.ajouterTacheAPosition(temp, this.ctrl.getEntites().size()-1);;
+				}
+				
+				int niveau = 0;
+				if (lignesSelectionnees.length > 0) 
+				{
+					int selectedIndex = lignesSelectionnees[lignesSelectionnees.length - 1];
+					TacheMPM tacheSelectionee = this.ctrl.getEntites().get(selectedIndex).getTache();
+					niveau = tacheSelectionee.getNiveau();
+				}
+				this.ctrl.setNiveauTache(temp, niveau);
+				this.grilleDonneesModel.refreshTab();
+				this.txtTacheNom.setText("");
+			} 
+			else 
+			{
+				ErrorUtils.showError("Le nom de la tâche ne peut pas être vide.");
+			}
 		}
-		this.ctrl.setNiveauTache(temp, niveau);
-        this.grilleDonneesModel.refreshTab();
-        this.txtTacheNom.setText("");
-    } 
-    else 
-    {
-        ErrorUtils.showError("Le nom de la tâche ne peut pas être vide.");
-    }
-}
-
 	}
-	  public GrilleDonneesModel getGrilleDonneesModel() 
+	
+	public GrilleDonneesModel getGrilleDonneesModel() 
     {
         return this.grilleDonneesModel;
     }

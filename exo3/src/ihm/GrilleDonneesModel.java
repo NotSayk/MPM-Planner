@@ -30,10 +30,10 @@ public class GrilleDonneesModel extends AbstractTableModel
     }
 
     // Getters
-    public int    getColumnCount()                 { return this.tabEntetes.length;      }
-    public int    getRowCount   ()                 { return this.tabDonnees.length;      }
-    public String getColumnName (int col)          { return this.tabEntetes[col];        }
-    public Object getValueAt    (int row, int col) { return this.tabDonnees[row][col];   }
+    public int    getColumnCount()                 { return this.tabEntetes.length;          }
+    public int    getRowCount   ()                 { return this.tabDonnees.length;          }
+    public String getColumnName (int col)          { return this.tabEntetes[col];            }
+    public Object getValueAt    (int row, int col) { return this.tabDonnees[row][col];       }
     public Class  getColumnClass(int c)            { return getValueAt(0, c).getClass(); }
 
     public void refreshTab()
@@ -56,25 +56,24 @@ public class GrilleDonneesModel extends AbstractTableModel
             tabDonnees[lig][6] = "";                        // Suivants
 
             // Construction de la liste des précédents
-            if (!tache.getPrecedents().isEmpty()) {
+            if (!tache.getPrecedents().isEmpty()) 
+			{
                 StringBuilder precedents = new StringBuilder();
                 for (int i = 0; i < tache.getPrecedents().size(); i++) {
                     precedents.append(tache.getPrecedents().get(i).getNom());
-                    if (i < tache.getPrecedents().size() - 1) {
-                        precedents.append(", ");
-                    }
+                    if (i < tache.getPrecedents().size() - 1) precedents.append(", ");
                 }
                 tabDonnees[lig][5] = precedents.toString();
             }
             
             // Construction de la liste des suivants
-            if (!tache.getSuivants().isEmpty()) {
+            if (!tache.getSuivants().isEmpty()) 
+			{
                 StringBuilder suivants = new StringBuilder();
-                for (int i = 0; i < tache.getSuivants().size(); i++) {
+                for (int i = 0; i < tache.getSuivants().size(); i++) 
+				{
                     suivants.append(tache.getSuivants().get(i).getNom());
-                    if (i < tache.getSuivants().size() - 1) {
-                        suivants.append(", ");
-                    }
+                    if (i < tache.getSuivants().size() - 1) suivants.append(", ");
                 }
                 tabDonnees[lig][6] = suivants.toString();
             }
@@ -84,7 +83,8 @@ public class GrilleDonneesModel extends AbstractTableModel
     }
 
     @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+    public void setValueAt(Object value, int rowIndex, int columnIndex) 
+	{
         if (columnIndex == 5 || columnIndex == 6 || columnIndex == 0) 
         {
             String nouvelleValeur = value.toString().trim();
@@ -104,7 +104,9 @@ public class GrilleDonneesModel extends AbstractTableModel
                     ctrl.modifierNom(tacheModifiee, nouvelleValeur);
                 }
                 refreshTab();
-            } catch (IllegalArgumentException e) {
+            } 
+			catch (IllegalArgumentException e) 
+			{
                 ErrorUtils.showError(e.getMessage());
             }
         }
