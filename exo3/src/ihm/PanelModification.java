@@ -13,13 +13,16 @@ import src.utils.ErrorUtils;
 public class PanelModification extends JPanel implements ActionListener
 {
     private Controleur         ctrl;
+
+	private GrilleDonneesModel grilleDonneesModel;
+
+	private JPanel             panelInfo;
+
     private JTable             tblGrilleDonnees;
-    private GrilleDonneesModel grilleDonneesModel;
     private JTextField         txtTacheDuree;
     private JTextField         txtTacheNom;
     private JButton            btnAjouter;
     private JButton            btnMaj;
-    private JPanel             panelInfo;
 
     public PanelModification(Controleur ctrl)
     {
@@ -43,16 +46,11 @@ public class PanelModification extends JPanel implements ActionListener
 
                 if (selectedRows.length == 1)
                 {
-                    int selectedRow = selectedRows[0];
+                    int selectedRow   = selectedRows[0];
                     Object dureeValue = this.tblGrilleDonnees.getValueAt(selectedRow, 1);
-                    if (dureeValue != null) 
-                    {
-                        this.txtTacheDuree.setText(dureeValue.toString());
-                    }
-                    else
-                    {
-                        this.txtTacheDuree.setText("");
-                    }
+
+                    if (dureeValue != null) this.txtTacheDuree.setText(dureeValue.toString());
+                    else                    this.txtTacheDuree.setText("");
                 }
                 else
                 {
@@ -78,9 +76,9 @@ public class PanelModification extends JPanel implements ActionListener
         spGrilleDonnees = new JScrollPane(this.tblGrilleDonnees);
 
         this.add(spGrilleDonnees, BorderLayout.NORTH);
-        this.add(panelInfo, BorderLayout.SOUTH);
+        this.add(panelInfo      , BorderLayout.SOUTH);
 
-        this.btnMaj.addActionListener(this);
+        this.btnMaj    .addActionListener(this);
         this.btnAjouter.addActionListener(this);
     }
 
@@ -89,9 +87,11 @@ public class PanelModification extends JPanel implements ActionListener
         if (e.getSource() == this.btnMaj) 
         {
             int[] lignesSelectionnees = this.tblGrilleDonnees.getSelectedRows();
+			int   duree;
             
             // Vérifier si la ligne sélectionnée est la première ou dernière du tableau
-            if (lignesSelectionnees.length == 1 && (lignesSelectionnees[0] == 0 || lignesSelectionnees[0] == this.grilleDonneesModel.getRowCount() - 1)) 
+            if (lignesSelectionnees.length == 1 && 
+					(lignesSelectionnees[0] == 0 || lignesSelectionnees[0] == this.grilleDonneesModel.getRowCount() - 1)) 
             {
                 ErrorUtils.showError("Cette tâche ne peut pas être modifiée.");
                 return;
@@ -110,7 +110,7 @@ public class PanelModification extends JPanel implements ActionListener
                 
                 try 
                 {
-                    int duree = Integer.parseInt(dureeStr);
+                    duree = Integer.parseInt(dureeStr);
                     
                     // Vérifier que la durée est positive
                     if (duree < 0) 
@@ -151,6 +151,8 @@ public class PanelModification extends JPanel implements ActionListener
         else if (e.getSource() == this.btnAjouter) 
         {
             String nomTache = this.txtTacheNom.getText().trim();
+			int    niveau;
+
             if (!nomTache.isEmpty()) 
             {
                 TacheMPM temp = new TacheMPM(nomTache, 0, new ArrayList<>());
@@ -166,8 +168,7 @@ public class PanelModification extends JPanel implements ActionListener
                 {
                     this.ctrl.ajouterTacheAPosition(temp, 1);
                 }
-                
-                int niveau = 0;
+            
                 if (lignesSelectionnees.length > 0) 
                 {
                     int selectedIndex = lignesSelectionnees[lignesSelectionnees.length - 1];
