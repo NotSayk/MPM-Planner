@@ -36,8 +36,8 @@ public class PanelPara extends JPanel implements ActionListener
         // Panels vides pour centrer
         this.add(new JPanel(), BorderLayout.NORTH);
         this.add(new JPanel(), BorderLayout.SOUTH);
-        this.add(new JPanel(), BorderLayout.EAST);
-        this.add(new JPanel(), BorderLayout.WEST);
+        this.add(new JPanel(), BorderLayout.EAST );
+        this.add(new JPanel(), BorderLayout.WEST );
         
         // Panel principal centré
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -116,6 +116,7 @@ public class PanelPara extends JPanel implements ActionListener
         {
             String dateRef = this.txtDateRef.getText().trim();
             char typeDate = this.rbDateDebut.isSelected() ? 'D' : 'F';
+            boolean formatTexte = this.rbDateFormatTexte.isSelected();
 
             if (!dateRef.matches("\\d{2}/\\d{2}/\\d{4}")) 
             {
@@ -123,6 +124,7 @@ public class PanelPara extends JPanel implements ActionListener
                 ErrorUtils.showError("Date invalide, réinitialisation à la date du jour : " + dateRef);
             }
 
+            this.ctrl.setFormatDateTexte(formatTexte);
             this.ctrl.initProjet(dateRef, typeDate, "listeTache.txt");
         }
     }

@@ -19,6 +19,8 @@ public class GrapheMPM
     private List<CheminCritique> lstChemins;
     private List<TacheMPM>       lstTaches;
 
+    private boolean              formatDateTexte =  false;
+
     public GrapheMPM(Controleur ctrl)
     {
         this.ctrl         = ctrl;
@@ -404,6 +406,8 @@ public class GrapheMPM
     public int[]               getNiveaux     ()               { return niveaux          ; }
     public List<TacheMPM>      getTaches      ()               { return this.lstTaches   ; }
     
-    public void setDateRef(String dateRef) { this.dateRef = dateRef  ; }
-    public void setDateType(char dateType) { this.dateType = dateType; }
+    public void    setDateRef(String dateRef)         { this.dateRef = dateRef       ; }
+    public void    setDateType(char dateType)         { this.dateType = dateType     ; }
+    public void    setFormatDateTexte(boolean format) { this.formatDateTexte = format; }
+    public boolean isFormatDateTexte()                { return this.formatDateTexte  ; }
 }
