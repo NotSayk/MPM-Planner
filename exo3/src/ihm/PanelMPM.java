@@ -31,6 +31,8 @@ public class PanelMPM extends JPanel
     private Controleur   ctrl;
     private List<Entite> lstEntites;
 
+    private TacheMPM     tacheSelectionnee;
+
     private boolean      afficherDateTot;
     private boolean      afficherDateTard;
     private boolean      afficher;
@@ -40,7 +42,6 @@ public class PanelMPM extends JPanel
     private PanelButton  panelButton;
     private JPopupMenu   popup;
     private JPopupMenu   popupEdit;
-    private TacheMPM     tacheSelectionnee;
     
     // Nouveau panel pour le dessin du graphe
     private GraphePanel  graphePanel;
