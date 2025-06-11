@@ -135,10 +135,10 @@ public class Controleur
     /*-----------------------------------------*
      * Accesseurs - Informations sur le projet *
      *-----------------------------------------*/
-    public void   setZoom(double zoom)               { this.frameMPM.getPanelMPM().setScale(zoom);  }
-    public void   setTheme(String theme)             { this.frameMPM.setTheme(theme);               }
-    public void   setFormatDateTexte(boolean format) { this.formatDateTexte = format;               }
-    public void   setNiveauTache(TacheMPM tache, int niveau) { this.graphe.setNiveauTache(tache, niveau); }
+    public void   setZoom(double zoom)                       { this.frameMPM.getPanelMPM().setScale(zoom);  }
+    public void   setTheme(String theme)                     { this.frameMPM.setTheme(theme);               }
+    public void   setFormatDateTexte(boolean format)         { this.formatDateTexte = format;               }
+    public void   setNiveauTache(TacheMPM tache, int niveau) { this.graphe.setNiveauTache(tache, niveau);   }
 
     public String getDateDuJour()     { return DateUtils.getDateDuJour();     }
     public String getTheme()          { return this.frameMPM.getTheme();      }
