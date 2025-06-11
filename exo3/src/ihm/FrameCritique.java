@@ -4,11 +4,27 @@ import javax.swing.*;
 import java.awt.*;
 import src.Controleur;
 
+/**
+ * Fenêtre d'affichage des chemins critiques
+ * 
+ * Cette fenêtre permet de :
+ * - Visualiser tous les chemins critiques du graphe
+ * - Afficher les tâches composant chaque chemin
+ * - Voir la durée totale de chaque chemin
+ */
 public class FrameCritique extends JFrame
 {
-    private PanelCritique panelCritique;
-    private Controleur ctrl;
+    /*--------------------*
+     * Attributs privés   *
+     *--------------------*/
+    private PanelCritique panelCritique; // Panneau d'affichage des chemins critiques
+    private Controleur    ctrl;          // Référence au contrôleur
     
+    /**
+     * Crée une nouvelle fenêtre d'affichage des chemins critiques
+     * 
+     * @param ctrl Le contrôleur de l'application
+     */
     public FrameCritique(Controleur ctrl) 
     {
         this.ctrl = ctrl;

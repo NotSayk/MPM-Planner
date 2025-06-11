@@ -23,36 +23,48 @@ import src.ihm.composants.Entite;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;
 
-
+/**
+ * Panneau principal de l'application MPM
+ * 
+ * Ce panneau gère :
+ * - L'affichage du graphe MPM avec les tâches et leurs relations
+ * - Le positionnement automatique des tâches par niveau
+ * - L'affichage des dates au plus tôt et au plus tard
+ * - La sélection et le déplacement des tâches
+ * - Le zoom et le défilement du graphe
+ * - Les thèmes clair et sombre
+ */
 public class PanelMPM extends JPanel
 {
     /*--------------------*
      * Constantes         *
      *--------------------*/
-    private static final int MARGE      = 50;
-    private static final int ESPACEMENT = 120;
+    private static final int MARGE      = 50;  // Marge minimale entre les tâches et les bords
+    private static final int ESPACEMENT = 120; // Espacement entre les tâches
 
     /*--------------------*
      * Attributs privés   *
      *--------------------*/
-    private Controleur   ctrl;
-
-    private PanelButton  panelButton;
-    private PanelGraphe  panelGraphe;
-
-    private List<Entite> lstEntites;
-    private TacheMPM     tacheSelectionnee;
-
-    private boolean      afficherDateTot;
-    private boolean      afficherDateTard;
-    private boolean      critique;
-    private int          numNiveauxTot;
-    private int          numNiveauxTard;
-    private JScrollPane  scrollPane;
+    private Controleur   ctrl;              // Référence au contrôleur
+    private PanelButton  panelButton;       // Panneau des boutons de contrôle
+    private PanelGraphe  panelGraphe;       // Panneau de dessin du graphe
+    private List<Entite> lstEntites;        // Liste des entités (tâches) du graphe
+    private TacheMPM     tacheSelectionnee; // Tâche actuellement sélectionnée
+    private boolean      afficherDateTot;   // Indique si les dates au plus tôt sont affichées
+    private boolean      afficherDateTard;  // Indique si les dates au plus tard sont affichées
+    private boolean      critique;          // Indique si le mode critique est activé
+    private int          numNiveauxTot;     // Nombre de niveaux pour les dates au plus tôt
+    private int          numNiveauxTard;    // Nombre de niveaux pour les dates au plus tard
+    private JScrollPane  scrollPane;        // Panneau de défilement
 
     /*--------------*
      * Constructeur *
      *--------------*/
+    /**
+     * Crée un nouveau panneau MPM
+     * 
+     * @param ctrl Le contrôleur de l'application
+     */
     public PanelMPM(Controleur ctrl) 
     {
         this.ctrl             = ctrl;
@@ -101,6 +113,10 @@ public class PanelMPM extends JPanel
         }
     }
 
+    /**
+     * Initialise les entités du graphe en calculant leur position
+     * Les tâches sont organisées par niveau et centrées verticalement
+     */
     private void initEntites() 
     {
         this.lstEntites.clear();
@@ -127,6 +143,13 @@ public class PanelMPM extends JPanel
         }
     }
 
+    /**
+     * Calcule le nombre de tâches par niveau
+     * 
+     * @param taches Liste des tâches à analyser
+     * @param nbTachesParNiveau Tableau pour stocker le nombre de tâches par niveau
+     * @return Le niveau maximum atteint
+     */
     private int calculerNiveauxTaches(List<TacheMPM> taches, int[] nbTachesParNiveau) 
     {
         int niveauMax = 0;
@@ -139,6 +162,13 @@ public class PanelMPM extends JPanel
         return niveauMax;
     }
 
+    /**
+     * Trouve le niveau contenant le plus grand nombre de tâches
+     * 
+     * @param nbTachesParNiveau Tableau contenant le nombre de tâches par niveau
+     * @param niveauMax Niveau maximum à considérer
+     * @return Le nombre maximum de tâches dans un niveau
+     */
     private int trouverMaxTachesParNiveau(int[] nbTachesParNiveau, int niveauMax) 
     {
         int maxTachesParNiveau = 0;
@@ -152,12 +182,25 @@ public class PanelMPM extends JPanel
         return maxTachesParNiveau;
     }
 
+    /**
+     * Calcule la position Y du centre du graphe
+     * 
+     * @param maxTachesParNiveau Nombre maximum de tâches dans un niveau
+     * @return La position Y du centre
+     */
     private int calculerCentreY(int maxTachesParNiveau) 
     {
         int hauteurMaxNiveau = maxTachesParNiveau * PanelMPM.ESPACEMENT;
         return 150 + hauteurMaxNiveau / 2;
     }
 
+    /**
+     * Crée et positionne les entités du graphe
+     * 
+     * @param taches Liste des tâches à positionner
+     * @param nbTachesParNiveau Nombre de tâches par niveau
+     * @param centreY Position Y du centre du graphe
+     */
     private void creerEntitesPositionnees(List<TacheMPM> taches, int[] nbTachesParNiveau, int centreY) 
     {
         int[] compteurParNiveau = new int[2000];
@@ -176,6 +219,15 @@ public class PanelMPM extends JPanel
         }
     }
 
+    /**
+     * Calcule la position Y d'une tâche dans son niveau
+     * 
+     * @param nbTachesParNiveau Nombre de tâches par niveau
+     * @param centreY Position Y du centre du graphe
+     * @param niveau Niveau de la tâche
+     * @param positionDansNiveau Position de la tâche dans son niveau
+     * @return La position Y de la tâche
+     */
     private int calculerPositionY(int[] nbTachesParNiveau, int centreY, int niveau, int positionDansNiveau) 
     {
         int nbTachesCeNiveau = nbTachesParNiveau[niveau];
@@ -304,6 +356,11 @@ public class PanelMPM extends JPanel
     /*----------------------------------*
      * Méthodes publiques d'affichage   *
      *----------------------------------*/
+    /**
+     * Active ou désactive l'affichage des chemins critiques
+     * 
+     * @param aff true pour afficher les chemins critiques, false sinon
+     */
     public void afficherCheminCritique(boolean aff) 
     {
         this.critique = aff;
@@ -318,13 +375,16 @@ public class PanelMPM extends JPanel
 
     private Color determinerCouleurContour(Entite entite, boolean afficherCritique) 
     {
-        if (afficherCritique && entite.getTache().estCritique()) 
+        if (afficherCritique && entite.getTache().isCritique())
         {
             return Color.RED;
         }
         return this.panelGraphe.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
+    /**
+     * Active l'affichage des dates au plus tôt
+     */
     public void afficherDateTot()
     {
         this.afficherDateTot = true;
@@ -332,6 +392,9 @@ public class PanelMPM extends JPanel
         repaint();
     }
 
+    /**
+     * Active l'affichage des dates au plus tard
+     */
     public void afficherDateTard()
     {
         this.afficherDateTard = true;
@@ -339,6 +402,9 @@ public class PanelMPM extends JPanel
         repaint();
     }
 
+    /**
+     * Désactive l'affichage des dates au plus tôt et au plus tard
+     */
     public void cacherDates()
     {
         this.afficherDateTot  = false;
@@ -355,6 +421,11 @@ public class PanelMPM extends JPanel
         repaint();
     }
 
+    /**
+     * Change le thème de l'interface (clair ou sombre)
+     * 
+     * @param theme Le thème à appliquer ("LIGHT" ou "DARK")
+     */
     public void setTheme(String theme) 
     {
         System.out.println("Changement de thème : " + theme);
@@ -381,6 +452,9 @@ public class PanelMPM extends JPanel
         }
     }
 
+    /**
+     * Réinitialise les positions des tâches à leur position par défaut
+     */
     public void resetPositions() 
     {
         for (Entite entite : this.lstEntites) 
@@ -389,6 +463,9 @@ public class PanelMPM extends JPanel
         repaint();
     }
 
+    /**
+     * Réinitialise le niveau de zoom à 1.0
+     */
     public void resetScale() 
     {
         this.panelGraphe.scale = 1.0;
@@ -399,6 +476,11 @@ public class PanelMPM extends JPanel
     /*----------------------------------*
      * Setters publics                  *
      *----------------------------------*/
+    /**
+     * Définit la tâche sélectionnée et centre la vue sur celle-ci
+     * 
+     * @param tache La tâche à sélectionner
+     */
     public void setTacheSelectionnee(TacheMPM tache) 
     {
         this.tacheSelectionnee = tache;
@@ -427,6 +509,11 @@ public class PanelMPM extends JPanel
         panelGraphe.scrollRectToVisible(visibleRect);
     }
 
+    /**
+     * Active ou désactive le mode critique
+     * 
+     * @param critique true pour activer le mode critique, false sinon
+     */
     public void setCritique(boolean critique) 
     {
         this.critique = critique;
@@ -434,6 +521,11 @@ public class PanelMPM extends JPanel
         this.panelButton.setCritiqueButton(critique);
     }
 
+    /**
+     * Modifie le niveau de zoom du graphe
+     * 
+     * @param zoom Le nouveau niveau de zoom
+     */
     public void setScale(double zoom)
     {
         this.panelGraphe.scale = zoom;
@@ -470,28 +562,35 @@ public class PanelMPM extends JPanel
     /*------------------------------------------------------------*
      * Classe interne : Panel de dessin du graphe                *
      *------------------------------------------------------------*/
+    /**
+     * Panneau de dessin du graphe MPM
+     * 
+     * Cette classe interne gère :
+     * - Le dessin des tâches et de leurs relations
+     * - Les interactions avec la souris (sélection, déplacement, zoom)
+     * - Le menu contextuel pour les tâches
+     * - L'affichage des dates sur les tâches
+     */
     private class PanelGraphe extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, 
                                                         ActionListener
     {
         /*--------------------*
          * Attributs privés   *
          *--------------------*/
-        private JPopupMenu   popup;
-        private JPopupMenu   popupEdit;
+        private JPopupMenu   popup;      // Menu contextuel principal
+        private JPopupMenu   popupEdit;  // Menu contextuel d'édition
+        private JMenuItem    jmCopier;   // Option de copie
+        private JMenuItem    jmSuprimer; // Option de suppression
+        private JMenuItem    jmDuree;    // Option de modification de durée
+        private JMenuItem    jmNom;      // Option de modification de nom
+        private Entite       entiteSelectionnee; // Entité actuellement sélectionnée
+        private int          offsetX, offsetY;   // Décalage lors du déplacement
+        private Entite       dernierEntite;      // Dernière entité sélectionnée
+        private double       scale;              // Niveau de zoom
 
-        private JMenuItem    jmCopier;
-        private JMenuItem    jmSuprimer;
-        private JMenuItem    jmDuree;
-        private JMenuItem    jmNom;
-
-        private Entite       entiteSelectionnee;
-        private int          offsetX, offsetY;
-        private Entite       dernierEntite;
-        private double       scale;
-
-        /*--------------*
-         * Constructeur *
-         *--------------*/
+        /**
+         * Crée un nouveau panneau de dessin
+         */
         public PanelGraphe()
         {
             this.popup      = new JPopupMenu();
@@ -523,9 +622,9 @@ public class PanelMPM extends JPanel
             this.updateSize();
         }
 
-        /*----------------------------------*
-         * Méthodes de gestion de la taille *
-         *----------------------------------*/
+        /**
+         * Met à jour la taille du panneau en fonction des entités
+         */
         public void updateSize()
         {
             // Calculer la taille nécessaire en fonction des entités
@@ -535,6 +634,11 @@ public class PanelMPM extends JPanel
             this.revalidate();
         }
 
+        /**
+         * Calcule la taille nécessaire pour afficher toutes les entités
+         * 
+         * @return Un tableau contenant la largeur et la hauteur nécessaires
+         */
         private int[] calculerTaillePanneau() 
         {
             int maxX = 0, maxY = 0;
@@ -555,6 +659,9 @@ public class PanelMPM extends JPanel
             return new int[]{maxX, maxY};
         }
 
+        /**
+         * Retourne la taille préférée du panneau
+         */
         @Override
         public Dimension getPreferredSize() 
         {
@@ -562,9 +669,9 @@ public class PanelMPM extends JPanel
             return new Dimension((int)(base.width * scale), (int)(base.height * scale));
         }
 
-        /*----------------------------------*
-         * Méthode de dessin                *
-         *----------------------------------*/
+        /**
+         * Dessine le contenu du panneau
+         */
         @Override
         protected void paintComponent(Graphics g)
         {
@@ -577,6 +684,9 @@ public class PanelMPM extends JPanel
             g2.dispose();
         }
 
+        /**
+         * Dessine toutes les entités du graphe
+         */
         private void dessinerEntites(Graphics2D g2) 
         {
             for (Entite entite : lstEntites)
@@ -586,6 +696,9 @@ public class PanelMPM extends JPanel
             }
         }
 
+        /**
+         * Dessine les dates sur une entité
+         */
         private void dessinerDatesSurEntite(Graphics2D g2, Entite entite) 
         {
             FontMetrics fm = g2.getFontMetrics();
@@ -601,6 +714,9 @@ public class PanelMPM extends JPanel
             }
         }
 
+        /**
+         * Dessine la date au plus tôt sur une entité
+         */
         private void dessinerDateTot(Graphics2D g2, Entite entite, FontMetrics fm) 
         {
             String texte = obtenirTexteDate(entite.getTache().getDateTot());
@@ -610,6 +726,9 @@ public class PanelMPM extends JPanel
             g2.drawString(texte, coordonnees[0], coordonnees[1]);
         }
 
+        /**
+         * Dessine la date au plus tard sur une entité
+         */
         private void dessinerDateTard(Graphics2D g2, Entite entite, FontMetrics fm) 
         {
             String texte = obtenirTexteDate(entite.getTache().getDateTard());
@@ -619,6 +738,9 @@ public class PanelMPM extends JPanel
             g2.drawString(texte, coordonnees[0], coordonnees[1]);
         }
 
+        /**
+         * Convertit une date en texte formaté
+         */
         private String obtenirTexteDate(int date) 
         {
             if(ctrl.isFormatDateTexte())
@@ -631,6 +753,9 @@ public class PanelMPM extends JPanel
                 return "" + date;
         }
 
+        /**
+         * Calcule les coordonnées pour afficher un texte sur une entité
+         */
         private int[] calculerCoordonneesTexte(Entite entite, FontMetrics fm, String texte, int offsetX, int offsetY) 
         {
             int textWidth = fm.stringWidth(texte);
@@ -639,9 +764,9 @@ public class PanelMPM extends JPanel
             return new int[]{x, y};
         }
 
-        /*----------------------------------*
-         * Gestionnaires d'événements souris *
-         *----------------------------------*/
+        /**
+         * Gère l'appui sur un bouton de la souris
+         */
         @Override
         public void mousePressed(MouseEvent e) 
         {
@@ -652,6 +777,9 @@ public class PanelMPM extends JPanel
             }
         }
 
+        /**
+         * Convertit les coordonnées de la souris en tenant compte du zoom
+         */
         private int[] obtenirCoordonneesEchelle(MouseEvent e) 
         {
             int Xscale = (int)(e.getX() / scale);
@@ -659,6 +787,9 @@ public class PanelMPM extends JPanel
             return new int[]{Xscale, Yscale};
         }
 
+        /**
+         * Gère la sélection d'une entité
+         */
         private void gererSelectionEntite(int x, int y) 
         {
             Entite entiteOld = this.entiteSelectionnee;
@@ -678,6 +809,9 @@ public class PanelMPM extends JPanel
             System.out.println("Entité sélectionnée: " + entiteSelectionnee.getTache().getNom());
         }
 
+        /**
+         * Gère le clic de la souris
+         */
         @Override
         public void mouseClicked(MouseEvent e) 
         {
@@ -694,6 +828,9 @@ public class PanelMPM extends JPanel
             }
         }
 
+        /**
+         * Gère le clic gauche sur une entité
+         */
         private void gererClicGauche(Entite entiteCliquee) 
         {
             if (entiteCliquee != null) 
@@ -705,6 +842,9 @@ public class PanelMPM extends JPanel
             }
         }
 
+        /**
+         * Réinitialise les couleurs de toutes les entités
+         */
         private void reinitialiserCouleursEntites() 
         {
             for (Entite entite : lstEntites) {
@@ -713,6 +853,9 @@ public class PanelMPM extends JPanel
             }
         }
 
+        /**
+         * Gère le clic droit sur une entité
+         */
         private void gererClicDroit(MouseEvent e, Entite entiteCliquee) 
         {
             this.popup.setVisible(false);
@@ -720,6 +863,9 @@ public class PanelMPM extends JPanel
                 this.popupEdit.show(e.getComponent(),e.getX(),e.getY());
         }
 
+        /**
+         * Gère le déplacement de la souris avec un bouton enfoncé
+         */
         @Override
         public void mouseDragged(MouseEvent e) 
         {
@@ -730,6 +876,9 @@ public class PanelMPM extends JPanel
             }
         }
 
+        /**
+         * Déplace une entité à la position de la souris
+         */
         private void deplacerEntite(int x, int y, MouseEvent e) 
         {
             int newX = x - offsetX;
@@ -745,6 +894,9 @@ public class PanelMPM extends JPanel
             repaint();
         }
 
+        /**
+         * Gère le déplacement de la souris
+         */
         @Override
         public void mouseMoved(MouseEvent e) 
         {
@@ -783,7 +935,7 @@ public class PanelMPM extends JPanel
                     popup.add(new JSeparator());
                     popup.add(new JLabel("• Niveau: " + tache.getNiveau()));
                     popup.add(new JLabel("• Position: (" + entite.getX() + ", " + entite.getY() + ")"));
-                    popup.add(new JLabel("• Chemin critique: " + (tache.estCritique() ? "Oui" : "Non")));
+                    popup.add(new JLabel("• Chemin critique: " + (tache.isCritique() ? "Oui" : "Non")));
                     popup.add(new JSeparator());
                     popup.add(new JLabel("Clic droit pour modifier la tâche"));
 

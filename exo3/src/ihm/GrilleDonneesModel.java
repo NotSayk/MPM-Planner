@@ -6,37 +6,86 @@ import src.Controleur;
 import src.metier.TacheMPM;
 import src.utils.ErrorUtils;
 
+/**
+ * Modèle de données pour la grille d'affichage des tâches
+ * 
+ * Cette classe gère :
+ * - L'affichage des tâches dans un tableau
+ * - La modification des propriétés des tâches
+ * - Le rafraîchissement des données
+ * - La validation des modifications
+ */
 public class GrilleDonneesModel extends AbstractTableModel
 {
-    private Controleur ctrl;
-    private String[]   tabEntetes;
-    private Object[][] tabDonnees;
+    /*--------------------*
+     * Attributs privés   *
+     *--------------------*/
+    private Controleur ctrl;           // Référence au contrôleur
+    private String[]   tabEntetes;     // En-têtes des colonnes
+    private Object[][] tabDonnees;     // Données du tableau
 
+    /**
+     * Crée un nouveau modèle de grille
+     * 
+     * @param ctrl Le contrôleur de l'application
+     */
     public GrilleDonneesModel(Controleur ctrl)
     {
         this.ctrl = ctrl;
 
         this.tabEntetes = new String[] 
         {  
-            "Nom",
-            "Durée",
-            "Date Totale",
-            "Date Tardive", 
-            "Marge",
-            "Précédents",
-            "Suivants" 
+            "Nom",           // Nom de la tâche
+            "Durée",         // Durée en jours
+            "Date Totale",   // Date au plus tôt
+            "Date Tardive",  // Date au plus tard
+            "Marge",         // Marge de la tâche
+            "Précédents",    // Liste des tâches précédentes
+            "Suivants"       // Liste des tâches suivantes
         };
 
         this.refreshTab();
     }
 
-    // Getters
-    public int    getColumnCount()                 { return this.tabEntetes.length;          }
-    public int    getRowCount   ()                 { return this.tabDonnees.length;          }
-    public String getColumnName (int col)          { return this.tabEntetes[col];            }
-    public Object getValueAt    (int row, int col) { return this.tabDonnees[row][col];       }
-    public Class  getColumnClass(int c)            { return getValueAt(0, c).getClass(); }
+    /*---------------------------------*
+     * Méthodes de l'interface TableModel *
+     *---------------------------------*/
+    /**
+     * Retourne le nombre de colonnes du tableau
+     */
+    public int getColumnCount() { return this.tabEntetes.length; }
 
+    /**
+     * Retourne le nombre de lignes du tableau
+     */
+    public int getRowCount() { return this.tabDonnees.length; }
+
+    /**
+     * Retourne le nom d'une colonne
+     * 
+     * @param col Index de la colonne
+     */
+    public String getColumnName(int col) { return this.tabEntetes[col]; }
+
+    /**
+     * Retourne la valeur d'une cellule
+     * 
+     * @param row Index de la ligne
+     * @param col Index de la colonne
+     */
+    public Object getValueAt(int row, int col) { return this.tabDonnees[row][col]; }
+
+    /**
+     * Retourne la classe d'une colonne
+     * 
+     * @param c Index de la colonne
+     */
+    public Class getColumnClass(int c) { return getValueAt(0, c).getClass(); }
+
+    /**
+     * Rafraîchit les données du tableau
+     * Met à jour toutes les cellules avec les données actuelles des tâches
+     */
     public void refreshTab()
     {
         List<TacheMPM> lstTaches = this.ctrl.getTaches();
@@ -84,6 +133,13 @@ public class GrilleDonneesModel extends AbstractTableModel
         this.fireTableDataChanged();
     }
 
+    /**
+     * Modifie la valeur d'une cellule
+     * 
+     * @param value Nouvelle valeur
+     * @param rowIndex Index de la ligne
+     * @param columnIndex Index de la colonne
+     */
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) 
     {
@@ -118,6 +174,13 @@ public class GrilleDonneesModel extends AbstractTableModel
         }
     }
 
+    /**
+     * Détermine si une cellule est éditable
+     * 
+     * @param rowIndex Index de la ligne
+     * @param columnIndex Index de la colonne
+     * @return true si la cellule est éditable, false sinon
+     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex)
     {

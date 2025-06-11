@@ -15,15 +15,19 @@ import src.Controleur;
 import src.ihm.PanelMPM;
 import src.utils.ErrorUtils;
 
+/**
+ * Classe gérant la persistance des données du projet MPM
+ * Permet de charger, sauvegarder et modifier les tâches dans des fichiers
+ */
 public class Fichier 
 {
     /*--------------------*
      * Attributs privés   *
      *--------------------*/
-    private Controleur ctrl;
-    private String     nomFichier;
-    private boolean    estCritique;
-    private String     theme;
+    private Controleur ctrl;        // Référence au contrôleur principal
+    private String     nomFichier;  // Nom du fichier de données
+    private boolean    estCritique; // Indique si le projet est en mode critique
+    private String     theme;       // Thème actuel du projet
 
     /*--------------*
      * Constructeur *
@@ -38,6 +42,11 @@ public class Fichier
     /*---------------------------------*
      * Méthodes d'initialisation       *
      *---------------------------------*/
+    /**
+     * Initialise les tâches à partir du fichier spécifié
+     * Format du fichier : nom|durée|précédents
+     * @param nomFichier Chemin du fichier à charger
+     */
     public void initTache(String nomFichier) 
     {
         Scanner  scMPM;
@@ -94,6 +103,10 @@ public class Fichier
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    /**
+     * Établit les relations suivants pour chaque tâche
+     * Une tâche B est suivante de A si A est dans les précédents de B
+     */
     private void etablirRelationsSuivants() 
     {
         for (TacheMPM tache : this.ctrl.getTaches()) 
@@ -121,6 +134,10 @@ public class Fichier
     /*---------------------------------*
      * Méthodes de gestion des fichiers*
      *---------------------------------*/
+    /**
+     * Ouvre une boîte de dialogue pour charger un fichier
+     * Supporte les formats .txt et .MC
+     */
     public void chargerFichierB() 
     {
         File             fichierSelectionner = null;
@@ -172,6 +189,10 @@ public class Fichier
         }
     }
 
+    /**
+     * Sauvegarde les tâches dans le fichier courant
+     * Format : nom|durée|précédents
+     */
     public void sauvegarder() 
     {
         try 
@@ -199,6 +220,10 @@ public class Fichier
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    /**
+     * Sauvegarde les tâches dans un fichier MC avec informations supplémentaires
+     * Format : nom|durée|précédents|x|y|dateTot|dateTard
+     */
     public void sauvegarderFichier(String theme, boolean critique, String dateRef, PanelMPM panelMere) 
     {
         try 
@@ -247,6 +272,10 @@ public class Fichier
     /*---------------------------------*
      * Méthodes de gestion des tâches  *
      *---------------------------------*/
+    /**
+     * Ajoute une nouvelle tâche au fichier
+     * Vérifie d'abord si la tâche n'existe pas déjà
+     */
     public void ajouterTacheFichier(TacheMPM tacheAjout) 
     {
         boolean tacheExiste = false;
@@ -266,6 +295,9 @@ public class Fichier
         this.sauvegarder();
     }
 
+    /**
+     * Modifie une tâche existante dans le fichier
+     */
     public void modifierTacheFichier(TacheMPM tacheModif) 
     {
         for (int i = 0; i < this.ctrl.getTaches().size(); i++) 
@@ -280,6 +312,10 @@ public class Fichier
         this.sauvegarder();
     }
 
+    /**
+     * Supprime une tâche du fichier
+     * Recalcule les dates et chemins critiques après suppression
+     */
     public void supprimerTacheFichier(TacheMPM tacheSuppr) 
     {
         this.ctrl.getTaches().removeIf(tache -> tache.getNom().equals(tacheSuppr.getNom()));
@@ -292,11 +328,12 @@ public class Fichier
         this.ctrl.getGraphe().initNiveauTaches();
     }
 
-
-
     /*---------------------------------*
      * Méthodes utilitaires            *
      *---------------------------------*/
+    /**
+     * Récupère la position (x,y) d'une tâche dans un fichier MC
+     */
     public int[] getLocation(TacheMPM tache, String fichier) 
     {
         try 
@@ -325,6 +362,10 @@ public class Fichier
         return null;
     }
 
+    /**
+     * Récupère la dernière ou l'avant-dernière ligne du fichier
+     * Utilisé pour obtenir le thème ou le statut critique
+     */
     public String getLigne(String nom) 
     {
         try 
@@ -348,6 +389,9 @@ public class Fichier
         } catch (Exception e) { e.printStackTrace(); return ""; }
     }
 
+    /**
+     * Recherche une tâche par son nom
+     */
     private TacheMPM trouverTache(String nom) 
     {
         for (TacheMPM tache : this.ctrl.getTaches()) 
