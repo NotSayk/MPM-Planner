@@ -8,192 +8,208 @@ import src.Controleur;
 
 public class BarreMenu extends JMenuBar implements ActionListener
 {
-    private Controleur ctrl;
-    
-    private JMenuItem menuiCharger;
-    private JMenuItem menuiSauvegarder;
-    private JMenuItem menuiQuitter;
+   private Controleur ctrl;
+   
+   private JMenuItem menuiCharger;
+   private JMenuItem menuiSauvegarder;
+   private JMenuItem menuiQuitter;
 
-    private JMenuItem menuiRajouterTache;
-    private JMenuItem menuiSupprimerTache;
-    private JMenuItem menuiChangerDureeTache;
-    private JMenuItem menuiCopier;
-    private JMenuItem menuiColler;
-    private JMenuItem menuiChercherTache;
+   private JMenuItem menuiRajouterTache;
+   private JMenuItem menuiSupprimerTache;
+   private JMenuItem menuiChangerDureeTache;
+   private JMenuItem menuiCopier;
+   private JMenuItem menuiColler;
+   private JMenuItem menuiChercherTache;
 
-    private JMenuItem menuiZoom25;
-    private JMenuItem menuiZoom50;
-    private JMenuItem menuiZoom75;
-    private JMenuItem menuiZoom100;
-    private JMenuItem menuiZoom150;
-    private JMenuItem menuiZoom200;
+   private JMenuItem menuiZoom25;
+   private JMenuItem menuiZoom50;
+   private JMenuItem menuiZoom75;
+   private JMenuItem menuiZoom100;
+   private JMenuItem menuiZoom150;
+   private JMenuItem menuiZoom200;
 
-    private JMenuItem menuiChangerAffichage;
+   private JMenuItem menuiChangerAffichage;
 
-    public BarreMenu(Controleur ctrl)
-    {
-        this.ctrl = ctrl;
+   public BarreMenu(Controleur ctrl)
+   {
+      this.ctrl = ctrl;
 
-        /*----------------------------*/
-        /* Création des composants    */
-        /*----------------------------*/
-    
-        // Style moderne de la barre de menu
-        this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
-        this.setBackground(new Color(248, 249, 250));
+      /*----------------------------*/
+      /* Création des composants    */
+      /*----------------------------*/
 
-        // les JMenu avec icônes
-        JMenu menuFichier   = new JMenu("Fichier");
-        JMenu menuEdition   = new JMenu("Edition");
-        JMenu menuAffichage = new JMenu("Affichage");
-        JMenu menuZoom      = new JMenu("Zoom");
+      // Style moderne de la barre de menu
+      this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
+      this.setBackground(new Color(248, 249, 250));
 
-        // Ajout d'icônes aux menus (avec gestion d'erreur)
-        menuFichier.setIcon(createMenuIcon("📁"));
-        menuEdition.setIcon(createMenuIcon("✏️"));
-        menuAffichage.setIcon(createMenuIcon("👁️"));
-        menuZoom.setIcon(createMenuIcon("🔍"));
+      // les JMenu avec icônes
+      JMenu menuFichier   = new JMenu("Fichier");
+      JMenu menuEdition   = new JMenu("Edition");
+      JMenu menuAffichage = new JMenu("Affichage");
+      JMenu menuZoom      = new JMenu("Zoom");
 
-        // Création des éléments de menu
-        this.menuiCharger           = new JMenuItem("Charger", createMenuIcon("📂"));
-        this.menuiSauvegarder       = new JMenuItem("Sauvegarder", createMenuIcon("💾"));
-        this.menuiQuitter           = new JMenuItem("Quitter", createMenuIcon("🚪"));
+      // Ajout d'icônes aux menus (avec gestion d'erreur)
+      menuFichier.setIcon(createMenuIcon("📁"));
+      menuEdition.setIcon(createMenuIcon("✏️"));
+      menuAffichage.setIcon(createMenuIcon("👁️"));
+      menuZoom.setIcon(createMenuIcon("🔍"));
 
-        this.menuiRajouterTache     = new JMenuItem("Ajouter une tâche", createMenuIcon("➕"));
-        this.menuiSupprimerTache    = new JMenuItem("Supprimer une tâche", createMenuIcon("❌"));
-        this.menuiChangerDureeTache = new JMenuItem("Changer durée tâche", createMenuIcon("⏱️"));
-        this.menuiCopier            = new JMenuItem("Copier", createMenuIcon("📋"));
-        this.menuiColler            = new JMenuItem("Coller", createMenuIcon("📌"));
-        this.menuiChercherTache     = new JMenuItem("Chercher une tâche", createMenuIcon("🔎"));
+      // Création des éléments de menu
+      this.menuiCharger           = new JMenuItem("Charger", createMenuIcon("📂"));
+      this.menuiSauvegarder       = new JMenuItem("Sauvegarder", createMenuIcon("💾"));
+      this.menuiQuitter           = new JMenuItem("Quitter", createMenuIcon("🚪"));
 
-        this.menuiZoom25            = new JMenuItem("25%");
-        this.menuiZoom50            = new JMenuItem("50%");
-        this.menuiZoom75            = new JMenuItem("75%");
-        this.menuiZoom100           = new JMenuItem("100%");
-        this.menuiZoom150           = new JMenuItem("150%");
-        this.menuiZoom200           = new JMenuItem("200%");
+      this.menuiRajouterTache     = new JMenuItem("Ajouter une tâche", createMenuIcon("➕"));
+      this.menuiSupprimerTache    = new JMenuItem("Supprimer une tâche", createMenuIcon("❌"));
+      this.menuiChangerDureeTache = new JMenuItem("Changer durée tâche", createMenuIcon("⏱️"));
+      this.menuiCopier            = new JMenuItem("Copier", createMenuIcon("📋"));
+      this.menuiColler            = new JMenuItem("Coller", createMenuIcon("📌"));
+      this.menuiChercherTache     = new JMenuItem("Chercher une tâche", createMenuIcon("🔎"));
 
-        this.menuiChangerAffichage  = new JMenuItem("Changer format d'affichage");
+      this.menuiZoom25            = new JMenuItem("25%");
+      this.menuiZoom50            = new JMenuItem("50%");
+      this.menuiZoom75            = new JMenuItem("75%");
+      this.menuiZoom100           = new JMenuItem("100%");
+      this.menuiZoom150           = new JMenuItem("150%");
+      this.menuiZoom200           = new JMenuItem("200%");
 
-        // Application du style moderne
-        styleMenu(menuFichier);
-        styleMenu(menuEdition);
-        styleMenu(menuAffichage);
-        styleMenu(menuZoom);
+      this.menuiChangerAffichage  = new JMenuItem("Changer format d'affichage");
 
-        /*-------------------------------*/
-        /* positionnement des composants */
-        /*-------------------------------*/
+      // Application du style moderne
+      styleMenu(menuFichier);
+      styleMenu(menuEdition);
+      styleMenu(menuAffichage);
+      styleMenu(menuZoom);
 
-        //rajout des items dans les menus
-        menuFichier.add(this.menuiCharger);
-        menuFichier.add(this.menuiSauvegarder);
-        menuFichier.add(this.menuiCopier);
-        menuFichier.add(this.menuiColler);
-        menuFichier.addSeparator();
-        menuFichier.add(this.menuiQuitter);
+      /*-------------------------------*/
+      /* positionnement des composants */
+      /*-------------------------------*/
 
-        menuEdition.add(this.menuiRajouterTache);
-        menuEdition.add(this.menuiSupprimerTache);
-        menuEdition.add(this.menuiChangerDureeTache);
-        menuEdition.addSeparator();
-        menuEdition.add(this.menuiChercherTache);
-        
-        menuZoom.add(this.menuiZoom25);
-        menuZoom.add(this.menuiZoom50);
-        menuZoom.add(this.menuiZoom75);
-        menuZoom.add(this.menuiZoom100);
-        menuZoom.add(this.menuiZoom150);
-        menuZoom.add(this.menuiZoom200);
+      //rajout des items dans les menus
+      menuFichier.add(this.menuiCharger);
+      menuFichier.add(this.menuiSauvegarder);
+      menuFichier.add(this.menuiCopier);
+      menuFichier.add(this.menuiColler);
+      menuFichier.addSeparator();
+      menuFichier.add(this.menuiQuitter);
 
-        menuAffichage.add(menuZoom);
-        menuAffichage.add(this.menuiChangerAffichage);
+      menuEdition.add(this.menuiRajouterTache);
+      menuEdition.add(this.menuiSupprimerTache);
+      menuEdition.add(this.menuiChangerDureeTache);
+      menuEdition.addSeparator();
+      menuEdition.add(this.menuiChercherTache);
 
-        //rajout des menus
-        this.add(menuFichier);
-        this.add(menuEdition);
-        this.add(menuAffichage);
+      menuZoom.add(this.menuiZoom25);
+      menuZoom.add(this.menuiZoom50);
+      menuZoom.add(this.menuiZoom75);
+      menuZoom.add(this.menuiZoom100);
+      menuZoom.add(this.menuiZoom150);
+      menuZoom.add(this.menuiZoom200);
 
-        /*-------------------------------*/
-        /* Activation des composants     */
-        /*-------------------------------*/
-        this.menuiCharger.addActionListener(this); 
-        this.menuiSauvegarder.addActionListener(this); 
-        this.menuiQuitter.addActionListener(this); 
+      menuAffichage.add(menuZoom);
+      menuAffichage.add(this.menuiChangerAffichage);
 
-        this.menuiRajouterTache.addActionListener(this);
-        this.menuiSupprimerTache.addActionListener(this);
-        this.menuiChangerDureeTache.addActionListener(this);
+      //rajout des menus
+      this.add(menuFichier);
+      this.add(menuEdition);
+      this.add(menuAffichage);
 
-        this.menuiZoom25.addActionListener(this);
-        this.menuiZoom50.addActionListener(this);
-        this.menuiZoom75.addActionListener(this);
-        this.menuiZoom100.addActionListener(this);
-        this.menuiZoom150.addActionListener(this);
-        this.menuiZoom200.addActionListener(this);
-        this.menuiCopier.addActionListener(this);
-        this.menuiColler.addActionListener(this);
+      /*-------------------------------*/
+      /* Activation des composants     */
+      /*-------------------------------*/
+      this.menuiCharger    .addActionListener(this); 
+      this.menuiSauvegarder.addActionListener(this); 
+      this.menuiQuitter    .addActionListener(this); 
 
-        this.menuiChercherTache.addActionListener(this);
-        this.menuiChangerAffichage.addActionListener(this);
+      this.menuiRajouterTache    .addActionListener(this);
+      this.menuiSupprimerTache   .addActionListener(this);
+      this.menuiChangerDureeTache.addActionListener(this);
 
-        // Raccourcis clavier
-        this.menuiCharger.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
-        this.menuiSauvegarder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
-        this.menuiQuitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK));
-        this.menuiCopier.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
-        this.menuiColler.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
-        this.menuiChercherTache.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
-        this.menuiChangerAffichage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
+      this.menuiZoom25 .addActionListener(this);
+      this.menuiZoom50 .addActionListener(this);
+      this.menuiZoom75 .addActionListener(this);
+      this.menuiZoom100.addActionListener(this);
+      this.menuiZoom150.addActionListener(this);
+      this.menuiZoom200.addActionListener(this);
+      this.menuiCopier .addActionListener(this);
+      this.menuiColler .addActionListener(this);
 
-        // Application du style à tous les éléments
-        styleAllMenuItems();
-    }
+      this.menuiChercherTache   .addActionListener(this);
+      this.menuiChangerAffichage.addActionListener(this);
+
+      // Raccourcis clavier
+      this.menuiCharger         .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+      this.menuiSauvegarder     .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+      this.menuiQuitter         .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK));
+      this.menuiCopier          .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
+      this.menuiColler          .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
+      this.menuiChercherTache   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
+      this.menuiChangerAffichage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
+
+      styleMenuItem( this.menuiCharger           );
+      styleMenuItem( this.menuiSauvegarder       );
+      styleMenuItem( this.menuiQuitter           );
+      styleMenuItem( this.menuiRajouterTache     );
+      styleMenuItem( this.menuiSupprimerTache    );
+      styleMenuItem( this.menuiChangerDureeTache );
+      styleMenuItem( this.menuiCopier            );
+      styleMenuItem( this.menuiColler            );
+      styleMenuItem( this.menuiChercherTache     );
+      styleMenuItem( this.menuiZoom25            );
+      styleMenuItem( this.menuiZoom50            );
+      styleMenuItem( this.menuiZoom75            );
+      styleMenuItem( this.menuiZoom100           );
+      styleMenuItem( this.menuiZoom150           );
+      styleMenuItem( this.menuiZoom200           );
+      styleMenuItem( this.menuiChangerAffichage  );
+   }
 
     @Override
     public void actionPerformed(ActionEvent e) 
     {
       Object source = e.getSource();
       
-      if (source == this.menuiZoom25 || source == this.menuiZoom50 || 
-          source == this.menuiZoom75 || source == this.menuiZoom100 || 
-          source == this.menuiZoom150 || source == this.menuiZoom200) {
+      if (source == this.menuiZoom25  || source == this.menuiZoom50  || 
+          source == this.menuiZoom75  || source == this.menuiZoom100 || 
+          source == this.menuiZoom150 || source == this.menuiZoom200) 
+      {
           
-          // Gestion du zoom avec if-else
-          if (source == this.menuiZoom25)
-              this.ctrl.setZoom(0.25);
-          else if (source == this.menuiZoom50)
-              this.ctrl.setZoom(0.50);
-          else if (source == this.menuiZoom75)
-              this.ctrl.setZoom(0.75);
-          else if (source == this.menuiZoom100)
-              this.ctrl.setZoom(1.0);
-          else if (source == this.menuiZoom150)
-              this.ctrl.setZoom(1.5);
-          else if (source == this.menuiZoom200)
-              this.ctrl.setZoom(2.0);
+         if (source == this.menuiZoom25)
+            this.ctrl.setZoom(0.25);
+         else if (source == this.menuiZoom50)
+            this.ctrl.setZoom(0.50);
+         else if (source == this.menuiZoom75)
+            this.ctrl.setZoom(0.75);
+         else if (source == this.menuiZoom100)
+            this.ctrl.setZoom(1.0);
+         else if (source == this.menuiZoom150)
+            this.ctrl.setZoom(1.5);
+         else if (source == this.menuiZoom200)
+            this.ctrl.setZoom(2.0);
           
-      } else {
-          if (source == this.menuiCharger)
-              this.ctrl.chargerFichier();
-          else if (source == this.menuiSauvegarder)
-              this.ctrl.sauvegarder();
-          else if (source == this.menuiQuitter)
-              System.exit(0);
-          else if (source == this.menuiRajouterTache)
-              this.ctrl.afficherModification();
-          else if (source == this.menuiSupprimerTache)
-              this.ctrl.afficherModification();
-          else if (source == this.menuiChangerDureeTache)
-              this.ctrl.afficherModification();
-          else if (source == this.menuiCopier)
-              this.ctrl.copierTache();
-          else if (source == this.menuiColler)
-              this.ctrl.collerTache();
-          else if (source == this.menuiChercherTache)
-              this.ctrl.chercherTache();
-          else if (source == this.menuiChangerAffichage)
-              this.ctrl.changerAffichage();
+      } 
+      else 
+      {
+         if (source == this.menuiCharger)
+            this.ctrl.chargerFichier();
+         else if (source == this.menuiSauvegarder)
+            this.ctrl.sauvegarder();
+         else if (source == this.menuiQuitter)
+            System.exit(0);
+         else if (source == this.menuiRajouterTache)
+            this.ctrl.afficherModification();
+         else if (source == this.menuiSupprimerTache)
+            this.ctrl.afficherModification();
+         else if (source == this.menuiChangerDureeTache)
+            this.ctrl.afficherModification();
+         else if (source == this.menuiCopier)
+            this.ctrl.copierTache();
+         else if (source == this.menuiColler)
+            this.ctrl.collerTache();
+         else if (source == this.menuiChercherTache)
+            this.ctrl.chercherTache();
+         else if (source == this.menuiChangerAffichage)
+            this.ctrl.changerAffichage();
       }
     }
 
@@ -226,23 +242,19 @@ public class BarreMenu extends JMenuBar implements ActionListener
          
          return new ImageIcon(img);
       } 
-      catch (Exception e) 
-      {
-         return new ImageIcon();
-      }
+      catch (Exception e)  { return new ImageIcon(); }
    }
-
 
    /**
     * Style moderne pour les menus
     */
    private void styleMenu(JMenu menu) 
    {
-      menu.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-      menu.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
-      menu.setForeground(new Color(60, 60, 60));
-      menu.setOpaque(true);
       menu.setBackground(new Color(248, 249, 250));
+      menu.setForeground(new Color(60, 60, 60));
+      menu.setOpaque    (true);
+      menu.setBorder    (BorderFactory.createEmptyBorder(8, 12, 8, 12));
+      menu.setFont       (new Font("Segoe UI", Font.PLAIN, 12));
       
       // Effet hover pour les menus
       menu.addMouseListener(new MouseAdapter()
@@ -266,11 +278,11 @@ public class BarreMenu extends JMenuBar implements ActionListener
     */
    private void styleMenuItem(JMenuItem item) 
    {
-      item.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-      item.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
       item.setBackground(Color.WHITE);
       item.setForeground(new Color(60, 60, 60));
-      item.setOpaque(true);
+      item.setOpaque    (true);
+      item.setBorder    (BorderFactory.createEmptyBorder(6, 12, 6, 12));
+      item.setFont      (new Font("Segoe UI", Font.PLAIN, 11));
       
       // Espacement entre l'icône et le texte
       item.setIconTextGap(8);
@@ -286,33 +298,11 @@ public class BarreMenu extends JMenuBar implements ActionListener
          }
          
          @Override
-         public void mouseExited(MouseEvent e) {
+         public void mouseExited(MouseEvent e) 
+         {
             item.setBackground(Color.WHITE);
             item.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
          }
       });
-   }
-
-   /**
-    * Applique le style à tous les éléments de menu
-    */
-   private void styleAllMenuItems() 
-   {
-      styleMenuItem( this.menuiCharger           );
-      styleMenuItem( this.menuiSauvegarder       );
-      styleMenuItem( this.menuiQuitter           );
-      styleMenuItem( this.menuiRajouterTache     );
-      styleMenuItem( this.menuiSupprimerTache    );
-      styleMenuItem( this.menuiChangerDureeTache );
-      styleMenuItem( this.menuiCopier            );
-      styleMenuItem( this.menuiColler            );
-      styleMenuItem( this.menuiChercherTache     );
-      styleMenuItem( this.menuiZoom25            );
-      styleMenuItem( this.menuiZoom50            );
-      styleMenuItem( this.menuiZoom75            );
-      styleMenuItem( this.menuiZoom100           );
-      styleMenuItem( this.menuiZoom150           );
-      styleMenuItem( this.menuiZoom200           );
-      styleMenuItem( this.menuiChangerAffichage  );
    }
 }
