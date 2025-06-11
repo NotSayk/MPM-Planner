@@ -214,6 +214,7 @@ public class PanelMPM extends JPanel
                     popup.setVisible(false);
                 }
             } 
+            /*
             else if (e.getButton() == MouseEvent.BUTTON3) 
             {
                 int Xscale = (int)(e.getX() / scale);
@@ -227,7 +228,7 @@ public class PanelMPM extends JPanel
                     return;
                 supprimerTache(entiteSelectionnee.getTache());
                 ctrl.getGrilleDonneesModel().refreshTab();
-            }
+            }*/
         }
 
         @Override
@@ -343,9 +344,11 @@ public class PanelMPM extends JPanel
                 {
                     // Réinitialiser la couleur de toutes les entités
                     for (Entite entite : lstEntites) {
-                        if (entite.getTache().estCritique() && afficher) {
+                        if (entite.getTache().estCritique() && afficher) 
+                        {
                             entite.setCouleurContour(Color.RED);
-                        } else {
+                        } else 
+                        {
                             entite.setCouleurContour(graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE);
                         }
                     }
