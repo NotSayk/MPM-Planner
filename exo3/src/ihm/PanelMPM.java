@@ -310,6 +310,7 @@ public class PanelMPM extends JPanel
             Color couleurContour = determinerCouleurContour(entite, aff);
             entite.setCouleurContour(couleurContour);
         }
+        this.getEntiteParTache(tacheSelectionnee).setCouleurContour(Color.BLUE);
         repaint();
     }
 
