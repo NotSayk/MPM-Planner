@@ -145,14 +145,15 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiChangerAffichage.addActionListener(this);
 
       // Raccourcis clavier
-      this.menuiCharger         .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
-      this.menuiSauvegarder     .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+      this.menuiCharger         .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O , InputEvent.CTRL_DOWN_MASK));
+      this.menuiSauvegarder     .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S , InputEvent.CTRL_DOWN_MASK));
       this.menuiQuitter         .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK));
-      this.menuiCopier          .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
-      this.menuiColler          .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
-      this.menuiChercherTache   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
-      this.menuiChangerAffichage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
-      this.menuiInfosCritique   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK));
+      this.menuiCopier          .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C , InputEvent.CTRL_DOWN_MASK));
+      this.menuiColler          .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V , InputEvent.CTRL_DOWN_MASK));
+      this.menuiChercherTache   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F , InputEvent.CTRL_DOWN_MASK));
+      this.menuiChangerAffichage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I , InputEvent.CTRL_DOWN_MASK));
+      this.menuiInfosCritique   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H , InputEvent.CTRL_DOWN_MASK));
+      this.menuiModifierGraphe  .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M , InputEvent.CTRL_DOWN_MASK));
 
       styleMenuItem( this.menuiCharger           );
       styleMenuItem( this.menuiSauvegarder       );
