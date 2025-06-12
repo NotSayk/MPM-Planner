@@ -355,7 +355,6 @@ public class PanelMPM extends JPanel
 
     public void setTheme(String theme) 
     {
-        System.out.println("Changement de thème : " + theme);
         appliquerTheme(theme);
         this.afficherCheminCritique(this.afficher);
         repaint();
@@ -363,6 +362,10 @@ public class PanelMPM extends JPanel
 
     private void appliquerTheme(String theme) 
     {
+        if (theme == null || theme.isEmpty()) 
+        {
+            theme = "LIGHT";
+        }
         if (theme.equals("LIGHT")) 
         {
             this.setBackground(Color.WHITE);
@@ -377,6 +380,7 @@ public class PanelMPM extends JPanel
             for (Entite entite : this.lstEntites) 
                 entite.setCouleurContour(Color.WHITE);
         }
+      
     }
 
     public void resetPositions() 
