@@ -54,6 +54,7 @@ public class FrameMPM extends JFrame
         this.getContentPane().removeAll();
         this.panelMPM  = new PanelMPM(this.ctrl);
         this.add(this.panelMPM);
+        this.setTitle("MPM - Graphe MPM");
         this.maj();
     }
 
