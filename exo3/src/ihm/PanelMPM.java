@@ -117,9 +117,8 @@ public class PanelMPM extends JPanel
      * Initialise les entités du graphe en calculant leur position
      * Les tâches sont organisées par niveau et centrées verticalement
      */
-    public void initEntitesTest(){ this.initEntites();}
-
-    private void initEntites() 
+    
+    public void initEntites() 
     {
         this.lstEntites.clear();
         
