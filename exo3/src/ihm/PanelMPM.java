@@ -310,7 +310,8 @@ public class PanelMPM extends JPanel
             Color couleurContour = determinerCouleurContour(entite, aff);
             entite.setCouleurContour(couleurContour);
         }
-        this.getEntiteParTache(tacheSelectionnee).setCouleurContour(Color.BLUE);
+        if (this.tacheSelectionnee != null) 
+            this.getEntiteParTache(tacheSelectionnee).setCouleurContour(Color.BLUE);
         repaint();
     }
 
@@ -357,7 +358,8 @@ public class PanelMPM extends JPanel
     {
         appliquerTheme(theme);
         this.afficherCheminCritique(this.afficher);
-        this.getEntiteParTache(tacheSelectionnee).setCouleurContour(Color.BLUE);
+        if (this.tacheSelectionnee != null)
+            this.getEntiteParTache(tacheSelectionnee).setCouleurContour(Color.BLUE);
         repaint();
     }
 
