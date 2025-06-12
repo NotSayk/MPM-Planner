@@ -126,7 +126,6 @@ public class PanelModification extends JPanel implements ActionListener
                         if (tacheSelectionnee >= 0 && tacheSelectionnee < this.tblGrilleDonnees.getRowCount()) 
                         {
                             this.ctrl.mettreAJourDureeTache(tacheSelectionnee, duree);
-                            this.ctrl.getGraphe().initCheminCritique();
                         } 
                         else 
                         {
@@ -134,7 +133,7 @@ public class PanelModification extends JPanel implements ActionListener
                             return;
                         }
                     }
-                    
+                    this.ctrl.getGraphe().initCheminCritique();
                     // Rafraîchir l'affichage une seule fois après toutes les modifications
                     this.grilleDonneesModel.refreshTab();
                     
