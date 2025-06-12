@@ -137,9 +137,18 @@ public class Controleur
         {        
             this.afficherGraphe();
             this.setTheme(this.getTheme());
-            this.afficherCheminCritique(this.isCritique());
+            
+            // Recalculer le chemin critique et réinitialiser les couleurs
+            this.graphe.initCheminCritique();
+            
+            // Réappliquer l'affichage du chemin critique pour mettre à jour les couleurs
+            boolean estCritiqueActuel = this.isCritique();
+            this.afficherCheminCritique(false); // D'abord désactiver
+            this.afficherCheminCritique(estCritiqueActuel); // Puis réactiver si nécessaire
+            
             this.getFrameMPM().getPanelMPM().setScale(this.getFrameMPM().getScale());
         }
+        this.graphe.initCheminCritique();
     }
 
     public void modifierPrecedents(TacheMPM tacheModifier, String nouvelleValeur) 

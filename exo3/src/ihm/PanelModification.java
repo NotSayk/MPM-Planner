@@ -133,10 +133,8 @@ public class PanelModification extends JPanel implements ActionListener
                             return;
                         }
                     }
-                    this.ctrl.getFrameMPM().getPanelMPM().afficherCheminCritique(this.ctrl.isCritique());
                     // Rafraîchir l'affichage une seule fois après toutes les modifications
                     this.grilleDonneesModel.refreshTab();
-                    
                 } 
                 catch (NumberFormatException ex) 
                 {
