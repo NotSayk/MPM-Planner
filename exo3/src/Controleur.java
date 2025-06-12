@@ -1,9 +1,9 @@
 package src;
 
 import java.util.List;
+import src.ihm.FrameCritique;
 import src.ihm.FrameMPM;
 import src.ihm.FrameModification;
-import src.ihm.FrameCritique;
 import src.ihm.GrilleDonneesModel;
 import src.ihm.composants.Entite;
 import src.metier.CheminCritique;
@@ -22,7 +22,6 @@ public class Controleur
     private FrameCritique     frameCritique;
     private Fichier           fichier;
     private GrapheMPM         graphe;
-    private boolean           formatDateTexte = false; 
 
     /*-----------------------------*
      * Point d'entrée du programme *
@@ -148,7 +147,7 @@ public class Controleur
      *-----------------------------------------*/
     public void   setZoom(double zoom)                       { this.frameMPM.getPanelMPM().setScale(zoom);  }
     public void   setTheme(String theme)                     { this.frameMPM.setTheme(theme);               }
-    public void   setFormatDateTexte(boolean format)         { this.formatDateTexte = format;               }
+    public void   setFormatDateTexte(boolean format)         { this.graphe.setFormatDateTexte(format);     }
     public void   setNiveauTache(TacheMPM tache, int niveau) { this.graphe.setNiveauTache(tache, niveau);   }
 
     public String getDateDuJour()     { return DateUtils.getDateDuJour();     }
@@ -162,7 +161,7 @@ public class Controleur
     public int    getNiveauTache(TacheMPM tache) { return this.graphe.getNiveauTache(tache); }
     public int[]  getNiveauxTaches()  { return this.graphe.getNiveaux();      }
     
-    public boolean isFormatDateTexte() { return this.formatDateTexte;         }
+    public boolean isFormatDateTexte() { return this.graphe.isFormatDateTexte(); }
     public boolean isCritique()        { return this.frameMPM.isCritique();   }
     public boolean getAfficher()       { return this.frameMPM.getPanelMPM().isCritique(); }
 
