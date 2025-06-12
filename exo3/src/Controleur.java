@@ -145,6 +145,7 @@ public class Controleur
     public void modifierPrecedents(TacheMPM tacheModifier, String nouvelleValeur) 
     { 
         this.graphe.modifierPrecedents(tacheModifier, nouvelleValeur); 
+        this.initProjet(this.getDateRef(), this.getDateType(), this.getNomFichier());
     }
 
     public void modifierSuivants(TacheMPM tacheModifier, String nouvelleValeur) 

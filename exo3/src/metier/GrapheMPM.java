@@ -357,7 +357,27 @@ public class GrapheMPM
             System.out.println("Aucune tâche à coller");
             return;
         }
-        
+
+        if (this.tacheCopiee.getNom().equals("DEBUT") || this.tacheCopiee.getNom().equals("FIN")) 
+        {
+            System.out.println("Impossible de coller la tâche DEBUT ou FIN");
+            return;
+        }
+
+        boolean tacheExiste = false;
+        for (TacheMPM tache : this.lstTaches) 
+        {
+            if (tache.getNom().equals(this.tacheCopiee.getNom())) 
+            {
+                tacheExiste = true;
+                break;
+            }
+        }
+
+        if (!tacheExiste) {
+            System.out.println("La tâche copiée n'existe plus dans le fichier");
+            return;
+        }
         String nouveauNom = this.tacheCopiee.getNom() + "_copie";
         
         int    compteur = 1;
