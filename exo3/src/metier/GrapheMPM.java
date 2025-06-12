@@ -684,7 +684,26 @@ public class GrapheMPM
 
     public void supprimerTacheFichier(TacheMPM tacheSuppr) 
     {
+        for (TacheMPM tache : this.lstTaches) 
+        {
+            tache.getPrecedents().removeIf(pred -> pred.getNom().equals(tacheSuppr.getNom()));
+            tache.getSuivants().removeIf(suiv -> suiv.getNom().equals(tacheSuppr.getNom()));
+        }
+        
         this.lstTaches.removeIf(tache -> tache.getNom().equals(tacheSuppr.getNom()));
+
+        TacheMPM tacheDebut = this.trouverTache("DEBUT");
+        for (TacheMPM tache : this.lstTaches) 
+        {
+            if (tache.getNom().equals("DEBUT")) 
+                continue;
+                
+            if (tache.getPrecedents().isEmpty() && tacheDebut != null) 
+            {
+                tache.getPrecedents().add(tacheDebut);
+                tacheDebut.getSuivants().add(tache);
+            }
+        }
 
         this.sauvegarder();
         this.initTache(this.nomFichier);

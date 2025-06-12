@@ -874,6 +874,13 @@ public class PanelMPM extends JPanel
             {
                 String dureeTache = JOptionPane.showInputDialog(this, "Modifier la durée de la tâche :", 
                                                                 entiteSelectionnee.getTache().getDuree());
+                if (entiteSelectionnee.getTache().getNom().equals("DEBUT") || 
+                    entiteSelectionnee.getTache().getNom().equals("FIN")) 
+                {
+                    JOptionPane.showMessageDialog(this, "Impossible de modifier la durée de la tâche DEBUT ou FIN.", 
+                                                  "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 if (dureeTache != null && !dureeTache.isEmpty())
                 {
                     try 

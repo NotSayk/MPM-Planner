@@ -18,7 +18,17 @@ public class FrameCritique extends JFrame
         setSize(400, 300);
         setLocationRelativeTo(null);
         setResizable(false);
+        recreerPanelCritique();
+    }   
+
+    public void recreerPanelCritique() 
+    {
+        if (panelCritique != null) {
+            remove(panelCritique);
+        }
         panelCritique = new PanelCritique(this.ctrl);
         add(panelCritique, BorderLayout.CENTER);
-    }   
+        revalidate();
+        repaint();
+    }
 }

@@ -98,6 +98,7 @@ public class Controleur
             this.frameCritique = new FrameCritique(this);
         
         this.frameCritique.setVisible(true);
+        this.frameCritique.recreerPanelCritique();
     }
 
     public void changerTheme()       { this.frameMPM.changerTheme();                     }
