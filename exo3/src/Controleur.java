@@ -93,7 +93,8 @@ public class Controleur
     public void ajouterTacheAPosition(TacheMPM tache, int position) 
     {
         this.graphe.ajouterTacheAPosition(tache, position);
-        this.afficherGraphe(); 
+        this.getFrameMPM().getPanelMPM().initEntites();
+        this.getFrameMPM().getPanelMPM().repaint();
         this.afficherCheminCritique(this.isCritique());
     }
 
@@ -103,6 +104,8 @@ public class Controleur
         this.graphe.setDateRef(this.getDateDuJour());
         this.frameMPM.changerPanel();
         this.frameMPM.getPanelMPM().initEntites();
+        if (this.frameModification != null) 
+            this.frameModification.getGrilleDonneesModel().refreshTab();
         this.frameMPM.repaint();
     }
 
@@ -119,7 +122,12 @@ public class Controleur
     public void resetPositions()     { this.frameMPM.resetPositions(); 
                                        this.frameMPM.repaint();                          }
     public void sauvegarder()        { this.graphe.sauvegarderFichier(getTheme(), isCritique(), getDateRef(), this.frameMPM.getPanelMPM());}     
-    public void chargerFichier()     { this.graphe.chargerFichierB(this);                   }
+    public void chargerFichier()     
+    { 
+        this.graphe.chargerFichierB(this);  
+        if (this.frameModification != null) 
+            this.frameModification.getGrilleDonneesModel().refreshTab();                
+     }
     public void copierTache()        
     { 
         this.graphe.copierTache(this.getFrameMPM().getTacheSelectionnee());   

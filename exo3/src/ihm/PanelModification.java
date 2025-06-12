@@ -166,7 +166,8 @@ public class PanelModification extends JPanel implements ActionListener
                 } 
                 else 
                 {
-                    this.ctrl.ajouterTacheAPosition(temp, 1);
+                    ErrorUtils.showError("Aucune tâche sélectionnée pour l'insertion.");
+                    return;
                 }
             
                 if (lignesSelectionnees.length > 0) 
