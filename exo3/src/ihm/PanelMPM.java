@@ -656,10 +656,10 @@ public class PanelMPM extends JPanel
         @Override
         public void mousePressed(MouseEvent e) 
         {
-            if (e.getButton() == MouseEvent.BUTTON1) 
+            if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON3) 
             {
                 int[] coordonneesEchelle = obtenirCoordonneesEchelle(e);
-                gererSelectionEntite(coordonneesEchelle[0], coordonneesEchelle[1]);
+                this.gererSelectionEntite(coordonneesEchelle[0], coordonneesEchelle[1]);
             }
         }
 
@@ -672,6 +672,7 @@ public class PanelMPM extends JPanel
 
         private void gererSelectionEntite(int x, int y) 
         {
+
             this.entiteSelectionnee = trouverEntiteAuPoint(x, y);
             if (entiteSelectionnee == null) return;
 
@@ -711,7 +712,8 @@ public class PanelMPM extends JPanel
 
         private void reinitialiserCouleursEntites() 
         {
-            for (Entite entite : lstEntites) {
+            for (Entite entite : lstEntites) 
+            {
                 Color couleur = determinerCouleurContour(entite, afficher);
                 entite.setCouleurContour(couleur);
             }
