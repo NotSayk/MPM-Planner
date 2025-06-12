@@ -880,9 +880,11 @@ public class PanelMPM extends JPanel
                     {
                         int duree = Integer.parseInt(dureeTache);
                         entiteSelectionnee.getTache().setDuree(duree);
+                        ctrl.getGraphe().calculerDates();
                         ctrl.modifierTacheFichier(entiteSelectionnee.getTache());
                         initEntites();
                         repaint();
+                        revalidate();   
                     } 
                     catch (NumberFormatException ex) 
                     {

@@ -102,12 +102,12 @@ public class GrilleDonneesModel extends AbstractTableModel
                 if (columnIndex == 6)
                 { 
                     // Suivants
-                    ctrl.modifierSuivants(tacheModifiee, nouvelleValeur);
+                    this.ctrl.modifierSuivants(tacheModifiee, nouvelleValeur);
                 }
                 if (columnIndex == 0) 
                 { 
                     // Nom
-                    ctrl.modifierNom(tacheModifiee, nouvelleValeur);
+                    this.ctrl.modifierNom(tacheModifiee, nouvelleValeur);
                 }
                 refreshTab();
             } 
