@@ -399,6 +399,15 @@ public class PanelMPM extends JPanel
      *----------------------------------*/
     public void setTacheSelectionnee(TacheMPM tache) 
     {
+        if (this.tacheSelectionnee != null) 
+        {
+            Entite entiteActuelle = getEntiteParTache(this.tacheSelectionnee);
+            if (entiteActuelle != null) 
+            {
+                Color couleurContour = determinerCouleurContour(entiteActuelle, this.afficher);
+                entiteActuelle.setCouleurContour(couleurContour);
+            }
+        }
         this.tacheSelectionnee = tache;
 
         Entite entite = getEntiteParTache(tache);

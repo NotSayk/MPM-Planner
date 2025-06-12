@@ -11,7 +11,6 @@ import java.util.Scanner;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import src.Controleur;
@@ -227,9 +226,12 @@ public class GrapheMPM
 
         String  themeActuel          = this.theme;
         
-        List<TacheMPM> precedents = new ArrayList<>();
-        precedents.add(taches.get(position - 1));
-        tache.setPrecedents(precedents);
+        if (tache.getPrecedents().isEmpty() && position > 0) 
+        {
+            List<TacheMPM> precedents = new ArrayList<>();
+            precedents.add(taches.get(position - 1));
+            tache.setPrecedents(precedents);
+        }
                
         this.theme = themeActuel;
         
@@ -364,9 +366,18 @@ public class GrapheMPM
             compteur++;
         }
         
-        TacheMPM nouvelleTache = new TacheMPM(nomFinal, this.tacheCopiee.getDuree(), new ArrayList<>());
+        List<TacheMPM> precedentsCopies = new ArrayList<>(this.tacheCopiee.getPrecedents());
+        TacheMPM nouvelleTache = new TacheMPM(nomFinal, this.tacheCopiee.getDuree(), precedentsCopies);
         
         this.ajouterTacheAPosition(nouvelleTache, this.getTaches().size() - 1);
+        
+        List<TacheMPM> suivantsCopies = new ArrayList<>(this.tacheCopiee.getSuivants());
+        nouvelleTache.setSuivants(suivantsCopies);
+        
+        for (TacheMPM suivant : suivantsCopies) 
+        {
+            suivant.getPrecedents().add(nouvelleTache);
+        }
         
         System.out.println("Tâche collée : " + nomFinal);
     }
