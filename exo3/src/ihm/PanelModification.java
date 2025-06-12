@@ -1,6 +1,7 @@
 package src.ihm;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import src.Controleur;
 import src.metier.TacheMPM;
+import src.utils.BtnUtils;
 import src.utils.ErrorUtils;
 
 public class PanelModification extends JPanel implements ActionListener
@@ -62,9 +64,9 @@ public class PanelModification extends JPanel implements ActionListener
         this.tblGrilleDonnees.setFillsViewportHeight(true);
 
         this.txtTacheNom   = new JTextField(20);
-        this.btnAjouter    = new JButton("Ajouter");
+        this.btnAjouter    = BtnUtils.creerBtn("Ajouter", new Color(0, 123, 255), "Ajouter une nouvelle tâche");
         this.txtTacheDuree = new JTextField(10);
-        this.btnMaj        = new JButton("Mettre à jour");
+        this.btnMaj        = BtnUtils.creerBtn("Mettre à jour", new Color(255, 221, 51), "Mettre à jour les tâches sélectionnées");
 
         this.panelInfo.add(new JLabel("Tâche à ajouter :"));
         this.panelInfo.add(this.txtTacheNom);
