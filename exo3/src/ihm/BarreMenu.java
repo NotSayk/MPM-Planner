@@ -15,7 +15,6 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem menuiCharger;
    private JMenuItem menuiSauvegarder;
    private JMenuItem menuiQuitter;
-   private JMenuItem menuiInfo;
 
    private JMenuItem menuiRajouterTache;
    private JMenuItem menuiSupprimerTache;
