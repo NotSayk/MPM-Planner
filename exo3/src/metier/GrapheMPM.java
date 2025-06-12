@@ -550,10 +550,10 @@ public class GrapheMPM
         File             fichierSelectionner = null;
         JFileChooser     selectionFichier    = new JFileChooser();
         
-        FileNameExtensionFilter filterTxt = new FileNameExtensionFilter("Fichiers texte (*.txt)", "txt");
+        FileNameExtensionFilter filterData = new FileNameExtensionFilter("Fichiers data (*.data)", "data");
         FileNameExtensionFilter filterMC  = new FileNameExtensionFilter("Fichiers MPM (*.MC)", "MC");
         
-        selectionFichier.addChoosableFileFilter(filterTxt);
+        selectionFichier.addChoosableFileFilter(filterData);
         selectionFichier.addChoosableFileFilter(filterMC);
         selectionFichier.setAcceptAllFileFilterUsed(true);
         selectionFichier.setCurrentDirectory(new File("."));
