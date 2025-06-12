@@ -1,6 +1,5 @@
 package src.ihm;
 
-import java.awt.Frame;
 import javax.swing.JFrame;
 import src.Controleur;
 
@@ -13,8 +12,6 @@ public class FrameModification extends JFrame
     public FrameModification(Controleur ctrl) 
     {
         this.ctrl = ctrl;
-
-        Frame frameMPM = this.ctrl.getFrameMPM();
 
         this.setTitle    ("MPM - Modification du graphe");
         this.setSize     (300 ,500       );
