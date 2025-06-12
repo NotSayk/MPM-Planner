@@ -20,9 +20,6 @@ public class GrilleDonneesModel extends AbstractTableModel
         {  
             "Nom",
             "Durée",
-            "Date Tot",
-            "Date Tard", 
-            "Marge",
             "Précédents",
             "Suivants" 
         };
@@ -42,7 +39,7 @@ public class GrilleDonneesModel extends AbstractTableModel
         List<TacheMPM> lstTaches = this.ctrl.getTaches();
         TacheMPM       tache     = null;
 
-        tabDonnees = new Object[lstTaches.size()][7];
+        tabDonnees = new Object[lstTaches.size()][4];
 
         for (int lig = 0; lig < lstTaches.size(); lig++)
         {
@@ -50,11 +47,8 @@ public class GrilleDonneesModel extends AbstractTableModel
             
             tabDonnees[lig][0] = tache.getNom();
             tabDonnees[lig][1] = tache.getDuree();     // Durée
-            tabDonnees[lig][2] = tache.getDateTot();   // Date au plus tôt
-            tabDonnees[lig][3] = tache.getDateTard();  // Date au plus tard
-            tabDonnees[lig][4] = tache.getMarge();     // Marge (calculée dynamiquement)
-            tabDonnees[lig][5] = "";                   // Précédents
-            tabDonnees[lig][6] = "";                   // Suivants
+            tabDonnees[lig][2] = "";                   // Précédents
+            tabDonnees[lig][3] = "";                   // Suivants
 
             // Construction de la liste des précédents
             if (!tache.getPrecedents().isEmpty()) 
@@ -65,7 +59,7 @@ public class GrilleDonneesModel extends AbstractTableModel
                     precedents += tache.getPrecedents().get(i).getNom();
                     if (i < tache.getPrecedents().size() - 1) precedents += ", ";
                 }
-                tabDonnees[lig][5] = precedents;
+                tabDonnees[lig][2] = precedents;
             }
             
             // Construction de la liste des suivants
@@ -77,7 +71,7 @@ public class GrilleDonneesModel extends AbstractTableModel
                     suivants += tache.getSuivants().get(i).getNom();
                     if (i < tache.getSuivants().size() - 1) suivants += ", ";
                 }
-                tabDonnees[lig][6] = suivants;
+                tabDonnees[lig][3] = suivants;
             }
         }
 
@@ -87,19 +81,19 @@ public class GrilleDonneesModel extends AbstractTableModel
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) 
     {
-        if (columnIndex == 5 || columnIndex == 6 || columnIndex == 0) 
+        if (columnIndex == 2 || columnIndex == 3 || columnIndex == 0) 
         {
             String nouvelleValeur = value.toString().trim();
             TacheMPM tacheModifiee = ctrl.getTaches().get(rowIndex);
             
             try 
             {
-                if (columnIndex == 5) 
+                if (columnIndex == 2) 
                 { 
                     // Précédents
                     this.ctrl.modifierPrecedents(tacheModifiee, nouvelleValeur);
                 } 
-                if (columnIndex == 6)
+                if (columnIndex == 3)
                 { 
                     // Suivants
                     this.ctrl.modifierSuivants(tacheModifiee, nouvelleValeur);
@@ -121,14 +115,14 @@ public class GrilleDonneesModel extends AbstractTableModel
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex)
     {
-        if (columnIndex == 5 && rowIndex == 0) // DEBUT ne peut pas avoir de précédents
+        if (columnIndex == 2 && rowIndex == 0) // DEBUT ne peut pas avoir de précédents
             return false;
-        if (columnIndex == 6 && rowIndex == getRowCount() - 1) // FIN ne peut pas avoir de suivants
+        if (columnIndex == 3 && rowIndex == getRowCount() - 1) // FIN ne peut pas avoir de suivants
             return false;
         if (columnIndex == 0 && rowIndex == 0)
             return false;
         if (columnIndex == 0 && rowIndex == getRowCount() - 1)
             return false;
-        return columnIndex == 5 || columnIndex == 6 || columnIndex == 0; // Seules les colonnes précédents et suivants sont éditables
+        return columnIndex == 2 || columnIndex == 3 || columnIndex == 0; // Seules les colonnes nom, précédents et suivants sont éditables
     }
 }

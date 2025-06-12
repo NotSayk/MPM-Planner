@@ -319,7 +319,7 @@ public class GrapheMPM
             for (String nomTache : nouveauxSuivants.split(",")) 
             {
                 TacheMPM suivant = this.trouverTache(nomTache.trim());
-                if (suivant != null && !suivant.equals(tache)) 
+                if (suivant != null && !suivant.equals(tache) && !suivant.getNom().equals("FIN")) 
                     nouveauxSuivantsSet.add(suivant);
             }
         }
