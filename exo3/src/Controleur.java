@@ -41,6 +41,11 @@ public class Controleur
      *--------------------------*/
     public void initProjet(String dateRef, char typeDate, String nomFichier) 
     {
+        if (nomFichier == null || nomFichier.isEmpty()) 
+        {
+            this.afficherGraphe();
+            return;
+        }
         this.graphe.initTache(nomFichier);
 
         this.graphe.setDateRef(dateRef);
@@ -90,6 +95,15 @@ public class Controleur
         this.graphe.ajouterTacheAPosition(tache, position);
         this.afficherGraphe(); 
         this.afficherCheminCritique(this.isCritique());
+    }
+
+    public void nouveauProjet()
+    {
+        this.graphe.nouveauProjet();
+        this.graphe.setDateRef(this.getDateDuJour());
+        this.frameMPM.changerPanel();
+        this.frameMPM.getPanelMPM().initEntites();
+        this.frameMPM.repaint();
     }
 
     public void afficherCritiques()

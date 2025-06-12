@@ -13,6 +13,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private Controleur ctrl;
    
    private JMenuItem menuiCharger;
+   private JMenuItem menuiNouveau;
    private JMenuItem menuiSauvegarder;
    private JMenuItem menuiQuitter;
 
@@ -60,6 +61,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
       // Création des éléments de menu
       this.menuiCharger           = new JMenuItem("Charger", createMenuIcon("📂"));
+      this.menuiNouveau           = new JMenuItem("Nouveau", createMenuIcon("🆕"));
       this.menuiSauvegarder       = new JMenuItem("Sauvegarder", createMenuIcon("💾"));
       this.menuiQuitter           = new JMenuItem("Quitter", createMenuIcon("🚪"));
 
@@ -93,6 +95,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
       //rajout des items dans les menus
       menuFichier.add(this.menuiCharger);
+      menuFichier.add(this.menuiNouveau);
+      menuFichier.addSeparator();
       menuFichier.add(this.menuiSauvegarder);
       menuFichier.add(this.menuiCopier);
       menuFichier.add(this.menuiColler);
@@ -125,6 +129,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       /* Activation des composants     */
       /*-------------------------------*/
       this.menuiCharger    .addActionListener(this); 
+      this.menuiNouveau    .addActionListener(this);
       this.menuiSauvegarder.addActionListener(this); 
       this.menuiQuitter    .addActionListener(this); 
 
@@ -146,6 +151,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
       // Raccourcis clavier
       this.menuiCharger         .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O , InputEvent.CTRL_DOWN_MASK));
+      this.menuiNouveau         .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N , InputEvent.CTRL_DOWN_MASK));
       this.menuiSauvegarder     .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S , InputEvent.CTRL_DOWN_MASK));
       this.menuiQuitter         .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK));
       this.menuiCopier          .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C , InputEvent.CTRL_DOWN_MASK));
@@ -157,6 +163,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
       styleMenuItem( this.menuiCharger           );
       styleMenuItem( this.menuiSauvegarder       );
+      styleMenuItem( this.menuiNouveau           );
       styleMenuItem( this.menuiQuitter           );
       styleMenuItem( this.menuiModifierGraphe    );
       styleMenuItem( this.menuiCopier            );
@@ -200,6 +207,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
       {
          if (source == this.menuiCharger)
             this.ctrl.chargerFichier();
+         else if (source == this.menuiNouveau)
+            this.ctrl.nouveauProjet();
          else if (source == this.menuiSauvegarder)
             this.ctrl.sauvegarder();
          else if (source == this.menuiQuitter)

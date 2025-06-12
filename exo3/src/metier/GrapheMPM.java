@@ -545,56 +545,82 @@ public class GrapheMPM
     /*---------------------------------*
      * Méthodes de gestion des fichiers*
      *---------------------------------*/
-    public void chargerFichierB(Controleur ctrl) 
+public void chargerFichierB(Controleur ctrl) 
+{
+    File             fichierSelectionner = null;
+    JFileChooser     selectionFichier    = new JFileChooser();
+    
+    FileNameExtensionFilter filterData = new FileNameExtensionFilter("Fichiers data (*.data)", "data");
+    FileNameExtensionFilter filterMC  = new FileNameExtensionFilter("Fichiers MPM (*.MC)", "MC");
+    
+    selectionFichier.addChoosableFileFilter(filterData);
+    selectionFichier.addChoosableFileFilter(filterMC);
+    selectionFichier.setAcceptAllFileFilterUsed(true);
+    selectionFichier.setCurrentDirectory(new File("."));
+
+    if (selectionFichier.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+        fichierSelectionner = selectionFichier.getSelectedFile();   
+
+    try
     {
-        File             fichierSelectionner = null;
-        JFileChooser     selectionFichier    = new JFileChooser();
-        
-        FileNameExtensionFilter filterData = new FileNameExtensionFilter("Fichiers data (*.data)", "data");
-        FileNameExtensionFilter filterMC  = new FileNameExtensionFilter("Fichiers MPM (*.MC)", "MC");
-        
-        selectionFichier.addChoosableFileFilter(filterData);
-        selectionFichier.addChoosableFileFilter(filterMC);
-        selectionFichier.setAcceptAllFileFilterUsed(true);
-        selectionFichier.setCurrentDirectory(new File("."));
-
-        if (selectionFichier.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-            fichierSelectionner = selectionFichier.getSelectedFile();   
-
-        try
+        if (fichierSelectionner == null) 
         {
-            if (fichierSelectionner == null) 
-            {
-                ErrorUtils.showError("Aucun fichier sélectionné");
-                return;
-            }
-            
-            String extension = fichierSelectionner.getName().substring(fichierSelectionner.getName().lastIndexOf('.') + 1);
-            if (extension.equals("MC"))
-            {
-                ctrl.initComplet(this.getDateType(), fichierSelectionner.getPath());
-                ErrorUtils.showSucces("Chargement d'un fichier de données complexe réussi");
-            }
-            else
-            {
-                ctrl.initProjet(this.getDateRef(), this.getDateType(), fichierSelectionner.getPath());
-                ErrorUtils.showSucces("Chargement d'un fichier de données simple réussi");
-            }
+            ErrorUtils.showError("Aucun fichier sélectionné");
+            return;
         }
-        catch (NullPointerException e1) 
+        
+        String extension = fichierSelectionner.getName().substring(fichierSelectionner.getName().lastIndexOf('.') + 1);
+        
+        // Initialiser une date de référence par défaut avant le chargement
+        if (this.dateRef == null || this.dateRef.isEmpty()) {
+            this.dateRef = ctrl.getDateDuJour();
+            this.dateType = 'D'; // Date de début par défaut
+        }
+        
+        if (extension.equals("MC"))
         {
-            ErrorUtils.showError("Erreur lors de l'accès au fichier : " + e1.getMessage());
-        } 
-        catch (SecurityException e2) 
+            ctrl.initComplet(this.getDateType(), fichierSelectionner.getPath());
+            ErrorUtils.showSucces("Chargement d'un fichier de données complexe réussi");
+        }
+        else
         {
-            ErrorUtils.showError("Accès refusé au fichier : " + e2.getMessage());
-        } 
-        catch (Exception e3) 
-        {
-            ErrorUtils.showError("Erreur inattendue : " + e3.getMessage());
-            e3.printStackTrace();
+            ctrl.initProjet(this.getDateRef(), this.getDateType(), fichierSelectionner.getPath());
+            ErrorUtils.showSucces("Chargement d'un fichier de données simple réussi");
         }
     }
+    catch (NullPointerException e1) 
+    {
+        ErrorUtils.showError("Erreur lors de l'accès au fichier : " + e1.getMessage());
+    } 
+    catch (SecurityException e2) 
+    {
+        ErrorUtils.showError("Accès refusé au fichier : " + e2.getMessage());
+    } 
+    catch (Exception e3) 
+    {
+        ErrorUtils.showError("Erreur inattendue : " + e3.getMessage());
+        e3.printStackTrace();
+    }
+}
+public void nouveauProjet() 
+{
+    this.lstTaches.clear();
+    this.lstChemins.clear();
+    this.formatDateTexte = false;
+    this.nomFichier = "nouveauProjet.MC";
+    this.estCritique = false;
+    this.theme = "LIGHT"; // Initialiser le thème par défaut
+
+    TacheMPM tacheDebut = new TacheMPM("DEBUT", 0, new ArrayList<>());
+    TacheMPM tacheFin = new TacheMPM("FIN", 0, new ArrayList<>());
+    
+    this.lstTaches.add(tacheDebut);
+    this.lstTaches.add(tacheFin);
+    
+    this.calculerDates();
+    this.initCheminCritique();
+    this.initNiveauTaches();
+}
 
     public void sauvegarder() 
     {
@@ -685,6 +711,30 @@ public class GrapheMPM
         
         if (!tacheExiste) 
             this.lstTaches.add(tacheAjout);
+
+        // Trouver d'abord le niveau maximum parmi toutes les tâches
+        int niveauMax = 0;
+        for (TacheMPM tache : this.lstTaches) {
+            if (!tache.getNom().equals("FIN") && tache.getNiveau() > niveauMax) {
+                niveauMax = tache.getNiveau();
+            }
+        }
+        
+        // Ensuite traiter chaque tâche et placer FIN au niveau le plus élevé + 1
+        TacheMPM tacheFin = this.trouverTache("FIN");
+        if (tacheFin != null) {
+            tacheFin.setNiveau(niveauMax + 1);
+        }
+        
+        for (TacheMPM tache : this.lstTaches) {
+            if(tache.getNom().equals("DEBUT") || tache.getNom().equals("FIN")) 
+                continue;
+                
+            if (tache.getSuivants().isEmpty() && tacheFin != null) {
+                tache.getSuivants().add(tacheFin);
+                tacheFin.getPrecedents().add(tache);
+            }
+        }
         
         this.etablirRelationsSuivants();
         this.sauvegarder();
@@ -724,6 +774,19 @@ public class GrapheMPM
             {
                 tache.getPrecedents().add(tacheDebut);
                 tacheDebut.getSuivants().add(tache);
+            }
+        }
+
+        TacheMPM tacheFin = this.trouverTache("FIN");
+        for (TacheMPM tache : this.lstTaches) 
+        {
+            if (tache.getNom().equals("FIN") || tache.getNom().equals("DEBUT")) 
+                continue;
+                
+            if (tache.getSuivants().isEmpty() && tacheFin != null) 
+            {
+                tache.getSuivants().add(tacheFin);
+                tacheFin.getPrecedents().add(tache);
             }
         }
 

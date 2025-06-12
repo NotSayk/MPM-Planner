@@ -277,6 +277,12 @@ public class PanelMPM extends JPanel
     public void supprimerTache(TacheMPM tache) 
     {
         this.ctrl.supprimerTacheFichier(tache);
+
+        if (this.tacheSelectionnee != null && this.tacheSelectionnee.equals(tache)) 
+        {
+            this.tacheSelectionnee = null;
+        }
+
         this.initEntites();
     
         this.setTheme(this.getTheme());
