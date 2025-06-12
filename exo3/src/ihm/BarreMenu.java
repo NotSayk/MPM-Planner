@@ -12,7 +12,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
 {
    private Controleur ctrl;
    
-   private JMenuItem menuiCharger;
+   private JMenuItem  menuiCharger;
    private JMenuItem menuiSauvegarder;
    private JMenuItem menuiQuitter;
 
@@ -228,7 +228,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       {
          // Créer une image 16x16 pixels
          java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(16, 16, java.awt.image.BufferedImage.TYPE_INT_ARGB);
-         java.awt.Graphics2D g2 = img.createGraphics();
+         java.awt.Graphics2D           g2 = img.createGraphics();
          
          // Améliorer le rendu
          g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
