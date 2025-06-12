@@ -7,7 +7,6 @@ import src.ihm.FrameModification;
 import src.ihm.GrilleDonneesModel;
 import src.ihm.composants.Entite;
 import src.metier.CheminCritique;
-import src.metier.Fichier;
 import src.metier.GrapheMPM;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;   
@@ -17,11 +16,11 @@ public class Controleur
     /*-------------------------*
      * Attributs du contrôleur *
      *-------------------------*/
+    private GrapheMPM         graphe;
+
     private FrameMPM          frameMPM;
     private FrameModification frameModification;
     private FrameCritique     frameCritique;
-    private Fichier           fichier;
-    private GrapheMPM         graphe;
 
     /*-----------------------------*
      * Point d'entrée du programme *
@@ -33,8 +32,8 @@ public class Controleur
      *-------------------------*/
     public Controleur() 
     {
-        this.graphe   = new GrapheMPM(this);
-        this.frameMPM = new FrameMPM (this, this.graphe);
+        this.graphe   = new GrapheMPM();
+        this.frameMPM = new FrameMPM (this);
     }
 
     /*--------------------------*
@@ -42,7 +41,7 @@ public class Controleur
      *--------------------------*/
     public void initProjet(String dateRef, char typeDate, String nomFichier) 
     {
-        this.fichier = new Fichier(this, nomFichier); 
+        this.graphe.initTache(nomFichier);
 
         this.graphe.setDateRef(dateRef);
         this.graphe.setDateType(typeDate);
@@ -60,9 +59,9 @@ public class Controleur
         this.initProjet(this.getDateRef(), typeDate, nomFichier);
         this.afficherGraphe();
         
-        this.frameMPM.setTheme(this.fichier.getTheme());
-        this.frameMPM.setCritique(this.fichier.isCritique());
-        this.graphe.chargerEntites(nomFichier);
+        this.frameMPM.setTheme(this.getTheme());
+        this.frameMPM.setCritique(this.isCritique());
+        this.graphe.chargerEntites(nomFichier, this.getEntites());
     }
 
     /*--------------------------*
@@ -89,6 +88,8 @@ public class Controleur
     public void ajouterTacheAPosition(TacheMPM tache, int position) 
     {
         this.graphe.ajouterTacheAPosition(tache, position);
+        this.afficherGraphe(); 
+        this.afficherCheminCritique(this.isCritique());
     }
 
     public void afficherCritiques()
@@ -102,38 +103,60 @@ public class Controleur
     public void changerTheme()       { this.frameMPM.changerTheme();                     }
     public void resetPositions()     { this.frameMPM.resetPositions(); 
                                        this.frameMPM.repaint();                          }
-    public void sauvegarder()        { this.fichier.sauvegarder();                       }
-    public void chargerFichier()     { this.fichier.chargerFichierB();                   }
-    public void copierTache()        { this.graphe.copierTache();                        }
-    public void collerTache()        { this.graphe.collerTache();                        }
-    public void chercherTache()      { this.graphe.chercherTache();                      }
+    public void sauvegarder()        { this.graphe.sauvegarder();                       }
+    public void chargerFichier()     { this.graphe.chargerFichierB(this);                   }
+    public void copierTache()        
+    { 
+        this.graphe.copierTache(this.getFrameMPM().getTacheSelectionnee());   
+        this.getGrilleDonneesModel().refreshTab();
+    }
+    public void collerTache()        { this.graphe.collerTache(); this.afficherGraphe(); }
+    public TacheMPM trouverTache(String nomTache)      { return this.graphe.trouverTache(nomTache);                      }
+    public void modifierTacheFichier(TacheMPM tache) 
+    { 
+        this.graphe.modifierTacheFichier(tache); 
+    }
 
     public void sauvegarderFichier() 
     { 
-        this.fichier.sauvegarderFichier(this.getTheme(), 
+        this.graphe.sauvegarderFichier(this.getTheme(), 
                                         this.isCritique(),
                                         this.getDateRef(),  
                                         this.frameMPM.getPanelMPM()); 
     }
 
+    public void supprimerTacheFichier(TacheMPM tache) 
+    { 
+        this.graphe.supprimerTacheFichier(tache); 
+    }
+
     public void mettreAJourDureeTache(int index, int duree) 
     { 
-        this.graphe.mettreAJourDureeTache(index, duree); 
+        if(this.graphe.mettreAJourDureeTache(index, duree))
+        {        
+            this.afficherGraphe();
+            this.setTheme(this.getTheme());
+            this.afficherCheminCritique(this.isCritique());
+            this.getFrameMPM().getPanelMPM().setScale(this.getFrameMPM().getScale());
+        }
     }
 
     public void modifierPrecedents(TacheMPM tacheModifier, String nouvelleValeur) 
     { 
         this.graphe.modifierPrecedents(tacheModifier, nouvelleValeur); 
+        this.initProjet(this.getDateRef(), this.getDateType(), this.getNomFichier());
     }
 
     public void modifierSuivants(TacheMPM tacheModifier, String nouvelleValeur) 
     { 
         this.graphe.modifierSuivants(tacheModifier, nouvelleValeur); 
+        this.initProjet(this.getDateRef(), this.getDateType(), this.getNomFichier());
     }
 
     public void modifierNom(TacheMPM tacheModifier, String nouvelleValeur) 
     {
         this.graphe.modifierNom(tacheModifier, nouvelleValeur);
+        this.initProjet(this.getDateRef(), this.getDateType(), this.getNomFichier());
     }
 
     public void changerAffichage()
@@ -151,7 +174,6 @@ public class Controleur
     public void   setNiveauTache(TacheMPM tache, int niveau) { this.graphe.setNiveauTache(tache, niveau);   }
 
     public String getDateDuJour()     { return DateUtils.getDateDuJour();     }
-    public String getTheme()          { return this.frameMPM.getTheme();      }
     public String getDateRef()        { return this.graphe.getDateRef();      }
     public String getGrapheToString() { return this.graphe.toString();        }
     
@@ -162,7 +184,6 @@ public class Controleur
     public int[]  getNiveauxTaches()  { return this.graphe.getNiveaux();      }
     
     public boolean isFormatDateTexte() { return this.graphe.isFormatDateTexte(); }
-    public boolean isCritique()        { return this.frameMPM.isCritique();   }
     public boolean getAfficher()       { return this.frameMPM.getPanelMPM().isCritique(); }
 
     public List<CheminCritique> getCheminsCritiques() { return this.graphe.getCheminsCritiques(); }
@@ -192,5 +213,8 @@ public class Controleur
     public TacheMPM       getTacheSelectionnee() { return this.frameMPM.getTacheSelectionnee();  }
     public FrameMPM       getFrameMPM()          { return this.frameMPM;                         }
     public GrapheMPM      getGraphe()            { return this.graphe;                           }
-    public Fichier        getFichier()           { return this.fichier;                          }
+
+    public String   getTheme() { return this.graphe.getTheme(); }
+    public boolean  isCritique() { return this.graphe.isCritique(); }
+    public String getNomFichier() { return this.graphe.getNomFichier(); }
 }

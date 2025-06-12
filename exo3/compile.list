@@ -3,7 +3,6 @@ src/Controleur.java
 src/utils/DateUtils.java
 src/utils/ErrorUtils.java
 
-src/metier/Fichier.java
 src/metier/TacheMPM.java
 src/metier/GrapheMPM.java
 src/metier/CheminCritique.java

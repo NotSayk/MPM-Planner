@@ -16,10 +16,10 @@ public class FrameMPM extends JFrame
     private PanelMPM   panelMPM;
     private PanelPara  panelPara;
 
-    public FrameMPM(Controleur ctrl, GrapheMPM graphe) 
+    public FrameMPM(Controleur ctrl) 
     {
         this.ctrl      = ctrl;
-        this.graphe    = graphe;
+        this.graphe    = this.ctrl.getGraphe();
         this.panelPara = new PanelPara(this.ctrl);
 
 

@@ -290,7 +290,7 @@ public class PanelMPM extends JPanel
 
     private void supprimerTache(TacheMPM tache) 
     {
-        this.ctrl.getFichier().supprimerTacheFichier(tache);
+        this.ctrl.supprimerTacheFichier(tache);
         this.initEntites();
     
         this.setTheme(this.getTheme());
@@ -872,7 +872,7 @@ public class PanelMPM extends JPanel
                     {
                         int duree = Integer.parseInt(dureeTache);
                         entiteSelectionnee.getTache().setDuree(duree);
-                        ctrl.getFichier().modifierTacheFichier(entiteSelectionnee.getTache());
+                        ctrl.modifierTacheFichier(entiteSelectionnee.getTache());
                         initEntites();
                         repaint();
                     } 
@@ -890,7 +890,7 @@ public class PanelMPM extends JPanel
                 if (nomTache != null && !nomTache.isEmpty())
                 {
                     entiteSelectionnee.getTache().setNom(nomTache);
-                    ctrl.getFichier().modifierTacheFichier(entiteSelectionnee.getTache());
+                    ctrl.modifierTacheFichier(entiteSelectionnee.getTache());
                     initEntites();
                     repaint();
                 }

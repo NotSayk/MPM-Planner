@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.event.*;
 import javax.swing.*;
 import src.Controleur;
+import src.metier.TacheMPM;
+import src.utils.ErrorUtils;
 
 public class BarreMenu extends JMenuBar implements ActionListener
 {
@@ -222,7 +224,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
          else if (source == this.menuiColler)
             this.ctrl.collerTache();
          else if (source == this.menuiChercherTache)
-            this.ctrl.chercherTache();
+            this.chercherTache();
          else if (source == this.menuiChangerAffichage)
             this.ctrl.changerAffichage();
          else if (source == this.menuiInfosCritique) 
@@ -322,4 +324,24 @@ public class BarreMenu extends JMenuBar implements ActionListener
          }
       });
    }
+
+       public void chercherTache() 
+    {
+        String nomTache = JOptionPane.showInputDialog(this.ctrl.getFrameMPM(), "Entrez le nom de la tâche à chercher :");
+        if (nomTache == null || nomTache.trim().isEmpty()) 
+        {
+            ErrorUtils.showError("Le nom de la tâche ne peut pas être vide.");
+            return;
+        }
+        
+        TacheMPM tache = this.ctrl.trouverTache(nomTache);
+        
+        if (tache == null) 
+        {
+            ErrorUtils.showError("Aucune tâche trouvée avec le nom : " + nomTache);
+            return;
+        }
+        
+        this.ctrl.getFrameMPM().setTacheSelectionnee(tache);
+    }
 }
