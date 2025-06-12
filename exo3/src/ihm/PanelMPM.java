@@ -295,7 +295,6 @@ public class PanelMPM extends JPanel
     
         this.setTheme(this.getTheme());
         this.afficherCheminCritique(this.afficher);
-        this.getEntiteParTache(tacheSelectionnee).setCouleurContour(Color.BLUE);
         this.repaint();
     }
 
@@ -317,7 +316,9 @@ public class PanelMPM extends JPanel
     private Color determinerCouleurContour(Entite entite, boolean afficherCritique) 
     {
         if (afficherCritique && entite.getTache().estCritique()) 
+        {
             return Color.RED;
+        }
         return this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
@@ -355,7 +356,7 @@ public class PanelMPM extends JPanel
     {
         appliquerTheme(theme);
         this.afficherCheminCritique(this.afficher);
-        this.ctrl.
+        this.getEntiteParTache(tacheSelectionnee).setCouleurContour(Color.BLUE);
         repaint();
     }
 
