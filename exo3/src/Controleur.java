@@ -144,9 +144,6 @@ public class Controleur
     public void modifierPrecedents(TacheMPM tacheModifier, String nouvelleValeur) 
     { 
         this.graphe.modifierPrecedents(tacheModifier, nouvelleValeur); 
-        this.graphe.calculerDates();
-        this.graphe.initCheminCritique();
-        this.graphe.initNiveauTaches();
     }
 
     public void modifierSuivants(TacheMPM tacheModifier, String nouvelleValeur) 

@@ -881,6 +881,7 @@ public class PanelMPM extends JPanel
                         int duree = Integer.parseInt(dureeTache);
                         entiteSelectionnee.getTache().setDuree(duree);
                         ctrl.getGraphe().calculerDates();
+                        ctrl.getGraphe().initCheminCritique();
                         ctrl.modifierTacheFichier(entiteSelectionnee.getTache());
                         initEntites();
                         repaint();
