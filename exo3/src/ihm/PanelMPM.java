@@ -35,7 +35,7 @@ public class PanelMPM extends JPanel
     private int          numNiveauxTot;
     private int          numNiveauxTard;
     private PanelButton  panelButton;
-    private GraphePanel  graphePanel;
+    private PanelGraphe  graphePanel;
     private JScrollPane  scrollPane;
 
     /*--------------*
@@ -59,7 +59,7 @@ public class PanelMPM extends JPanel
         this.setBackground(Color.WHITE);
 
         // Créer le panel de dessin séparé avec les références nécessaires
-        this.graphePanel = new GraphePanel(this, ctrl);
+        this.graphePanel = new PanelGraphe(this, ctrl);
         
         // Créer le JScrollPane avec le panel de dessin
         this.scrollPane = new JScrollPane(this.graphePanel);

@@ -23,7 +23,7 @@ import src.metier.TacheMPM;
 import src.utils.DateUtils;
 
 
-public class GraphePanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, 
+public class PanelGraphe extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, 
                                                         ActionListener
     {
         /*--------------------*
@@ -59,7 +59,7 @@ public class GraphePanel extends JPanel implements MouseListener, MouseMotionLis
         /*--------------*
          * Constructeur *
          *--------------*/
-        public GraphePanel(PanelMPM parent, Controleur ctrl)
+        public PanelGraphe(PanelMPM parent, Controleur ctrl)
         {
             this.parentPanel = parent;
             this.ctrl = ctrl;
