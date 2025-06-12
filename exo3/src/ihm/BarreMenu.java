@@ -324,7 +324,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       });
    }
 
-       public void chercherTache() 
+      public void chercherTache() 
     {
         String nomTache = JOptionPane.showInputDialog(this.ctrl.getFrameMPM(), "Entrez le nom de la tâche à chercher :");
         if (nomTache == null || nomTache.trim().isEmpty()) 
