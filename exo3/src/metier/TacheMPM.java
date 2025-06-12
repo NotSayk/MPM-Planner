@@ -3,112 +3,66 @@ package src.metier;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Classe représentant une tâche dans le graphe MPM
- * 
- * Cette classe est le modèle de base pour les tâches du projet.
- * Elle gère :
- * - Les propriétés de base d'une tâche (nom, durée, dates)
- * - Les relations avec les autres tâches (prédécesseurs, successeurs)
- * - Les calculs de dates et de marges
- */
-public class TacheMPM
+public class TacheMPM 
 {
-    /*--------------------*
-     * Attributs privés   *
-     *--------------------*/
-    private String         nom;           // Nom de la tâche
-    private int           duree;          // Durée en jours
-    private int           dateTot;        // Date au plus tôt
-    private int           dateTard;       // Date au plus tard
-    private int           niveau;         // Niveau dans le graphe
-    private boolean       critique;       // Indique si la tâche est critique
-    private List<TacheMPM> precedents;    // Liste des tâches prédécesseurs
-    private List<TacheMPM> suivants;      // Liste des tâches successeurs
+    private String         nom;
+    private int            duree;
+    private int            dateTot;
+    private int            dateTard;
+    private int            niveau;
+    private boolean        estCritique;
+    private List<TacheMPM> precedents;
+    private List<TacheMPM> suivants;
 
-    /*--------------*
-     * Constructeur *
-     *--------------*/
-    /**
-     * Crée une nouvelle tâche avec les paramètres spécifiés
-     * 
-     * @param nom Nom de la tâche
-     * @param duree Durée en jours
-     * @param precedents Liste des tâches prédécesseurs
-     */
-    public TacheMPM(String nom, int duree, List<TacheMPM> precedents)
+    public TacheMPM(String nom, int duree, List<TacheMPM> precedents) 
     {
-        this.nom = nom;
-        this.duree = duree;
-        this.dateTot = 0;
-        this.dateTard = 0;
-        this.niveau = 0;
-        this.critique = false;
+        this.nom         = nom;
+        this.duree       = duree;
+        this.dateTot     = 0;
+        this.dateTard    = 0; 
+        this.niveau      = 0;
+        this.estCritique = false;
+
+        this.precedents  = precedents;
+        this.suivants    = new ArrayList<TacheMPM>();
+    }
+
+    public void setSuivants(List<TacheMPM> suivants) 
+    {
+        if (suivants == null) return;
+        this.suivants = suivants    ;
+    }
+
+    public void setPrecedents(List<TacheMPM> precedents) 
+    {
+        if (precedents == null) return;
         this.precedents = precedents;
-        this.suivants = new ArrayList<>();
     }
 
-    /*---------------------------------*
-     * Méthodes de calcul des dates    *
-     *---------------------------------*/
-
-    /*---------------------------------*
-     * Accesseurs - Getters            *
-     *---------------------------------*/
-    public String         getNom()        { return this.nom;        }
-    public int           getDuree()       { return this.duree;      }
-    public int           getDateTot()     { return this.dateTot;    }
-    public int           getDateTard()    { return this.dateTard;   }
-    public int           getNiveau()      { return this.niveau;     }
-    public boolean       isCritique()     { return this.getMarge() == 0;   }
+    // Getters
+    public String         getNom       () { return this.nom       ; }
+    public int            getDuree     () { return this.duree     ; }
+    public int            getDateTot   () { return this.dateTot   ; }
+    public int            getDateTard  () { return this.dateTard  ; }
+    public int            getMarge     () { return this.dateTard - this.dateTot; }
+    public int            getNiveau    () { return this.niveau    ; }
     public List<TacheMPM> getPrecedents() { return this.precedents; }
-    public List<TacheMPM> getSuivants()   { return this.suivants;   }
-    public int           getMarge()  { return this.dateTard - this.dateTot; }
+    public List<TacheMPM> getSuivants  () { return this.suivants  ; }
+    public boolean        estCritique  () { return this.estCritique; }
 
-    /*---------------------------------*
-     * Accesseurs - Setters            *
-     *---------------------------------*/
-    public void setNom(String nom)                { this.nom = nom;           }
-    public void setDuree(int duree)               { this.duree = duree;       }
-    public void setDateTot(int dateTot)           { this.dateTot = dateTot;   }
-    public void setDateTard(int dateTard)         { this.dateTard = dateTard; }
-    public void setNiveau(int niveau)             { this.niveau = niveau;     }
-    public void setCritique(boolean critique)     { this.critique = critique; }
-    public void setPrecedents(List<TacheMPM> p)   { this.precedents = p;      }
-    public void setSuivants(List<TacheMPM> s)     { this.suivants = s;        }
+    // Setters
+    public void setDateTot (int dateTot)  { this.dateTot  = dateTot ; }
+    public void setDateTard(int dateTard) { this.dateTard = dateTard; }
+    public void setDuree   (int duree)    { this.duree    = duree   ; }
+    public void setNiveau  (int niveau)   { this.niveau   = niveau  ; }
+    public void setNom     (String nom)   { this.nom      = nom     ; }
 
-    /*---------------------------------*
-     * Méthodes de comparaison         *
-     *---------------------------------*/
-    /**
-     * Compare deux tâches par leur nom
-     */
+    public void setCritique(boolean estCritique) { this.estCritique = estCritique; }
+
     @Override
-    public boolean equals(Object obj)
+    public String toString() 
     {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-        TacheMPM other = (TacheMPM) obj;
-        return this.nom.equals(other.nom);
+        return String.format(this.nom);
     }
 
-    /**
-     * Génère un hash code basé sur le nom de la tâche
-     */
-    @Override
-    public int hashCode()
-    {
-        return this.nom.hashCode();
-    }
-
-    /**
-     * Retourne une représentation textuelle de la tâche
-     */
-    @Override
-    public String toString()
-    {
-        return this.nom + " (Durée: " + this.duree + " jours)";
-    }
 }

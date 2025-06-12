@@ -53,6 +53,7 @@ public class PanelButton extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) 
     {
+
         PanelMPM panelMPM = this.ctrl.getFrameMPM().getPanelMPM();
 
         JButton sourceButton = (JButton) e.getSource();
@@ -63,8 +64,8 @@ public class PanelButton extends JPanel implements ActionListener
             panelMPM.afficherDateTot();
             if (panelMPM.estGriseTot()) 
             {
-                this.btnPlusTard.setEnabled(true);
-                this.btnPlusTot.setEnabled(false);
+                btnPlusTard.setEnabled(true);
+                btnPlusTot.setEnabled(false);
                 this.majBouttonEtat();
             }
         }
@@ -73,7 +74,7 @@ public class PanelButton extends JPanel implements ActionListener
             panelMPM.afficherDateTard();
             if (panelMPM.estGriseTard()) 
             {
-                this.btnPlusTard.setEnabled(false);
+                btnPlusTard.setEnabled(false);
                 this.majBouttonEtat();
             }
         }

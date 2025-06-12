@@ -1,9 +1,9 @@
 package src;
 
 import java.util.List;
-import src.ihm.FrameCritique;
 import src.ihm.FrameMPM;
 import src.ihm.FrameModification;
+import src.ihm.FrameCritique;
 import src.ihm.GrilleDonneesModel;
 import src.ihm.composants.Entite;
 import src.metier.CheminCritique;
@@ -12,27 +12,17 @@ import src.metier.GrapheMPM;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;   
 
-/**
- * Classe principale du contrôleur de l'application MPM
- * 
- * Cette classe est le cœur de l'application. Elle :
- * - Coordonne les interactions entre l'interface utilisateur et le modèle
- * - Gère les actions utilisateur (ajout, modification, suppression de tâches)
- * - Contrôle l'affichage des différentes fenêtres
- * - Assure la persistance des données via la classe Fichier
- */
 public class Controleur 
 {
     /*-------------------------*
      * Attributs du contrôleur *
      *-------------------------*/
-    private FrameMPM          frameMPM;          // Fenêtre principale de l'application
-    private FrameModification frameModification; // Fenêtre de modification des tâches
-    private FrameCritique     frameCritique;     // Fenêtre d'affichage des chemins critiques
-
-    private GrapheMPM         grapheMPM;         // Modèle du graphe MPM
-    private Fichier           fichier;           // Gestionnaire de fichiers
-    private boolean           formatDateTexte = false; // Format d'affichage des dates
+    private FrameMPM          frameMPM;
+    private FrameModification frameModification;
+    private FrameCritique     frameCritique;
+    private Fichier           fichier;
+    private GrapheMPM         graphe;
+    private boolean           formatDateTexte = false; 
 
     /*-----------------------------*
      * Point d'entrée du programme *
@@ -42,66 +32,45 @@ public class Controleur
     /*-------------------------*
      * Constructeurs principal *
      *-------------------------*/
-    /**
-     * Initialise le contrôleur et crée la fenêtre principale
-     */
     public Controleur() 
     {
-        this.grapheMPM = new GrapheMPM();
-        this.frameMPM  = new FrameMPM(this);
+        this.graphe   = new GrapheMPM(this);
+        this.frameMPM = new FrameMPM (this, this.graphe);
     }
 
     /*--------------------------*
      * Initialisation du projet *
      *--------------------------*/
-    /**
-     * Initialise un nouveau projet avec les paramètres spécifiés
-     * 
-     * @param dateRef Date de référence du projet
-     * @param typeDate Type de date (Début/Fin)
-     * @param nomFichier Nom du fichier de sauvegarde
-     */
     public void initProjet(String dateRef, char typeDate, String nomFichier) 
     {
         this.fichier = new Fichier(this, nomFichier); 
 
-        this.grapheMPM.setDateRef(dateRef);
-        this.grapheMPM.setDateType(typeDate);
-        this.grapheMPM.calculerDates();
+        this.graphe.setDateRef(dateRef);
+        this.graphe.setDateType(typeDate);
+        this.graphe.calculerDates();
         
-        if (typeDate == 'F') this.grapheMPM.setDateFin(dateRef);
+        if (typeDate == 'F') this.graphe.setDateFin(dateRef);
         
-        this.grapheMPM.initCheminCritique();
-        this.grapheMPM.initNiveauTaches();
+        this.graphe.initCheminCritique();
+        this.graphe.initNiveauTaches();
         this.afficherGraphe();
     }
 
-    /**
-     * Initialise un projet complet avec tous les paramètres
-     * 
-     * @param typeDate Type de date (Début/Fin)
-     * @param nomFichier Nom du fichier de sauvegarde
-     */
     public void initComplet(char typeDate, String nomFichier) 
     {
         this.initProjet(this.getDateRef(), typeDate, nomFichier);
         this.afficherGraphe();
         
-        this.frameMPM .setTheme(this.fichier.getTheme());
-        this.frameMPM.getPanelMPM().setCritique(this.fichier.isCritique());
+        this.frameMPM.setTheme(this.fichier.getTheme());
+        this.frameMPM.setCritique(this.fichier.isCritique());
+        this.graphe.chargerEntites(nomFichier);
     }
 
     /*--------------------------*
      * Affichage des interfaces *
      *--------------------------*/
-    /**
-     * Rafraîchit l'affichage du graphe
-     */
     public void afficherGraphe() { this.frameMPM.changerPanel(); }
 
-    /**
-     * Affiche la fenêtre de modification des tâches
-     */
     public void afficherModification()
     {
         if (this.frameModification == null) 
@@ -109,9 +78,6 @@ public class Controleur
         this.frameModification.setVisible(true);
     }   
 
-    /**
-     * Cache la fenêtre de modification des tâches
-     */
     public void cacherModification()
     {
         if (this.frameModification != null) 
@@ -121,23 +87,11 @@ public class Controleur
     /*---------------------------*
      * Actions utilisateur - IHM *
      *---------------------------*/
-    /**
-     * Ajoute une tâche à une position spécifique dans le graphe
-     * 
-     * @param tache La tâche à ajouter
-     * @param position Position où insérer la tâche
-     */
     public void ajouterTacheAPosition(TacheMPM tache, int position) 
     {
-        this.grapheMPM.ajouterTacheAPosition(tache, position);
-        this.fichier.ajouterTacheFichier(tache);
-        this.frameMPM.getPanelMPM().initEntites();
-        this.afficherGraphe();
+        this.graphe.ajouterTacheAPosition(tache, position);
     }
 
-    /**
-     * Affiche la fenêtre des chemins critiques
-     */
     public void afficherCritiques()
     {
         if (this.frameCritique == null)
@@ -146,60 +100,15 @@ public class Controleur
         this.frameCritique.setVisible(true);
     }
 
-    /**
-     * Change le thème de l'interface
-     */
-    public void changerTheme() { this.frameMPM.changerTheme(); }
+    public void changerTheme()       { this.frameMPM.changerTheme();                     }
+    public void resetPositions()     { this.frameMPM.resetPositions(); 
+                                       this.frameMPM.repaint();                          }
+    public void sauvegarder()        { this.fichier.sauvegarder();                       }
+    public void chargerFichier()     { this.fichier.chargerFichierB();                   }
+    public void copierTache()        { this.graphe.copierTache();                        }
+    public void collerTache()        { this.graphe.collerTache();                        }
+    public void chercherTache()      { this.graphe.chercherTache();                      }
 
-    /**
-     * Réinitialise les positions des tâches dans le graphe
-     */
-    public void resetPositions() 
-    { 
-        this.frameMPM.resetPositions(); 
-        this.frameMPM.repaint(); 
-    }
-
-    /**
-     * Sauvegarde l'état actuel du projet
-     */
-    public void sauvegarder() { this.fichier.sauvegarder(); }
-
-    /**
-     * Ouvre un dialogue pour charger un fichier
-     */
-    public void chargerFichier() { this.fichier.chargerFichierB(); }
-
-    /**
-     * Copie la tâche sélectionnée pour la coller plus tard
-     */
-    public void copierTache() 
-    { 
-        this.grapheMPM.copierTache();
-        this.getGrilleDonneesModel().refreshTab();
-    }
-
-    /**
-     * Colle la tâche précédemment copiée
-     */
-    public void collerTache() 
-    { 
-        this.grapheMPM.collerTache();
-        this.afficherGraphe();
-    }
-
-    /**
-     * Ouvre un dialogue pour rechercher une tâche
-     */
-    public void chercherTache() 
-    { 
-        this.grapheMPM.chercherTache();
-        this.frameMPM.setTacheSelectionnee(this.grapheMPM.getTacheSelectionnee());
-    }
-
-    /**
-     * Sauvegarde le projet dans un fichier
-     */
     public void sauvegarderFichier() 
     { 
         this.fichier.sauvegarderFichier(this.getTheme(), 
@@ -208,61 +117,26 @@ public class Controleur
                                         this.frameMPM.getPanelMPM()); 
     }
 
-    /**
-     * Met à jour la durée d'une tâche
-     * 
-     * @param index Index de la tâche à modifier
-     * @param duree Nouvelle durée
-     */
     public void mettreAJourDureeTache(int index, int duree) 
     { 
-        this.grapheMPM.mettreAJourDureeTache(index, duree);
-        this.fichier.modifierTacheFichier(this.grapheMPM.getTaches().get(index));
-        this.afficherGraphe();
+        this.graphe.mettreAJourDureeTache(index, duree); 
     }
 
-    /**
-     * Modifie les prédécesseurs d'une tâche
-     * 
-     * @param tacheModifier Tâche à modifier
-     * @param nouvelleValeur Nouvelle liste de prédécesseurs (noms séparés par des virgules)
-     */
     public void modifierPrecedents(TacheMPM tacheModifier, String nouvelleValeur) 
     { 
-        this.grapheMPM.modifierPrecedents(tacheModifier, nouvelleValeur);
-        this.fichier.modifierTacheFichier(tacheModifier);
-        this.initProjet(this.getDateRef(), this.getDateType(), this.fichier.getNomFichier());
+        this.graphe.modifierPrecedents(tacheModifier, nouvelleValeur); 
     }
 
-    /**
-     * Modifie les successeurs d'une tâche
-     * 
-     * @param tacheModifier Tâche à modifier
-     * @param nouvelleValeur Nouvelle liste de successeurs (noms séparés par des virgules)
-     */
     public void modifierSuivants(TacheMPM tacheModifier, String nouvelleValeur) 
     { 
-        this.grapheMPM.modifierSuivants(tacheModifier, nouvelleValeur);
-        this.fichier.modifierTacheFichier(tacheModifier);
-        this.initProjet(this.getDateRef(), this.getDateType(), this.fichier.getNomFichier());
+        this.graphe.modifierSuivants(tacheModifier, nouvelleValeur); 
     }
 
-    /**
-     * Modifie le nom d'une tâche
-     * 
-     * @param tacheModifier Tâche à modifier
-     * @param nouvelleValeur Nouveau nom
-     */
     public void modifierNom(TacheMPM tacheModifier, String nouvelleValeur) 
     {
-        this.grapheMPM.modifierNom(tacheModifier, nouvelleValeur);
-        this.fichier.modifierTacheFichier(tacheModifier);
-        this.initProjet(this.getDateRef(), this.getDateType(), this.fichier.getNomFichier());
+        this.graphe.modifierNom(tacheModifier, nouvelleValeur);
     }
 
-    /**
-     * Change le format d'affichage des dates (texte/nombre)
-     */
     public void changerAffichage()
     {
         this.setFormatDateTexte(!this.isFormatDateTexte());
@@ -275,24 +149,24 @@ public class Controleur
     public void   setZoom(double zoom)                       { this.frameMPM.getPanelMPM().setScale(zoom);  }
     public void   setTheme(String theme)                     { this.frameMPM.setTheme(theme);               }
     public void   setFormatDateTexte(boolean format)         { this.formatDateTexte = format;               }
-    public void   setNiveauTache(TacheMPM tache, int niveau) { this.grapheMPM.setNiveauTache(tache, niveau);   }
+    public void   setNiveauTache(TacheMPM tache, int niveau) { this.graphe.setNiveauTache(tache, niveau);   }
 
     public String getDateDuJour()     { return DateUtils.getDateDuJour();     }
     public String getTheme()          { return this.frameMPM.getTheme();      }
-    public String getDateRef()        { return this.grapheMPM.getDateRef();      }
-    public String getGrapheToString() { return this.grapheMPM.toString();        }
+    public String getDateRef()        { return this.graphe.getDateRef();      }
+    public String getGrapheToString() { return this.graphe.toString();        }
     
-    public char   getDateType()       { return this.grapheMPM.getDateType();     }
+    public char   getDateType()       { return this.graphe.getDateType();     }
     
-    public int    getDureeProjet()    { return this.grapheMPM.getDureeProjet();  }
-    public int    getNiveauTache(TacheMPM tache) { return this.grapheMPM.getNiveauTache(tache); }
-    public int[]  getNiveauxTaches()  { return this.grapheMPM.getNiveaux();      }
+    public int    getDureeProjet()    { return this.graphe.getDureeProjet();  }
+    public int    getNiveauTache(TacheMPM tache) { return this.graphe.getNiveauTache(tache); }
+    public int[]  getNiveauxTaches()  { return this.graphe.getNiveaux();      }
     
     public boolean isFormatDateTexte() { return this.formatDateTexte;         }
-    public boolean isCritique()        { return this.frameMPM.getPanelMPM().isCritique();   }
+    public boolean isCritique()        { return this.frameMPM.isCritique();   }
     public boolean getAfficher()       { return this.frameMPM.getPanelMPM().isCritique(); }
 
-    public List<CheminCritique> getCheminsCritiques() { return this.grapheMPM.getCheminsCritiques(); }
+    public List<CheminCritique> getCheminsCritiques() { return this.graphe.getCheminsCritiques(); }
 
     public void afficherCheminCritique(boolean afficher) 
     { 
@@ -307,11 +181,17 @@ public class Controleur
         return this.frameModification.getGrilleDonneesModel();
     }
 
-    public List<TacheMPM> getTaches()  { return this.grapheMPM.getTaches();    }
-    public List<Entite>   getEntites() { return this.frameMPM.getPanelMPM().getEntites(); }
-    
-    public TacheMPM       getTacheSelectionnee() { return this.frameMPM.getPanelMPM().getTacheSelectionnee();  }
+    /*--------------------------------------------*
+     * Accesseurs - Données du graphe et de l'IHM *
+     *--------------------------------------------*/
+    public List<TacheMPM> getTaches()  { return this.graphe.getTaches();    }
+    public List<Entite>   getEntites() { return this.frameMPM.getEntites(); }
+
+    /*---------------------------*
+     * Accesseurs - État général *
+     *---------------------------*/
+    public TacheMPM       getTacheSelectionnee() { return this.frameMPM.getTacheSelectionnee();  }
     public FrameMPM       getFrameMPM()          { return this.frameMPM;                         }
-    public GrapheMPM      getGraphe()            { return this.grapheMPM;                           }
+    public GrapheMPM      getGraphe()            { return this.graphe;                           }
     public Fichier        getFichier()           { return this.fichier;                          }
 }
