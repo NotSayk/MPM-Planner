@@ -295,7 +295,7 @@ public class PanelMPM extends JPanel
     
         this.setTheme(this.getTheme());
         this.afficherCheminCritique(this.afficher);
-        
+        this.getEntiteParTache(tacheSelectionnee).setCouleurContour(Color.BLUE);
         this.repaint();
     }
 
@@ -357,6 +357,7 @@ public class PanelMPM extends JPanel
     {
         appliquerTheme(theme);
         this.afficherCheminCritique(this.afficher);
+        this.ctrl.
         repaint();
     }
 
