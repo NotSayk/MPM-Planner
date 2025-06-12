@@ -92,7 +92,8 @@ public class PanelMPM extends JPanel
     public void initEntites() 
     {
         this.lstEntites.clear();
-        
+
+
         List<TacheMPM> taches = this.ctrl.getTaches();
         
         // Étape 1: Compter le nombre de tâches par niveau
@@ -120,6 +121,7 @@ public class PanelMPM extends JPanel
             this.graphePanel.updateSize();
         }
     }
+
 
     private int calculerNiveauxTaches(List<TacheMPM> taches, int[] nbTachesParNiveau) 
     {
@@ -342,7 +344,12 @@ public class PanelMPM extends JPanel
     {
         this.afficherDateTard = true;
         this.numNiveauxTard--;
-        if (this.graphePanel != null) {
+        if (this.numNiveauxTard <= 0)
+        { this.panelButton.getBtnCritique().setEnabled(true);
+            this.panelButton.repaint();
+        }
+        if (this.graphePanel != null) 
+        {
             this.graphePanel.setAfficherDateTard(this.afficherDateTard);
             this.graphePanel.setNumNiveauxTard(this.numNiveauxTard);
         }

@@ -579,11 +579,13 @@ public void chargerFichierB(Controleur ctrl)
         
         if (extension.equals("MC"))
         {
+            niveaux = new int[1000];
             ctrl.initComplet(this.getDateType(), fichierSelectionner.getPath());
             ErrorUtils.showSucces("Chargement d'un fichier de données complexe réussi");
         }
         else
         {
+            niveaux = new int[1000];
             ctrl.initProjet(this.getDateRef(), this.getDateType(), fichierSelectionner.getPath());
             ErrorUtils.showSucces("Chargement d'un fichier de données simple réussi");
         }

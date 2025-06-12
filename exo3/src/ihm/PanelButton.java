@@ -41,6 +41,7 @@ public class PanelButton extends JPanel implements ActionListener
         this.add(btnPlusTard);
         this.add(btnReset);
         this.add(btnCritique);
+        this.btnCritique.setEnabled(false);
         this.add(btnTheme);
 
         this.btnPlusTot. addActionListener(this);
@@ -82,6 +83,10 @@ public class PanelButton extends JPanel implements ActionListener
         {
             this.ctrl       .resetPositions();
             this.btnPlusTard.setEnabled(false);
+            this.ctrl.afficherCheminCritique(false);
+            this.cheminCritique = false;
+            this.btnCritique.setText(this.cheminCritique ? "Masquer critique" : "Chemin critique");
+            this.btnCritique.setEnabled(false);
             this.btnPlusTot .setEnabled(true);
             panelMPM   .cacherDates();
             panelMPM   .resetScale();
@@ -101,6 +106,11 @@ public class PanelButton extends JPanel implements ActionListener
             panelMPM.repaint();
             ErrorUtils.showSucces("Le thème a été modifié !");
         }
+    }
+
+    public JButton getBtnCritique() 
+    {
+        return this.btnCritique;
     }
     
     private void animationBouttonClique(JButton button) 
