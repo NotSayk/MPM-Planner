@@ -12,7 +12,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
 {
    private Controleur ctrl;
    
-   private JMenuItem menuiCharger;
+   private JMenuItem   menuiCharger;
    private JMenuItem menuiNouveau;
 
    private JMenuItem menuiSauvegarder;

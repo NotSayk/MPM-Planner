@@ -118,7 +118,7 @@ public class Controleur
     public void changerTheme()       { this.frameMPM.changerTheme();                     }
     public void resetPositions()     { this.frameMPM.resetPositions(); 
                                        this.frameMPM.repaint();                          }
-    public void sauvegarder()        { this.graphe.sauvegarder();                       }
+    public void sauvegarder()        { this.graphe.sauvegarderFichier(getTheme(), isCritique(), getDateRef(), this.frameMPM.getPanelMPM());}     
     public void chargerFichier()     { this.graphe.chargerFichierB(this);                   }
     public void copierTache()        
     { 
