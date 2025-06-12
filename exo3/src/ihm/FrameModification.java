@@ -14,7 +14,7 @@ public class FrameModification extends JFrame
         this.ctrl = ctrl;
 
         this.setTitle    ("MPM - Modification du graphe");
-        this.setSize     (300 ,500       );
+        this.setSize     (300 ,550                      );
 
 
         this.panelModification = new PanelModification(ctrl);
