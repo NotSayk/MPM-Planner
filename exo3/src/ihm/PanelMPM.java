@@ -617,7 +617,7 @@ public class PanelMPM extends JPanel
             String texte = obtenirTexteDate(entite.getTache().getDateTot());
             int[] coordonnees = calculerCoordonneesTexte(entite, fm, texte, 16, 55);
             
-            g2.setColor(Color.GREEN);
+            g2.setColor(new Color(0, 183, 14));
             g2.drawString(texte, coordonnees[0], coordonnees[1]);
         }
 
@@ -626,7 +626,7 @@ public class PanelMPM extends JPanel
             String texte = obtenirTexteDate(entite.getTache().getDateTard());
             int[] coordonnees = calculerCoordonneesTexte(entite, fm, texte, 52, 55);
             
-            g2.setColor(Color.RED);
+            g2.setColor(new Color(255, 27, 14));
             g2.drawString(texte, coordonnees[0], coordonnees[1]);
         }
 
