@@ -147,6 +147,8 @@ public class GrapheMPM
      *---------------------------------*/
     public void initCheminCritique() 
     {
+
+        this.lstChemins.clear();
         TacheMPM fin   = this.lstTaches.get(this.lstTaches.size() - 1);
         TacheMPM debut = this.lstTaches.get(0);
 
