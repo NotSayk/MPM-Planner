@@ -656,7 +656,7 @@ public class PanelMPM extends JPanel
         @Override
         public void mousePressed(MouseEvent e) 
         {
-            if (e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON3) 
+            if (e.getButton() == MouseEvent.BUTTON1) 
             {
                 int[] coordonneesEchelle = obtenirCoordonneesEchelle(e);
                 gererSelectionEntite(coordonneesEchelle[0], coordonneesEchelle[1]);
@@ -672,15 +672,8 @@ public class PanelMPM extends JPanel
 
         private void gererSelectionEntite(int x, int y) 
         {
-            Entite entiteOld = this.entiteSelectionnee;
             this.entiteSelectionnee = trouverEntiteAuPoint(x, y);
             if (entiteSelectionnee == null) return;
-
-            if( entiteOld != null && entiteOld.getTache().getNom().equals(entiteSelectionnee.getTache().getNom()) )
-            {
-                this.entiteSelectionnee = null;
-                return;
-            }
 
             offsetX = x - entiteSelectionnee.getX();
             offsetY = y - entiteSelectionnee.getY();
