@@ -20,8 +20,8 @@ public class GrilleDonneesModel extends AbstractTableModel
         {  
             "Nom",
             "Durée",
-            "Date Totale",
-            "Date Tardive", 
+            "Date Tot",
+            "Date Tard", 
             "Marge",
             "Précédents",
             "Suivants" 
