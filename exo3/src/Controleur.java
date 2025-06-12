@@ -131,7 +131,7 @@ public class Controleur
     {
         this.grapheMPM.ajouterTacheAPosition(tache, position);
         this.fichier.ajouterTacheFichier(tache);
-        this.frameMPM.getPanelMPM().initEntitesTest();
+        this.frameMPM.getPanelMPM().initEntites();
         this.afficherGraphe();
     }
 
