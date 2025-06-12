@@ -7,8 +7,6 @@ if errorlevel 1 (
     pause
     exit /b 1
 )
-copy listeTache.txt bin\listeTache.txt >nul 2>&1
-copy listeTache.MC bin\listeTache.MC >nul 2>&1
 cd bin
 java src.Controleur
 cd ..
