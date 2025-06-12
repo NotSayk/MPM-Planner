@@ -16,9 +16,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem menuiSauvegarder;
    private JMenuItem menuiQuitter;
 
-   private JMenuItem menuiRajouterTache;
-   private JMenuItem menuiSupprimerTache;
-   private JMenuItem menuiChangerDureeTache;
+   private JMenuItem menuiModifierGraphe;
    private JMenuItem menuiCopier;
    private JMenuItem menuiColler;
    private JMenuItem menuiChercherTache;
@@ -65,9 +63,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiSauvegarder       = new JMenuItem("Sauvegarder", createMenuIcon("💾"));
       this.menuiQuitter           = new JMenuItem("Quitter", createMenuIcon("🚪"));
 
-      this.menuiRajouterTache     = new JMenuItem("Ajouter une tâche", createMenuIcon("➕"));
-      this.menuiSupprimerTache    = new JMenuItem("Supprimer une tâche", createMenuIcon("❌"));
-      this.menuiChangerDureeTache = new JMenuItem("Changer durée tâche", createMenuIcon("⏱️"));
+      this.menuiModifierGraphe     = new JMenuItem("Modifier le graphe", createMenuIcon("➕"));
+
       this.menuiCopier            = new JMenuItem("Copier", createMenuIcon("📋"));
       this.menuiColler            = new JMenuItem("Coller", createMenuIcon("📌"));
       this.menuiChercherTache     = new JMenuItem("Chercher une tâche", createMenuIcon("🔎"));
@@ -102,9 +99,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       menuFichier.addSeparator();
       menuFichier.add(this.menuiQuitter);
 
-      menuEdition.add(this.menuiRajouterTache);
-      menuEdition.add(this.menuiSupprimerTache);
-      menuEdition.add(this.menuiChangerDureeTache);
+      menuEdition.add(this.menuiModifierGraphe);
       menuEdition.addSeparator();
       menuEdition.add(this.menuiChercherTache);
 
@@ -133,11 +128,9 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiSauvegarder.addActionListener(this); 
       this.menuiQuitter    .addActionListener(this); 
 
-      this.menuiRajouterTache    .addActionListener(this);
-      this.menuiSupprimerTache   .addActionListener(this);
-      this.menuiChangerDureeTache.addActionListener(this);
+      this.menuiModifierGraphe.addActionListener(this);
 
-      this.menuiInfosCritique.addActionListener(this);
+      this.menuiInfosCritique .addActionListener(this);
 
       this.menuiZoom25 .addActionListener(this);
       this.menuiZoom50 .addActionListener(this);
@@ -164,9 +157,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       styleMenuItem( this.menuiCharger           );
       styleMenuItem( this.menuiSauvegarder       );
       styleMenuItem( this.menuiQuitter           );
-      styleMenuItem( this.menuiRajouterTache     );
-      styleMenuItem( this.menuiSupprimerTache    );
-      styleMenuItem( this.menuiChangerDureeTache );
+      styleMenuItem( this.menuiModifierGraphe    );
       styleMenuItem( this.menuiCopier            );
       styleMenuItem( this.menuiColler            );
       styleMenuItem( this.menuiChercherTache     );
@@ -212,11 +203,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
             this.ctrl.sauvegarder();
          else if (source == this.menuiQuitter)
             System.exit(0);
-         else if (source == this.menuiRajouterTache)
-            this.ctrl.afficherModification();
-         else if (source == this.menuiSupprimerTache)
-            this.ctrl.afficherModification();
-         else if (source == this.menuiChangerDureeTache)
+         else if (source == this.menuiModifierGraphe)
             this.ctrl.afficherModification();
          else if (source == this.menuiCopier)
             this.ctrl.copierTache();
