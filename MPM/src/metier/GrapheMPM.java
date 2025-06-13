@@ -240,6 +240,7 @@ public class GrapheMPM
         this.theme = themeActuel;
         
         this.initNiveauTaches(); 
+        if (dateType == 'F' && this.dateRef != null) {this.setDateFin(this.dateRef);}
         this.calculerDates();
         this.initCheminCritique();
         this.ajouterTacheFichier(tache);
@@ -253,7 +254,7 @@ public class GrapheMPM
         {
             TacheMPM tache = taches.get(index);
             tache.setDuree(duree);
-            
+            if (dateType == 'F' && this.dateRef != null) {this.setDateFin(this.dateRef);}
             this.calculerDates      ();
             this.initCheminCritique ();
             this.initNiveauTaches   ();
@@ -447,6 +448,21 @@ public class GrapheMPM
 
     public int getDureeProjet() 
     {
+         if (this.lstTaches.size() <= 2) 
+        {
+            return 0;
+        }
+        if (this.lstTaches.size() == 3) 
+        {
+        for (TacheMPM tache : this.lstTaches) 
+        {
+            if (!tache.getNom().equals("DEBUT") && !tache.getNom().equals("FIN")) 
+            {
+                return tache.getDuree();
+            }
+        }
+    }
+    
         int dureeMax = 0;
         for (TacheMPM tache : this.lstTaches) 
         {
@@ -648,12 +664,13 @@ public void chargerFichierB(Controleur ctrl)
         e3.printStackTrace();
     }
 }
-    public void nouveauProjet() 
+    public void nouveauProjet(char dateType) 
     {
         this.lstTaches.clear();
         this.lstChemins.clear();
 
         this.formatDateTexte = false;
+        this.dateType        = dateType;
 
         String nomBase = JOptionPane.showInputDialog(null, "Entrez le nom du projet :", "Nouveau Projet", JOptionPane.QUESTION_MESSAGE);
         if (nomBase == null || nomBase.trim().isEmpty() || !nomBase.matches("[a-zA-Z]+")) 
@@ -676,7 +693,7 @@ public void chargerFichierB(Controleur ctrl)
         
         this.nomFichier = nomFichierFinal;
         this.estCritique     = false;
-        this.theme           = "LIGHT";
+        this.theme           = "LIGHT";        
 
         TacheMPM tacheDebut = new TacheMPM("DEBUT", 0, new ArrayList<>());
         TacheMPM tacheFin   = new TacheMPM("FIN", 0, new ArrayList<>());
@@ -684,6 +701,7 @@ public void chargerFichierB(Controleur ctrl)
         this.lstTaches.add(tacheDebut);
         this.lstTaches.add(tacheFin);
         
+       if (dateType == 'F' && this.dateRef != null) {this.setDateFin(this.dateRef);}
         this.calculerDates();
         this.initCheminCritique();
         this.initNiveauTaches();
