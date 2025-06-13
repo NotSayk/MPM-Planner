@@ -43,6 +43,8 @@ public class Controleur
     {
         if (nomFichier == null || nomFichier.isEmpty()) 
         {
+            this.graphe.setDateRef(dateRef);
+            this.graphe.setDateType(typeDate);
             this.afficherGraphe();
             return;
         }
@@ -100,7 +102,6 @@ public class Controleur
     public void nouveauProjet()
     {
         this.graphe.nouveauProjet();
-        this.graphe.setDateRef(this.getDateDuJour());
         this.frameMPM.changerPanel();
         this.frameMPM.getPanelMPM().initEntites();
         if (this.frameModification != null) 
