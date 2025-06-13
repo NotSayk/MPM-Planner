@@ -660,7 +660,6 @@ public void chargerFichierB(Controleur ctrl)
         {
             nomBase = "nouveauProjet";
             ErrorUtils.showError("Aucun nom de projet fourni, utilisation du nom par défaut 'nouveauProjet'");
-            return;
         }
 
         String extension = ".MC";
