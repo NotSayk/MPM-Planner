@@ -533,10 +533,12 @@ public class GrapheMPM
                 trouveFin = true;
         }
 
-        if (!trouveDebut) {
+        if (!trouveDebut) 
+        {
             TacheMPM debut = new TacheMPM("DEBUT", 0, new ArrayList<>());
             ajouterTacheAPosition(debut, 0);
-            for (TacheMPM tache : this.lstTaches) {
+            for (TacheMPM tache : this.lstTaches) 
+            {
                 if (tache.getPrecedents().isEmpty() && !tache.getNom().equals("DEBUT") && !tache.getNom().equals("FIN")) {
                     tache.getPrecedents().add(debut);
                     debut.getSuivants().add(tache);
@@ -583,8 +585,8 @@ public void chargerFichierB(Controleur ctrl)
     File             fichierSelectionner = null;
     JFileChooser     selectionFichier    = new JFileChooser();
     
-    FileNameExtensionFilter filterData = new FileNameExtensionFilter("Fichiers data (*.data)", "data");
-    FileNameExtensionFilter filterMC  = new FileNameExtensionFilter("Fichiers MPM (*.MC)", "MC");
+    FileNameExtensionFilter filterData   = new FileNameExtensionFilter("Fichiers data (*.data)", "data");
+    FileNameExtensionFilter filterMC     = new FileNameExtensionFilter("Fichiers MPM (*.MC)", "MC");
     
     selectionFichier.addChoosableFileFilter(filterData);
     selectionFichier.addChoosableFileFilter(filterMC);
