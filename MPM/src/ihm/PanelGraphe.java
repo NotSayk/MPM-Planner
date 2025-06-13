@@ -458,6 +458,12 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                     try 
                     {
                         int duree = Integer.parseInt(dureeTache);
+                        if( duree < 0 ) 
+                        {
+                            JOptionPane.showMessageDialog(this, "La durée ne peut pas être négative.", 
+                                                          "Erreur", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
                         this.entiteSelectionnee.getTache().setDuree(duree);
                         this.ctrl.getGraphe().calculerDates();
                         this.ctrl.getGraphe().initCheminCritique();
