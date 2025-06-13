@@ -484,7 +484,7 @@ public class GrapheMPM
                 String[] parties = ligne.split("\\|", -1);
 
                 if (parties.length > 1)
-                {
+                {   
                     nom   = parties[0];
                     duree = Integer.parseInt(parties[1]);
                     
@@ -513,9 +513,41 @@ public class GrapheMPM
             }
             
             scMPM.close();
+            verifierDebutFin();
             this.etablirRelationsSuivants();
             
         } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    private void verifierDebutFin() 
+    {
+        boolean trouveDebut = false;
+        boolean trouveFin   = false;
+
+        for (TacheMPM tache : this.lstTaches) 
+        {
+            if (tache.getNom().equals("DEBUT")) 
+                trouveDebut = true;
+            else if (tache.getNom().equals("FIN")) 
+                trouveFin = true;
+        }
+
+        if (!trouveDebut) {
+            TacheMPM debut = new TacheMPM("DEBUT", 0, new ArrayList<>());
+            ajouterTacheAPosition(debut, 0);
+            for (TacheMPM tache : this.lstTaches) {
+                if (tache.getPrecedents().isEmpty() && !tache.getNom().equals("DEBUT") && !tache.getNom().equals("FIN")) {
+                    tache.getPrecedents().add(debut);
+                    debut.getSuivants().add(tache);
+                }
+            }
+        }
+        
+        if (!trouveFin) {
+            TacheMPM fin = new TacheMPM("FIN", 0, new ArrayList<>());
+            lstTaches.add(fin);
+            ajouterTacheFichier(fin);
+        }
     }
 
     private void etablirRelationsSuivants() 
@@ -571,10 +603,10 @@ public void chargerFichierB(Controleur ctrl)
         
         String extension = fichierSelectionner.getName().substring(fichierSelectionner.getName().lastIndexOf('.') + 1);
         
-        // Initialiser une date de référence par défaut avant le chargement
-        if (this.dateRef == null || this.dateRef.isEmpty()) {
+        if (this.dateRef == null || this.dateRef.isEmpty()) 
+        {
             this.dateRef = ctrl.getDateDuJour();
-            this.dateType = 'D'; // Date de début par défaut
+            this.dateType = 'D';
         }
         
         if (extension.equals("MC"))
