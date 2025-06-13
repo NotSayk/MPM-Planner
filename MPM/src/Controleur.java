@@ -1,6 +1,8 @@
 package src;
 
 import java.util.List;
+
+import src.ihm.FrameCalcul;
 import src.ihm.FrameCritique;
 import src.ihm.FrameMPM;
 import src.ihm.FrameModification;
@@ -21,6 +23,7 @@ public class Controleur
     private FrameMPM          frameMPM;
     private FrameModification frameModification;
     private FrameCritique     frameCritique;
+    private FrameCalcul       frameCalcul;
 
     public static void main(String[] args) { new Controleur(); }
 
@@ -69,6 +72,20 @@ public class Controleur
         this.frameMPM.setTheme(this.getTheme());
         this.graphe.chargerEntites(nomFichier, this.getEntites());
     }
+
+    /**
+     * Affiche la fenêtre de calculs détaillés.
+     * Si la fenêtre n'existe pas, elle est créée.
+     */
+    public void afficherCalculs() 
+    {
+        if (this.frameCalcul == null)
+            this.frameCalcul = new FrameCalcul(this);
+        
+        this.frameCalcul.setVisible(true);
+        this.frameCalcul.actualiser();
+    }
+
 
     public void afficherGraphe() { this.frameMPM.changerPanel(); }
 
@@ -267,4 +284,28 @@ public class Controleur
     public String    getTheme            () { return this.graphe.getTheme();               }
     public boolean   isCritique          () { return this.graphe.isCritique();             }
     public String    getNomFichier       () { return this.graphe.getNomFichier();          }
+
+    /**
+     * Notifie l'affichage des dates au plus tôt pour un niveau donné
+     * @param niveau Le niveau des tâches affichées
+     */
+    public void notifierAffichageDateTot(int niveau) 
+    {
+        if (this.frameCalcul != null && this.frameCalcul.isVisible()) 
+        {
+            this.frameCalcul.ajouterCalculDatesTotNiveau(niveau);
+        }
+    }
+
+    /**
+     * Notifie l'affichage des dates au plus tard pour un niveau donné
+     * @param niveau Le niveau des tâches affichées
+     */
+    public void notifierAffichageDateTard(int niveau) 
+    {
+        if (this.frameCalcul != null && this.frameCalcul.isVisible()) 
+        {
+            this.frameCalcul.ajouterCalculDatesTardNiveau(niveau);
+        }
+    }
 }

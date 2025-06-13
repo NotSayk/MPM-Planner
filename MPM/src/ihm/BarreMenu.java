@@ -26,6 +26,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
    private JMenuItem  menuiCopier;
    private JMenuItem  menuiColler;
    private JMenuItem  menuiChercherTache;
+   private JMenuItem  menuiAfficherCalcul;
 
    private JMenuItem  menuiInfosCritique;
 
@@ -81,6 +82,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiChercherTache     = new JMenuItem("Chercher une tâche", createMenuIcon("🔎"));
 
       this.menuiInfosCritique     = new JMenuItem("Chemins critiques", createMenuIcon("🚧"));
+      this.menuiAfficherCalcul    = new JMenuItem("Afficher les calculs", createMenuIcon("📊"));
 
       this.menuiZoom25            = new JMenuItem("25%");
       this.menuiZoom50            = new JMenuItem("50%");
@@ -117,6 +119,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       menuEdition.add(this.menuiChercherTache);
 
       menuInfos.add(this.menuiInfosCritique);  
+      menuInfos.add(this.menuiAfficherCalcul);
 
       menuZoom.add(this.menuiZoom25);
       menuZoom.add(this.menuiZoom50);
@@ -145,6 +148,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiModifierGraphe.addActionListener(this);
 
       this.menuiInfosCritique .addActionListener(this);
+      this.menuiAfficherCalcul.addActionListener(this);
 
       this.menuiZoom25 .addActionListener(this);
       this.menuiZoom50 .addActionListener(this);
@@ -170,6 +174,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiInfosCritique   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H , InputEvent.CTRL_DOWN_MASK));
       this.menuiModifierGraphe  .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M , InputEvent.CTRL_DOWN_MASK));
 
+
       styleMenuItem( this.menuiCharger           );
       styleMenuItem( this.menuiSauvegarder       );
       styleMenuItem( this.menuiNouveau           );
@@ -185,6 +190,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       styleMenuItem( this.menuiZoom150           );
       styleMenuItem( this.menuiZoom200           );
       styleMenuItem( this.menuiChangerAffichage  );
+      styleMenuItem( this.menuiAfficherCalcul    );
       styleMenuItem( this.menuiInfosCritique     );
    }
 
@@ -221,6 +227,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
          if (source == this.menuiChercherTache)    this.chercherTache();
          if (source == this.menuiChangerAffichage) this.ctrl.changerAffichage();
          if (source == this.menuiInfosCritique)    this.ctrl.afficherCritiques();
+         if (source == this.menuiAfficherCalcul)   this.ctrl.afficherCalculs();
       }
     }
 

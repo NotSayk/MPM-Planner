@@ -42,6 +42,7 @@ public class PanelMPM extends JPanel
     private PanelButton  panelButton;
     private PanelGraphe  graphePanel;
     private JScrollPane  scrollPane;
+    private FrameCalcul  frameCalcul;
 
     /**
      * Constructeur du panel MPM
@@ -377,6 +378,30 @@ public class PanelMPM extends JPanel
     }
 
     /**
+     * Notifie l'affichage des dates au plus tôt pour un niveau donné
+     * @param niveau Le niveau des tâches affichées
+     */
+    public void notifierAffichageDateTot(int niveau) 
+    {
+        if (this.frameCalcul != null && this.frameCalcul.isVisible()) 
+        {
+            this.frameCalcul.ajouterCalculDatesTotNiveau(niveau);
+        }
+    }
+
+    /**
+     * Notifie l'affichage des dates au plus tard pour un niveau donné
+     * @param niveau Le niveau des tâches affichées
+     */
+    public void notifierAffichageDateTard(int niveau) 
+    {
+        if (this.frameCalcul != null && this.frameCalcul.isVisible()) 
+        {
+            this.frameCalcul.ajouterCalculDatesTardNiveau(niveau);
+        }
+    }
+
+    /**
      * Active ou désactive l'affichage du chemin critique
      * @param aff true pour afficher, false pour masquer
      */
@@ -420,8 +445,9 @@ public class PanelMPM extends JPanel
 
     /**
      * Affiche les dates au plus tôt
+     * @return Le niveau actuel des tâches affichées
      */
-    public void afficherDateTot()
+    public int afficherDateTot()
     {
         this.afficherDateTot = true;
         this.numNiveauxTot++;
@@ -431,18 +457,21 @@ public class PanelMPM extends JPanel
             this.graphePanel.setNumNiveauxTot(this.numNiveauxTot);
         }
         this.repaint();
+        return this.numNiveauxTot; // Retourne le niveau actuel
     }
 
     /**
      * Affiche les dates au plus tard
+     * @return Le niveau actuel des tâches affichées
      */
-    public void afficherDateTard()
+    public int afficherDateTard()
     {
         this.afficherDateTard = true;
         this.numNiveauxTard--;
 
         if (this.numNiveauxTard <= 0)
-        { this.panelButton.getBtnCritique().setEnabled(true);
+        { 
+            this.panelButton.getBtnCritique().setEnabled(true);
             this.panelButton.repaint();
         }
         if (this.graphePanel != null) 
@@ -451,6 +480,7 @@ public class PanelMPM extends JPanel
             this.graphePanel.setNumNiveauxTard(this.numNiveauxTard);
         }
         this.repaint();
+        return this.numNiveauxTard; // Retourne le niveau actuel
     }
 
     /**

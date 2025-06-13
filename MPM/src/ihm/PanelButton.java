@@ -76,7 +76,10 @@ public class PanelButton extends JPanel implements ActionListener
         
         if (e.getSource() == this.btnPlusTot) 
         {
-            panelMPM.afficherDateTot();
+            int niveau = panelMPM.afficherDateTot();
+            // Notifier le contrôleur de l'affichage des dates au plus tôt pour ce niveau
+            this.ctrl.notifierAffichageDateTot(niveau);
+            
             if (panelMPM.estGriseTot()) 
             {
                 this.btnPlusTard.setEnabled(true);
@@ -86,7 +89,10 @@ public class PanelButton extends JPanel implements ActionListener
         }
         else if (e.getSource() == this.btnPlusTard) 
         {
-            panelMPM.afficherDateTard();
+            int niveau = panelMPM.afficherDateTard();
+            // Notifier le contrôleur de l'affichage des dates au plus tard pour ce niveau
+            this.ctrl.notifierAffichageDateTard(niveau);
+            
             if (panelMPM.estGriseTard()) 
             {
                 this.btnPlusTard.setEnabled(false);
