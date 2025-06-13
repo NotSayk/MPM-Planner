@@ -7,6 +7,7 @@ import src.Controleur;
 public class FrameCritique extends JFrame
 {
     private Controleur ctrl;
+    
     private PanelCritique panelCritique;
     
     public FrameCritique(Controleur ctrl) 

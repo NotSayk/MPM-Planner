@@ -62,16 +62,16 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
         public PanelGraphe(PanelMPM parent, Controleur ctrl)
         {
             this.parentPanel = parent;
-            this.ctrl = ctrl;
-            this.lstEntites = new ArrayList<>();
+            this.ctrl        = ctrl;
+            this.lstEntites  = new ArrayList<>();
             
-            this.popup      = new JPopupMenu();
-            this.popupEdit  = new JPopupMenu();
+            this.popup       = new JPopupMenu();
+            this.popupEdit   = new JPopupMenu();
 
-            this.jmCopier   = new JMenuItem("Copier");
-            this.jmSuprimer = new JMenuItem("Supprimer");
-            this.jmDuree    = new JMenuItem("Modifier durée");
-            this.jmNom      = new JMenuItem("Modifier nom");
+            this.jmCopier    = new JMenuItem("Copier");
+            this.jmSuprimer  = new JMenuItem("Supprimer");
+            this.jmDuree     = new JMenuItem("Modifier durée");
+            this.jmNom       = new JMenuItem("Modifier nom");
 
             this.popupEdit.add(this.jmCopier);
             this.popupEdit.add(this.jmSuprimer);
@@ -79,12 +79,12 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             this.popupEdit.add(this.jmDuree);
             this.popupEdit.add(this.jmNom);
 
-            this.scale = 1.0;
-            this.afficherDateTot = false;
+            this.scale            = 1.0;
+            this.afficherDateTot  = false;
             this.afficherDateTard = false;
-            this.afficher = false;
-            this.numNiveauxTot = -1;
-            this.numNiveauxTard = 0;
+            this.afficher         = false;
+            this.numNiveauxTot    = -1;
+            this.numNiveauxTard   = 0;
 
             this.setBackground         (Color.WHITE);
             this.addMouseListener      (this);
@@ -102,38 +102,21 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
         /*----------------------------------*
          * Méthodes publiques               *
          *----------------------------------*/
-        public void setEntites(List<Entite> entites) {
+        public void setEntites(List<Entite> entites) 
+        {
             this.lstEntites = entites;
-            updateSize();
+            this.updateSize();
         }
 
-        public void setAfficherDateTot(boolean afficher) {
-            this.afficherDateTot = afficher;
-        }
+        public void setAfficherDateTot (boolean afficher) { this.afficherDateTot  = afficher; }
+        public void setAfficherDateTard(boolean afficher) { this.afficherDateTard = afficher; }
+        public void setAfficher        (boolean afficher) { this.afficher         = afficher; }
 
-        public void setAfficherDateTard(boolean afficher) {
-            this.afficherDateTard = afficher;
-        }
+        public void setNumNiveauxTot (int num) { this.numNiveauxTot  = num; }
+        public void setNumNiveauxTard(int num) { this.numNiveauxTard = num; }
 
-        public void setAfficher(boolean afficher) {
-            this.afficher = afficher;
-        }
-
-        public void setNumNiveauxTot(int num) {
-            this.numNiveauxTot = num;
-        }
-
-        public void setNumNiveauxTard(int num) {
-            this.numNiveauxTard = num;
-        }
-
-        public double getScale() {
-            return this.scale;
-        }
-
-        public void setScale(double scale) {
-            this.scale = scale;
-        }
+        public double getScale()             { return this.scale;  }
+        public void   setScale(double scale) { this.scale = scale; }
 
         /*----------------------------------*
          * Méthodes de gestion de la taille *
@@ -194,7 +177,7 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             for (Entite entite : lstEntites)
             {
                 entite.paint(g2);
-                dessinerDatesSurEntite(g2, entite);
+                this.dessinerDatesSurEntite(g2, entite);
             }
         }
 
@@ -202,15 +185,8 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
         {
             FontMetrics fm = g2.getFontMetrics();
 
-            if (afficherDateTot && entite.getNiveauTache() <= numNiveauxTot) 
-            {
-                dessinerDateTot(g2, entite, fm);
-            }
-
-            if (afficherDateTard && entite.getNiveauTache() >= numNiveauxTard) 
-            {
-                dessinerDateTard(g2, entite, fm);
-            }
+            if ( afficherDateTot  && entite.getNiveauTache() <= numNiveauxTot  ) this.dessinerDateTot (g2, entite, fm);
+            if ( afficherDateTard && entite.getNiveauTache() >= numNiveauxTard ) this.dessinerDateTard(g2, entite, fm);
         }
 
         private void dessinerDateTot(Graphics2D g2, Entite entite, FontMetrics fm) 
@@ -233,9 +209,9 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
 
         private String obtenirTexteDate(int date) 
         {
-            if(ctrl.isFormatDateTexte())
+            if(this.ctrl.isFormatDateTexte())
             {
-                String dateStr = DateUtils.ajouterJourDate(ctrl.getDateRef(), date);
+                String dateStr = DateUtils.ajouterJourDate(this.ctrl.getDateRef(), date);
                 if (dateStr.length() >= 5) return dateStr.substring(0, 5); // JJ/MM
                 else                       return dateStr;
             }
@@ -251,10 +227,7 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             return new int[]{x, y};
         }
 
-        private void dessinerConnexions(Graphics2D g2) 
-        {
-            parentPanel.dessinerConnexions(g2);
-        }
+        private void dessinerConnexions(Graphics2D g2) { this.parentPanel.dessinerConnexions(g2); }
 
         private Entite trouverEntiteAuPoint(int x, int y) 
         {
@@ -308,14 +281,8 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             int[] coordonneesEchelle = obtenirCoordonneesEchelle(e);
             Entite entiteCliquee = trouverEntiteAuPoint(coordonneesEchelle[0], coordonneesEchelle[1]);
 
-            if (e.getButton() == MouseEvent.BUTTON1) 
-            {
-                gererClicGauche(entiteCliquee);
-            }
-            if(e.getButton() == MouseEvent.BUTTON3) 
-            {
-                gererClicDroit(e, entiteCliquee);
-            }
+            if (e.getButton() == MouseEvent.BUTTON1) this.gererClicGauche(entiteCliquee);
+            if (e.getButton() == MouseEvent.BUTTON3) this.gererClicDroit(e, entiteCliquee);
         }
 
         private void gererClicGauche(Entite entiteCliquee) 

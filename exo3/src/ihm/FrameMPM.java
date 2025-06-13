@@ -11,6 +11,7 @@ public class FrameMPM extends JFrame
 {
     
     private Controleur ctrl;
+    
     private GrapheMPM  graphe;
 
     private PanelMPM   panelMPM;

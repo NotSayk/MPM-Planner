@@ -12,6 +12,7 @@ public class PanelButton extends JPanel implements ActionListener
 {
 
     private Controleur ctrl;
+    
     private boolean    cheminCritique;
 
     private JButton    btnPlusTot;

@@ -10,6 +10,7 @@ import src.utils.Utils;
 public class GrilleDonneesModel extends AbstractTableModel
 {
     private Controleur ctrl;
+    
     private String[]   tabEntetes;
     private Object[][] tabDonnees;
 
