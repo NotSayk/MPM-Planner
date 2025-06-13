@@ -355,13 +355,13 @@ public class GrapheMPM
     {
         if (this.tacheCopiee == null) 
         {
-            System.out.println("Aucune tâche à coller");
+            ErrorUtils.showError("Aucune tâche à coller");
             return;
         }
 
         if (this.tacheCopiee.getNom().equals("DEBUT") || this.tacheCopiee.getNom().equals("FIN")) 
         {
-            System.out.println("Impossible de coller la tâche DEBUT ou FIN");
+            ErrorUtils.showError("Impossible de coller la tâche DEBUT ou FIN");
             return;
         }
 
@@ -375,8 +375,9 @@ public class GrapheMPM
             }
         }
 
-        if (!tacheExiste) {
-            System.out.println("La tâche copiée n'existe plus dans le fichier");
+        if (!tacheExiste) 
+        {
+            ErrorUtils.showError("La tâche copiée n'existe pas dans le fichier");
             return;
         }
         String nouveauNom = this.tacheCopiee.getNom() + "_copie";
@@ -398,11 +399,8 @@ public class GrapheMPM
         nouvelleTache.setSuivants(suivantsCopies);
         
         for (TacheMPM suivant : suivantsCopies) 
-        {
             suivant.getPrecedents().add(nouvelleTache);
-        }
         
-        System.out.println("Tâche collée : " + nomFinal);
     }
 
     public void collerTache(TacheMPM tacheOriginale)
@@ -411,9 +409,9 @@ public class GrapheMPM
             throw new IllegalArgumentException("La tâche à coller ne peut pas être nulle.");
         
         String nouveauNom = tacheOriginale.getNom() + "_copie";
+        int    compteur   = 1;
+        String nomFinal   = nouveauNom;
         
-        int    compteur = 1;
-        String nomFinal = nouveauNom;
         while (this.trouverTache(nomFinal) != null) 
         {
             nomFinal = nouveauNom + compteur;
@@ -421,10 +419,10 @@ public class GrapheMPM
         }
         
         List<TacheMPM> precedentsVides = new ArrayList<>();
-        TacheMPM nouvelleTache = new TacheMPM(nomFinal, tacheOriginale.getDuree(), precedentsVides);
+        TacheMPM       nouvelleTache   = new TacheMPM(nomFinal, tacheOriginale.getDuree(), precedentsVides);
+        List<TacheMPM> taches          = this.getTaches();
+        TacheMPM       fin             = taches.remove(taches.size() - 1);
         
-        List<TacheMPM> taches = this.getTaches();
-        TacheMPM fin = taches.remove(taches.size() - 1);
         taches.add(nouvelleTache);
         taches.add(fin);
         
@@ -507,9 +505,12 @@ public class GrapheMPM
                 }
                 else
                 {
-                    if (parties[0].equals("false"))      this.estCritique = false;
-                    else if (parties[0].equals("true"))  this.estCritique = true;
-                    else                                 this.theme = parties[0];
+                    switch (parties[0]) 
+                    {
+                        case "false" -> this.estCritique = false;
+                        case "true"  -> this.estCritique = true;
+                        default      -> this.theme       = parties[0];
+                    }
                 }
             }
             
@@ -527,10 +528,8 @@ public class GrapheMPM
 
         for (TacheMPM tache : this.lstTaches) 
         {
-            if (tache.getNom().equals("DEBUT")) 
-                trouveDebut = true;
-            else if (tache.getNom().equals("FIN")) 
-                trouveFin = true;
+            if (tache.getNom().equals("DEBUT")) trouveDebut = true;
+            if (tache.getNom().equals("FIN"))   trouveFin   = true;
         }
 
         if (!trouveDebut) 
@@ -612,17 +611,18 @@ public void chargerFichierB(Controleur ctrl)
             this.dateType = 'D';
         }
         
-        if (extension.equals("MC"))
+        switch (extension) 
         {
-            niveaux = new int[1000];
-            ctrl.initComplet(this.getDateType(), fichierSelectionner.getPath());
-            ErrorUtils.showSucces("Chargement d'un fichier de données complexe réussi");
-        }
-        else
-        {
-            niveaux = new int[1000];
-            ctrl.initProjet(this.getDateRef(), this.getDateType(), fichierSelectionner.getPath());
-            ErrorUtils.showSucces("Chargement d'un fichier de données simple réussi");
+            case "MC" -> {
+                niveaux = new int[1000];
+                ctrl.initComplet(this.getDateType(), fichierSelectionner.getPath());
+                ErrorUtils.showSucces("Chargement d'un fichier de données complexe réussi");
+            }
+            default -> {
+                niveaux = new int[1000];
+                ctrl.initProjet(this.getDateRef(), this.getDateType(), fichierSelectionner.getPath());
+                ErrorUtils.showSucces("Chargement d'un fichier de données simple réussi");
+            }
         }
     }
     catch (NullPointerException e1) 
