@@ -21,6 +21,7 @@ import src.Controleur;
 import src.ihm.composants.Entite;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;
+import src.utils.Utils;
 
 
 public class PanelGraphe extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, 
@@ -289,8 +290,8 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
         {
             if (entiteCliquee != null) 
             {
-                parentPanel.reinitialiserCouleursEntites();
-                parentPanel.setTacheSelectionnee(entiteCliquee.getTache());
+                this.parentPanel.reinitialiserCouleursEntites();
+                this.parentPanel.setTacheSelectionnee(entiteCliquee.getTache());
                 entiteCliquee.setCouleurContour(Color.BLUE);
                 repaint();
             }
@@ -308,8 +309,8 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
         {
             if (this.entiteSelectionnee != null) 
             {
-                int[] coordonneesEchelle = obtenirCoordonneesEchelle(e);
-                deplacerEntite(coordonneesEchelle[0], coordonneesEchelle[1], e);
+                int[] coordonneesEchelle = this.obtenirCoordonneesEchelle(e);
+                this.deplacerEntite(coordonneesEchelle[0], coordonneesEchelle[1], e);
             }
         }
 
@@ -321,7 +322,7 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             if(newX < 0) newX = 0;
             if(newY < 0) newY = 0;
 
-            entiteSelectionnee.setPosition(newX, newY);
+            this.entiteSelectionnee.setPosition(newX, newY);
             
             this.updateSize();
             this.scrollRectToVisible(new Rectangle(e.getX() - 100, e.getY() - 100, 100, 100));
@@ -335,7 +336,7 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             int Xscale = (int)(e.getX() / scale);
             int Yscale = (int)(e.getY() / scale);
             
-            Entite entite = trouverEntiteAuPoint(Xscale, Yscale);
+            Entite entite = this.trouverEntiteAuPoint(Xscale, Yscale);
             
             if (entite != null) 
             {
@@ -343,15 +344,7 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                 {
                     TacheMPM tache = entite.getTache();
 
-                    String anterieur = "";
-                    if (!tache.getPrecedents().isEmpty()) 
-                    {
-                        for (int i = 0; i < tache.getPrecedents().size(); i++) 
-                        {
-                            anterieur += tache.getPrecedents().get(i).getNom();
-                            if (i < tache.getPrecedents().size() - 1) anterieur += ", ";
-                        }
-                    }
+                    String anterieur = Utils.formatVirgulePrecedents(tache);
 
                     // Popup menu
                     
