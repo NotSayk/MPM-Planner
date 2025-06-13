@@ -107,6 +107,7 @@ public class Controleur
         if (this.frameModification != null) 
             this.frameModification.getGrilleDonneesModel().refreshTab();
         this.frameMPM.repaint();
+        this.sauvegarder();
     }
 
     public void afficherCritiques()

@@ -687,8 +687,6 @@ public void chargerFichierB(Controleur ctrl)
         this.calculerDates();
         this.initCheminCritique();
         this.initNiveauTaches();
-
-        this.sauvegarder();
     }
 
     public void sauvegarder() 
@@ -712,7 +710,7 @@ public void chargerFichierB(Controleur ctrl)
     {
         try 
         {
-            PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream("listeTache.MC"), "UTF8"));
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(this.nomFichier), "UTF8"));
 
             for (TacheMPM tache : this.lstTaches)
             {
@@ -720,7 +718,6 @@ public void chargerFichierB(Controleur ctrl)
 
                 int    dateRefNum    = Integer.parseInt(dateRef.substring(0, 2));
                 String dateRefSuffix = dateRef.substring(2);
-
                 pw.println(tache.getNom  () + "|" + 
                            tache.getDuree() + "|" + 
                            precedentsStr    + "|" +
