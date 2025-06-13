@@ -163,8 +163,8 @@ public class GrapheMPM
     }
   
     private void trouverTousCheminsCritiques(TacheMPM actuelle, TacheMPM fin, 
-                                            List<TacheMPM> cheminActuel, 
-                                            List<List<TacheMPM>> tousChemin) 
+                                             List<TacheMPM> cheminActuel, 
+                                             List<List<TacheMPM>> tousChemin) 
     {
         cheminActuel.add(actuelle);
         
@@ -177,7 +177,7 @@ public class GrapheMPM
         {
             for (TacheMPM successeur : getSuccesseurs(actuelle))
                 if (CheminCritique.estLienCritique(actuelle, successeur))
-                    trouverTousCheminsCritiques(successeur, fin, cheminActuel, tousChemin);
+                    this.trouverTousCheminsCritiques(successeur, fin, cheminActuel, tousChemin);
         }
         
         cheminActuel.remove(cheminActuel.size() - 1);
@@ -219,7 +219,7 @@ public class GrapheMPM
         }
         
         List<TacheMPM> taches = this.getTaches();
-        TacheMPM fin = taches.remove(taches.size() - 1);
+        TacheMPM          fin = taches.remove(taches.size() - 1);
         
         if (position > taches.size()) 
             position = taches.size();
@@ -227,7 +227,7 @@ public class GrapheMPM
         taches.add(position, tache);
         taches.add(fin);
 
-        String  themeActuel          = this.theme;
+        String  themeActuel = this.theme;
         
         if (tache.getPrecedents().isEmpty() && position > 0) 
         {
@@ -253,9 +253,9 @@ public class GrapheMPM
             TacheMPM tache = taches.get(index);
             tache.setDuree(duree);
             
-            this.calculerDates();
-            this.initCheminCritique();
-            this.initNiveauTaches();
+            this.calculerDates      ();
+            this.initCheminCritique ();
+            this.initNiveauTaches   ();
             this.modifierTacheFichier(tache);
             
             return true;
