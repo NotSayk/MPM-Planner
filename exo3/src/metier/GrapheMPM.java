@@ -18,6 +18,7 @@ import src.ihm.PanelMPM;
 import src.ihm.composants.Entite;
 import src.utils.DateUtils;
 import src.utils.ErrorUtils;
+import src.utils.Utils;
 
 public class GrapheMPM
 {
@@ -640,13 +641,14 @@ public void nouveauProjet()
 {
     this.lstTaches.clear();
     this.lstChemins.clear();
+
     this.formatDateTexte = false;
-    this.nomFichier = "nouveauProjet.MC";
-    this.estCritique = false;
-    this.theme = "LIGHT"; // Initialiser le thème par défaut
+    this.nomFichier      = "nouveauProjet.MC";
+    this.estCritique     = false;
+    this.theme           = "LIGHT"; // Initialiser le thème par défaut
 
     TacheMPM tacheDebut = new TacheMPM("DEBUT", 0, new ArrayList<>());
-    TacheMPM tacheFin = new TacheMPM("FIN", 0, new ArrayList<>());
+    TacheMPM tacheFin   = new TacheMPM("FIN", 0, new ArrayList<>());
     
     this.lstTaches.add(tacheDebut);
     this.lstTaches.add(tacheFin);
@@ -664,18 +666,7 @@ public void nouveauProjet()
 
             for (TacheMPM tache : this.lstTaches)
             {
-                String precedentsStr = "";
-                if (!tache.getPrecedents().isEmpty()) 
-                {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < tache.getPrecedents().size(); i++) 
-                    {
-                        sb.append(tache.getPrecedents().get(i).getNom());
-                        if (i < tache.getPrecedents().size() - 1)
-                            sb.append(",");
-                    }
-                    precedentsStr = sb.toString();
-                }
+                String precedentsStr = Utils.formatVirgulePrecedents(tache);
 
                 pw.println(tache.getNom() + "|" + tache.getDuree() + "|" + precedentsStr);
             }
@@ -691,29 +682,18 @@ public void nouveauProjet()
 
             for (TacheMPM tache : this.lstTaches)
             {
-                String precedentsStr = "";
-                if (!tache.getPrecedents().isEmpty()) 
-                {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < tache.getPrecedents().size(); i++) 
-                    {
-                        sb.append(tache.getPrecedents().get(i).getNom());
-                        if (i < tache.getPrecedents().size() - 1)
-                            sb.append(",");
-                    }
-                    precedentsStr = sb.toString();
-                }
+                String precedentsStr = Utils.formatVirgulePrecedents(tache);
 
                 int    dateRefNum    = Integer.parseInt(dateRef.substring(0, 2));
                 String dateRefSuffix = dateRef.substring(2);
 
-                pw.println(tache.getNom() + "|" + 
-                          tache.getDuree() + "|" + 
-                          precedentsStr + "|" +
-                          panelMere.getEntiteParNom(tache.getNom()).getX() + "|" + 
-                          panelMere.getEntiteParNom(tache.getNom()).getY() + "|" +
-                          (tache.getDateTot() + dateRefNum) + dateRefSuffix + "|" +
-                          (tache.getDateTard() + dateRefNum) + dateRefSuffix);
+                pw.println(tache.getNom  () + "|" + 
+                           tache.getDuree() + "|" + 
+                           precedentsStr    + "|" +
+                           panelMere.getEntiteParNom(tache.getNom()).getX()   + "|" + 
+                           panelMere.getEntiteParNom(tache.getNom()).getY()   + "|" +
+                           (tache.getDateTot()  + dateRefNum) + dateRefSuffix + "|" +
+                           (tache.getDateTard() + dateRefNum) + dateRefSuffix);
             }
             
             pw.println(theme);
