@@ -231,11 +231,9 @@ public class PanelCalcul extends JPanel
             
             // Afficher la marge
             marge = tache.getDateTard() - tache.getDateTot();
-            sb.append("Marge de ").append(nom).append(" = ").append(marge).append(" jour(s)");
-            if (marge == 0) 
-            {
-                sb.append(" (tâche critique)");
-            }
+            sb.append("Marge de ").append(nom).append(" = ").append(marge).append(" jour" + (marge > 1 ? "s" : "")).append("\n");
+
+            if (marge == 0) sb.append(" (tâche critique)");
             sb.append("\n\n");
         }
         
