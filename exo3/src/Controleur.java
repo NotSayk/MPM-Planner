@@ -65,7 +65,6 @@ public class Controleur
         this.afficherGraphe();
         
         this.frameMPM.setTheme(this.getTheme());
-        this.frameMPM.setCritique(this.isCritique());
         this.graphe.chargerEntites(nomFichier, this.getEntites());
     }
 
