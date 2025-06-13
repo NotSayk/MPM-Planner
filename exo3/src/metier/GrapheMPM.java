@@ -463,11 +463,14 @@ public class GrapheMPM
     {
         this.nomFichier = nomFichier;
 
-        Scanner  scMPM;
-        String   ligne;
-        String   nom;
-        int      duree;
-        String[] precedents;
+        Scanner        scMPM;
+        String         ligne;
+        String         nom;
+        int            duree;
+        String[]       precedents;
+        List<TacheMPM> tachesPrecedentes;
+        TacheMPM       tachePrecedente;
+        TacheMPM       tache;
 
         this.lstTaches.clear();
 
@@ -492,15 +495,15 @@ public class GrapheMPM
                     else
                         precedents = new String[0];
                     
-                    List<TacheMPM> tachesPrecedentes = new ArrayList<>();
+                    tachesPrecedentes = new ArrayList<>();
                     for (String precedent : precedents) 
                     {
-                        TacheMPM tachePrecedente = this.trouverTache(precedent.trim());
+                        tachePrecedente = this.trouverTache(precedent.trim());
                         if (tachePrecedente != null) 
                             tachesPrecedentes.add(tachePrecedente);
                     }
                     
-                    TacheMPM tache = new TacheMPM(nom, duree, tachesPrecedentes);
+                    tache = new TacheMPM(nom, duree, tachesPrecedentes);
                     this.lstTaches.add(tache);    
                 }
                 else
@@ -515,7 +518,7 @@ public class GrapheMPM
             }
             
             scMPM.close();
-            verifierDebutFin();
+            this.verifierDebutFin();
             this.etablirRelationsSuivants();
             
         } catch (Exception e) { e.printStackTrace(); }
@@ -523,8 +526,10 @@ public class GrapheMPM
 
     private void verifierDebutFin() 
     {
-        boolean trouveDebut = false;
-        boolean trouveFin   = false;
+        boolean  trouveDebut = false;
+        boolean  trouveFin   = false;
+        TacheMPM debut;
+        TacheMPM fin;
 
         for (TacheMPM tache : this.lstTaches) 
         {
@@ -534,8 +539,8 @@ public class GrapheMPM
 
         if (!trouveDebut) 
         {
-            TacheMPM debut = new TacheMPM("DEBUT", 0, new ArrayList<>());
-            ajouterTacheAPosition(debut, 0);
+            debut = new TacheMPM("DEBUT", 0, new ArrayList<>());
+            this.ajouterTacheAPosition(debut, 0);
             for (TacheMPM tache : this.lstTaches) 
             {
                 if (tache.getPrecedents().isEmpty() && !tache.getNom().equals("DEBUT") && !tache.getNom().equals("FIN")) {
@@ -545,10 +550,11 @@ public class GrapheMPM
             }
         }
         
-        if (!trouveFin) {
-            TacheMPM fin = new TacheMPM("FIN", 0, new ArrayList<>());
+        if (!trouveFin) 
+        {
+            fin = new TacheMPM("FIN", 0, new ArrayList<>());
             lstTaches.add(fin);
-            ajouterTacheFichier(fin);
+            this.ajouterTacheFichier(fin);
         }
     }
 
@@ -613,12 +619,14 @@ public void chargerFichierB(Controleur ctrl)
         
         switch (extension) 
         {
-            case "MC" -> {
+            case "MC" -> 
+            {
                 niveaux = new int[1000];
                 ctrl.initComplet(this.getDateType(), fichierSelectionner.getPath());
                 ErrorUtils.showSucces("Chargement d'un fichier de données complexe réussi");
             }
-            default -> {
+            default -> 
+            {
                 niveaux = new int[1000];
                 ctrl.initProjet(this.getDateRef(), this.getDateType(), fichierSelectionner.getPath());
                 ErrorUtils.showSucces("Chargement d'un fichier de données simple réussi");
@@ -662,13 +670,14 @@ public void nouveauProjet()
 
     public void sauvegarder() 
     {
+        String precedentsStr;
         try 
         {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(this.nomFichier), "UTF8"));
 
             for (TacheMPM tache : this.lstTaches)
             {
-                String precedentsStr = Utils.formatVirgulePrecedents(tache);
+                precedentsStr = Utils.formatVirgulePrecedents(tache);
 
                 pw.println(tache.getNom() + "|" + tache.getDuree() + "|" + precedentsStr);
             }
@@ -730,23 +739,23 @@ public void nouveauProjet()
 
         // Trouver d'abord le niveau maximum parmi toutes les tâches
         int niveauMax = 0;
-        for (TacheMPM tache : this.lstTaches) {
-            if (!tache.getNom().equals("FIN") && tache.getNiveau() > niveauMax) {
+        for (TacheMPM tache : this.lstTaches) 
+        {
+            if (!tache.getNom().equals("FIN") && tache.getNiveau() > niveauMax)
                 niveauMax = tache.getNiveau();
-            }
         }
         
         // Ensuite traiter chaque tâche et placer FIN au niveau le plus élevé + 1
         TacheMPM tacheFin = this.trouverTache("FIN");
-        if (tacheFin != null) {
-            tacheFin.setNiveau(niveauMax + 1);
-        }
+        if (tacheFin != null) tacheFin.setNiveau(niveauMax + 1);
         
-        for (TacheMPM tache : this.lstTaches) {
+        for (TacheMPM tache : this.lstTaches) 
+        {
             if(tache.getNom().equals("DEBUT") || tache.getNom().equals("FIN")) 
                 continue;
                 
-            if (tache.getSuivants().isEmpty() && tacheFin != null) {
+            if (tache.getSuivants().isEmpty() && tacheFin != null) 
+            {
                 tache.getSuivants().add(tacheFin);
                 tacheFin.getPrecedents().add(tache);
             }
@@ -821,6 +830,7 @@ public void nouveauProjet()
      *---------------------------------*/
     public int[] getLocation(TacheMPM tache, String fichier) 
     {
+        int[] pos;
         try 
         {
             Scanner scMPM = new Scanner(new File(fichier), "UTF-8");
@@ -834,9 +844,9 @@ public void nouveauProjet()
 
                 if (tache.getNom().equals(parties[0]) && parties.length >= 5) 
                 {
-                    int[] pos = new int[2];
-                    pos[0] = Integer.parseInt(parties[3]);
-                    pos[1] = Integer.parseInt(parties[4]);
+                    pos = new int[2];
+                    pos[0]    = Integer.parseInt(parties[3]);
+                    pos[1]    = Integer.parseInt(parties[4]);
                     scMPM.close();
                     return pos;
                 }
@@ -851,7 +861,7 @@ public void nouveauProjet()
     {
         try 
         {
-            Scanner sc           = new Scanner(new File(this.nomFichier), "UTF-8");
+            Scanner sc            = new Scanner(new File(this.nomFichier), "UTF-8");
             String  ligneActuelle = "";
             String  ligneAvant    = "";
             
@@ -873,22 +883,22 @@ public void nouveauProjet()
     /*---------------------------------*
      * Accesseurs - Getters            *
      *---------------------------------*/
-    public String         getDateRef()                      { return dateRef;              }
-    public char           getDateType()                     { return dateType;             }
-    public int            getNiveauTache(TacheMPM tache)    { return tache.getNiveau();    }
-    public int[]          getNiveaux()                      { return niveaux;              }
-    public List<TacheMPM> getTaches()                       { return this.lstTaches;       }
-    public boolean        isFormatDateTexte()               { return this.formatDateTexte; }
-    public List<CheminCritique> getCheminsCritiques()       { return this.lstChemins;      }
+    public String               getDateRef()                      { return dateRef;              }
+    public char                 getDateType()                     { return dateType;             }
+    public int                  getNiveauTache(TacheMPM tache)    { return tache.getNiveau();    }
+    public int[]                getNiveaux()                      { return niveaux;              }
+    public List<TacheMPM>       getTaches()                       { return this.lstTaches;       }
+    public boolean              isFormatDateTexte()               { return this.formatDateTexte; }
+    public List<CheminCritique> getCheminsCritiques()             { return this.lstChemins;      }
 
-    public String  getTheme() { return this.theme; }
+    public String  getTheme  () { return this.theme;       }
     public boolean isCritique() { return this.estCritique; }
     
     /*---------------------------------*
      * Accesseurs - Setters            *
      *---------------------------------*/
-    public void setDateRef(String dateRef)                  { this.dateRef = dateRef;              }
-    public void setDateType(char dateType)                  { this.dateType = dateType;            }
-    public void setFormatDateTexte(boolean format)          { this.formatDateTexte = format;       }
-    public String getNomFichier()  { return this.nomFichier; }
+    public void setDateRef        (String dateRef) { this.dateRef = dateRef;        }
+    public void setDateType       (char dateType ) { this.dateType = dateType;      }
+    public void setFormatDateTexte(boolean format) { this.formatDateTexte = format; }
+    public String getNomFichier   ()               { return this.nomFichier;        }
 }
