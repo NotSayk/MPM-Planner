@@ -481,7 +481,15 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             }
             else if (e.getSource() == this.jmNom) 
             {
-                String nomTache = JOptionPane.showInputDialog(this, "Modifier le nom de la tâche :", 
+                String nomTache = this.entiteSelectionnee.getTache().getNom();
+                if (nomTache.equals("DEBUT") || nomTache.equals("FIN")) 
+                {
+                    JOptionPane.showMessageDialog(this, "Impossible de modifier le nom de la tâche DEBUT ou FIN.", 
+                                                  "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                nomTache = JOptionPane.showInputDialog(this, "Modifier le nom de la tâche :", 
                                                               entiteSelectionnee.getTache().getNom());
                 if (nomTache != null && !nomTache.isEmpty())
                 {
