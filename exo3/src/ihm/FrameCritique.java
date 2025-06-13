@@ -1,32 +1,33 @@
 package src.ihm;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 import src.Controleur;
 
 public class FrameCritique extends JFrame
 {
-    private PanelCritique panelCritique;
     private Controleur ctrl;
+    private PanelCritique panelCritique;
     
     public FrameCritique(Controleur ctrl) 
     {
         this.ctrl = ctrl;
-        setTitle("Chemins Critiques");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(400, 300);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        recreerPanelCritique();
+
+        this.setTitle("Chemins Critiques");
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setSize(400, 300);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.recreerPanelCritique();
     }   
 
     public void recreerPanelCritique() 
     {
-        if (panelCritique != null) {
-            remove(panelCritique);
-        }
-        panelCritique = new PanelCritique(this.ctrl);
-        add(panelCritique, BorderLayout.CENTER);
+        if (this.panelCritique != null) this.remove(this.panelCritique);
+
+        this.panelCritique = new PanelCritique(this.ctrl);
+        this.add(panelCritique, BorderLayout.CENTER);
+
         revalidate();
         repaint();
     }

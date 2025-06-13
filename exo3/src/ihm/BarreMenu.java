@@ -2,6 +2,7 @@ package src.ihm;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.event.*;
 import javax.swing.*;
 import src.Controleur;
@@ -12,27 +13,27 @@ public class BarreMenu extends JMenuBar implements ActionListener
 {
    private Controleur ctrl;
    
-   private JMenuItem   menuiCharger;
-   private JMenuItem menuiNouveau;
+   private JMenuItem  menuiCharger;
+   private JMenuItem  menuiNouveau;
 
-   private JMenuItem menuiSauvegarder;
-   private JMenuItem menuiQuitter;
+   private JMenuItem  menuiSauvegarder;
+   private JMenuItem  menuiQuitter;
 
-   private JMenuItem menuiModifierGraphe;
-   private JMenuItem menuiCopier;
-   private JMenuItem menuiColler;
-   private JMenuItem menuiChercherTache;
+   private JMenuItem  menuiModifierGraphe;
+   private JMenuItem  menuiCopier;
+   private JMenuItem  menuiColler;
+   private JMenuItem  menuiChercherTache;
 
-   private JMenuItem menuiInfosCritique;
+   private JMenuItem  menuiInfosCritique;
 
-   private JMenuItem menuiZoom25;
-   private JMenuItem menuiZoom50;
-   private JMenuItem menuiZoom75;
-   private JMenuItem menuiZoom100;
-   private JMenuItem menuiZoom150;
-   private JMenuItem menuiZoom200;
+   private JMenuItem  menuiZoom25;
+   private JMenuItem  menuiZoom50;
+   private JMenuItem  menuiZoom75;
+   private JMenuItem  menuiZoom100;
+   private JMenuItem  menuiZoom150;
+   private JMenuItem  menuiZoom200;
 
-   private JMenuItem menuiChangerAffichage;
+   private JMenuItem  menuiChangerAffichage;
 
    public BarreMenu(Controleur ctrl)
    {
@@ -66,7 +67,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       this.menuiSauvegarder       = new JMenuItem("Sauvegarder", createMenuIcon("💾"));
       this.menuiQuitter           = new JMenuItem("Quitter", createMenuIcon("🚪"));
 
-      this.menuiModifierGraphe     = new JMenuItem("Modifier le graphe", createMenuIcon("➕"));
+      this.menuiModifierGraphe    = new JMenuItem("Modifier le graphe", createMenuIcon("➕"));
 
       this.menuiCopier            = new JMenuItem("Copier", createMenuIcon("📋"));
       this.menuiColler            = new JMenuItem("Coller", createMenuIcon("📌"));
@@ -190,42 +191,25 @@ public class BarreMenu extends JMenuBar implements ActionListener
           source == this.menuiZoom150 || source == this.menuiZoom200) 
       {
           
-         if (source == this.menuiZoom25)
-            this.ctrl.setZoom(0.25);
-         else if (source == this.menuiZoom50)
-            this.ctrl.setZoom(0.50);
-         else if (source == this.menuiZoom75)
-            this.ctrl.setZoom(0.75);
-         else if (source == this.menuiZoom100)
-            this.ctrl.setZoom(1.0);
-         else if (source == this.menuiZoom150)
-            this.ctrl.setZoom(1.5);
-         else if (source == this.menuiZoom200)
-            this.ctrl.setZoom(2.0);
-          
+         if (source == this.menuiZoom25)  this.ctrl.setZoom(0.25);
+         if (source == this.menuiZoom50)  this.ctrl.setZoom(0.50);
+         if (source == this.menuiZoom75)  this.ctrl.setZoom(0.75);
+         if (source == this.menuiZoom100) this.ctrl.setZoom(1.0);
+         if (source == this.menuiZoom150) this.ctrl.setZoom(1.5);
+         if (source == this.menuiZoom200) this.ctrl.setZoom(2.0);
       } 
       else 
       {
-         if (source == this.menuiCharger)
-            this.ctrl.chargerFichier();
-         else if (source == this.menuiNouveau)
-            this.ctrl.nouveauProjet();
-         else if (source == this.menuiSauvegarder)
-            this.ctrl.sauvegarder();
-         else if (source == this.menuiQuitter)
-            System.exit(0);
-         else if (source == this.menuiModifierGraphe)
-            this.ctrl.afficherModification();
-         else if (source == this.menuiCopier)
-            this.ctrl.copierTache();
-         else if (source == this.menuiColler)
-            this.ctrl.collerTache();
-         else if (source == this.menuiChercherTache)
-            this.chercherTache();
-         else if (source == this.menuiChangerAffichage)
-            this.ctrl.changerAffichage();
-         else if (source == this.menuiInfosCritique) 
-            this.ctrl.afficherCritiques();
+         if (source == this.menuiCharger)          this.ctrl.chargerFichier();
+         if (source == this.menuiNouveau)          this.ctrl.nouveauProjet();
+         if (source == this.menuiSauvegarder)      this.ctrl.sauvegarder();
+         if (source == this.menuiQuitter)          System.exit(0);
+         if (source == this.menuiModifierGraphe)   this.ctrl.afficherModification();
+         if (source == this.menuiCopier)           this.ctrl.copierTache();
+         if (source == this.menuiColler)           this.ctrl.collerTache();
+         if (source == this.menuiChercherTache)    this.chercherTache();
+         if (source == this.menuiChangerAffichage) this.ctrl.changerAffichage();
+         if (source == this.menuiInfosCritique)    this.ctrl.afficherCritiques();
       }
     }
 
@@ -241,7 +225,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
          java.awt.Graphics2D           g2 = img.createGraphics();
          
          // Améliorer le rendu
-         g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+         g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING     , java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
          g2.setRenderingHint(java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
          
          // Définir la couleur NOIRE pour les emojis
@@ -249,9 +233,9 @@ public class BarreMenu extends JMenuBar implements ActionListener
          g2.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 12));
          
          // Dessiner l'emoji au centre
-         java.awt.FontMetrics fm = g2.getFontMetrics();
-         int x = (16 - fm.stringWidth(unicode)) / 2;
-         int y = (16 - fm.getHeight()) / 2 + fm.getAscent();
+         FontMetrics fm = g2.getFontMetrics();
+         int          x = (16 - fm.stringWidth(unicode)) / 2;
+         int          y = (16 - fm.getHeight()) / 2 + fm.getAscent();
          
          g2.drawString(unicode, x, y);
          g2.dispose();
@@ -270,7 +254,7 @@ public class BarreMenu extends JMenuBar implements ActionListener
       menu.setForeground(new Color(60, 60, 60));
       menu.setOpaque    (true);
       menu.setBorder    (BorderFactory.createEmptyBorder(8, 12, 8, 12));
-      menu.setFont       (new Font("Segoe UI", Font.PLAIN, 12));
+      menu.setFont      (new Font("Segoe UI", Font.PLAIN, 12));
       
       // Effet hover pour les menus
       menu.addMouseListener(new MouseAdapter()
