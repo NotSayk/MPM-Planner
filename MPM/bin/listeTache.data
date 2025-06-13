@@ -1,0 +1,13 @@
+DEBUT|0|
+A|1|DEBUT
+B|2|A
+C|3|B,A
+D|4|B
+E|5|D
+sdcds|0|E
+F|6|D,C
+dqsd|0|F
+sdq|0|F
+qsd|0|F
+G|7|C
+FIN|0|sdcds,dqsd,sdq,qsd,G
