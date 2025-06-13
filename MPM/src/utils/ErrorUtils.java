@@ -8,9 +8,7 @@ import javax.swing.JOptionPane;
  */
 public class ErrorUtils 
 {
-    /*--------------*
-     * Constructeur *
-     *--------------*/
+
     /**
      * Constructeur privé pour empêcher l'instanciation.
      * Cette classe est une classe utilitaire et ne doit pas être instanciée.
@@ -20,9 +18,6 @@ public class ErrorUtils
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
-    /*----------------------------------*
-     * Méthodes d'affichage de messages *
-     *----------------------------------*/
     /**
      * Affiche un message d'avertissement.
      * @param message Message à afficher

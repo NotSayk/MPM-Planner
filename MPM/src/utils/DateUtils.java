@@ -9,9 +9,7 @@ import java.util.GregorianCalendar;
  */
 public class DateUtils 
 {
-    /*--------------*
-     * Constructeur *
-     *--------------*/
+
     /**
      * Constructeur privé pour empêcher l'instanciation.
      * Cette classe est une classe utilitaire et ne doit pas être instanciée.
@@ -21,9 +19,7 @@ public class DateUtils
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
-    /*----------------------------------*
-     * Méthodes de gestion des dates    *
-     *----------------------------------*/
+
     /**
      * Récupère la date du jour au format JJ/MM/AAAA.
      * @return Date du jour formatée

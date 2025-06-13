@@ -8,9 +8,7 @@ import src.metier.TacheMPM;
  */
 public class Utils 
 {
-    /*--------------*
-     * Constructeur *
-     *--------------*/
+
     /**
      * Constructeur privé pour empêcher l'instanciation.
      * Cette classe est une classe utilitaire et ne doit pas être instanciée.
@@ -20,9 +18,6 @@ public class Utils
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
-    /*----------------------------------*
-     * Méthodes de formatage            *
-     *----------------------------------*/
     /**
      * Formate la liste des tâches précédentes d'une tâche.
      * @param tache Tâche dont on veut formater les précédents

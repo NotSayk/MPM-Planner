@@ -17,31 +17,19 @@ import src.utils.DateUtils;
  */
 public class Controleur 
 {
-    /*-------------------------*
-     * Attributs du contrôleur *
-     *-------------------------*/
     private GrapheMPM         graphe;
     private FrameMPM          frameMPM;
     private FrameModification frameModification;
     private FrameCritique     frameCritique;
 
-    /*-----------------------------*
-     * Point d'entrée du programme *
-     *-----------------------------*/
     public static void main(String[] args) { new Controleur(); }
 
-    /*-------------------------*
-     * Constructeurs principal *
-     *-------------------------*/
     public Controleur() 
     {
         this.graphe   = new GrapheMPM();
         this.frameMPM = new FrameMPM (this);
     }
 
-    /*--------------------------*
-     * Initialisation du projet *
-     *--------------------------*/
     /**
      * Initialise un nouveau projet MPM avec les paramètres spécifiés.
      * @param dateRef    Date de référence du projet
@@ -82,9 +70,6 @@ public class Controleur
         this.graphe.chargerEntites(nomFichier, this.getEntites());
     }
 
-    /*--------------------------*
-     * Gestion de l'interface   *
-     *--------------------------*/
     public void afficherGraphe() { this.frameMPM.changerPanel(); }
 
     public void afficherModification()
@@ -123,9 +108,6 @@ public class Controleur
         this.getFrameMPM().repaint();
     }
 
-    /*--------------------------*
-     * Gestion des tâches       *
-     *--------------------------*/
     /**
      * Ajoute une tâche à une position spécifique dans le graphe.
      * Met à jour l'affichage et le chemin critique si nécessaire.
@@ -172,11 +154,11 @@ public class Controleur
         this.getGrilleDonneesModel().refreshTab();
     }
 
-    public void collerTache          (              ) { this.graphe.collerTache(); this.afficherGraphe(); }
-    public void modifierTacheFichier (TacheMPM tache) { this.graphe.modifierTacheFichier(tache); }
-    public void supprimerTacheFichier(TacheMPM tache) { this.graphe.supprimerTacheFichier(tache); }
+    public void collerTache          (              )  { this.graphe.collerTache(); this.afficherGraphe(); }
+    public void modifierTacheFichier (TacheMPM tache)  { this.graphe.modifierTacheFichier(tache);          }
+    public void supprimerTacheFichier(TacheMPM tache)  { this.graphe.supprimerTacheFichier(tache);         }
 
-    public TacheMPM trouverTache(String nomTache) { return this.graphe.trouverTache(nomTache); }
+    public TacheMPM trouverTache     (String nomTache) { return this.graphe.trouverTache(nomTache);        }
     /**
      * Met à jour la durée d'une tâche et recalcule les chemins critiques.
      * Met à jour l'affichage et les couleurs des chemins critiques.
@@ -229,9 +211,6 @@ public class Controleur
         this.initProjet(this.getDateRef(), this.getDateType(), this.getNomFichier());
     }
 
-    /*--------------------------*
-     * Gestion des fichiers     *
-     *--------------------------*/
     public void sauvegarder() { this.graphe.sauvegarderFichier(getTheme(), isCritique(), getDateRef(), this.frameMPM.getPanelMPM()); }
 
     public void chargerFichier()     
@@ -249,9 +228,6 @@ public class Controleur
                                         this.frameMPM.getPanelMPM()); 
     }
 
-    /*--------------------------*
-     * Gestion du chemin critique*
-     *--------------------------*/
     public void afficherCheminCritique(boolean afficher) 
     { 
         this.frameMPM.getPanelMPM().afficherCheminCritique(afficher); 
@@ -259,9 +235,6 @@ public class Controleur
 
     public List<CheminCritique> getCheminsCritiques() { return this.graphe.getCheminsCritiques(); }
 
-    /*-----------------------------------------*
-     * Accesseurs - Informations sur le projet *
-     *-----------------------------------------*/
     public void setZoom           (double zoom)                { this.frameMPM.getPanelMPM().setScale(zoom); }
     public void setTheme          (String theme)               { this.frameMPM.setTheme(theme);              }
     public void setFormatDateTexte(boolean format)             { this.graphe.setFormatDateTexte(format);     }
@@ -277,9 +250,6 @@ public class Controleur
     public boolean isFormatDateTexte(              ) { return this.graphe.isFormatDateTexte();          }
     public boolean getAfficher      (              ) { return this.frameMPM.getPanelMPM().isCritique(); }
 
-    /*--------------------------------------------*
-     * Accesseurs - Données du graphe et de l'IHM *
-     *--------------------------------------------*/
     public List<TacheMPM> getTaches () { return this.graphe.getTaches();    }
     public List<Entite>   getEntites() { return this.frameMPM.getEntites(); }
 
@@ -291,9 +261,6 @@ public class Controleur
         return this.frameModification.getGrilleDonneesModel();
     }
 
-    /*---------------------------*
-     * Accesseurs - État général *
-     *---------------------------*/
     public TacheMPM  getTacheSelectionnee() { return this.frameMPM.getTacheSelectionnee(); }
     public FrameMPM  getFrameMPM         () { return this.frameMPM;                        }
     public GrapheMPM getGraphe           () { return this.graphe;                          }
