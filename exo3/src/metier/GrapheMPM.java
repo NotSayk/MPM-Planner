@@ -656,10 +656,10 @@ public void chargerFichierB(Controleur ctrl)
         this.formatDateTexte = false;
 
         String nomBase = JOptionPane.showInputDialog(null, "Entrez le nom du projet :", "Nouveau Projet", JOptionPane.QUESTION_MESSAGE);
-        if (nomBase == null || nomBase.trim().isEmpty()) 
+        if (nomBase == null || nomBase.trim().isEmpty() || !nomBase.matches("[a-zA-Z]+")) 
         {
             nomBase = "nouveauProjet";
-            ErrorUtils.showError("Aucun nom de projet fourni, utilisation du nom par défaut 'nouveauProjet'");
+            ErrorUtils.showError("Nom de projet invalide, utilisation du nom par défaut 'nouveauProjet'");
         }
 
         String extension = ".MC";
