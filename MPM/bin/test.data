@@ -1,0 +1,7 @@
+DEBUT|0|
+A|2|DEBUT
+B|4|DEBUT
+C|3|A
+D|2|B
+E|1|C,D
+FIN|0|E
