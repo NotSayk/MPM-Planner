@@ -103,15 +103,32 @@ public class Controleur
     }
 
     public void nouveauProjet()
+{
+    this.graphe.nouveauProjet(this.getDateType());
+    this.frameMPM.changerPanel();
+    this.frameMPM.getPanelMPM().initEntites();
+    
+    int y = 100;
+    for (Entite entite : this.getEntites()) 
     {
-        this.graphe.nouveauProjet();
-        this.frameMPM.changerPanel();
-        this.frameMPM.getPanelMPM().initEntites();
-        if (this.frameModification != null) 
-            this.frameModification.getGrilleDonneesModel().refreshTab();
-        this.frameMPM.repaint();
-        this.sauvegarder();
+        if (entite.getTache().getNom().equals("DEBUT")) 
+        {
+            entite.setPosition(100, y);
+        } 
+        else if (entite.getTache().getNom().equals("FIN")) 
+        {
+            entite.setPosition(500, y);
+        }
+        y += 100;
     }
+    
+    if (this.frameModification != null) 
+        this.frameModification.getGrilleDonneesModel().refreshTab();
+    
+    this.frameMPM.repaint();
+    
+    this.sauvegarderFichier();
+}
 
     public void afficherCritiques()
     {
