@@ -1,7 +1,5 @@
 # Projet MPM (Méthode des Potentiels Métra)
 
-![MPM](https://img.shields.io/badge/Project-MPM-blue)
-![Language](https://img.shields.io/badge/Language-Java-orange)
 
 ## 🚀 Installation et lancement
 
@@ -9,20 +7,20 @@
 ```batch
 # Option 1: Double-cliquer sur start_win.bat
 # Option 2: Via ligne de commande
-cd chemin\vers\MPM
+cd MPM
 start_win.bat
 ```
 
 ### macOS
 ```bash
-cd chemin/vers/MPM
+cd MPM
 chmod +x start_mac.bat
 ./start_mac.bat
 ```
 
 ### Linux
 ```bash
-cd chemin/vers/MPM
+cd MPM
 chmod +x start_linux.sh
 ./start_linux.sh
 ```
