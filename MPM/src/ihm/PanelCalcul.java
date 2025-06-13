@@ -1,9 +1,8 @@
 package src.ihm;
 
 import java.awt.*;
-import javax.swing.*;
 import java.util.List;
-
+import javax.swing.*;
 import src.Controleur;
 import src.metier.TacheMPM;
 
@@ -152,16 +151,20 @@ public class PanelCalcul extends JPanel
      */
     public void ajouterCalculDatesTardNiveau(int niveau) 
     {
-        StringBuilder sb = new StringBuilder();
-        List<TacheMPM> taches = this.ctrl.getTaches();
+        StringBuilder  sb            = new StringBuilder();
+        List<TacheMPM> taches        = this.ctrl.getTaches();
+        int            dateFinProjet = 0;
+        TacheMPM       tacheFin      = null; 
+        String         nom           = "";
+        int            minDate       = Integer.MAX_VALUE;
+        TacheMPM       suivChoisi    = null;
+        int            marge;
         
         sb.append("\n=== NIVEAU ").append(niveau).append(" - CALCUL DES DATES AU PLUS TARD ===\n\n");
         
         boolean tachesNiveauTrouvees = false;
         
         // Calculer d'abord la date de fin du projet
-        int dateFinProjet = 0;
-        TacheMPM tacheFin = null;
         
         for (TacheMPM tache : taches) 
         {
@@ -172,9 +175,7 @@ public class PanelCalcul extends JPanel
                 break;
             }
             if (tache.getSuivants().isEmpty()) 
-            {
                 dateFinProjet = Math.max(dateFinProjet, tache.getDateTot() + tache.getDuree());
-            }
         }
         
         // Filtre les tâches du niveau spécifié
@@ -184,7 +185,7 @@ public class PanelCalcul extends JPanel
                 continue;
             
             tachesNiveauTrouvees = true;
-            String nom = tache.getNom();
+            nom                  = tache.getNom();
             
             // Ne pas recalculer pour la tâche FIN si elle existe
             if (nom.equals("FIN") && tacheFin != null) 
@@ -199,13 +200,11 @@ public class PanelCalcul extends JPanel
             sb.append("Calcul date au plus tard de ").append(nom).append(" :\n");
             
             if (suivants.isEmpty()) 
-            {
                 sb.append("   Aucun suivant -> Date au plus tard = ").append(dateFinProjet).append("\n");
-            } 
             else 
             {
-                int minDate = Integer.MAX_VALUE;
-                TacheMPM suivChoisi = null;
+                minDate    = Integer.MAX_VALUE;
+                suivChoisi = null;
                 
                 for (TacheMPM suiv : suivants) 
                 {
@@ -231,12 +230,10 @@ public class PanelCalcul extends JPanel
             sb.append("Date au plus tard de ").append(nom).append(" = ").append(tache.getDateTard()).append("\n");
             
             // Afficher la marge
-            int marge = tache.getDateTard() - tache.getDateTot();
-            sb.append("Marge de ").append(nom).append(" = ").append(marge).append(" jour(s)");
-            if (marge == 0) 
-            {
-                sb.append(" (tâche critique)");
-            }
+            marge = tache.getDateTard() - tache.getDateTot();
+            sb.append("Marge de ").append(nom).append(" = ").append(marge).append(" jour" + (marge > 1 ? "s" : "")).append("\n");
+
+            if (marge == 0) sb.append(" (tâche critique)");
             sb.append("\n\n");
         }
         

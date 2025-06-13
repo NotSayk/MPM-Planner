@@ -421,6 +421,8 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                 TacheMPM tache = entite.getTache();
 
                 String anterieur = Utils.formatVirgulePrecedents(tache);
+                if(anterieur.length() > 75)  
+                    anterieur = anterieur.substring(0, 75) + "...";
 
                 popup.setVisible(false);
                 popup.removeAll();
