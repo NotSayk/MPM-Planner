@@ -2,19 +2,26 @@ src/Controleur.java
 
 src/utils/DateUtils.java
 src/utils/ErrorUtils.java
+src/utils/BtnUtils.java
+src/utils/Utils.java
 
 src/metier/TacheMPM.java
 src/metier/GrapheMPM.java
 src/metier/CheminCritique.java
 
-src/ihm/FrameMPM.java
-src/ihm/FrameModification.java
-
-src/ihm/PanelPara.java
-src/ihm/PanelMPM.java
-src/ihm/BarreMenu.java
-src/ihm/GrilleDonneesModel.java
-src/ihm/PanelModification.java
-src/ihm/panelButton.java
-
 src/ihm/composants/Entite.java
+
+src/ihm/BarreMenu.java
+src/ihm/FrameCalcul.java
+src/ihm/FrameCritique.java
+src/ihm/FrameModification.java
+src/ihm/FrameMPM.java
+
+src/ihm/GrilleDonneesModel.java
+src/ihm/PanelButton.java
+src/ihm/PanelCalcul.java
+src/ihm/PanelCritique.java
+src/ihm/PanelGraphe.java
+src/ihm/PanelModification.java
+src/ihm/PanelMPM.java
+src/ihm/PanelPara.java

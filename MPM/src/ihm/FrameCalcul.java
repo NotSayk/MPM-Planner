@@ -1,9 +1,7 @@
 package src.ihm;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-
+import javax.swing.*;
 import src.Controleur;
 
 public class FrameCalcul extends JFrame 
@@ -11,8 +9,8 @@ public class FrameCalcul extends JFrame
     private Controleur ctrl;
     
     private PanelCalcul panelCalcul;
-    private JButton btnFermer;
-    private JButton btnReinitialiser;
+    private JButton     btnFermer;
+    private JButton     btnReinitialiser;
     
     public FrameCalcul(Controleur ctrl) 
     {
@@ -42,16 +40,6 @@ public class FrameCalcul extends JFrame
         panelBoutons.add(this.btnReinitialiser);
         panelBoutons.add(this.btnFermer);
         this.add(panelBoutons, BorderLayout.SOUTH);
-        
-        // Gestion de la fermeture de la fenêtre
-        this.addWindowListener(new WindowAdapter() 
-        {
-            @Override
-            public void windowClosing(WindowEvent e) 
-            {
-                setVisible(false);
-            }
-        });
     }
     
     /**
