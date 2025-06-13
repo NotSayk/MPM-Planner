@@ -171,7 +171,30 @@ public class Controleur
         this.getGrilleDonneesModel().refreshTab();
     }
 
-    public void collerTache          (              )  { this.graphe.collerTache(); this.afficherGraphe(); }
+    public void refreshSansReset()
+    {
+        boolean estCritiqueActuel = this.frameMPM.isCritique();
+        String themeActuel = this.frameMPM.getTheme();
+        double zoomActuel = this.frameMPM.getScale();
+
+        this.graphe.calculerDates();
+        this.graphe.initCheminCritique();
+        this.graphe.initNiveauTaches();
+        
+        this.frameMPM.getPanelMPM().initEntites();
+        
+        this.frameMPM.setTheme(themeActuel);
+        this.frameMPM.setCritique(estCritiqueActuel);
+        this.frameMPM.setScale(zoomActuel);
+        
+        if (this.frameModification != null) {
+            this.frameModification.getGrilleDonneesModel().refreshTab();
+        }
+        
+        this.frameMPM.repaint();
+    }
+
+    public void collerTache          (              )  { this.graphe.collerTache(); this.refreshSansReset(); }
     public void modifierTacheFichier (TacheMPM tache)  { this.graphe.modifierTacheFichier(tache);          }
     public void supprimerTacheFichier(TacheMPM tache)  { this.graphe.supprimerTacheFichier(tache);         }
 

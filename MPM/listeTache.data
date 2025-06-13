@@ -1,11 +1,13 @@
 DEBUT|0|
 A|2|DEBUT
 B|2|DEBUT
-C|5|A
-D|4|A,B
-E|4|B,D
+C|5|A, A_copie
+D|4|A, B, A_copie
+E|4|B, D
 L|3|C
 G|3|C
 F|4|L
 K|4|E
-FIN|0|G,F,K
+A_copie|2|DEBUT
+G_copie|3|C
+FIN|0|G, F, K, A_copie, G_copie
