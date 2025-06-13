@@ -59,3 +59,28 @@ MPM/
 - **FrameMPM** : Interface utilisateur principale
 - **PanelGraphe** : Composant de visualisation du graphe
 
+## Fonctionnalités Principales
+
+### 1. Gestion des Tâches
+- Création de nouvelles tâches
+- Modification des tâches existantes
+- Suppression de tâches
+- Définition des relations de précédence
+- Copier/Coller de tâches
+
+### 2. Calculs MPM
+- Calcul automatique des dates au plus tôt
+- Calcul automatique des dates au plus tard
+- Identification des chemins critiques
+- Calcul des marges
+
+### 3. Visualisation
+- Affichage graphique du graphe MPM
+- Zoom et déplacement dans le graphe
+- Thèmes d'affichage (clair/sombre)
+- Mise en évidence des chemins critiques
+
+### 4. Persistance des Données
+- Sauvegarde au format `.MC` (format complet)
+- Sauvegarde au format `.data` (format simple)
+- Chargement de projets existants
