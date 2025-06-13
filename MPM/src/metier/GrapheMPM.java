@@ -139,7 +139,7 @@ public class GrapheMPM
     public TacheMPM trouverTache(String nom) 
     {
         for (TacheMPM tache : this.lstTaches) 
-            if (tache.getNom().equals(nom)) 
+            if (tache.getNom().equalsIgnoreCase(nom)) 
                 return tache;
         return null;
     }
@@ -278,7 +278,7 @@ public class GrapheMPM
         
         for (TacheMPM tacheCourante : this.getTaches()) 
         {
-            if (tacheCourante.getNom().equals(nouveauNom)) 
+            if (tacheCourante.getNom().equalsIgnoreCase(nouveauNom)) 
                 throw new IllegalArgumentException("Une tâche avec ce nom existe déjà.");
         }
         

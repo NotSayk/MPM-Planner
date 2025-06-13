@@ -485,6 +485,12 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                                                               entiteSelectionnee.getTache().getNom());
                 if (nomTache != null && !nomTache.isEmpty())
                 {
+                    if (this.ctrl.trouverTache(nomTache) != null) 
+                    {
+                        JOptionPane.showMessageDialog(this, "Une tâche avec ce nom existe déjà.", 
+                                                      "Erreur", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                     this.entiteSelectionnee.getTache().setNom(nomTache);
                     this.ctrl.modifierTacheFichier(this.entiteSelectionnee.getTache());
                     this.parentPanel.initEntites();

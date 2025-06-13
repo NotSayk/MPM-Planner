@@ -61,8 +61,8 @@ public class GrilleDonneesModel extends AbstractTableModel
     {
         if (columnIndex == 2 || columnIndex == 3 || columnIndex == 0) 
         {
-            String nouvelleValeur = value.toString().trim();
-            TacheMPM tacheModifiee = ctrl.getTaches().get(rowIndex);
+            String   nouvelleValeur = value.toString().trim();
+            TacheMPM tacheModifiee  = ctrl.getTaches().get(rowIndex);
             
             try 
             {
