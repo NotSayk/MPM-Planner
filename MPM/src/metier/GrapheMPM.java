@@ -783,6 +783,9 @@ public void chargerFichierB(Controleur ctrl)
         
         this.etablirRelationsSuivants();
         this.sauvegarder();
+        this.calculerDates();
+        this.initCheminCritique();
+        this.initNiveauTaches();
     }
 
     public void modifierTacheFichier(TacheMPM tacheModif) 

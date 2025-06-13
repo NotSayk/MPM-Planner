@@ -93,9 +93,12 @@ public class Controleur
      *---------------------------*/
     public void ajouterTacheAPosition(TacheMPM tache, int position) 
     {
+
         this.graphe.ajouterTacheAPosition(tache, position);
         this.getFrameMPM().getPanelMPM().initEntites();
         this.getFrameMPM().getPanelMPM().repaint();
+        if (this.graphe.getTaches().size() == 3) {this.getFrameMPM().getPanelMPM().cacherDates(); } 
+
         this.afficherCheminCritique(this.isCritique());
     }
 
