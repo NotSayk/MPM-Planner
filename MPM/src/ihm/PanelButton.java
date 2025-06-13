@@ -8,6 +8,12 @@ import src.Controleur;
 import src.utils.BtnUtils;
 import src.utils.ErrorUtils;
 
+/**
+ * Classe PanelButton qui gère la barre de boutons de l'interface MPM.
+ * Cette classe hérite de JPanel et implémente ActionListener pour gérer les événements des boutons.
+ * Elle contient les boutons pour afficher les dates au plus tôt/tard, réinitialiser, afficher les chemins critiques
+ * et changer le thème de l'application.
+ */
 public class PanelButton extends JPanel implements ActionListener 
 {
 
@@ -21,6 +27,10 @@ public class PanelButton extends JPanel implements ActionListener
     private JButton    btnTheme;
     private JButton    btnCritique;
 
+    /**
+     * Constructeur du panel de boutons
+     * @param ctrl Le contrôleur principal de l'application
+     */
     public PanelButton(Controleur ctrl) 
     {
         this.ctrl           = ctrl;
@@ -52,10 +62,13 @@ public class PanelButton extends JPanel implements ActionListener
         this.btnCritique.addActionListener(this);
     }
     
+    /**
+     * Gère les événements des boutons
+     * @param e L'événement déclenché
+     */
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-
         PanelMPM panelMPM = this.ctrl.getFrameMPM().getPanelMPM();
 
         JButton sourceButton = (JButton) e.getSource();
@@ -111,11 +124,19 @@ public class PanelButton extends JPanel implements ActionListener
         }
     }
 
+    /**
+     * Retourne le bouton de chemin critique
+     * @return Le bouton de chemin critique
+     */
     public JButton getBtnCritique() 
     {
         return this.btnCritique;
     }
     
+    /**
+     * Anime le bouton lors du clic
+     * @param button Le bouton à animer
+     */
     private void animationBouttonClique(JButton button) 
     {
         Timer timer = new Timer(100, e -> button.repaint());
@@ -123,6 +144,9 @@ public class PanelButton extends JPanel implements ActionListener
         timer.start();
     }
     
+    /**
+     * Met à jour l'état des boutons
+     */
     private void majBouttonEtat() 
     {
         SwingUtilities.invokeLater(() -> 
@@ -132,12 +156,20 @@ public class PanelButton extends JPanel implements ActionListener
         });
     }
     
+    /**
+     * Met à jour l'état du bouton de chemin critique
+     * @param critique true pour afficher le chemin critique, false pour le masquer
+     */
     public void setCritiqueButton(boolean critique) 
     { 
         this.cheminCritique = critique;
         this.btnCritique.setText(critique ? "Masquer critique" : "Chemin critique");
     }
     
+    /**
+     * Met à jour le thème du panel
+     * @param darkMode true pour le thème sombre, false pour le thème clair
+     */
     public void updateTheme(boolean darkMode) 
     {
         Color newBackground = darkMode ? new Color(45, 45, 55) : new Color(240, 240, 245);

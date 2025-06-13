@@ -13,7 +13,11 @@ import src.Controleur;
 import src.ihm.composants.Entite;
 import src.metier.TacheMPM;
 
-
+/**
+ * Classe PanelMPM qui gère l'affichage principal du graphe MPM.
+ * Cette classe hérite de JPanel et gère le dessin du graphe, les connexions entre les tâches,
+ * l'affichage des dates au plus tôt/tard et les chemins critiques.
+ */
 public class PanelMPM extends JPanel
 {
     /*--------------------*
@@ -39,9 +43,10 @@ public class PanelMPM extends JPanel
     private PanelGraphe  graphePanel;
     private JScrollPane  scrollPane;
 
-    /*--------------*
-     * Constructeur *
-     *--------------*/
+    /**
+     * Constructeur du panel MPM
+     * @param ctrl Le contrôleur principal de l'application
+     */
     public PanelMPM(Controleur ctrl) 
     {
         this.ctrl              = ctrl;
@@ -79,9 +84,9 @@ public class PanelMPM extends JPanel
         this.add(this.panelButton, BorderLayout.SOUTH);
     }
 
-    /*----------------------------------*
-     * Méthodes privées d'initialisation *
-     *----------------------------------*/
+    /**
+     * Incrémente le compteur de niveaux pour les dates au plus tard
+     */
     private void incrementeNiveauxTard() 
     {
         for (int i = 0; i < this.ctrl.getNiveauxTaches().length; i++) 
@@ -91,10 +96,12 @@ public class PanelMPM extends JPanel
         }
     }
 
+    /**
+     * Initialise les entités du graphe avec leur positionnement
+     */
     public void initEntites() 
     {
         this.lstEntites.clear();
-
 
         List<TacheMPM> taches = this.ctrl.getTaches();
         
@@ -124,7 +131,12 @@ public class PanelMPM extends JPanel
         }
     }
 
-
+    /**
+     * Calcule le nombre de tâches par niveau
+     * @param taches Liste des tâches à analyser
+     * @param nbTachesParNiveau Tableau pour stocker le nombre de tâches par niveau
+     * @return Le niveau maximum trouvé
+     */
     private int calculerNiveauxTaches(List<TacheMPM> taches, int[] nbTachesParNiveau) 
     {
         int niveauMax = 0;
@@ -138,6 +150,12 @@ public class PanelMPM extends JPanel
         return niveauMax;
     }
 
+    /**
+     * Trouve le nombre maximum de tâches dans un niveau
+     * @param nbTachesParNiveau Tableau contenant le nombre de tâches par niveau
+     * @param niveauMax Niveau maximum à considérer
+     * @return Le nombre maximum de tâches dans un niveau
+     */
     private int trouverMaxTachesParNiveau(int[] nbTachesParNiveau, int niveauMax) 
     {
         int maxTachesParNiveau = 0;
@@ -150,12 +168,23 @@ public class PanelMPM extends JPanel
         return maxTachesParNiveau;
     }
 
+    /**
+     * Calcule la position Y centrale en fonction du nombre maximum de tâches par niveau
+     * @param maxTachesParNiveau Nombre maximum de tâches dans un niveau
+     * @return La position Y centrale
+     */
     private int calculerCentreY(int maxTachesParNiveau) 
     {
         int hauteurMaxNiveau = maxTachesParNiveau * PanelMPM.ESPACEMENT;
         return 150 + hauteurMaxNiveau / 2;
     }
 
+    /**
+     * Crée et positionne les entités dans le graphe
+     * @param taches Liste des tâches à positionner
+     * @param nbTachesParNiveau Nombre de tâches par niveau
+     * @param centreY Position Y centrale
+     */
     private void creerEntitesPositionnees(List<TacheMPM> taches, int[] nbTachesParNiveau, int centreY) 
     {
         int[] compteurParNiveau = new int[2000];
@@ -174,6 +203,14 @@ public class PanelMPM extends JPanel
         }
     }
 
+    /**
+     * Calcule la position Y d'une entité dans son niveau
+     * @param nbTachesParNiveau Nombre de tâches par niveau
+     * @param centreY Position Y centrale
+     * @param niveau Niveau de la tâche
+     * @param positionDansNiveau Position de la tâche dans son niveau
+     * @return La position Y calculée
+     */
     private int calculerPositionY(int[] nbTachesParNiveau, int centreY, int niveau, int positionDansNiveau) 
     {
         int nbTachesCeNiveau = nbTachesParNiveau[niveau];
@@ -187,11 +224,10 @@ public class PanelMPM extends JPanel
         return y;
     }
 
-    /*----------------------------------*
-     * Méthodes privées utilitaires     *
-     *----------------------------------*/
-
-    // Rendre cette méthode publique pour GraphePanel
+    /**
+     * Dessine les connexions entre les tâches
+     * @param g Le contexte graphique
+     */
     public void dessinerConnexions(Graphics g)
     {
         Color couleurLigne = this.obtenirCouleurLigne();
@@ -201,11 +237,20 @@ public class PanelMPM extends JPanel
             this.dessinerConnexionsEntite(g, entite);
     }
 
+    /**
+     * Détermine la couleur des lignes en fonction du thème
+     * @return La couleur à utiliser pour les lignes
+     */
     private Color obtenirCouleurLigne() 
     {
         return this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
+    /**
+     * Dessine les connexions pour une entité spécifique
+     * @param g Le contexte graphique
+     * @param entite L'entité dont on dessine les connexions
+     */
     private void dessinerConnexionsEntite(Graphics g, Entite entite) 
     {
         Entite   entiteSuivante;
@@ -231,6 +276,12 @@ public class PanelMPM extends JPanel
         }
     }
 
+    /**
+     * Calcule les coordonnées d'une ligne entre deux entités
+     * @param entite Entité source
+     * @param entiteSuivante Entité destination
+     * @return Tableau contenant les coordonnées [x1, y1, x2, y2]
+     */
     private int[] calculerCoordonneesLigne(Entite entite, Entite entiteSuivante) 
     {
         int x1 = entite.getX() + entite.getLargeur();
@@ -240,6 +291,15 @@ public class PanelMPM extends JPanel
         return new int[]{x1, y1, x2, y2};
     }
 
+    /**
+     * Dessine la durée sur une connexion
+     * @param g Le contexte graphique
+     * @param entite L'entité source
+     * @param x1 Coordonnée X de départ
+     * @param y1 Coordonnée Y de départ
+     * @param x2 Coordonnée X d'arrivée
+     * @param y2 Coordonnée Y d'arrivée
+     */
     private void dessinerTexteDuree(Graphics g, Entite entite, int x1, int y1, int x2, int y2) 
     {
         int xCentre = (x1 + x2) / 2;
@@ -251,22 +311,36 @@ public class PanelMPM extends JPanel
         int hauteurTexte = fm.getHeight();
         
         this.dessinerFondTexte(g, xCentre, yCentre, largeurTexte, hauteurTexte);
-        
-        g.setColor(obtenirCouleurLigne());
         g.drawString(texte, xCentre - largeurTexte / 2, yCentre + hauteurTexte / 4);
     }
 
+    /**
+     * Dessine le fond du texte de durée
+     * @param g Le contexte graphique
+     * @param xCentre Coordonnée X centrale
+     * @param yCentre Coordonnée Y centrale
+     * @param largeurTexte Largeur du texte
+     * @param hauteurTexte Hauteur du texte
+     */
     private void dessinerFondTexte(Graphics g, int xCentre, int yCentre, int largeurTexte, int hauteurTexte) 
     {
-        int xRect       = xCentre - largeurTexte / 2 - 2;
-        int yRect       = yCentre - hauteurTexte / 2 - 2;
-        int largeurRect = largeurTexte + 2 * 2;
-        int hauteurRect = hauteurTexte + 2 * 2;
+        Color couleurFond = this.graphePanel.getBackground();
+        Color couleurTexte = this.obtenirCouleurLigne();
         
-        g.setColor(this.graphePanel.getBackground());
-        g.fillRect(xRect, yRect, largeurRect, hauteurRect);
+        g.setColor(couleurFond);
+        g.fillRect(xCentre - largeurTexte / 2 - 2, yCentre - hauteurTexte / 2 - 2,
+                  largeurTexte + 4, hauteurTexte + 4);
+        g.setColor(couleurTexte);
     }
-    
+
+    /**
+     * Dessine une flèche sur une connexion
+     * @param g Le contexte graphique
+     * @param x1 Coordonnée X de départ
+     * @param y1 Coordonnée Y de départ
+     * @param x2 Coordonnée X d'arrivée
+     * @param y2 Coordonnée Y d'arrivée
+     */
     private void dessinerFleche(Graphics g, int x1, int y1, int x2, int y2) 
     {
         double angle = Math.atan2(y2 - y1, x2 - x1);
@@ -282,7 +356,10 @@ public class PanelMPM extends JPanel
         g.drawLine(x2, y2, x4, y4);
     }
 
-    // Rendre cette méthode publique pour GraphePanel
+    /**
+     * Supprime une tâche du graphe
+     * @param tache La tâche à supprimer
+     */
     public void supprimerTache(TacheMPM tache) 
     {
         this.ctrl.supprimerTacheFichier(tache);
@@ -299,9 +376,10 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
-    /*----------------------------------*
-     * Méthodes publiques d'affichage   *
-     *----------------------------------*/
+    /**
+     * Active ou désactive l'affichage du chemin critique
+     * @param aff true pour afficher, false pour masquer
+     */
     public void afficherCheminCritique(boolean aff) 
     {
         this.afficher = aff;
@@ -316,14 +394,21 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
-    // Rendre cette méthode publique pour GraphePanel
+    /**
+     * Détermine la couleur du contour d'une entité
+     * @param entite L'entité à analyser
+     * @param afficherCritique Indique si le chemin critique est affiché
+     * @return La couleur du contour
+     */
     public Color determinerCouleurContour(Entite entite, boolean afficherCritique) 
     {
         if (afficherCritique && entite.getTache().estCritique()) return Color.RED;
         return this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
-    // Rendre cette méthode publique pour GraphePanel
+    /**
+     * Réinitialise les couleurs des entités
+     */
     public void reinitialiserCouleursEntites() 
     {
         for (Entite entite : this.lstEntites) 
@@ -333,6 +418,9 @@ public class PanelMPM extends JPanel
         }
     }
 
+    /**
+     * Affiche les dates au plus tôt
+     */
     public void afficherDateTot()
     {
         this.afficherDateTot = true;
@@ -345,6 +433,9 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
+    /**
+     * Affiche les dates au plus tard
+     */
     public void afficherDateTard()
     {
         this.afficherDateTard = true;
@@ -362,6 +453,9 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
+    /**
+     * Cache les dates au plus tôt et au plus tard
+     */
     public void cacherDates()
     {
         this.afficherDateTot  = false;
@@ -386,6 +480,10 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
+    /**
+     * Change le thème de l'interface
+     * @param theme Le thème à appliquer ("LIGHT" ou "DARK")
+     */
     public void setTheme(String theme) 
     {
         this.appliquerTheme(theme);
@@ -396,6 +494,10 @@ public class PanelMPM extends JPanel
             this.repaint();
     }
 
+    /**
+     * Applique un thème à l'interface
+     * @param theme Le thème à appliquer ("LIGHT" ou "DARK")
+     */
     private void appliquerTheme(String theme) 
     {
         if (theme == null || theme.isEmpty()) theme = "LIGHT";
@@ -415,6 +517,9 @@ public class PanelMPM extends JPanel
       
     }
 
+    /**
+     * Réinitialise les positions des entités
+     */
     public void resetPositions() 
     {
         for (Entite entite : this.lstEntites) entite.resetPosition();
@@ -422,6 +527,9 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
+    /**
+     * Réinitialise l'échelle du graphe
+     */
     public void resetScale() 
     {
         this.graphePanel.setScale(1.0);
@@ -429,9 +537,10 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
-    /*----------------------------------*
-     * Setters publics                  *
-     *----------------------------------*/
+    /**
+     * Définit la tâche sélectionnée
+     * @param tache La tâche à sélectionner
+     */
     public void setTacheSelectionnee(TacheMPM tache) 
     {
         if (this.tacheSelectionnee != null) 
@@ -457,6 +566,10 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
+    /**
+     * Centre la vue sur une entité
+     * @param entite L'entité sur laquelle centrer la vue
+     */
     private void centrerSurEntite(Entite entite) 
     {
         double    scale       = this.graphePanel.getScale();
@@ -470,6 +583,10 @@ public class PanelMPM extends JPanel
         this.graphePanel.scrollRectToVisible(visibleRect);
     }
 
+    /**
+     * Active ou désactive l'affichage du chemin critique
+     * @param critique true pour afficher, false pour masquer
+     */
     public void setCritique(boolean critique) 
     {
         this.afficher = critique;
@@ -477,6 +594,10 @@ public class PanelMPM extends JPanel
         this.panelButton.setCritiqueButton(critique);
     }
 
+    /**
+     * Définit l'échelle du graphe
+     * @param zoom Le niveau de zoom à appliquer
+     */
     public void setScale(double zoom)
     {
         this.graphePanel.setScale(zoom);
@@ -484,11 +605,17 @@ public class PanelMPM extends JPanel
         this.repaint();
     }
 
-    /*----------------------------------*
-     * Getters publics                  *
-     *----------------------------------*/
+    /**
+     * Retourne la liste des entités
+     * @return La liste des entités
+     */
     public List<Entite> getEntites() { return this.lstEntites; }
 
+    /**
+     * Retourne l'entité correspondant à une tâche
+     * @param tache La tâche à rechercher
+     * @return L'entité correspondante ou null si non trouvée
+     */
     public Entite getEntiteParTache(TacheMPM tache) 
     {
         for (Entite entite : this.lstEntites) 
@@ -496,6 +623,11 @@ public class PanelMPM extends JPanel
         return null;
     }
     
+    /**
+     * Retourne l'entité correspondant à un nom de tâche
+     * @param nomTache Le nom de la tâche à rechercher
+     * @return L'entité correspondante ou null si non trouvée
+     */
     public Entite getEntiteParNom(String nomTache) 
     {
         for (Entite entite : this.lstEntites) 
@@ -503,16 +635,39 @@ public class PanelMPM extends JPanel
         return null;
     }
 
-    public TacheMPM getTacheSelectionnee() { return this.tacheSelectionnee;                                                  }
-    public boolean  estGriseTot         () { return this.numNiveauxTot  == numNiveauxTard-1;                                 }
-    public boolean  estGriseTard        () { return this.numNiveauxTard == 0;                                                }
-    public String   getTheme            () { return this.graphePanel.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK"; }
-    public boolean  isCritique          () { return this.afficher;                                                           }
-    public double   getScale            () { return this.graphePanel.getScale();                                                  }
+    /**
+     * Retourne la tâche sélectionnée
+     * @return La tâche sélectionnée ou null si aucune tâche n'est sélectionnée
+     */
+    public TacheMPM getTacheSelectionnee() { return this.tacheSelectionnee; }
 
-    /*------------------------------------------------------------*
-     * Classe interne : Panel de dessin du graphe                *
-     *------------------------------------------------------------*/
-    
-    
+    /**
+     * Vérifie si les dates au plus tôt sont grisées
+     * @return true si les dates au plus tôt sont grisées
+     */
+    public boolean estGriseTot() { return this.numNiveauxTot == numNiveauxTard-1; }
+
+    /**
+     * Vérifie si les dates au plus tard sont grisées
+     * @return true si les dates au plus tard sont grisées
+     */
+    public boolean estGriseTard() { return this.numNiveauxTard == 0; }
+
+    /**
+     * Retourne le thème actuel
+     * @return "LIGHT" ou "DARK"
+     */
+    public String getTheme() { return this.graphePanel.getBackground().equals(Color.WHITE) ? "LIGHT" : "DARK"; }
+
+    /**
+     * Vérifie si le chemin critique est affiché
+     * @return true si le chemin critique est affiché
+     */
+    public boolean isCritique() { return this.afficher; }
+
+    /**
+     * Retourne l'échelle actuelle du graphe
+     * @return L'échelle actuelle
+     */
+    public double getScale() { return this.graphePanel.getScale(); }
 }

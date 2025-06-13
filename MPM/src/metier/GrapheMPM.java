@@ -21,11 +21,14 @@ import src.utils.DateUtils;
 import src.utils.ErrorUtils;
 import src.utils.Utils;
 
+/**
+ * Classe GrapheMPM qui représente le graphe MPM (Méthode des Potentiels Métra).
+ * Cette classe gère la structure du graphe, les calculs des dates au plus tôt et au plus tard,
+ * la gestion des chemins critiques et les opérations de sauvegarde/chargement.
+ */
 public class GrapheMPM
 {
-    /*--------------------*
-     * Attributs privés   *
-     *--------------------*/
+
     private List<CheminCritique> lstChemins;
     private List<TacheMPM>       lstTaches;
     
@@ -39,9 +42,10 @@ public class GrapheMPM
     private boolean              estCritique;
     private String               theme;
 
-    /*--------------*
-     * Constructeur *
-     *--------------*/
+    /**
+     * Constructeur du graphe MPM.
+     * Initialise les listes et tableaux nécessaires.
+     */
     public GrapheMPM()
     {
         this.niveaux    = new int[1000];
@@ -49,15 +53,19 @@ public class GrapheMPM
         this.lstTaches  = new ArrayList<TacheMPM>();
     }
 
-    /*---------------------------------*
-     * Méthodes de calcul des dates    *
-     *---------------------------------*/
+    /**
+     * Calcule les dates au plus tôt et au plus tard pour toutes les tâches.
+     */
     public void calculerDates() 
     {
         this.initDateTot();
         this.initDateTard();
     }
 
+    /**
+     * Définit la date de fin du projet et met à jour la date de référence.
+     * @param dateFin Date de fin du projet
+     */
     public void setDateFin(String dateFin) 
     {
         this.dateRef = DateUtils.ajouterJourDate(dateFin, -this.getDureeProjet());
@@ -66,6 +74,11 @@ public class GrapheMPM
         this.calculerDates();
     }
 
+    /**
+     * Initialise les dates au plus tôt pour toutes les tâches.
+     * Pour chaque tâche, la date au plus tôt est calculée en fonction
+     * des dates de fin de ses tâches prédécesseurs.
+     */
     private void initDateTot() 
     {
         for (TacheMPM tache : this.lstTaches)
@@ -84,6 +97,11 @@ public class GrapheMPM
         }
     }
 
+    /**
+     * Initialise les dates au plus tard pour toutes les tâches.
+     * Pour chaque tâche, la date au plus tard est calculée en fonction
+     * des dates de début de ses tâches successeurs.
+     */
     private void initDateTard() 
     {
         for (int i = this.lstTaches.size() - 1; i >= 0; i--) 
@@ -105,9 +123,10 @@ public class GrapheMPM
         }
     }
 
-    /*---------------------------------*
-     * Méthodes de gestion des niveaux *
-     *---------------------------------*/
+    /**
+     * Initialise les niveaux de toutes les tâches du graphe.
+     * Le niveau d'une tâche est déterminé par le niveau maximum de ses prédécesseurs + 1.
+     */
     public void initNiveauTaches() 
     {
         for (TacheMPM tache : this.lstTaches) 
@@ -122,6 +141,11 @@ public class GrapheMPM
         }
     }
 
+    /**
+     * Définit le niveau d'une tâche spécifique.
+     * @param tache La tâche dont on veut définir le niveau
+     * @param niveau Le niveau à attribuer
+     */
     public void setNiveauTache(TacheMPM tache, int niveau) 
     {
         if (niveau < 0 || niveau >= this.niveaux.length) 
@@ -133,9 +157,11 @@ public class GrapheMPM
         this.niveaux[niveau] += 1;
     }
 
-    /*----------------------------------*
-     * Méthodes de recherche de tâches  *
-     *----------------------------------*/
+    /**
+     * Recherche une tâche par son nom.
+     * @param nom Le nom de la tâche à rechercher
+     * @return La tâche trouvée ou null si aucune tâche ne correspond
+     */
     public TacheMPM trouverTache(String nom) 
     {
         for (TacheMPM tache : this.lstTaches) 
@@ -144,12 +170,12 @@ public class GrapheMPM
         return null;
     }
 
-    /*---------------------------------*
-     * Méthodes du chemin critique     *
-     *---------------------------------*/
+    /**
+     * Initialise les chemins critiques du graphe.
+     * Recherche tous les chemins critiques entre la tâche DEBUT et la tâche FIN.
+     */
     public void initCheminCritique() 
     {
-
         this.lstChemins.clear();
         TacheMPM fin   = this.lstTaches.get(this.lstTaches.size() - 1);
         TacheMPM debut = this.lstTaches.get(0);
@@ -162,7 +188,14 @@ public class GrapheMPM
         for (int i = 0; i < tousChemin.size(); i++) 
             definirCritique(tousChemin.get(i));
     }
-  
+
+    /**
+     * Recherche récursivement tous les chemins critiques entre deux tâches.
+     * @param actuelle La tâche actuellement examinée
+     * @param fin La tâche finale à atteindre
+     * @param cheminActuel Le chemin en cours de construction
+     * @param tousChemin La liste de tous les chemins critiques trouvés
+     */
     private void trouverTousCheminsCritiques(TacheMPM actuelle, TacheMPM fin, 
                                              List<TacheMPM> cheminActuel, 
                                              List<List<TacheMPM>> tousChemin) 
@@ -184,6 +217,10 @@ public class GrapheMPM
         cheminActuel.remove(cheminActuel.size() - 1);
     }
 
+    /**
+     * Définit un chemin comme critique et met à jour les tâches concernées.
+     * @param chemin La liste des tâches formant le chemin critique
+     */
     private void definirCritique(List<TacheMPM> chemin) 
     {
         CheminCritique cheminCritique = new CheminCritique();
@@ -197,6 +234,11 @@ public class GrapheMPM
         this.lstChemins.add(cheminCritique);
     }
 
+    /**
+     * Récupère la liste des successeurs directs d'une tâche.
+     * @param tache La tâche dont on veut les successeurs
+     * @return La liste des tâches successeurs
+     */
     private List<TacheMPM> getSuccesseurs(TacheMPM tache) 
     {
         List<TacheMPM> successeurs = new ArrayList<>();
@@ -208,9 +250,11 @@ public class GrapheMPM
         return successeurs;
     }
 
-    /*---------------------------------*
-     * Méthodes de gestion des tâches  *
-     *---------------------------------*/
+    /**
+     * Ajoute une tâche à une position spécifique dans le graphe.
+     * @param tache La tâche à ajouter
+     * @param position La position où insérer la tâche
+     */
     public void ajouterTacheAPosition(TacheMPM tache, int position) 
     {
         for (TacheMPM tacheCourante : this.getTaches()) 
@@ -244,9 +288,14 @@ public class GrapheMPM
         this.calculerDates();
         this.initCheminCritique();
         this.ajouterTacheFichier(tache);
-
     }
 
+    /**
+     * Met à jour la durée d'une tâche.
+     * @param index L'index de la tâche à modifier
+     * @param duree La nouvelle durée
+     * @return true si la modification a réussi, false sinon
+     */
     public boolean mettreAJourDureeTache(int index, int duree) 
     {
         List<TacheMPM> taches = this.lstTaches;
@@ -269,9 +318,12 @@ public class GrapheMPM
         }
     }
 
-    /*---------------------------------*
-     * Méthodes de modification        *
-     *---------------------------------*/
+    /**
+     * Modifie le nom d'une tâche.
+     * @param tache La tâche à modifier
+     * @param nouveauNom Le nouveau nom de la tâche
+     * @throws IllegalArgumentException Si le nom est vide ou déjà utilisé
+     */
     public void modifierNom(TacheMPM tache, String nouveauNom) 
     {
         if (nouveauNom == null || nouveauNom.trim().isEmpty()) 
@@ -286,9 +338,13 @@ public class GrapheMPM
         tache.setNom(nouveauNom);
         
         this.modifierTacheFichier(tache);
-
     }
 
+    /**
+     * Modifie les tâches prédécesseurs d'une tâche.
+     * @param tache La tâche à modifier
+     * @param nouveauxPrecedents Liste des noms des nouvelles tâches prédécesseurs
+     */
     public void modifierPrecedents(TacheMPM tache, String nouveauxPrecedents) 
     {
         Set<TacheMPM> nouveauxPrecedentsSet = new HashSet<>();
@@ -313,6 +369,11 @@ public class GrapheMPM
         this.modifierTacheFichier(tache);
     }
 
+    /**
+     * Modifie les tâches successeurs d'une tâche.
+     * @param tache La tâche à modifier
+     * @param nouveauxSuivants Liste des noms des nouvelles tâches successeurs
+     */
     public void modifierSuivants(TacheMPM tache, String nouveauxSuivants) 
     {
         Set<TacheMPM> nouveauxSuivantsSet = new HashSet<>();
@@ -337,9 +398,10 @@ public class GrapheMPM
         this.modifierTacheFichier(tache);
     }
 
-    /*---------------------------------*
-     * Méthodes copier/coller          *
-     *---------------------------------*/
+    /**
+     * Copie une tâche pour une opération de collage ultérieure.
+     * @param tacheSelectionnee La tâche à copier
+     */
     public void copierTache(TacheMPM tacheSelectionnee) 
     {
         if (tacheSelectionnee != null) 
@@ -353,6 +415,10 @@ public class GrapheMPM
         }
     }
 
+    /**
+     * Colle une tâche précédemment copiée.
+     * Crée une nouvelle tâche avec les mêmes propriétés que la tâche copiée.
+     */
     public void collerTache() 
     {
         if (this.tacheCopiee == null) 
@@ -402,9 +468,13 @@ public class GrapheMPM
         
         for (TacheMPM suivant : suivantsCopies) 
             suivant.getPrecedents().add(nouvelleTache);
-        
     }
 
+    /**
+     * Colle une tâche spécifique.
+     * @param tacheOriginale La tâche à coller
+     * @throws IllegalArgumentException Si la tâche est nulle
+     */
     public void collerTache(TacheMPM tacheOriginale)
     {
         if (tacheOriginale == null) 
@@ -434,9 +504,74 @@ public class GrapheMPM
         this.initNiveauTaches();
     }
 
-    /*---------------------------------*
-     * Méthodes utilitaires            *
-     *---------------------------------*/
+    /**
+     * Récupère la position d'une tâche depuis un fichier.
+     * @param tache La tâche dont on veut la position
+     * @param fichier Le fichier contenant les positions
+     * @return Un tableau contenant les coordonnées [x, y] de la tâche, ou null si non trouvée
+     */
+    public int[] getLocation(TacheMPM tache, String fichier) 
+    {
+        int[] pos;
+        try 
+        {
+            Scanner scMPM = new Scanner(new File(fichier), "UTF-8");
+            
+            while (scMPM.hasNextLine()) 
+            {
+                String   ligne   = scMPM.nextLine().trim();
+                if (ligne.isEmpty()) continue;
+
+                String[] parties = ligne.split("\\|", -1);
+
+                if (tache.getNom().equals(parties[0]) && parties.length >= 5) 
+                {
+                    pos = new int[2];
+                    pos[0]    = Integer.parseInt(parties[3]);
+                    pos[1]    = Integer.parseInt(parties[4]);
+                    scMPM.close();
+                    return pos;
+                }
+            }
+            scMPM.close();
+        } catch (Exception e) { e.printStackTrace(); }
+        
+        return null;
+    }
+
+    /**
+     * Récupère la dernière ou l'avant-dernière ligne du fichier selon le paramètre.
+     * @param nom Le type de ligne à récupérer ("theme" ou "critique")
+     * @return La ligne demandée ou une chaîne vide si non trouvée
+     */
+    public String getLigne(String nom) 
+    {
+        try 
+        {
+            Scanner sc            = new Scanner(new File(this.nomFichier), "UTF-8");
+            String  ligneActuelle = "";
+            String  ligneAvant    = "";
+            
+            while (sc.hasNextLine()) 
+            {
+                ligneAvant    = ligneActuelle;
+                ligneActuelle = sc.nextLine();
+            }
+            
+            sc.close();
+            
+            if      (nom.equals("theme"))    return ligneAvant;  
+            else if (nom.equals("critique")) return ligneActuelle; 
+            else                             return "";
+            
+        } catch (Exception e) { e.printStackTrace(); return ""; }
+    }
+
+    /**
+     * Charge les positions des entités depuis un fichier.
+     * @param nomFichier Le fichier contenant les positions
+     * @param lstEntites La liste des entités à positionner
+     */
     public void chargerEntites(String nomFichier, List<Entite> lstEntites)
     {
         for (Entite e : lstEntites)
@@ -446,6 +581,10 @@ public class GrapheMPM
         }
     }
 
+    /**
+     * Calcule la durée totale du projet.
+     * @return La durée du projet en jours
+     */
     public int getDureeProjet() 
     {
          if (this.lstTaches.size() <= 2) 
@@ -476,6 +615,10 @@ public class GrapheMPM
         return dureeMax;
     }
 
+    /**
+     * Initialise les tâches à partir d'un fichier.
+     * @param nomFichier Chemin du fichier contenant les tâches
+     */
     public void initTache(String nomFichier) 
     {
         this.nomFichier = nomFichier;
@@ -541,6 +684,9 @@ public class GrapheMPM
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    /**
+     * Vérifie et ajoute les tâches DEBUT et FIN si nécessaire.
+     */
     private void verifierDebutFin() 
     {
         boolean  trouveDebut = false;
@@ -575,6 +721,9 @@ public class GrapheMPM
         }
     }
 
+    /**
+     * Établit les relations de successeurs entre les tâches.
+     */
     private void etablirRelationsSuivants() 
     {
         for (TacheMPM tache : this.lstTaches) 
@@ -599,71 +748,77 @@ public class GrapheMPM
         }
     }
 
-    /*---------------------------------*
-     * Méthodes de gestion des fichiers*
-     *---------------------------------*/
-public void chargerFichierB(Controleur ctrl) 
-{
-    File             fichierSelectionner = null;
-    JFileChooser     selectionFichier    = new JFileChooser();
-    
-    FileNameExtensionFilter filterData   = new FileNameExtensionFilter("Fichiers data (*.data)", "data");
-    FileNameExtensionFilter filterMC     = new FileNameExtensionFilter("Fichiers MPM (*.MC)", "MC");
-    
-    selectionFichier.addChoosableFileFilter(filterData);
-    selectionFichier.addChoosableFileFilter(filterMC);
-    selectionFichier.setAcceptAllFileFilterUsed(true);
-    selectionFichier.setCurrentDirectory(new File("."));
-
-    if (selectionFichier.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-        fichierSelectionner = selectionFichier.getSelectedFile();   
-
-    try
+    /**
+     * Charge un fichier de projet MPM.
+     * @param ctrl Le contrôleur principal de l'application
+     */
+    public void chargerFichierB(Controleur ctrl) 
     {
-        if (fichierSelectionner == null) 
-        {
-            ErrorUtils.showError("Aucun fichier sélectionné");
-            return;
-        }
+        File             fichierSelectionner = null;
+        JFileChooser     selectionFichier    = new JFileChooser();
         
-        String extension = fichierSelectionner.getName().substring(fichierSelectionner.getName().lastIndexOf('.') + 1);
+        FileNameExtensionFilter filterData   = new FileNameExtensionFilter("Fichiers data (*.data)", "data");
+        FileNameExtensionFilter filterMC     = new FileNameExtensionFilter("Fichiers MPM (*.MC)", "MC");
         
-        if (this.dateRef == null || this.dateRef.isEmpty()) 
+        selectionFichier.addChoosableFileFilter(filterData);
+        selectionFichier.addChoosableFileFilter(filterMC);
+        selectionFichier.setAcceptAllFileFilterUsed(true);
+        selectionFichier.setCurrentDirectory(new File("."));
+
+        if (selectionFichier.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+            fichierSelectionner = selectionFichier.getSelectedFile();   
+
+        try
         {
-            this.dateRef = ctrl.getDateDuJour();
-            this.dateType = 'D';
-        }
-        
-        switch (extension) 
-        {
-            case "MC" -> 
+            if (fichierSelectionner == null) 
             {
-                niveaux = new int[1000];
-                ctrl.initComplet(this.getDateType(), fichierSelectionner.getPath());
-                ErrorUtils.showSucces("Chargement d'un fichier de données complexe réussi");
+                ErrorUtils.showError("Aucun fichier sélectionné");
+                return;
             }
-            default -> 
+            
+            String extension = fichierSelectionner.getName().substring(fichierSelectionner.getName().lastIndexOf('.') + 1);
+            
+            if (this.dateRef == null || this.dateRef.isEmpty()) 
             {
-                niveaux = new int[1000];
-                ctrl.initProjet(this.getDateRef(), this.getDateType(), fichierSelectionner.getPath());
-                ErrorUtils.showSucces("Chargement d'un fichier de données simple réussi");
+                this.dateRef = ctrl.getDateDuJour();
+                this.dateType = 'D';
             }
+            
+            switch (extension) 
+            {
+                case "MC" -> 
+                {
+                    niveaux = new int[1000];
+                    ctrl.initComplet(this.getDateType(), fichierSelectionner.getPath());
+                    ErrorUtils.showSucces("Chargement d'un fichier de données complexe réussi");
+                }
+                default -> 
+                {
+                    niveaux = new int[1000];
+                    ctrl.initProjet(this.getDateRef(), this.getDateType(), fichierSelectionner.getPath());
+                    ErrorUtils.showSucces("Chargement d'un fichier de données simple réussi");
+                }
+            }
+        }
+        catch (NullPointerException e1) 
+        {
+            ErrorUtils.showError("Erreur lors de l'accès au fichier : " + e1.getMessage());
+        } 
+        catch (SecurityException e2) 
+        {
+            ErrorUtils.showError("Accès refusé au fichier : " + e2.getMessage());
+        } 
+        catch (Exception e3) 
+        {
+            ErrorUtils.showError("Erreur inattendue : " + e3.getMessage());
+            e3.printStackTrace();
         }
     }
-    catch (NullPointerException e1) 
-    {
-        ErrorUtils.showError("Erreur lors de l'accès au fichier : " + e1.getMessage());
-    } 
-    catch (SecurityException e2) 
-    {
-        ErrorUtils.showError("Accès refusé au fichier : " + e2.getMessage());
-    } 
-    catch (Exception e3) 
-    {
-        ErrorUtils.showError("Erreur inattendue : " + e3.getMessage());
-        e3.printStackTrace();
-    }
-}
+
+    /**
+     * Crée un nouveau projet MPM.
+     * @param dateType Le type de date (Début/Fin)
+     */
     public void nouveauProjet(char dateType) 
     {
         this.lstTaches.clear();
@@ -701,12 +856,15 @@ public void chargerFichierB(Controleur ctrl)
         this.lstTaches.add(tacheDebut);
         this.lstTaches.add(tacheFin);
         
-       if (dateType == 'F' && this.dateRef != null) {this.setDateFin(this.dateRef);}
+        if (dateType == 'F' && this.dateRef != null) {this.setDateFin(this.dateRef);}
         this.calculerDates();
         this.initCheminCritique();
         this.initNiveauTaches();
     }
 
+    /**
+     * Sauvegarde le projet dans le fichier courant.
+     */
     public void sauvegarder() 
     {
         String precedentsStr;
@@ -724,6 +882,13 @@ public void chargerFichierB(Controleur ctrl)
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    /**
+     * Sauvegarde le projet avec les informations d'affichage.
+     * @param theme Le thème d'affichage
+     * @param critique L'état d'affichage des chemins critiques
+     * @param dateRef La date de référence
+     * @param panelMere Le panel principal
+     */
     public void sauvegarderFichier(String theme, boolean critique, String dateRef, PanelMPM panelMere) 
     {
         try 
@@ -757,9 +922,10 @@ public void chargerFichierB(Controleur ctrl)
         }
     }
 
-    /*---------------------------------*
-     * Méthodes de gestion des tâches  *
-     *---------------------------------*/
+    /**
+     * Ajoute une tâche au fichier de projet.
+     * @param tacheAjout La tâche à ajouter
+     */
     public void ajouterTacheFichier(TacheMPM tacheAjout) 
     {
         boolean tacheExiste = false;
@@ -806,6 +972,10 @@ public void chargerFichierB(Controleur ctrl)
         this.initNiveauTaches();
     }
 
+    /**
+     * Modifie une tâche dans le fichier de projet.
+     * @param tacheModif La tâche modifiée
+     */
     public void modifierTacheFichier(TacheMPM tacheModif) 
     {
         for (int i = 0; i < this.lstTaches.size(); i++) 
@@ -820,6 +990,10 @@ public void chargerFichierB(Controleur ctrl)
         this.sauvegarder();
     }
 
+    /**
+     * Supprime une tâche du fichier de projet.
+     * @param tacheSuppr La tâche à supprimer
+     */
     public void supprimerTacheFichier(TacheMPM tacheSuppr) 
     {
         for (TacheMPM tache : this.lstTaches) 
@@ -864,66 +1038,6 @@ public void chargerFichierB(Controleur ctrl)
         this.initNiveauTaches();
     }
 
-
-
-    /*---------------------------------*
-     * Méthodes utilitaires            *
-     *---------------------------------*/
-    public int[] getLocation(TacheMPM tache, String fichier) 
-    {
-        int[] pos;
-        try 
-        {
-            Scanner scMPM = new Scanner(new File(fichier), "UTF-8");
-            
-            while (scMPM.hasNextLine()) 
-            {
-                String   ligne   = scMPM.nextLine().trim();
-                if (ligne.isEmpty()) continue;
-
-                String[] parties = ligne.split("\\|", -1);
-
-                if (tache.getNom().equals(parties[0]) && parties.length >= 5) 
-                {
-                    pos = new int[2];
-                    pos[0]    = Integer.parseInt(parties[3]);
-                    pos[1]    = Integer.parseInt(parties[4]);
-                    scMPM.close();
-                    return pos;
-                }
-            }
-            scMPM.close();
-        } catch (Exception e) { e.printStackTrace(); }
-        
-        return null;
-    }
-
-    public String getLigne(String nom) 
-    {
-        try 
-        {
-            Scanner sc            = new Scanner(new File(this.nomFichier), "UTF-8");
-            String  ligneActuelle = "";
-            String  ligneAvant    = "";
-            
-            while (sc.hasNextLine()) 
-            {
-                ligneAvant    = ligneActuelle;
-                ligneActuelle = sc.nextLine();
-            }
-            
-            sc.close();
-            
-            if      (nom.equals("theme"))    return ligneAvant;  
-            else if (nom.equals("critique")) return ligneActuelle; 
-            else                             return "";
-            
-        } catch (Exception e) { e.printStackTrace(); return ""; }
-    }
-
-    /*---------------------------------*
-     * Accesseurs - Getters            *
-     *---------------------------------*/
     public String               getDateRef()                      { return dateRef;              }
     public char                 getDateType()                     { return dateType;             }
     public int                  getNiveauTache(TacheMPM tache)    { return tache.getNiveau();    }
@@ -935,9 +1049,6 @@ public void chargerFichierB(Controleur ctrl)
     public String  getTheme  () { return this.theme;       }
     public boolean isCritique() { return this.estCritique; }
     
-    /*---------------------------------*
-     * Accesseurs - Setters            *
-     *---------------------------------*/
     public void setDateRef        (String dateRef) { this.dateRef = dateRef;        }
     public void setDateType       (char dateType ) { this.dateType = dateType;      }
     public void setFormatDateTexte(boolean format) { this.formatDateTexte = format; }

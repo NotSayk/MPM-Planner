@@ -2,14 +2,31 @@ package src.utils;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Classe utilitaire pour la gestion des messages d'erreur et d'information.
+ * Fournit des méthodes pour afficher différents types de messages à l'utilisateur.
+ */
 public class ErrorUtils 
 {
-    
-    public ErrorUtils() 
+    /*--------------*
+     * Constructeur *
+     *--------------*/
+    /**
+     * Constructeur privé pour empêcher l'instanciation.
+     * Cette classe est une classe utilitaire et ne doit pas être instanciée.
+     */
+    private ErrorUtils() 
     {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
+    /*----------------------------------*
+     * Méthodes d'affichage de messages *
+     *----------------------------------*/
+    /**
+     * Affiche un message d'avertissement.
+     * @param message Message à afficher
+     */
     public static void showWarning(String message) 
     {
         JOptionPane.showMessageDialog(
@@ -20,6 +37,10 @@ public class ErrorUtils
         );
     }
 
+    /**
+     * Affiche un message d'erreur.
+     * @param message Message à afficher
+     */
     public static void showError(String message) 
     {
         JOptionPane.showMessageDialog(
@@ -30,6 +51,10 @@ public class ErrorUtils
         );
     }
 
+    /**
+     * Affiche un message d'information.
+     * @param message Message à afficher
+     */
     public static void showInfo(String message) 
     {
         JOptionPane.showMessageDialog(
@@ -40,6 +65,10 @@ public class ErrorUtils
         );
     }
 
+    /**
+     * Affiche un message de succès.
+     * @param message Message à afficher
+     */
     public static void showSucces(String message) 
     {
         JOptionPane.showMessageDialog(
@@ -49,5 +78,4 @@ public class ErrorUtils
             JOptionPane.QUESTION_MESSAGE
         );
     }
-
 }

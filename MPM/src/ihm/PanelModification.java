@@ -12,6 +12,11 @@ import src.metier.TacheMPM;
 import src.utils.BtnUtils;
 import src.utils.ErrorUtils;
 
+/**
+ * Classe PanelModification qui gère l'interface de modification des tâches du graphe MPM.
+ * Cette classe hérite de JPanel et implémente ActionListener pour gérer les événements des boutons.
+ * Elle permet d'ajouter de nouvelles tâches et de modifier la durée des tâches existantes.
+ */
 public class PanelModification extends JPanel implements ActionListener
 {
     private Controleur         ctrl;
@@ -26,6 +31,10 @@ public class PanelModification extends JPanel implements ActionListener
     private JButton            btnAjouter;
     private JButton            btnMaj;
 
+    /**
+     * Constructeur du panel de modification
+     * @param ctrl Le contrôleur principal de l'application
+     */
     public PanelModification(Controleur ctrl)
     {
         this.ctrl = ctrl;
@@ -40,6 +49,7 @@ public class PanelModification extends JPanel implements ActionListener
 
         this.tblGrilleDonnees.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
+        // Gestion de la sélection des lignes dans le tableau
         this.tblGrilleDonnees.getSelectionModel().addListSelectionListener(e -> 
         {
             if (!e.getValueIsAdjusting())
@@ -84,16 +94,20 @@ public class PanelModification extends JPanel implements ActionListener
         this.btnAjouter.addActionListener(this);
     }
 
+    /**
+     * Gère les événements des boutons
+     * @param e L'événement déclenché
+     */
     public void actionPerformed(ActionEvent e) 
     {
         if (e.getSource() == this.btnMaj) 
         {
             int[] lignesSelectionnees = this.tblGrilleDonnees.getSelectedRows();
-			int   duree;
+            int   duree;
             
             // Vérifier si la ligne sélectionnée est la première ou dernière du tableau
             if (lignesSelectionnees.length == 1 && 
-					(lignesSelectionnees[0] == 0 || lignesSelectionnees[0] == this.grilleDonneesModel.getRowCount() - 1)) 
+                    (lignesSelectionnees[0] == 0 || lignesSelectionnees[0] == this.grilleDonneesModel.getRowCount() - 1)) 
             {
                 ErrorUtils.showError("Cette tâche ne peut pas être modifiée.");
                 return;
@@ -151,7 +165,7 @@ public class PanelModification extends JPanel implements ActionListener
         else if (e.getSource() == this.btnAjouter) 
         {
             String nomTache = this.txtTacheNom.getText().trim();
-			int    niveau   = 0;
+            int    niveau   = 0;
 
             if (!nomTache.isEmpty()) 
             {
@@ -185,5 +199,9 @@ public class PanelModification extends JPanel implements ActionListener
         }
     }
     
+    /**
+     * Retourne le modèle de données de la grille
+     * @return Le modèle de données utilisé pour afficher les informations dans la grille
+     */
     public GrilleDonneesModel getGrilleDonneesModel() { return this.grilleDonneesModel; }
 }

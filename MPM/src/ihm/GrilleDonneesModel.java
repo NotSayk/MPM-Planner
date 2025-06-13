@@ -7,13 +7,27 @@ import src.metier.TacheMPM;
 import src.utils.ErrorUtils;
 import src.utils.Utils;
 
+/**
+ * Modèle de données pour la grille d'affichage des tâches.
+ * Gère l'affichage et la modification des données des tâches dans un tableau.
+ */
 public class GrilleDonneesModel extends AbstractTableModel
 {
+    /*--------------------*
+     * Attributs privés   *
+     *--------------------*/
     private Controleur ctrl;
-    
     private String[]   tabEntetes;
     private Object[][] tabDonnees;
 
+    /*--------------*
+     * Constructeur *
+     *--------------*/
+    /**
+     * Crée un nouveau modèle de grille de données.
+     * Initialise les en-têtes et charge les données des tâches.
+     * @param ctrl Contrôleur principal de l'application
+     */
     public GrilleDonneesModel(Controleur ctrl)
     {
         this.ctrl = ctrl;
@@ -29,13 +43,12 @@ public class GrilleDonneesModel extends AbstractTableModel
         this.refreshTab();
     }
 
-    // Getters
-    public int    getColumnCount()                 { return this.tabEntetes.length;          }
-    public int    getRowCount   ()                 { return this.tabDonnees.length;          }
-    public String getColumnName (int col)          { return this.tabEntetes[col];            }
-    public Object getValueAt    (int row, int col) { return this.tabDonnees[row][col];       }
-    public Class  getColumnClass(int c)            { return getValueAt(0, c).getClass(); }
-
+    /*----------------------------------*
+     * Méthodes de gestion des données  *
+     *----------------------------------*/
+    /**
+     * Rafraîchit les données du tableau avec les informations actuelles des tâches.
+     */
     public void refreshTab()
     {
         List<TacheMPM> lstTaches = this.ctrl.getTaches();
@@ -90,6 +103,12 @@ public class GrilleDonneesModel extends AbstractTableModel
         }
     }
 
+    /**
+     * Détermine si une cellule est modifiable.
+     * @param rowIndex Index de la ligne
+     * @param columnIndex Index de la colonne
+     * @return true si la cellule est modifiable, false sinon
+     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex)
     {
@@ -103,4 +122,10 @@ public class GrilleDonneesModel extends AbstractTableModel
             return false;
         return columnIndex == 2 || columnIndex == 3 || columnIndex == 0; // Seules les colonnes nom, précédents et suivants sont éditables
     }
+
+    public int    getColumnCount()                 { return this.tabEntetes.length;          }
+    public int    getRowCount   ()                 { return this.tabDonnees.length;          }
+    public String getColumnName (int col)          { return this.tabEntetes[col];            }
+    public Object getValueAt    (int row, int col) { return this.tabDonnees[row][col];       }
+    public Class  getColumnClass(int c)            { return getValueAt(0, c).getClass(); }
 }

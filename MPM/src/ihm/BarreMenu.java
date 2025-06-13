@@ -9,13 +9,16 @@ import src.Controleur;
 import src.metier.TacheMPM;
 import src.utils.ErrorUtils;
 
+/**
+ * Classe BarreMenu qui gère l'interface graphique de la barre de menu de l'application.
+ * Cette classe hérite de JMenuBar et implémente ActionListener pour gérer les événements des menus.
+ */
 public class BarreMenu extends JMenuBar implements ActionListener
 {
    private Controleur ctrl;
    
    private JMenuItem  menuiCharger;
    private JMenuItem  menuiNouveau;
-
    private JMenuItem  menuiSauvegarder;
    private JMenuItem  menuiQuitter;
 
@@ -35,6 +38,10 @@ public class BarreMenu extends JMenuBar implements ActionListener
 
    private JMenuItem  menuiChangerAffichage;
 
+   /**
+    * Constructeur de la barre de menu
+    * @param ctrl Le contrôleur principal de l'application
+    */
    public BarreMenu(Controleur ctrl)
    {
       this.ctrl = ctrl;
@@ -181,6 +188,10 @@ public class BarreMenu extends JMenuBar implements ActionListener
       styleMenuItem( this.menuiInfosCritique     );
    }
 
+    /**
+     * Gère les événements des menus
+     * @param e L'événement déclenché
+     */
     @Override
     public void actionPerformed(ActionEvent e) 
     {
@@ -214,8 +225,10 @@ public class BarreMenu extends JMenuBar implements ActionListener
     }
 
     /**
-    * Crée une icône à partir d'un caractère Unicode ou emoji
-    */
+     * Crée une icône à partir d'un caractère Unicode ou emoji
+     * @param unicode Le caractère Unicode ou emoji à convertir en icône
+     * @return Une ImageIcon créée à partir du caractère Unicode
+     */
    private ImageIcon createMenuIcon(String unicode) 
    {
       try 
@@ -246,7 +259,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
    }
 
    /**
-    * Style moderne pour les menus
+    * Applique un style moderne aux menus
+    * @param menu Le menu à styliser
     */
    private void styleMenu(JMenu menu) 
    {
@@ -274,7 +288,8 @@ public class BarreMenu extends JMenuBar implements ActionListener
    }
 
    /**
-    * Style moderne pour les éléments de menu
+    * Applique un style moderne aux éléments de menu
+    * @param item L'élément de menu à styliser
     */
    private void styleMenuItem(JMenuItem item) 
    {
@@ -306,8 +321,13 @@ public class BarreMenu extends JMenuBar implements ActionListener
       });
    }
 
-      public void chercherTache() 
-    {
+   /**
+    * Permet de rechercher une tâche par son nom
+    * Affiche une boîte de dialogue pour saisir le nom de la tâche
+    * Sélectionne la tâche si elle est trouvée
+    */
+   public void chercherTache() 
+   {
         String nomTache = JOptionPane.showInputDialog(this.ctrl.getFrameMPM(), "Entrez le nom de la tâche à chercher :");
         if (nomTache == null || nomTache.trim().isEmpty()) 
         {

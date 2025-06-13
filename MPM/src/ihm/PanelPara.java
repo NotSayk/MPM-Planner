@@ -17,6 +17,11 @@ import src.Controleur;
 import src.utils.BtnUtils;
 import src.utils.ErrorUtils;
 
+/**
+ * Classe PanelPara qui gère l'interface de configuration des paramètres du projet.
+ * Cette classe hérite de JPanel et implémente ActionListener pour gérer les événements des boutons.
+ * Elle permet de configurer la date de référence, le type de date (début/fin) et le format d'affichage.
+ */
 public class PanelPara extends JPanel implements ActionListener
 {   
     /*--------------------*
@@ -31,9 +36,10 @@ public class PanelPara extends JPanel implements ActionListener
     private JRadioButton rbDateFormatTexte;
     private JButton      btnValider;
 
-    /*--------------*
-     * Constructeur *
-     *--------------*/
+    /**
+     * Constructeur du panel de paramètres
+     * @param ctrl Le contrôleur principal de l'application
+     */
     public PanelPara(Controleur ctrl) 
     {
         this.ctrl = ctrl;
@@ -118,9 +124,10 @@ public class PanelPara extends JPanel implements ActionListener
         this.btnValider.addActionListener(this);
     }
 
-    /*---------------------------------*
-     * Gestion des événements          *
-     *---------------------------------*/
+    /**
+     * Gère les événements des boutons
+     * @param e L'événement déclenché
+     */
     @Override
     public void actionPerformed(ActionEvent e) 
     {
