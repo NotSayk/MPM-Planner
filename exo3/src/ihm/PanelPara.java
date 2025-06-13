@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -14,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-
 import src.Controleur;
 import src.utils.BtnUtils;
 import src.utils.ErrorUtils;
@@ -25,6 +23,7 @@ public class PanelPara extends JPanel implements ActionListener
      * Attributs privés   *
      *--------------------*/
     private Controleur   ctrl;
+    
     private JTextField   txtDateRef;
     private JRadioButton rbDateDebut;
     private JRadioButton rbDateFin;
@@ -38,6 +37,7 @@ public class PanelPara extends JPanel implements ActionListener
     public PanelPara(Controleur ctrl) 
     {
         this.ctrl = ctrl;
+        
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
         
