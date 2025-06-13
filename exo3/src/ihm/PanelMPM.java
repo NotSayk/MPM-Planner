@@ -26,6 +26,7 @@ public class PanelMPM extends JPanel
      * Attributs privés   *
      *--------------------*/
     private Controleur   ctrl;
+
     private List<Entite> lstEntites;
     private TacheMPM     tacheSelectionnee;
 
@@ -43,10 +44,11 @@ public class PanelMPM extends JPanel
      *--------------*/
     public PanelMPM(Controleur ctrl) 
     {
-        this.ctrl             = ctrl;
-        this.afficherDateTot  = false;
-        this.afficherDateTard = false;
-        this.afficher         = false;
+        this.ctrl              = ctrl;
+
+        this.afficherDateTot   = false;
+        this.afficherDateTard  = false;
+        this.afficher          = false;
 
         this.lstEntites        = new ArrayList<>();
         this.panelButton       = new PanelButton(this.ctrl);
@@ -126,6 +128,7 @@ public class PanelMPM extends JPanel
     private int calculerNiveauxTaches(List<TacheMPM> taches, int[] nbTachesParNiveau) 
     {
         int niveauMax = 0;
+
         for (TacheMPM tache : taches) 
         {
             int niveau = this.ctrl.getNiveauTache(tache);
@@ -138,12 +141,11 @@ public class PanelMPM extends JPanel
     private int trouverMaxTachesParNiveau(int[] nbTachesParNiveau, int niveauMax) 
     {
         int maxTachesParNiveau = 0;
+
         for (int i = 0; i <= niveauMax; i++) 
         {
             if (nbTachesParNiveau[i] > maxTachesParNiveau) 
-            {
                 maxTachesParNiveau = nbTachesParNiveau[i];
-            }
         }
         return maxTachesParNiveau;
     }
@@ -157,13 +159,13 @@ public class PanelMPM extends JPanel
     private void creerEntitesPositionnees(List<TacheMPM> taches, int[] nbTachesParNiveau, int centreY) 
     {
         int[] compteurParNiveau = new int[2000];
+        int   x, y;
         
         for (TacheMPM tache : taches) 
         {
             int niveau = this.ctrl.getNiveauTache(tache);
-            int x = PanelMPM.MARGE + niveau * PanelMPM.ESPACEMENT;
-            
-            int y = calculerPositionY(nbTachesParNiveau, centreY, niveau, compteurParNiveau[niveau]);
+            x = PanelMPM.MARGE + niveau * PanelMPM.ESPACEMENT;
+            y = this.calculerPositionY(nbTachesParNiveau, centreY, niveau, compteurParNiveau[niveau]);
             
             Entite entite = new Entite(tache, x, y);
             this.lstEntites.add(entite);
@@ -178,7 +180,7 @@ public class PanelMPM extends JPanel
         int hauteurCeNiveau  = nbTachesCeNiveau * PanelMPM.ESPACEMENT;
         int debutY           = centreY - hauteurCeNiveau / 2;
         
-        int y = debutY + positionDansNiveau * PanelMPM.ESPACEMENT;
+        int y                = debutY + positionDansNiveau * PanelMPM.ESPACEMENT;
         
         if (y < PanelMPM.MARGE) y = PanelMPM.MARGE + positionDansNiveau * PanelMPM.ESPACEMENT;
         
@@ -192,13 +194,11 @@ public class PanelMPM extends JPanel
     // Rendre cette méthode publique pour GraphePanel
     public void dessinerConnexions(Graphics g)
     {
-        Color couleurLigne = obtenirCouleurLigne();
+        Color couleurLigne = this.obtenirCouleurLigne();
         g.setColor(couleurLigne);
         
         for (Entite entite : this.lstEntites)
-        {
-            dessinerConnexionsEntite(g, entite);
-        }
+            this.dessinerConnexionsEntite(g, entite);
     }
 
     private Color obtenirCouleurLigne() 
@@ -208,19 +208,26 @@ public class PanelMPM extends JPanel
 
     private void dessinerConnexionsEntite(Graphics g, Entite entite) 
     {
+        Entite   entiteSuivante;
+        int[]    coordonnees;
+        int      x1, y1, x2, y2;
         TacheMPM tache = entite.getTache();
+
         for (TacheMPM tacheSuivante : tache.getSuivants())
         {
-            Entite entiteSuivante = this.getEntiteParTache(tacheSuivante);
+            entiteSuivante = this.getEntiteParTache(tacheSuivante);
             if (entiteSuivante == null) continue;
 
-            int[] coordonnees = calculerCoordonneesLigne(entite, entiteSuivante);
-            int x1 = coordonnees[0], y1 = coordonnees[1], x2 = coordonnees[2], y2 = coordonnees[3];
+            coordonnees = this.calculerCoordonneesLigne(entite, entiteSuivante);
+            x1          = coordonnees[0];
+            y1          = coordonnees[1];
+            x2          = coordonnees[2];
+            y2          = coordonnees[3];
             
             g.drawLine(x1, y1, x2, y2);
             
-            dessinerTexteDuree(g, entite, x1, y1, x2, y2);
-            dessinerFleche(g, x1, y1, x2, y2);
+            this.dessinerTexteDuree(g, entite, x1, y1, x2, y2);
+            this.dessinerFleche(g, x1, y1, x2, y2);
         }
     }
 
@@ -243,7 +250,7 @@ public class PanelMPM extends JPanel
         int largeurTexte = fm.stringWidth(texte);
         int hauteurTexte = fm.getHeight();
         
-        dessinerFondTexte(g, xCentre, yCentre, largeurTexte, hauteurTexte);
+        this.dessinerFondTexte(g, xCentre, yCentre, largeurTexte, hauteurTexte);
         
         g.setColor(obtenirCouleurLigne());
         g.drawString(texte, xCentre - largeurTexte / 2, yCentre + hauteurTexte / 4);
@@ -306,16 +313,13 @@ public class PanelMPM extends JPanel
         }
         if (this.tacheSelectionnee != null) 
             this.getEntiteParTache(tacheSelectionnee).setCouleurContour(Color.BLUE);
-        repaint();
+        this.repaint();
     }
 
     // Rendre cette méthode publique pour GraphePanel
     public Color determinerCouleurContour(Entite entite, boolean afficherCritique) 
     {
-        if (afficherCritique && entite.getTache().estCritique()) 
-        {
-            return Color.RED;
-        }
+        if (afficherCritique && entite.getTache().estCritique()) return Color.RED;
         return this.graphePanel.getBackground().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
@@ -324,7 +328,7 @@ public class PanelMPM extends JPanel
     {
         for (Entite entite : this.lstEntites) 
         {
-            Color couleur = determinerCouleurContour(entite, this.afficher);
+            Color couleur = this.determinerCouleurContour(entite, this.afficher);
             entite.setCouleurContour(couleur);
         }
     }
@@ -333,17 +337,19 @@ public class PanelMPM extends JPanel
     {
         this.afficherDateTot = true;
         this.numNiveauxTot++;
+
         if (this.graphePanel != null) {
             this.graphePanel.setAfficherDateTot(this.afficherDateTot);
             this.graphePanel.setNumNiveauxTot(this.numNiveauxTot);
         }
-        repaint();
+        this.repaint();
     }
 
     public void afficherDateTard()
     {
         this.afficherDateTard = true;
         this.numNiveauxTard--;
+
         if (this.numNiveauxTard <= 0)
         { this.panelButton.getBtnCritique().setEnabled(true);
             this.panelButton.repaint();
@@ -353,7 +359,7 @@ public class PanelMPM extends JPanel
             this.graphePanel.setAfficherDateTard(this.afficherDateTard);
             this.graphePanel.setNumNiveauxTard(this.numNiveauxTard);
         }
-        repaint();
+        this.repaint();
     }
 
     public void cacherDates()
@@ -370,53 +376,50 @@ public class PanelMPM extends JPanel
             else                                       break;
         }
         
-        if (this.graphePanel != null) {
+        if (this.graphePanel != null) 
+        {
             this.graphePanel.setAfficherDateTot(this.afficherDateTot);
             this.graphePanel.setAfficherDateTard(this.afficherDateTard);
             this.graphePanel.setNumNiveauxTot(this.numNiveauxTot);
             this.graphePanel.setNumNiveauxTard(this.numNiveauxTard);
         }
-        repaint();
+        this.repaint();
     }
 
     public void setTheme(String theme) 
     {
-        appliquerTheme(theme);
+        this.appliquerTheme(theme);
         this.afficherCheminCritique(this.afficher);
+
         if (this.tacheSelectionnee != null)
             this.getEntiteParTache(tacheSelectionnee).setCouleurContour(Color.BLUE);
-        repaint();
+            this.repaint();
     }
 
     private void appliquerTheme(String theme) 
     {
-        if (theme == null || theme.isEmpty()) 
-        {
-            theme = "LIGHT";
-        }
+        if (theme == null || theme.isEmpty()) theme = "LIGHT";
+
         if (theme.equals("LIGHT")) 
         {
             this.setBackground(Color.WHITE);
             this.graphePanel.setBackground(Color.WHITE);
-            for (Entite entite : this.lstEntites) 
-                entite.setCouleurContour(Color.BLACK);
+            for (Entite entite : this.lstEntites) entite.setCouleurContour(Color.BLACK);
         } 
         else if (theme.equals("DARK")) 
         {
             this.setBackground(Color.DARK_GRAY);
             this.graphePanel.setBackground(Color.DARK_GRAY);
-            for (Entite entite : this.lstEntites) 
-                entite.setCouleurContour(Color.WHITE);
+            for (Entite entite : this.lstEntites) entite.setCouleurContour(Color.WHITE);
         }
       
     }
 
     public void resetPositions() 
     {
-        for (Entite entite : this.lstEntites) 
-            entite.resetPosition();
+        for (Entite entite : this.lstEntites) entite.resetPosition();
         this.graphePanel.updateSize();
-        repaint();
+        this.repaint();
     }
 
     public void resetScale() 
@@ -433,16 +436,16 @@ public class PanelMPM extends JPanel
     {
         if (this.tacheSelectionnee != null) 
         {
-            Entite entiteActuelle = getEntiteParTache(this.tacheSelectionnee);
+            Entite entiteActuelle = this.getEntiteParTache(this.tacheSelectionnee);
             if (entiteActuelle != null) 
             {
-                Color couleurContour = determinerCouleurContour(entiteActuelle, this.afficher);
+                Color couleurContour = this.determinerCouleurContour(entiteActuelle, this.afficher);
                 entiteActuelle.setCouleurContour(couleurContour);
             }
         }
         this.tacheSelectionnee = tache;
 
-        Entite entite = getEntiteParTache(tache);
+        Entite entite = this.getEntiteParTache(tache);
         if (entite == null) return;
         entite.setCouleurContour(Color.BLUE);
         this.tacheSelectionnee = entite.getTache();
@@ -450,13 +453,13 @@ public class PanelMPM extends JPanel
         this.graphePanel.setScale(1.5);
         this.graphePanel.updateSize();
 
-        centrerSurEntite(entite);
-        repaint();
+        this.centrerSurEntite(entite);
+        this.repaint();
     }
 
     private void centrerSurEntite(Entite entite) 
     {
-        double scale = this.graphePanel.getScale();
+        double    scale       = this.graphePanel.getScale();
         Rectangle visibleRect = new Rectangle
         (
             (int)(entite.getX() * scale) - 100,
