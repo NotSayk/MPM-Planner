@@ -446,9 +446,9 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             else if (e.getSource() == this.jmDuree) 
             {
                 String dureeTache = JOptionPane.showInputDialog(this, "Modifier la durée de la tâche :", 
-                                                                entiteSelectionnee.getTache().getDuree());
-                if (entiteSelectionnee.getTache().getNom().equals("DEBUT") || 
-                    entiteSelectionnee.getTache().getNom().equals("FIN")) 
+                                                                this.entiteSelectionnee.getTache().getDuree());
+                if (this.entiteSelectionnee.getTache().getNom().equals("DEBUT") || 
+                    this.entiteSelectionnee.getTache().getNom().equals("FIN")) 
                 {
                     JOptionPane.showMessageDialog(this, "Impossible de modifier la durée de la tâche DEBUT ou FIN.", 
                                                   "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -459,11 +459,11 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                     try 
                     {
                         int duree = Integer.parseInt(dureeTache);
-                        entiteSelectionnee.getTache().setDuree(duree);
-                        ctrl.getGraphe().calculerDates();
-                        ctrl.getGraphe().initCheminCritique();
-                        ctrl.modifierTacheFichier(entiteSelectionnee.getTache());
-                        parentPanel.initEntites();
+                        this.entiteSelectionnee.getTache().setDuree(duree);
+                        this.ctrl.getGraphe().calculerDates();
+                        this.ctrl.getGraphe().initCheminCritique();
+                        this.ctrl.modifierTacheFichier(this.entiteSelectionnee.getTache());
+                        this.parentPanel.initEntites();
                         repaint();
                         revalidate();   
                     } 
@@ -480,9 +480,9 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                                                               entiteSelectionnee.getTache().getNom());
                 if (nomTache != null && !nomTache.isEmpty())
                 {
-                    entiteSelectionnee.getTache().setNom(nomTache);
-                    ctrl.modifierTacheFichier(entiteSelectionnee.getTache());
-                    parentPanel.initEntites();
+                    this.entiteSelectionnee.getTache().setNom(nomTache);
+                    this.ctrl.modifierTacheFichier(this.entiteSelectionnee.getTache());
+                    this.parentPanel.initEntites();
                     repaint();
                 }
             }
