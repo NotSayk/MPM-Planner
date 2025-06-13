@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import src.Controleur;
@@ -653,7 +654,15 @@ public void chargerFichierB(Controleur ctrl)
         this.lstChemins.clear();
 
         this.formatDateTexte = false;
-        String nomBase = "nouveauProjet";
+
+        String nomBase = JOptionPane.showInputDialog(null, "Entrez le nom du projet :", "Nouveau Projet", JOptionPane.QUESTION_MESSAGE);
+        if (nomBase == null || nomBase.trim().isEmpty()) 
+        {
+            nomBase = "nouveauProjet";
+            ErrorUtils.showError("Aucun nom de projet fourni, utilisation du nom par défaut 'nouveauProjet'");
+            return;
+        }
+
         String extension = ".MC";
         String nomFichierFinal = nomBase + extension;
         int compteur = 1;

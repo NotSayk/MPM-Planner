@@ -21,6 +21,7 @@ import src.Controleur;
 import src.ihm.composants.Entite;
 import src.metier.TacheMPM;
 import src.utils.DateUtils;
+import src.utils.ErrorUtils;
 import src.utils.Utils;
 
 
@@ -272,8 +273,6 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             offsetX = x - entiteSelectionnee.getX();
             offsetY = y - entiteSelectionnee.getY();
             popup.setVisible(false);
-
-            System.out.println("Entité sélectionnée: " + entiteSelectionnee.getTache().getNom());
         }
 
         @Override
@@ -432,7 +431,7 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             if (e.getSource() == this.jmCopier) this.ctrl.copierTache();
             if (e.getSource() == this.jmSuprimer) 
             {
-                System.out.println("Suppression de la tâche : " + this.entiteSelectionnee.getTache().getNom());
+                ErrorUtils.showSucces("La tâche a été supprimée avec succès !");
 
                 if (this.entiteSelectionnee == null) return;
 
