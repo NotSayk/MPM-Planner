@@ -647,26 +647,41 @@ public void chargerFichierB(Controleur ctrl)
         e3.printStackTrace();
     }
 }
-public void nouveauProjet() 
-{
-    this.lstTaches.clear();
-    this.lstChemins.clear();
+    public void nouveauProjet() 
+    {
+        this.lstTaches.clear();
+        this.lstChemins.clear();
 
-    this.formatDateTexte = false;
-    this.nomFichier      = "nouveauProjet.MC";
-    this.estCritique     = false;
-    this.theme           = "LIGHT"; // Initialiser le thème par défaut
+        this.formatDateTexte = false;
+        String nomBase = "nouveauProjet";
+        String extension = ".MC";
+        String nomFichierFinal = nomBase + extension;
+        int compteur = 1;
+        
+        File fichier = new File(nomFichierFinal);
+        while (fichier.exists()) 
+        {
+            nomFichierFinal = nomBase + compteur + extension;
+            fichier = new File(nomFichierFinal);
+            compteur++;
+        }
+        
+        this.nomFichier = nomFichierFinal;
+        this.estCritique     = false;
+        this.theme           = "LIGHT";
 
-    TacheMPM tacheDebut = new TacheMPM("DEBUT", 0, new ArrayList<>());
-    TacheMPM tacheFin   = new TacheMPM("FIN", 0, new ArrayList<>());
-    
-    this.lstTaches.add(tacheDebut);
-    this.lstTaches.add(tacheFin);
-    
-    this.calculerDates();
-    this.initCheminCritique();
-    this.initNiveauTaches();
-}
+        TacheMPM tacheDebut = new TacheMPM("DEBUT", 0, new ArrayList<>());
+        TacheMPM tacheFin   = new TacheMPM("FIN", 0, new ArrayList<>());
+        
+        this.lstTaches.add(tacheDebut);
+        this.lstTaches.add(tacheFin);
+        
+        this.calculerDates();
+        this.initCheminCritique();
+        this.initNiveauTaches();
+
+        this.sauvegarder();
+    }
 
     public void sauvegarder() 
     {
