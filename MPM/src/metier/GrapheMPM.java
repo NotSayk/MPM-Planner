@@ -139,7 +139,7 @@ public class GrapheMPM
     public TacheMPM trouverTache(String nom) 
     {
         for (TacheMPM tache : this.lstTaches) 
-            if (tache.getNom().equalsIgnoreCase(nom)) 
+            if (tache.getNom().equalsIgnoreCase(nom.trim())) 
                 return tache;
         return null;
     }
