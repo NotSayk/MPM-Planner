@@ -335,6 +335,14 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
             // Ajuster les coordonnées en fonction du zoom
             int Xscale = (int)(e.getX() / scale);
             int Yscale = (int)(e.getY() / scale);
+
+            Point screenPoint;
+            int   entiteScreenX;
+            int   entiteScreenY;
+            int   entiteLargeurScaled;
+
+            int   newX;
+            int   newY;   
             
             Entite entite = this.trouverEntiteAuPoint(Xscale, Yscale);
             
@@ -353,7 +361,7 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                     popup.add(new JLabel("Infos sur: " + entite.getTache().getNom()));
                     popup.add(new JSeparator());
                     popup.add(new JLabel("• Antériorité: " + (anterieur.isEmpty() ? "Aucune" : anterieur)));
-                    popup.add(new JLabel("• Date au plus tot: " + DateUtils.ajouterJourDate(ctrl.getDateRef(), entite.getTache().getDateTot()) ));
+                    popup.add(new JLabel("• Date au plus tot: "  + DateUtils.ajouterJourDate(ctrl.getDateRef(), entite.getTache().getDateTot()) ));
                     popup.add(new JLabel("• Date au plus tard: " + DateUtils.ajouterJourDate(ctrl.getDateRef(), entite.getTache().getDateTard())));
                     popup.add(new JLabel("• Durée: "  + tache.getDuree()));
                     popup.add(new JSeparator());
@@ -369,15 +377,15 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                     this.dernierEntite = entite;
 
                     // Calculer la position du popup en tenant compte du zoom
-                    Point screenPoint = this.getLocationOnScreen();
+                    screenPoint = this.getLocationOnScreen();
                     
                     // Position de l'entité à l'écran avec le zoom appliqué
-                    int entiteScreenX = (int)(entite.getX() * scale);
-                    int entiteScreenY = (int)(entite.getY() * scale);
-                    int entiteLargeurScaled = (int)(entite.getLargeur() * scale);
+                    entiteScreenX       = (int)(entite.getX() * scale);
+                    entiteScreenY       = (int)(entite.getY() * scale);
+                    entiteLargeurScaled = (int)(entite.getLargeur() * scale);
 
-                    int newX = screenPoint.x + entiteScreenX + entiteLargeurScaled + 10;
-                    int newY = screenPoint.y + entiteScreenY;                        
+                    newX                = screenPoint.x + entiteScreenX + entiteLargeurScaled + 10;
+                    newY                = screenPoint.y + entiteScreenY;                        
 
                     popup.setLocation(newX, newY);
                     popup.setVisible(true);
@@ -407,9 +415,9 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
         {
             if (e.isControlDown() || e.isMetaDown() || e.getPreciseWheelRotation() != 0) 
             {
-                if (e.getWheelRotation() < 0) scale *= 1.1;
-                else scale /= 1.1;
-                scale = Math.max(0.2, Math.min(scale, 5.0)); // Limite le zoom
+                if (e.getWheelRotation() < 0) this.scale *= 1.1;
+                else                          this.scale /= 1.1;
+                this.scale = Math.max(0.2, Math.min(this.scale, 5.0)); // Limite le zoom
                 revalidate();
                 repaint();
             }
@@ -421,24 +429,19 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
         @Override
         public void actionPerformed(ActionEvent e) 
         {
-            if (e.getSource() == this.jmCopier) 
+            if (e.getSource() == this.jmCopier) this.ctrl.copierTache();
+            if (e.getSource() == this.jmSuprimer) 
             {
-                this.ctrl.copierTache();
-            }
-            else if (e.getSource() == this.jmSuprimer) 
-            {
+                System.out.println("Suppression de la tâche : " + this.entiteSelectionnee.getTache().getNom());
 
-                System.out.println("Suppression de la tâche : " + entiteSelectionnee.getTache().getNom());
+                if (this.entiteSelectionnee == null) return;
 
-                if (entiteSelectionnee == null) 
-                    return;
-
-                if (entiteSelectionnee.getTache().getNom().equals("DEBUT") || 
-                    entiteSelectionnee.getTache().getNom().equals("FIN")) 
+                if (this.entiteSelectionnee.getTache().getNom().equals("DEBUT") || 
+                    this.entiteSelectionnee.getTache().getNom().equals("FIN")) 
                     return;
                 
-                parentPanel.supprimerTache(entiteSelectionnee.getTache());
-                ctrl.getGrilleDonneesModel().refreshTab();
+                this.parentPanel.supprimerTache(entiteSelectionnee.getTache());
+                this.ctrl.getGrilleDonneesModel().refreshTab();
             }
             else if (e.getSource() == this.jmDuree) 
             {
