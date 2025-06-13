@@ -6,11 +6,12 @@ D|4|B
 ffffffff|0|D
 E|5|D
 dqs|0|E
-sdcds|0|E
+DQS |0|E
 F|6|D, C
 dfsssssss|0|F
 dqsd|0|F
 sdq|0|F
 qsd|0|F
 G|7|C
-FIN|0|sdcds, dqsd, sdq, qsd, G, dqs, ffffffff, dfsssssss
+dsf|0|dqs, dqsd, sdq, qsd, G, dqs, ffffffff, dfsssssss
+FIN|0|A, B, C, D, ffffffff, E, dqs, DQS , F, dfsssssss, dqsd, sdq, qsd, G, dsf
