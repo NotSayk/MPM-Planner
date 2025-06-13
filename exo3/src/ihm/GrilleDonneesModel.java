@@ -5,6 +5,7 @@ import javax.swing.table.AbstractTableModel;
 import src.Controleur;
 import src.metier.TacheMPM;
 import src.utils.ErrorUtils;
+import src.utils.Utils;
 
 public class GrilleDonneesModel extends AbstractTableModel
 {
@@ -45,34 +46,10 @@ public class GrilleDonneesModel extends AbstractTableModel
         {
             tache = lstTaches.get(lig);
             
-            tabDonnees[lig][0] = tache.getNom();
-            tabDonnees[lig][1] = tache.getDuree();     // Durée
-            tabDonnees[lig][2] = "";                   // Précédents
-            tabDonnees[lig][3] = "";                   // Suivants
-
-            // Construction de la liste des précédents
-            if (!tache.getPrecedents().isEmpty()) 
-            {
-                String precedents = "";
-                for (int i = 0; i < tache.getPrecedents().size(); i++) 
-                {
-                    precedents += tache.getPrecedents().get(i).getNom();
-                    if (i < tache.getPrecedents().size() - 1) precedents += ", ";
-                }
-                tabDonnees[lig][2] = precedents;
-            }
-            
-            // Construction de la liste des suivants
-            if (!tache.getSuivants().isEmpty()) 
-            {
-                String suivants = "";
-                for (int i = 0; i < tache.getSuivants().size(); i++) 
-                {
-                    suivants += tache.getSuivants().get(i).getNom();
-                    if (i < tache.getSuivants().size() - 1) suivants += ", ";
-                }
-                tabDonnees[lig][3] = suivants;
-            }
+            tabDonnees[lig][0] = tache.getNom();                       // Nom
+            tabDonnees[lig][1] = tache.getDuree();                     // Durée
+            tabDonnees[lig][2] = Utils.formatVirgulePrecedents(tache); // Précédents
+            tabDonnees[lig][3] = Utils.formatVirguleSuivants(tache);   // Suivants
         }
 
         this.fireTableDataChanged();

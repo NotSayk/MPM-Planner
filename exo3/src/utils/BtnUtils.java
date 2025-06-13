@@ -15,7 +15,12 @@ import javax.swing.border.Border;
 public class BtnUtils 
 {
 
-public static JButton creerBtn(String text, Color baseColor, String tooltip) 
+    public BtnUtils() 
+    {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
+
+    public static JButton creerBtn(String text, Color baseColor, String tooltip) 
     {
         JButton button = new JButton(text) 
         {

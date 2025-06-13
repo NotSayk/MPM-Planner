@@ -5,6 +5,11 @@ import javax.swing.JOptionPane;
 public class ErrorUtils 
 {
     
+    public ErrorUtils() 
+    {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
+
     public static void showWarning(String message) 
     {
         JOptionPane.showMessageDialog(

@@ -6,6 +6,7 @@ import src.Controleur;
 public class FrameModification extends JFrame
 {  
     private Controleur        ctrl;
+
     private PanelModification panelModification;
 
 
@@ -13,11 +14,11 @@ public class FrameModification extends JFrame
     {
         this.ctrl = ctrl;
 
-        this.setTitle    ("MPM - Modification du graphe");
-        this.setSize     (300 ,550                      );
+        this.setTitle("MPM - Modification du graphe");
+        this.setSize (300 ,550               );
 
 
-        this.panelModification = new PanelModification(ctrl);
+        this.panelModification = new PanelModification(this.ctrl);
         this.add(this.panelModification);
         
         

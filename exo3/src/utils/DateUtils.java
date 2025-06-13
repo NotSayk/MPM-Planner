@@ -5,6 +5,11 @@ import java.util.GregorianCalendar;
 
 public class DateUtils 
 {
+
+    public DateUtils() 
+    {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
     
     public static String getDateDuJour() 
     {
