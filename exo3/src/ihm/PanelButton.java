@@ -26,22 +26,22 @@ public class PanelButton extends JPanel implements ActionListener
         this.cheminCritique = false;
         
         this.setBackground(new Color(45, 45, 55));
-        this.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 10));
-        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.setLayout    (new FlowLayout(FlowLayout.CENTER, 15, 10));
+        this.setBorder    (BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        btnPlusTot  = BtnUtils.creerBtn("Plus tôt", new Color(0, 183, 14), "Afficher les dates au plus tôt");
-        btnPlusTard = BtnUtils.creerBtn("Plus tard", new Color(255, 27, 14), "Afficher les dates au plus tard");
-        btnReset    = BtnUtils.creerBtn("Réinitialiser", new Color(255, 193, 7), "Remettre à zéro les positions");
-        btnCritique = BtnUtils.creerBtn("Chemin critique", new Color(220, 53, 69), "Afficher/masquer le chemin critique");
-        btnTheme    = BtnUtils.creerBtn("Changer thème", new Color(23, 162, 184), "Basculer entre les thèmes");
-        
-        btnPlusTard.setEnabled(false);
+        this.btnPlusTot  = BtnUtils.creerBtn("Plus tôt"       , new Color(0, 183, 14)  , "Afficher les dates au plus tôt"     );
+        this.btnPlusTard = BtnUtils.creerBtn("Plus tard"      , new Color(255, 27, 14) , "Afficher les dates au plus tard"    );
+        this.btnReset    = BtnUtils.creerBtn("Réinitialiser"  , new Color(255, 193, 7) , "Remettre à zéro les positions"      );
+        this.btnCritique = BtnUtils.creerBtn("Chemin critique", new Color(220, 53, 69) , "Afficher/masquer le chemin critique");
+        this.btnTheme    = BtnUtils.creerBtn("Changer thème"  , new Color(23, 162, 184), "Basculer entre les thèmes"          );
+
+        this.btnPlusTard.setEnabled(false);
+        this.btnCritique.setEnabled(false);
 
         this.add(btnPlusTot);
         this.add(btnPlusTard);
         this.add(btnReset);
         this.add(btnCritique);
-        this.btnCritique.setEnabled(false);
         this.add(btnTheme);
 
         this.btnPlusTot. addActionListener(this);
@@ -65,8 +65,8 @@ public class PanelButton extends JPanel implements ActionListener
             panelMPM.afficherDateTot();
             if (panelMPM.estGriseTot()) 
             {
-                btnPlusTard.setEnabled(true);
-                btnPlusTot.setEnabled(false);
+                this.btnPlusTard.setEnabled(true);
+                this.btnPlusTot.setEnabled(false);
                 this.majBouttonEtat();
             }
         }
@@ -75,7 +75,7 @@ public class PanelButton extends JPanel implements ActionListener
             panelMPM.afficherDateTard();
             if (panelMPM.estGriseTard()) 
             {
-                btnPlusTard.setEnabled(false);
+                this.btnPlusTard.setEnabled(false);
                 this.majBouttonEtat();
             }
         }
@@ -83,13 +83,15 @@ public class PanelButton extends JPanel implements ActionListener
         {
             this.ctrl       .resetPositions();
             this.btnPlusTard.setEnabled(false);
-            this.ctrl.afficherCheminCritique(false);
+            this.ctrl       .afficherCheminCritique(false);
+
             this.cheminCritique = false;
+
             this.btnCritique.setText(this.cheminCritique ? "Masquer critique" : "Chemin critique");
             this.btnCritique.setEnabled(false);
             this.btnPlusTot .setEnabled(true);
-            panelMPM   .cacherDates();
-            panelMPM   .resetScale();
+            panelMPM        .cacherDates();
+            panelMPM        .resetScale();
             this.majBouttonEtat();
             ErrorUtils.showSucces("Les tâches ont été réinitialisées !");
         
