@@ -156,13 +156,12 @@ public class PanelModification extends JPanel implements ActionListener
             if (!nomTache.isEmpty()) 
             {
                 TacheMPM temp = new TacheMPM(nomTache, 0, new ArrayList<>());
-                
                 int[] lignesSelectionnees = this.tblGrilleDonnees.getSelectedRows();
+
                 if (lignesSelectionnees.length > 0) 
                 {
                     // Insérer après la dernière ligne sélectionnée
-                    int positionInsertion = lignesSelectionnees[lignesSelectionnees.length - 1] + 1;
-                    this.ctrl.ajouterTacheAPosition(temp, positionInsertion);
+                    this.ctrl.ajouterTacheAPosition(temp, lignesSelectionnees[lignesSelectionnees.length - 1] + 1);
                 } 
                 else 
                 {
@@ -172,9 +171,8 @@ public class PanelModification extends JPanel implements ActionListener
             
                 if (lignesSelectionnees.length > 0) 
                 {
-                    int selectedIndex = lignesSelectionnees[lignesSelectionnees.length - 1];
-                    TacheMPM tacheSelectionee = this.ctrl.getEntites().get(selectedIndex).getTache();
-                    niveau = tacheSelectionee.getNiveau() + 1;
+                    int index = lignesSelectionnees[lignesSelectionnees.length - 1];
+                    niveau = this.ctrl.getEntites().get(index).getTache().getNiveau() + 1;
                 }
                 this.ctrl.setNiveauTache(temp, niveau);
                 this.grilleDonneesModel.refreshTab();
@@ -187,8 +185,5 @@ public class PanelModification extends JPanel implements ActionListener
         }
     }
     
-    public GrilleDonneesModel getGrilleDonneesModel() 
-    {
-        return this.grilleDonneesModel;
-    }
+    public GrilleDonneesModel getGrilleDonneesModel() { return this.grilleDonneesModel; }
 }
