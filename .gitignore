@@ -32,4 +32,4 @@ visualisationGUI/src/.idea/misc.xml
 .DS_Store
 
 # Ignore exo3/bin directory
-exo3/bin/
+MPM/bin/
