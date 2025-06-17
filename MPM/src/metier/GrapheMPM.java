@@ -177,6 +177,8 @@ public class GrapheMPM
     public void initCheminCritique() 
     {
         this.lstChemins.clear();
+        for (TacheMPM tache : this.lstTaches)
+            tache.setCritique(false);
         TacheMPM fin   = this.lstTaches.get(this.lstTaches.size() - 1);
         TacheMPM debut = this.lstTaches.get(0);
 
@@ -893,6 +895,10 @@ public class GrapheMPM
     {
         try 
         {
+            if (this.nomFichier.endsWith(".data"))
+            {
+                this.nomFichier = this.nomFichier.substring(0, this.nomFichier.length() - 5) + ".MC";
+            }
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(this.nomFichier), "UTF8"));
 
             for (TacheMPM tache : this.lstTaches)
