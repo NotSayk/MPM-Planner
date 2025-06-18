@@ -1,0 +1,11 @@
+DEBUT|0|
+specifications|3|DEBUT
+structuresDonnees|2|specifications
+lecture|3|structuresDonnees
+ecriture|4|structuresDonnees
+gestionPermissions|2|structuresDonnees
+testsFonctionnels|2|lecture, ecriture
+testsSecurite|2|gestionPermissions
+fusionTests|1|testsFonctionnels, testsSecurite
+documentation|1|fusionTests
+FIN|0|documentation

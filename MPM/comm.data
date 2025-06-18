@@ -1,0 +1,54 @@
+DEBUT|0|
+Init_Projet|2|DEBUT
+Commande_Materiel|1|DEBUT
+Recrutement_Equipe|3|DEBUT
+Etude_Faisabilite|4|DEBUT
+Specs_Fonctionnelles|5|Init_Projet
+Livraison_Serveurs|15|Commande_Materiel
+Formation_Equipe|4|Recrutement_Equipe
+Validation_Technique|3|Etude_Faisabilite
+Architecture_Globale|6|Specs_Fonctionnelles, Validation_Technique
+Config_Infra|8|Livraison_Serveurs
+Repartition_Taches|2|Formation_Equipe
+Choix_Technologies|4|Validation_Technique, Formation_Equipe
+Design_Database|7|Architecture_Globale, Choix_Technologies
+Setup_Environnements|5|Config_Infra, Repartition_Taches
+Prototype_Interface|8|Repartition_Taches, Specs_Fonctionnelles
+Tests_Unitaires_Base|3|Choix_Technologies
+Impl_Modeles_Donnees|9|Design_Database
+Config_CI_CD|6|Setup_Environnements
+Maquettes_Finales|4|Prototype_Interface
+Framework_Tests|5|Tests_Unitaires_Base, Setup_Environnements
+API_Core|12|Impl_Modeles_Donnees, Config_CI_CD
+Frontend_Base|10|Maquettes_Finales, Framework_Tests
+Tests_Integration|7|Framework_Tests, Impl_Modeles_Donnees
+Optimisation_DB|4|Impl_Modeles_Donnees
+Services_Metier|8|API_Core, Optimisation_DB
+Interface_Utilisateur|9|Frontend_Base
+Tests_Fonctionnels|6|Tests_Integration, Services_Metier
+Monitoring_Perf|5|API_Core, Tests_Integration
+Logique_Complexe|11|Services_Metier, Interface_Utilisateur
+Tests_Charge|8|Tests_Fonctionnels, Monitoring_Perf
+Securite_Avancee|7|Services_Metier, Monitoring_Perf
+Interface_Admin|6|Interface_Utilisateur, Tests_Fonctionnels
+Integration_Finale|5|Logique_Complexe, Securite_Avancee
+Validation_Perf|4|Tests_Charge, Securite_Avancee
+Tests_Utilisateurs|7|Interface_Admin, Logique_Complexe
+Optimisation_Finale|6|Tests_Charge, Interface_Admin
+Recette_Technique|3|Integration_Finale, Validation_Perf
+Recette_Fonctionnelle|4|Tests_Utilisateurs, Integration_Finale
+Optimisation_Prod|5|Optimisation_Finale, Validation_Perf
+Documentation_Tech|3|Recette_Technique, Optimisation_Finale
+Preparation_Prod|4|Recette_Technique, Optimisation_Prod
+Formation_Utilisateurs|6|Recette_Fonctionnelle
+Manuel_Exploitation|4|Documentation_Tech, Optimisation_Prod
+Tests_Regression|5|Recette_Fonctionnelle, Documentation_Tech
+Deploiement_Prod|3|Preparation_Prod, Manuel_Exploitation
+Accompagnement_Users|5|Formation_Utilisateurs, Tests_Regression
+Monitoring_Prod|2|Deploiement_Prod, Tests_Regression
+Corrections_Urgentes|4|Deploiement_Prod, Accompagnement_Users
+Stabilisation|3|Monitoring_Prod, Corrections_Urgentes
+Bilan_Projet|2|Accompagnement_Users, Monitoring_Prod
+Maintenance_Preventive|4|Stabilisation, Bilan_Projet
+Cloture_Projet|1|Stabilisation, Maintenance_Preventive
+FIN|0|Cloture_Projet
