@@ -498,8 +498,6 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
         if (e.getSource() == this.jmCopier) this.ctrl.copierTache();
         if (e.getSource() == this.jmSuprimer) 
         {
-            ErrorUtils.showSucces("La tâche a été supprimée avec succès !");
-
             if (this.entiteSelectionnee == null) return;
 
             if (this.entiteSelectionnee.getTache().getNom().equals("DEBUT") || 
@@ -507,6 +505,7 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                 return;
             
             this.parentPanel.supprimerTache(entiteSelectionnee.getTache());
+            ErrorUtils.showSucces("La tâche a été supprimée avec succès !");
             this.ctrl.getGrilleDonneesModel().refreshTab();
         }
         else if (e.getSource() == this.jmDuree) 
@@ -544,6 +543,7 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                     JOptionPane.showMessageDialog(this, "Durée invalide. Veuillez entrer un nombre entier.", 
                                                   "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
+                this.ctrl.getGrilleDonneesModel().refreshTab();
             }
         }
         else if (e.getSource() == this.jmNom) 
@@ -571,6 +571,7 @@ public class PanelGraphe extends JPanel implements MouseListener, MouseMotionLis
                     this.parentPanel.initEntites();
                     repaint();
                 }
+                this.ctrl.getGrilleDonneesModel().refreshTab();
             }
         }
     }

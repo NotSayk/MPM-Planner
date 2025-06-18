@@ -1,10 +1,12 @@
 DEBUT|0|
 Analyse|2|DEBUT
 Specificités|2|DEBUT
-Architecture|5|Analyse
-Conception|4|Analyse, Specificités
-DevMod1|4|Specificités, Conception
-DevMod2|3|Architecture
-Integration|4|DevMod2
-Recette|4|DevMod1
-FIN|0|Integration, Recette
+Architecture|10|Analyse
+Conception|10|Analyse, Specificités
+qqqqq|15|Conception
+DevMod1|10|Specificités, Conception
+DevMod2|10|Architecture
+Integration|10|DevMod2
+caca|4|DevMod1
+Integration_copie|10|DevMod2
+FIN|0|Integration, caca, qqqqq, Integration_copie
